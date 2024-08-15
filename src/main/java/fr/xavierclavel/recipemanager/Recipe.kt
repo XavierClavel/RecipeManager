@@ -4,16 +4,24 @@ import kotlinx.serialization.*
 @Serializable
 data class Recipe (
     val title: String,
-    /*
-    val ingredients: MutableList<Ingredient>,
-    val steps: MutableList<String>,
     val portions: Int,
-    val cookingTemperature: Int?,
-    val cookingTime: Int?,
-    val creationDate: Long,
-    val editionDate: Long,
-     */
-)
+    //val cookingTemperature: Int?,
+    //val cookingTime: Int?,
+
+    //val ingredients: MutableList<Ingredient>,
+    //val steps: MutableList<String>,
+
+    var creationDate: Long = 0,
+    var editionDate: Long?,
+
+    ) {
+    constructor(title: String, portions: Int) : this(
+        title,
+        portions,
+        0,
+        null,
+        )
+}
 
 data class Ingredient (
     val amount: Float,

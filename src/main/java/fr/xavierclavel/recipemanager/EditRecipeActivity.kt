@@ -9,33 +9,40 @@ import android.widget.Button
 import android.widget.EditText
 
 
-class EditRecipeActivity : AppCompatActivity(), View.OnClickListener {
-    companion object {
-        lateinit var instance: EditRecipeActivity
-    }
-
+class EditRecipeActivity : AppCompatActivity() {
+    private lateinit var recipeTitle: EditText
+    private lateinit var recipePortions: EditText
+    private lateinit var saveButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        instance = this
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_recipe)
-        findViewById<Button>(R.id.saveButton).setOnClickListener(this)
+
+        saveButton = findViewById(R.id.saveButton)
+        recipeTitle = findViewById(R.id.recipeTitle)
+
+        val b = intent.extras
+        val recipeIndex = b?.getInt("recipeId") ?: -1
+        if (recipeIndex != -1) recoverValues(recipeIndex)
+
+        saveButton.setOnClickListener {
+            DataManager.saveRecipe(getRecipeFromForm(), recipeIndex)
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun recoverValues(recipeIndex: Int) {
+        val recipe = DataManager.dictRecipes[recipeIndex]!!
+        recipeTitle.setText(recipe.title)
+
     }
 
     private fun getRecipeFromForm() : Recipe {
-        val recipeTitle = findViewById<EditText>(R.id.recipeTitle).text.toString()
         return Recipe(
-            recipeTitle
+            title = recipeTitle.text.toString(),
+            portions = recipePortions.text.toString().toInt(),
         )
     }
 
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.saveButton -> {
-                DataManager.saveRecipe(getRecipeFromForm())
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
-        }
-    }
 }

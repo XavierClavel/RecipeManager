@@ -5,13 +5,18 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.FileOutputStream
+import java.time.Instant
 
 object DataManager {
     const val FILE_PREFIX = "recipe"
     var dictRecipes = hashMapOf<Int,Recipe>()
 
     fun saveRecipe(recipe: Recipe, index: Int = -1) {
+        //index = -1 : new recipe
         val i = if (index != -1 ) index else findFirstAvailableIndex()
+        val currentTime = Instant.now().epochSecond
+        if (index == -1) recipe.creationDate = currentTime
+        else recipe.editionDate = currentTime
         val filename = "${FILE_PREFIX}_${i}"
         val file = File(getRecipesDir(), filename)
         val deleted = file.delete()
@@ -38,8 +43,17 @@ object DataManager {
 
     }
 
+    fun deleteAll() {
+        dictRecipes = hashMapOf()
+        val files = getRecipesDir().list()
+        for (file in files) {
+            val file = File(getRecipesDir(), file)
+            file.delete()
+        }
+    }
+
     private fun getRecipesDir() : File {
-        val dir = File(EditRecipeActivity.instance.filesDir, "recipes")
+        val dir = File(MainActivity.instance.filesDir, "recipes")
         if (!dir.exists()) {
             dir.mkdir()
         }

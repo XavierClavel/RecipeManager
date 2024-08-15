@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d("app", "start")
         findViewById<Button>(R.id.listButton).setOnClickListener(this)
         findViewById<Button>(R.id.editButton).setOnClickListener(this)
+        findViewById<Button>(R.id.deleteAllButton).setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
@@ -36,6 +37,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 Log.d("click","list")
                 val intent = Intent(this, RecipeListActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.deleteAllButton -> {
+                DataManager.deleteAll()
             }
         }
     }
