@@ -35,7 +35,6 @@ class RecipeDisplayActivity : ComponentActivity() {
         displayRecipe(recipeIndex)
 
         editButton.setOnClickListener{
-            Log.d("click", "display recipe")
             val intent = Intent(this, EditRecipeActivity::class.java)
             val b = Bundle()
             b.putInt("recipeId", recipeIndex) //Your id

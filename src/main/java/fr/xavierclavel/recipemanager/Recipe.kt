@@ -9,15 +9,16 @@ data class Recipe (
     //val cookingTime: Int?,
 
     //val ingredients: MutableList<Ingredient>,
-    //val steps: MutableList<String>,
+    val steps: MutableList<String>,
 
     var creationDate: Long = 0,
     var editionDate: Long?,
 
     ) {
-    constructor(title: String, portions: Int) : this(
+    constructor(title: String, portions: Int, steps: MutableList<String>) : this(
         title,
         portions,
+        steps,
         0,
         null,
         )
