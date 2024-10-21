@@ -1,0 +1,58 @@
+name;type;containsSugar;caloriesPer100g;weightPerUnit
+Tomates;VEGETABLE;yes;25;200
+Courgettes;VEGETABLE;yes;17;250
+Concombres;VEGETABLE;no;14;500
+Champignons;VEGETABLE;no;22;75
+Poireaux;VEGETABLE;no;27;150
+Brocolis;VEGETABLE;no;34;300
+Epinards;VEGETABLE;no;23;-1
+Oignons;VEGETABLE;yes;40;150
+Ail;VEGETABLE;no;130;5
+Patates;VEGETABLE;no;80;160
+Patates douces;VEGETABLE;yes;86;200
+Riz;VEGETABLE;no;130;-1
+
+#
+Mozzarella;CHEESE;no;280;125
+Burrata;CHEESE;no;270;300
+Feta;CHEESE;no;264;150
+#
+Pâte brisée;OTHER;no;409;230
+Pâte feuilletée;OTHER;no;505;230
+Pâte sablée;OTHER;yes;469;230
+Pâte à pizza;OTHER;no;288;230
+Crème fraiche;OTHER;no;idk;idk
+Concentré de tomates;OTHER;yes;idk;idk
+Dés de tomates;OTHER;yes;idk;idk
+Oeuf;OTHER;no;155;60
+#
+Moutarde;SAUCE;no;idk;-1
+Moutarde à l'ancienne;SAUCE;no;idk;-1
+Sauce soja salée;SAUCE;no;77;-1
+Sauce soja sucrée;SAUCE;yes;53;-1
+Pesto vert;SAUCE;no;492;-1
+Pesto rouge;SAUCE;no;idk;-1
+#
+Huile d'olive;OIL;no;idk;-1
+Huile de sésame;OIL;yes;idk;-1
+Huile de friture;OIL;no;idk;-1
+#
+Chorizo;MEET;no;497;225
+Jambon;MEET;no;118;-1
+Viande hachée;MEET;no;241;-1
+Lardons;MEET;no;275;100
+#
+Pavé de saumon;FISH;no;184;150
+Saumon fumé;FISH;no;117;-1
+#
+Penne;PASTA;no;idk;-1
+Coquilletes;PASTA;no;idk;-1
+#
+Sel;SPICE;no;idk;-1
+Poivre;SPICE;no;idk;-1
+Cumin;SPICE;no;idk;-1
+Thym;SPICE;no;idk;-1
+Origan;SPICE;no;idk;-1
+Paprika;SPICE;no;idk;-1
+Five spices;SPICE;no;idk;-1
+Clous de girofles;SPICE;no;idk;-1
