@@ -34,3 +34,10 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
+
+ktor {
+    docker {
+        localImageName.set("recipe-manager-backend")
+        imageTag.set("0.0.1")
+    }
+}
