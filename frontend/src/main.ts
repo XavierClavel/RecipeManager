@@ -12,6 +12,7 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
+import {createRouter} from "vue-router/auto";
 
 const app = createApp(App)
 
