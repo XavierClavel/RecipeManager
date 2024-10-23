@@ -24,6 +24,7 @@ plugins {
 }
 
 
+
 rootProject.name = "RecipeManager"
 include("backend")
 include("frontend")

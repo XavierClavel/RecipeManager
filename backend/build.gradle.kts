@@ -1,3 +1,5 @@
+import java.util.Properties
+
 val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
@@ -8,9 +10,6 @@ plugins {
     id("io.ktor.plugin") version "3.0.0"
     id("org.jetbrains.kotlin.plugin.serialization")
 }
-
-group = "com.xavierclavel"
-version = "0.0.1"
 
 application {
     mainClass.set("com.xavierclavel.ApplicationKt")
@@ -31,6 +30,8 @@ dependencies {
     implementation("com.h2database:h2:$h2_version")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("io.insert-koin:koin-ktor:4.0.0")
+
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
@@ -38,6 +39,31 @@ dependencies {
 ktor {
     docker {
         localImageName.set("recipe-manager-backend")
-        imageTag.set("0.0.1")
+        imageTag.set(rootProject.version.toString())
     }
 }
+
+
+
+val generatedVersionDir = "${buildDir}/generated-version"
+
+sourceSets {
+    named("main") {
+        output.dir(mapOf("builtBy" to "generateVersionProperties"), generatedVersionDir)
+    }
+}
+
+tasks.register("generateVersionProperties") {
+    doLast {
+        val propertiesFile = file("$generatedVersionDir/version.properties")
+        propertiesFile.parentFile.mkdirs()
+        val properties = Properties()
+        properties.setProperty("version", rootProject.version.toString())
+        propertiesFile.writer().use { properties.store(it, null) }
+    }
+}
+
+tasks.named("processResources") {
+    dependsOn("generateVersionProperties")
+}
+
