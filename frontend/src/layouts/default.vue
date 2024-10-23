@@ -18,6 +18,7 @@
             rounded
             min-height="50px"
             min-width="200px"
+            class="elevation-0"
           >
             New recipe
           </v-btn>
@@ -32,20 +33,29 @@
         <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       </template>
       <v-app-bar-title>Recipe Manager</v-app-bar-title>
-      <div class="d-flex flex-grow-1 justify-center align-center">
+      <div class="d-flex flex-grow-1 justify-center align-center position-absolute"
+       style ="
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        z-index: 1;"
+      >
         <v-card
           min-width="500px"
+          max-width="100%"
           height="48px"
-          class="mx-auto d-flex justify-center rounded-xl elevation-0"
+          class="d-flex align-center rounded-xl"
           color="#202020"
         >
           <v-text-field
-            class="mx-auto elevation-0"
+            class="mx-auto"
             prepend-inner-icon="mdi-magnify"
             hide-details
             single-line
             variant="solo"
             clearable
+            flat
           ></v-text-field>
         </v-card>
       </div>
