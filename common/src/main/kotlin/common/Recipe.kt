@@ -1,4 +1,5 @@
-package fr.xavierclavel.recipemanager
+package common
+
 import kotlinx.serialization.*
 
 @Serializable

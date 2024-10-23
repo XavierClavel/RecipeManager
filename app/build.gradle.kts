@@ -55,6 +55,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":common"))
+
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
     implementation("androidx.core:core-ktx:1.13.1")

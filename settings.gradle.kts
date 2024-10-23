@@ -29,3 +29,4 @@ rootProject.name = "RecipeManager"
 include("backend")
 include("frontend")
 include("app")
+include("common")

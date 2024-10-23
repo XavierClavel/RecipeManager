@@ -1,4 +1,4 @@
-package fr.xavierclavel.recipemanager
+package common
 
 enum class IngredientType {
     VEGETABLE,

@@ -19,6 +19,8 @@ application {
 }
 
 dependencies {
+    implementation(project(":common"))
+
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-webjars-jvm")
     implementation("org.webjars:jquery:3.2.1")

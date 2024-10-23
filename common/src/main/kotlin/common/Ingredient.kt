@@ -1,6 +1,4 @@
-package fr.xavierclavel.recipemanager.dto
-
-import fr.xavierclavel.recipemanager.IngredientType
+package common
 
 data class Ingredient(
     val name: String,

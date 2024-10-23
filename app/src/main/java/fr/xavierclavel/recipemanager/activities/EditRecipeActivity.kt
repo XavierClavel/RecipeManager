@@ -10,11 +10,9 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import fr.xavierclavel.recipemanager.DataManager
-import fr.xavierclavel.recipemanager.IngredientType
+import common.*
 import fr.xavierclavel.recipemanager.R
-import fr.xavierclavel.recipemanager.Recipe
-import fr.xavierclavel.recipemanager.WeightUnit
+import fr.xavierclavel.recipemanager.DataManager
 
 
 class EditRecipeActivity : AppCompatActivity() {

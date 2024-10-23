@@ -10,7 +10,6 @@ import io.ktor.server.netty.*
 import io.ktor.server.routing.routing
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
-import org.koin.ktor.plugin.Koin
 
 fun main() {
     startKoin {
