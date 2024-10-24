@@ -12,22 +12,10 @@ import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import {aliases, mdi} from "vuetify/iconsets/mdi";
 
-const customTheme = {
-  dark: true,
-  colors: {
-    background: '#ffffff',
-    primary: '#c61818'
-  }
-}
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  theme: {
-    defaultTheme: 'customTheme',
-    themes: {
-      customTheme
-    },
-  },
   icons: {
     defaultSet: 'mdi',
     aliases,

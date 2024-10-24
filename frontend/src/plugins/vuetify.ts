@@ -9,11 +9,32 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
 // Composables
-import { createVuetify } from 'vuetify'
+import {createVuetify, ThemeDefinition} from 'vuetify'
+import { VNumberInput } from 'vuetify/labs/VNumberInput'
+
+const customTheme: ThemeDefinition = {
+  dark: true,
+  colors: {
+    background: '#43aa8b',
+    surface: '#254441',
+    primary: '#ff6f59',
+    secondary: '#f4b634',
+    error: '#B00020',
+    info: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FB8C00',
+  }
+}
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
-    defaultTheme: 'dark',
+    defaultTheme: 'customTheme',
+    themes: {
+      customTheme,
+    }
   },
+  components: {
+    VNumberInput,
+  }
 })

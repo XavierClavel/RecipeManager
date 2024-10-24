@@ -10,26 +10,31 @@
         v-model="title"
         label="Title"
         class="mx-auto px-3"
+        color="primary"
       ></v-text-field>
 
       <v-textarea
         v-model="description"
         label="Description"
         class="mx-auto px-3"
+        color="primary"
       ></v-textarea>
 
-      <v-text-field
+      <v-number-input
         v-model="servings"
         label="Yield"
         class="mx-auto px-3"
         type="number"
-      ></v-text-field>
+        color="primary"
+        min="1"
+      ></v-number-input>
 
       <v-text-field
         v-model="preparationTime"
         label="Preparation Time (minutes)"
         class="mx-auto px-3"
         type="number"
+        color="primary"
       ></v-text-field>
 
       <v-text-field
@@ -37,6 +42,7 @@
         label="Cooking time (minutes)"
         class="mx-auto px-3"
         type="number"
+        color="primary"
       ></v-text-field>
 
       <h2 class="my-3" >Ingredients</h2>
@@ -56,6 +62,7 @@
               :label="`Ingredient ${index + 1}`"
               outlined
               class="flex-grow-1"
+              color="primary"
             ></v-text-field>
 
             <v-select
@@ -66,16 +73,20 @@
               :items="['unit','g','lb','teaspoon', 'sugarspoon', 'cup']"
               variant="outlined"
               max-width="200px"
+              color="primary"
             ></v-select>
 
-            <v-text-field
+            <v-number-input
               v-model="ingredients[index].amount"
               label="Amount"
               outlined
               class="flex-grow-1"
               type="number"
-              max-width="100px"
-            ></v-text-field>
+              max-width="150px"
+              color="primary"
+              control-variant="stacked"
+              min="0"
+            ></v-number-input>
 
             <div>
               <v-btn
@@ -119,6 +130,7 @@
               :label="`Step ${index + 1}`"
               outlined
               class="flex-grow-1"
+              color="primary"
             ></v-text-field>
 
             <v-btn

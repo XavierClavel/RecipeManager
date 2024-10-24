@@ -6,7 +6,7 @@
 
     <v-navigation-drawer
       v-model="drawer"
-      color="#254441"
+      color="#surface"
       floating
     >
       <v-list>
@@ -19,6 +19,7 @@
             min-height="50px"
             min-width="200px"
             class="elevation-0"
+            color="primary"
           >
             New recipe
           </v-btn>
@@ -30,12 +31,12 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar color="#254441">
+    <v-app-bar color="surface">
       <template v-slot:prepend>
         <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       </template>
       <template v-slot:append>
-        <v-btn icon="mdi-cog" color="primary"></v-btn>
+        <v-btn icon="mdi-cog"></v-btn>
       </template>
       <v-app-bar-title>Recipe Manager</v-app-bar-title>
       <div class="d-flex flex-grow-1 justify-center align-center position-absolute"
@@ -51,7 +52,6 @@
           max-width="100%"
           height="48px"
           class="d-flex align-center rounded-xl"
-          color="#202020"
         >
           <v-text-field
             class="mx-auto"
@@ -62,6 +62,7 @@
             clearable
             flat
             hint="Search a recipe"
+            bg-color="primary"
           ></v-text-field>
         </v-card>
       </div>
