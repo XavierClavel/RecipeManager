@@ -32,7 +32,7 @@
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
             <v-icon
-              class="mr-2 drag-handle"
+              class="mr-2 drag-handle mb-5"
               color="primary"
               small
             >mdi-drag</v-icon>
@@ -48,9 +48,10 @@
               v-model="ingredients[index].unit"
               label="Unit"
               outlined
-              class="flex-grow-1"
-              :items="['g','lb','teaspoon', 'sugarspoon', 'cup']"
+              class="flex-grow-1 mx-2"
+              :items="['unit','g','lb','teaspoon', 'sugarspoon', 'cup']"
               variant="outlined"
+              max-width="200px"
             ></v-select>
 
             <v-text-field
@@ -59,14 +60,19 @@
               outlined
               class="flex-grow-1"
               type="number"
+              max-width="100px"
             ></v-text-field>
 
-            <v-btn
-              @click="removeIngredient(index)"
-              icon="mdi-delete"
-              color="primary"
-              class="rounded-lg ml-4"
-            ></v-btn>
+            <div>
+              <v-btn
+                @click="removeIngredient(index)"
+                icon="mdi-delete"
+                color="primary"
+                class="rounded-lg ml-4 mb-5"
+              ></v-btn>
+            </div>
+
+
           </div>
         </template>
       </draggable>
@@ -96,7 +102,7 @@
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
             <v-icon
-              class="mr-2 drag-handle"
+              class="mr-2 drag-handle mb-5"
               color="primary"
               small
             >mdi-drag</v-icon>
@@ -113,7 +119,7 @@
               @click="removeStep(index)"
               icon="mdi-delete"
               color="primary"
-              class="rounded-lg ml-4"
+              class="rounded-lg ml-4 mb-5"
             ></v-btn>
           </div>
         </template>
@@ -136,6 +142,32 @@
           <li v-for="(item, index) in steps" :key="index">{{ item }}</li>
         </ul>
       </div>
+
+      <span class="d-flex align-center justify-center mb-2 ga-16">
+        <v-btn
+          @click="addStep"
+          prepend-icon="mdi-close-circle-outline"
+          color="primary"
+          flat
+          rounded
+          class="mb-10 text-h6"
+          min-height="70px"
+          min-width="300px"
+        >Cancel</v-btn>
+        <v-btn
+          @click="addStep"
+          prepend-icon="mdi-send"
+          color="primary"
+          flat
+          rounded
+          class="mb-10 text-h6"
+          min-height="70px"
+          min-width="300px"
+        >Validate</v-btn>
+      </span>
+
+
+
 
     </form>
   </v-card>

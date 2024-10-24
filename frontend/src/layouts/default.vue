@@ -60,6 +60,7 @@
             variant="solo"
             clearable
             flat
+            hint="Search a recipe"
           ></v-text-field>
         </v-card>
       </div>
