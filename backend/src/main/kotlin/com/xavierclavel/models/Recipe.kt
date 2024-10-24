@@ -15,8 +15,11 @@ class Recipe (
     @GeneratedValue
     var id: Long = -1,
 
+    @ManyToOne
+    var owner: User? = null,
+
     @ManyToMany
-    var owners: List<User> = listOf(),
+    var circles: MutableSet<Circle> = mutableSetOf(),
 
     var localId : Long = -1,
 

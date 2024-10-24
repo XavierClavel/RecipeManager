@@ -10,23 +10,22 @@ import jakarta.persistence.Table
 
 @Entity
 @Table
-class User (
+class Circle (
 
     @Id
     @GeneratedValue
     var id: Long = -1,
 
-    var username: String = "",
+    var title: String = "",
 
-    var role: UserRole = UserRole.USER,
-
-    @OneToMany
+    @ManyToMany
     var recipes: Set<Recipe> = setOf(),
 
     @ManyToMany
-    var friends: Set<User> = setOf(),
+    var users: Set<CircleUser> = setOf(),
 
     @ManyToMany
-    var circles: Set<Circle> = setOf(),
+    var pendingUsers: Set<User> = setOf(),
 
+    var isPublic: Boolean = false,
 )
