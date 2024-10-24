@@ -16,7 +16,7 @@ data class Recipe (
     var creationDate: Long = 0,
     var editionDate: Long?,
 
-    )
+)
 
 @Serializable
 data class RecipeIngredient (

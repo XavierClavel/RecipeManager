@@ -21,18 +21,25 @@ application {
 dependencies {
     implementation(project(":common"))
 
+    //Server
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-webjars-jvm")
     implementation("org.webjars:jquery:3.2.1")
     implementation("io.github.smiley4:ktor-swagger-ui:2.9.0")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
-    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-    implementation("com.h2database:h2:$h2_version")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.insert-koin:koin-ktor:4.0.0")
+
+
+    //DB
+    implementation("org.hibernate:hibernate-core:6.6.1.Final")
+    implementation("org.postgresql:postgresql:42.7.4")
+    implementation("com.h2database:h2:$h2_version")
+    implementation("com.zaxxer:HikariCP:6.0.0")
+    implementation("org.flywaydb:flyway-core:10.20.0")
+
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
