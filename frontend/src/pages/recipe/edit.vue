@@ -25,6 +25,20 @@
         type="number"
       ></v-text-field>
 
+      <v-text-field
+        v-model="preparationTime"
+        label="Preparation Time (minutes)"
+        class="mx-auto px-3"
+        type="number"
+      ></v-text-field>
+
+      <v-text-field
+        v-model="cookingTime"
+        label="Cooking time (minutes)"
+        class="mx-auto px-3"
+        type="number"
+      ></v-text-field>
+
       <h2 class="my-3" >Ingredients</h2>
 
       <draggable v-model="ingredients" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
@@ -87,14 +101,6 @@
         class="mb-10"
       >Add new ingredient</v-btn>
 
-      <!-- Display the current list -->
-      <div>
-        <h3>Current Ingredients:</h3>
-        <ul>
-          <li v-for="(item, index) in ingredients" :key="index">{{ item.name }}</li>
-        </ul>
-      </div>
-
       <h2 class="my-3" >Steps</h2>
 
       <draggable v-model="steps" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
@@ -135,15 +141,7 @@
         class="mb-10"
       >Add new step</v-btn>
 
-      <!-- Display the current list -->
-      <div>
-        <h3>Current steps:</h3>
-        <ul>
-          <li v-for="(item, index) in steps" :key="index">{{ item }}</li>
-        </ul>
-      </div>
-
-      <span class="d-flex align-center justify-center mb-2 ga-16">
+      <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
           @click="addStep"
           prepend-icon="mdi-close-circle-outline"
@@ -155,7 +153,7 @@
           min-width="300px"
         >Cancel</v-btn>
         <v-btn
-          @click="addStep"
+          @click="submit"
           prepend-icon="mdi-send"
           color="primary"
           flat
@@ -181,6 +179,8 @@ import draggable from 'vuedraggable';
 const title = ref<string>()
 const description = ref<string>()
 const servings = ref<number>()
+const preparationTime = ref<number>()
+const cookingTime = ref<number>()
 const ingredients = ref<object[]>([
   {name:''}
 ]);
@@ -204,10 +204,22 @@ const removeIngredient = (index) => {
   ingredients.value.splice(index,1);
 }
 
-
+const submit = () => {
+  const recipe = {
+    title: title.value,
+    description: description.value,
+    servings: servings.value,
+    preparationTime: preparationTime.value,
+    cookingTime: cookingTime.value,
+    ingredients: ingredients.value,
+    steps: steps.value,
+  }
+  console.log(recipe)
+}
 
 
 </script>
+
 <style scoped>
 .ghost {
   opacity: 0.5;

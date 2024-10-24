@@ -26,6 +26,7 @@
         <v-list-item prepend-icon="mdi-home" link title="Home" href="/"></v-list-item>
         <v-list-item prepend-icon="mdi-dots-grid" link title="Recipes" href="/recipe/list"></v-list-item>
         <v-list-item prepend-icon="mdi-account-multiple" link title="Friends" href="/"></v-list-item>
+        <v-list-item prepend-icon="mdi-shaker" link title="Ingredients" href="/"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
