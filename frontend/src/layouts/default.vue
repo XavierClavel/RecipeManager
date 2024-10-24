@@ -14,7 +14,7 @@
         <v-list-item class="d-flex justify-center">
           <v-btn
             prepend-icon="mdi-pencil"
-            link href="/"
+            link href="/recipe/edit"
             rounded
             min-height="50px"
             min-width="200px"
@@ -24,13 +24,17 @@
           </v-btn>
         </v-list-item>
         <v-list-item prepend-icon="mdi-home" link title="Home" href="/"></v-list-item>
-        <v-list-item prepend-icon="mdi-dots-grid" link title="Recipes" href="/recipes"></v-list-item>
+        <v-list-item prepend-icon="mdi-dots-grid" link title="Recipes" href="/recipe/list"></v-list-item>
+        <v-list-item prepend-icon="mdi-account-multiple" link title="Friends" href="/"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar color="#254441">
       <template v-slot:prepend>
         <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+      </template>
+      <template v-slot:append>
+        <v-btn icon="mdi-cog" color="primary"></v-btn>
       </template>
       <v-app-bar-title>Recipe Manager</v-app-bar-title>
       <div class="d-flex flex-grow-1 justify-center align-center position-absolute"

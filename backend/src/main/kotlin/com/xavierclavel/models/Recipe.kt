@@ -4,6 +4,8 @@ import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
+import jakarta.persistence.ManyToMany
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -12,6 +14,9 @@ class Recipe (
     @Id
     @GeneratedValue
     var id: Long = -1,
+
+    @ManyToMany
+    var owners: List<User> = listOf(),
 
     var localId : Long = -1,
 
