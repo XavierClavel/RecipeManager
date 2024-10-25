@@ -21,10 +21,11 @@
             New recipe
           </v-btn>
         </v-list-item>
-        <v-list-item prepend-icon="mdi-home" rounded="xl" link title="Home" href="/"></v-list-item>
+        <v-list-item prepend-icon="mdi-home" rounded="xl" link title="Home" href="/home"></v-list-item>
         <v-list-item prepend-icon="mdi-dots-grid" rounded="xl" link title="Recipes" href="/recipe/list"></v-list-item>
-        <v-list-item prepend-icon="mdi-account-multiple" rounded="xl" link title="Friends" href="/"></v-list-item>
-        <v-list-item prepend-icon="mdi-shaker" rounded="xl" link title="Ingredients" href="/"></v-list-item>
+        <v-list-item prepend-icon="mdi-heart-outline" rounded="xl" link title="Likes" href="/"></v-list-item>
+        <v-list-item prepend-icon="mdi-compass-outline" rounded="xl" link title="Browse" href="/"></v-list-item>
+        <v-list-item prepend-icon="mdi-security" rounded="xl" link title="Admin" href="/"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -33,7 +34,7 @@
         <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       </template>
       <template v-slot:append>
-        <v-btn icon="mdi-cog"></v-btn>
+        <v-btn icon="mdi-account"></v-btn>
       </template>
       <v-app-bar-title>Recipe Manager</v-app-bar-title>
       <div class="d-flex flex-grow-1 justify-center align-center position-absolute"

@@ -1,11 +1,10 @@
 package com.xavierclavel.models
 
-import common.UserRole
+import com.xavierclavel.models.jointables.CircleUser
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToMany
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity

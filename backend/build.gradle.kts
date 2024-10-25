@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.ebean
 import java.util.Properties
 
 val kotlin_version: String by project
@@ -6,9 +7,15 @@ val exposed_version: String by project
 val h2_version: String by project
 
 plugins {
+    //kotlin("kapt") version "2.0.21" apply false
     kotlin("jvm")
+
     id("io.ktor.plugin") version "3.0.0"
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("io.ebean") version "15.7.0"
+    id("org.jetbrains.kotlin.kapt")
+    //id("com.google.devtools.ksp") version "1.5.30-1.0.0"
+
 }
 
 application {
@@ -19,6 +26,7 @@ application {
 }
 
 dependencies {
+    val ebeanVersion = "15.7.0"
     implementation(project(":common"))
 
     //Server
@@ -39,6 +47,9 @@ dependencies {
     implementation("com.h2database:h2:$h2_version")
     implementation("com.zaxxer:HikariCP:6.0.0")
     implementation("org.flywaydb:flyway-core:10.20.0")
+    implementation("io.ebean:ebean:$ebeanVersion")
+    kapt("io.ebean:querybean-generator:$ebeanVersion")
+    testImplementation("io.ebean:ebean:$ebeanVersion")
 
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
@@ -76,3 +87,6 @@ tasks.named("processResources") {
     dependsOn("generateVersionProperties")
 }
 
+ebean {
+    debugLevel = 1
+}

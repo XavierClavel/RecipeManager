@@ -23,36 +23,35 @@
         class="mx-auto px-3"
       > {{recipe.description}} </v-card-text>
 
-    <span class="d-flex my-10">
-      <v-card color="#dddddd" width="100px" height="100px" rounded="xl" class="d-flex flex-column align-center justify-center mx-auto">
-      <v-card-text
-        class="mx-auto px-3 mb-n8 align-center text-h4"
-      > {{ recipe.servings }} </v-card-text>
+
+    <span class="d-flex row align-center justify-center mx-auto">
       <v-icon
-        class="mx-auto px-3 mb-3"
+        class="mx-auto px-3 text-h3"
         color="primary"
       > mdi-silverware-fork-knife </v-icon>
-    </v-card>
-
-    <v-card color="#dddddd" width="100px" height="100px" rounded="xl" class="d-flex flex-column align-center justify-center mx-auto">
       <v-card-text
-        class="mx-auto px-3 mb-n8 align-center text-h5"
-      > {{ recipe.preparationTime }} min </v-card-text>
+        class="mx-auto px-3  align-center text-h4"
+      > {{ recipe.servings }} </v-card-text>
+    </span>
+
+    <span class="d-flex row align-center justify-center mx-auto">
       <v-icon
-        class="mx-auto px-3 mb-3 text-h8"
+        class="mx-auto px-3 text-h3"
         color="primary"
       > mdi-chef-hat </v-icon>
-    </v-card>
-
-      <v-card color="#dddddd" width="100px" height="100px" rounded="xl" class="d-flex flex-column align-center justify-center mx-auto">
       <v-card-text
-        class="mx-auto px-3 mb-n8 align-center text-h5"
-      > {{ recipe.cookingTime }} min </v-card-text>
+        class="mx-auto px-3  align-center text-h4"
+      > {{ recipe.preparationTime }} </v-card-text>
+    </span>
+
+    <span class="d-flex row align-center justify-center mx-auto">
       <v-icon
-        class="mx-auto px-3 mb-3 text-h8"
+        class="mx-auto px-3 text-h3"
         color="primary"
       > mdi-stove </v-icon>
-    </v-card>
+      <v-card-text
+        class="mx-auto px-3  align-center text-h4"
+      > {{ recipe.cookingTime }} </v-card-text>
     </span>
 
       <h2 class="my-3" >Ingredients</h2>

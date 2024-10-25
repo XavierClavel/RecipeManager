@@ -155,7 +155,6 @@
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
-          @click="addStep"
           prepend-icon="mdi-close-circle-outline"
           color="primary"
           flat
@@ -163,6 +162,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
+          :href="`/recipe/view?id=${recipeId}`"
         >Cancel</v-btn>
         <v-btn
           @click="submit"
@@ -187,6 +187,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
+import { useRoute } from 'vue-router';
+
+// Get the route object
+const route = useRoute();
+const recipeId = route.query.id
 
 const title = ref<string>()
 const description = ref<string>()

@@ -1,5 +1,7 @@
 package common
 
+import common.enums.IngredientType
+
 data class Ingredient(
     val name: String,
     val type: IngredientType,

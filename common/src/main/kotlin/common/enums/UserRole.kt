@@ -1,4 +1,4 @@
-package common
+package common.enums
 
 enum class UserRole {
     USER,

@@ -1,5 +1,6 @@
 package common
 
+import common.enums.AmountUnit
 import kotlinx.serialization.*
 
 @Serializable
@@ -21,22 +22,6 @@ data class Recipe (
 @Serializable
 data class RecipeIngredient (
     val name: String,
-    val quantity: Quantity?
+    val unit: AmountUnit,
+    val amount: Float,
 )
-
-@Serializable
-data class Quantity (
-    val unit: WeightUnit,
-    val name: String,
-)
-
-enum class WeightUnit {
-    NONE,
-    UNIT,
-    GRAM,
-    CUP,
-    POUND,
-    TEASPOON,
-    TABLESPOON
-}
-

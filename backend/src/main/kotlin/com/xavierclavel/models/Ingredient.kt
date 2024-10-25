@@ -1,13 +1,13 @@
 package com.xavierclavel.models
 
-import common.IngredientType
+import common.enums.IngredientType
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table
+@Table(name = "ingredients")
 class Ingredient (
     @Id
     @GeneratedValue
