@@ -1,7 +1,19 @@
 <template>
   <v-card
+    class="mx-auto rounded-xl pa-5 ma-auto my-5 d-flex flex-row"
+    max-width="1000px"
+    v-if="!displayRecipe"
+  >
+    <v-icon color="primary" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
+    <v-card-title prepend-icon="mdi-alert" class="text-primary text-h4">
+      {{ errorMessage }}
+    </v-card-title>
+  </v-card>
+
+  <v-card
   class="mx-auto rounded-xl pa-5 ma-auto my-5"
   max-width="1000px"
+  v-if="displayRecipe"
   >
       <v-card-title
         class="mx-auto px-3 text-primary text-h3"
@@ -78,7 +90,6 @@
           min-width="300px"
         >Delete</v-btn>
         <v-btn
-          @click="submit"
           prepend-icon="mdi-pencil"
           color="primary"
           flat
@@ -86,6 +97,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
+          :href="`/recipe/edit?id=${recipeId}`"
         >Edit</v-btn>
       </span>
 
@@ -94,40 +106,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import draggable from 'vuedraggable';
+import { useRoute } from 'vue-router';
 
+// Get the route object
+const route = useRoute();
+const recipeId = route.query.id
+const displayRecipe = true
+const errorMessage = ref<String>("This recipe does not exist")
 const isOwner = true
-
-const title = ref<string>()
-const description = ref<string>()
-const servings = ref<number>()
-const preparationTime = ref<number>()
-const cookingTime = ref<number>()
-const ingredients = ref<object[]>([
-  {name:''}
-]);
-const steps = ref<string[]>(['']);
-
-title.value = "aaaaaaaa"
-
-// Function to add a new item
-const addStep = () => {
-  steps.value.push('');
-};
-
-const addIngredient = () => {
-  ingredients.value.push({name:''});
-}
-
-// Function to add a new item
-const removeStep = (index) => {
-  steps.value.splice(index,1);
-};
-
-const removeIngredient = (index) => {
-  ingredients.value.splice(index,1);
-}
 
 const recipe = {
   title: "My title",
@@ -144,18 +130,4 @@ const recipe = {
   steps: ["Couper", "cuire"],
 }
 
-
-
 </script>
-
-<style scoped>
-.ghost {
-  opacity: 0.5;
-}
-
-.drag-handle {
-  cursor: grab;
-  display:flex;
-  align-items: center;
-}
-</style>
