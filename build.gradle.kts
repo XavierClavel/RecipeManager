@@ -1,4 +1,4 @@
 allprojects {
-    version = "0.0.22"
+    version = "0.0.29"
     group = "com.xavierclavel.recipemanager"
 }

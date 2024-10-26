@@ -9,6 +9,8 @@ import io.ebean.DatabaseFactory
 import io.ebean.annotation.Platform
 import io.ebean.config.DatabaseConfig
 import io.ebean.dbmigration.DbMigration
+import io.ebean.migration.MigrationConfig
+import io.ebean.migration.MigrationRunner
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
@@ -35,8 +37,10 @@ object DatabaseManager {
         }
         logger.info { "Successfully connected to database" }
 
-        DbMigration.create().apply {
-            setPlatform(Platform.POSTGRES)
-        }.generateMigration()
+        // Trigger migration runner manually
+        val config = MigrationConfig()
+        val migrationRunner = MigrationRunner(config)
+        migrationRunner.run(hikari())
+        logger.info("Database migrations applied")
     }
 }
