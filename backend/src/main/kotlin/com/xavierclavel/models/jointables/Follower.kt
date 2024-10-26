@@ -26,5 +26,7 @@ class Follower (
     @JoinColumn(name = "user_id", nullable = false)
     var user: User? = null,
 
+    var pending: Boolean = true,
+
     var followedSince: LocalDateTime = LocalDateTime.now(),
 )

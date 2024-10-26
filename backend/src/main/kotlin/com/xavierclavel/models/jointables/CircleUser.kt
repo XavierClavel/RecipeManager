@@ -24,6 +24,8 @@ class CircleUser (
     @ManyToOne
     var circle: Circle? = null,
 
-    var role: CircleRole = CircleRole.READER
+    var role: CircleRole = CircleRole.READER,
+
+    var pending: Boolean = false,
 
 )

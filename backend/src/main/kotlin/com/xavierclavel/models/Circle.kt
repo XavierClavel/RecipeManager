@@ -23,8 +23,5 @@ class Circle (
     @ManyToMany
     var users: Set<CircleUser> = setOf(),
 
-    @ManyToMany
-    var pendingUsers: Set<User> = setOf(),
-
     var isPublic: Boolean = false,
 )

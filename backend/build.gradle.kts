@@ -27,6 +27,7 @@ application {
 
 dependencies {
     val ebeanVersion = "15.7.0"
+
     implementation(project(":common"))
 
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
@@ -50,8 +51,11 @@ dependencies {
     implementation("com.zaxxer:HikariCP:6.0.0")
     implementation("org.flywaydb:flyway-core:10.20.0")
     implementation("io.ebean:ebean:$ebeanVersion")
+    implementation("io.ebean:ebean-ddl-generator:$ebeanVersion")
+    implementation("io.ebean:ebean-migration:14.2.0")
     kapt("io.ebean:querybean-generator:$ebeanVersion")
     testImplementation("io.ebean:ebean:$ebeanVersion")
+
 
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")

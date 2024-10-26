@@ -6,7 +6,9 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ebean.Database
 import io.ebean.DatabaseFactory
+import io.ebean.annotation.Platform
 import io.ebean.config.DatabaseConfig
+import io.ebean.dbmigration.DbMigration
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
@@ -32,5 +34,9 @@ object DatabaseManager {
             }
         }
         logger.info { "Successfully connected to database" }
+
+        DbMigration.create().apply {
+            setPlatform(Platform.POSTGRES)
+        }.generateMigration()
     }
 }
