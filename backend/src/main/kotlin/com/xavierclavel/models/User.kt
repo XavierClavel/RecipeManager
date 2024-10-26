@@ -46,10 +46,11 @@ class User (
 ) {
 
     companion object {
-        fun from(userDTO: UserDTO) =
+        fun from(userDTO: UserDTO, diet: DietaryRestrictions) =
             User(
                 username = userDTO.username,
                 role = userDTO.role,
+                dietaryRestrictions = diet,
             )
     }
 

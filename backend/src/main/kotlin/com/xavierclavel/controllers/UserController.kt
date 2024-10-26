@@ -7,6 +7,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import org.koin.java.KoinJavaComponent.inject
@@ -17,10 +18,18 @@ object UserController: Controller("v1/user") {
     override fun Route.routes() {
         createUser()
         getUser()
+        listUsers()
+        deleteUser()
     }
 
     private fun Route.createUser() = post() {
         val userDTO = call.receive<UserDTO>()
+        userService.createUser(userDTO)
+        call.respond(HttpStatusCode.Created)
+    }
+
+    private fun Route.listUsers() = get {
+        call.respond(userService.listUsers())
     }
 
     private fun Route.getUser() = get("/{id}") {
@@ -31,5 +40,11 @@ object UserController: Controller("v1/user") {
             return@get
         }
         else call.respond(user)
+    }
+
+    private fun Route.deleteUser() = delete("/{id}") {
+        val id = call.parameters["id"]!!.toLong()
+        userService.deleteUser(id)
+        call.respond(HttpStatusCode.OK)
     }
 }
