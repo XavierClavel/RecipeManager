@@ -29,6 +29,8 @@ dependencies {
     val ebeanVersion = "15.7.0"
     implementation(project(":common"))
 
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+
     //Server
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-webjars-jvm")

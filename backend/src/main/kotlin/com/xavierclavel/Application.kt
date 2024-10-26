@@ -23,7 +23,6 @@ fun main() {
 
 fun Application.module() {
     configureSerialization()
-    configureDatabases()
     configureRouting()
 
     serveRoutes()
@@ -36,5 +35,6 @@ fun Application.serveRoutes() = routing {
 
 //Services declaration
 val services = module {
+    single { DatabaseManager() }
     single { RecipeService() }
 }

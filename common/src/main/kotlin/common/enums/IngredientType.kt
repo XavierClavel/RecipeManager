@@ -10,5 +10,6 @@ enum class IngredientType {
     SPICE,
     OIL,
     SAUCE,
+    EGG,
     OTHER,
 }

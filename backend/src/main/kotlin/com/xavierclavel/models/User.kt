@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -37,5 +38,8 @@ class User (
 
     @ManyToMany
     var circles: Set<Circle> = setOf(),
+
+    @OneToOne
+    var dietaryRestrictions: DietaryRestrictions = DietaryRestrictions(),
 
 )

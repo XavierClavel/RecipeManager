@@ -15,44 +15,45 @@
   max-width="1000px"
   v-if="displayRecipe"
   >
-      <v-card-title
-        class="mx-auto px-3 text-primary text-h3"
-      >{{ recipe.title }}</v-card-title>
+    <v-card-title
+      class="mx-auto px-3 text-primary text-h3"
+    >{{ recipe.title }}</v-card-title>
 
-      <v-card-text
-        class="mx-auto px-3"
-      > {{recipe.description}} </v-card-text>
+    <v-card-text
+      class="mx-auto px-3"
+    > {{recipe.description}} </v-card-text>
 
+      <span class="d-flex flex-row">
+        <span class="d-flex row align-center justify-center mx-auto">
+          <v-icon
+            class="mx-auto px-3 text-h3"
+            color="primary"
+          > mdi-silverware-fork-knife </v-icon>
+          <v-card-text
+            class="mx-auto px-3  align-center text-h4"
+          > {{ recipe.servings }} </v-card-text>
+        </span>
 
-    <span class="d-flex row align-center justify-center mx-auto">
-      <v-icon
-        class="mx-auto px-3 text-h3"
-        color="primary"
-      > mdi-silverware-fork-knife </v-icon>
-      <v-card-text
-        class="mx-auto px-3  align-center text-h4"
-      > {{ recipe.servings }} </v-card-text>
-    </span>
+        <span class="d-flex row align-center justify-center mx-auto">
+          <v-icon
+            class="mx-auto px-3 text-h3"
+            color="primary"
+          > mdi-chef-hat </v-icon>
+          <v-card-text
+            class="mx-auto px-3  align-center text-h4"
+          > {{ recipe.preparationTime }} min </v-card-text>
+        </span>
 
-    <span class="d-flex row align-center justify-center mx-auto">
-      <v-icon
-        class="mx-auto px-3 text-h3"
-        color="primary"
-      > mdi-chef-hat </v-icon>
-      <v-card-text
-        class="mx-auto px-3  align-center text-h4"
-      > {{ recipe.preparationTime }} </v-card-text>
-    </span>
-
-    <span class="d-flex row align-center justify-center mx-auto">
-      <v-icon
-        class="mx-auto px-3 text-h3"
-        color="primary"
-      > mdi-stove </v-icon>
-      <v-card-text
-        class="mx-auto px-3  align-center text-h4"
-      > {{ recipe.cookingTime }} </v-card-text>
-    </span>
+        <span class="d-flex row align-center justify-center mx-auto">
+          <v-icon
+            class="mx-auto px-3 text-h3"
+            color="primary"
+          > mdi-stove </v-icon>
+          <v-card-text
+            class="mx-auto px-3  align-center text-h4"
+          > {{ recipe.cookingTime }} min </v-card-text>
+        </span>
+      </span>
 
       <h2 class="my-3" >Ingredients</h2>
 
