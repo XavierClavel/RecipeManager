@@ -2,6 +2,7 @@ package com.xavierclavel.models
 
 import com.xavierclavel.models.jointables.Follower
 import com.xavierclavel.models.jointables.Like
+import common.dto.UserDTO
 import common.enums.UserRole
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
@@ -42,4 +43,19 @@ class User (
     @OneToOne
     var dietaryRestrictions: DietaryRestrictions = DietaryRestrictions(),
 
-)
+) {
+
+    companion object {
+        fun from(userDTO: UserDTO) =
+            User(
+                username = userDTO.username,
+                role = userDTO.role,
+            )
+    }
+
+    fun toDTO() =
+        UserDTO(
+            username = username,
+            role = role,
+        )
+}

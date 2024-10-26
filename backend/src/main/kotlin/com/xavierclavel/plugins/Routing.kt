@@ -28,12 +28,4 @@ fun Application.configureRouting() {
             description = "Development Server"
         }
     }
-    routing {
-        get("/") {
-            call.respondText("Hello World!")
-        }
-        get("/webjars") {
-            call.respondText("<script src='/webjars/jquery/jquery.js'></script>", ContentType.Text.Html)
-        }
-    }
 }

@@ -7,6 +7,7 @@ val h2_version: String by project
 
 plugins {
     kotlin("jvm")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 dependencies {

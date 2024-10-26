@@ -1,36 +1,36 @@
 package com.xavierclavel.plugins
 
+import com.xavierclavel.main
+import com.xavierclavel.utils.logger
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ebean.Database
 import io.ebean.DatabaseFactory
 import io.ebean.config.DatabaseConfig
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
-class DatabaseManager() {
+object DatabaseManager {
     var mainDB : Database? = null
-    val hikariDataSource = HikariDataSource(HikariConfig().apply {
-        driverClassName = "org.postgresql.Driver"
-        jdbcUrl = "jdbc:postgresql://localhost:5432/postgres"
-        username = "postgres"
-        password = "changeit"
-    })
+
+    private fun hikari(): HikariDataSource {
+        val hikariConfig = HikariConfig("/db.properties")
+        return HikariDataSource(hikariConfig)
+    }
 
     fun init() {
+        logger.info("Initializing database...")
         while (mainDB == null) {
             try {
                 mainDB = DatabaseFactory.create(DatabaseConfig().apply {
-                    it.dataSource =  hikariDataSource
+                    it.dataSource =  hikari()
                 })
             }catch (e:Exception) {
+                logger.error { e.message }
+                logger.error { "Failed to connect to database, retrying in 5 seconds" }
                 runBlocking { (delay(5000)) }
             }
         }
+        logger.info { "Successfully connected to database" }
     }
 }
