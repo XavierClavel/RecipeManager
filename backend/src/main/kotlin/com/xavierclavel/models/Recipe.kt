@@ -2,6 +2,7 @@ package com.xavierclavel.models
 
 import com.xavierclavel.models.jointables.Like
 import common.dto.RecipeDTO
+import common.dto.RecipeInfo
 import jakarta.persistence.CascadeType
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
@@ -20,7 +21,7 @@ import io.ebean.Model
 class Recipe (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = -1,
+    var id: Long = 0,
 
     var localId : Long = -1,
 
@@ -49,10 +50,18 @@ class Recipe (
     var likes: MutableSet<Like> = mutableSetOf(),
 
 ) : Model() {
-    fun mergeDTO(recipeDTO: RecipeDTO){
+    fun mergeDTO(recipeDTO: RecipeDTO) : Recipe{
         title = recipeDTO.title
         description = recipeDTO.description
         steps = recipeDTO.steps
-        
+        return this
     }
+
+    fun toInfo() = RecipeInfo(
+        id = this.id,
+        title = title,
+        description = description,
+        steps = steps,
+        ingredients = listOf(),
+    )
 }

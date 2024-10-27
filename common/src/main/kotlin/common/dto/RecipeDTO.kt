@@ -7,17 +7,13 @@ import kotlinx.serialization.*
 data class RecipeDTO (
     val title: String,
     val description: String,
-    val portions: Int,
-    val preparationTime: Int?,
-    val cookingTime: Int?,
-    val cookingTemperature: Int?,
+    val portions: Int? = null,
+    val preparationTime: Int? = null,
+    val cookingTime: Int? = null,
+    val cookingTemperature: Int? = null,
 
-    val ingredients: MutableList<RecipeIngredient>,
-    val steps: MutableList<String>,
-
-    var creationDate: Long = 0,
-    var editionDate: Long?,
-
+    val ingredients: MutableList<RecipeIngredient> = mutableListOf(),
+    val steps: MutableList<String> = mutableListOf(),
 )
 
 @Serializable

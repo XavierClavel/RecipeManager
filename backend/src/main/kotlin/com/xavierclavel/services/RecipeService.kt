@@ -2,14 +2,18 @@ package com.xavierclavel.services
 
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.query.QRecipe
+import com.xavierclavel.utils.DbTransaction.insertAndGet
+import com.xavierclavel.utils.DbTransaction.updateAndGet
+import common.dto.RecipeDTO
+import common.dto.RecipeInfo
 import org.koin.core.component.KoinComponent
 
 class RecipeService: KoinComponent {
     fun countAll() =
         QRecipe().findCount()
 
-    fun findById(recipeId: Long) : Recipe? =
-        QRecipe().id.eq(recipeId).findOne()
+    fun findById(recipeId: Long) : RecipeInfo? =
+        QRecipe().id.eq(recipeId).findOne()?.toInfo()
 
     fun findAllByCircleId(circleId: Long): List<Recipe> =
         QRecipe().circles.id.eq(circleId).findList()
@@ -22,6 +26,18 @@ class RecipeService: KoinComponent {
 
     fun deleteById(recipeId: Long) {
         QRecipe().id.eq(recipeId).delete()
+    }
+
+    fun createRecipe(recipeDTO: RecipeDTO): RecipeInfo =
+        Recipe().mergeDTO(recipeDTO).insertAndGet().toInfo()
+
+
+    fun updateRecipe(id: Long, recipeDTO: RecipeDTO): RecipeInfo? =
+        QRecipe().id.eq(id).findOne()?.mergeDTO(recipeDTO)?.updateAndGet()?.toInfo()
+
+
+    fun deleteRecipe(id: Long) {
+        QRecipe().id.eq(id).delete()
     }
 
 }

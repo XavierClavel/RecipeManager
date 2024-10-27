@@ -3,6 +3,8 @@ package com.xavierclavel.controllers
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.logger
+import common.dto.RecipeDTO
 import common.dto.UserDTO
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
@@ -34,15 +36,19 @@ object RecipeController: Controller(RECIPE_URL) {
     }
 
     private fun Route.createRecipe() = post {
-
+        call.respond(HttpStatusCode.Created, recipeService.createRecipe(call.receive()))
     }
 
     private fun Route.updateRecipe() = put("/{recipe}") {
         val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
+        val info = recipeService.updateRecipe(recipeId, call.receive()) ?: return@put call.respond(HttpStatusCode.NotFound)
+        call.respond(HttpStatusCode.OK, info)
     }
 
     private fun Route.deleteRecipe() = delete("/{recipe}") {
-        val recipeId = call.parameters["recipe"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        recipeService.deleteRecipe(recipeId)
+        call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.getUserRecipes() = get("/user/{username}") {

@@ -2,7 +2,10 @@ package com.xavierclavel
 
 import com.xavierclavel.config.appModules
 import com.xavierclavel.plugins.*
+import common.dto.RecipeDTO
+import common.dto.RecipeInfo
 import common.dto.UserDTO
+import common.utils.URL.RECIPE_URL
 import common.utils.URL.USER_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
@@ -87,6 +90,50 @@ abstract class ApplicationTest: KoinTest {
         this.get(USER_URL).apply {
             assertEquals(HttpStatusCode.OK, status)
             return Json.decodeFromString<Set<UserDTO>>(bodyAsText())
+        }
+    }
+
+    suspend fun HttpClient.createRecipe(recipe: RecipeDTO) : RecipeInfo {
+        this.post(RECIPE_URL){
+            contentType(ContentType.Application.Json)
+            header(HttpHeaders.ContentType, ContentType.Application.Json)
+            setBody(recipe)
+        }.apply{
+            assertEquals(HttpStatusCode.Created, status)
+            val response = Json.decodeFromString<RecipeInfo>(bodyAsText())
+            assertTrue(response.compareToDTO(recipe))
+            return response
+        }
+
+    }
+
+    suspend fun HttpClient.getRecipe(recipeId: Long): RecipeInfo {
+        this.get("$RECIPE_URL/$recipeId").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val response = Json.decodeFromString<RecipeInfo>(bodyAsText())
+            return response
+        }
+    }
+
+    suspend fun HttpClient.updateRecipe(recipeId: Long, recipe: RecipeDTO): RecipeInfo {
+        this.put("$RECIPE_URL/$recipeId"){
+            contentType(ContentType.Application.Json)
+            header(HttpHeaders.ContentType, ContentType.Application.Json)
+            setBody(recipe)
+        }.apply{
+            assertEquals(HttpStatusCode.OK, status)
+            val response = Json.decodeFromString<RecipeInfo>(bodyAsText())
+            assertTrue(response.compareToDTO(recipe))
+            return response
+        }
+    }
+
+    suspend fun HttpClient.deleteRecipe(recipeId: Long) {
+        this.delete("$RECIPE_URL/$recipeId").apply{
+            assertEquals(HttpStatusCode.OK, status)
+        }
+        this.get("$RECIPE_URL/$recipeId").apply {
+            assertEquals(HttpStatusCode.NotFound, status)
         }
     }
 
