@@ -2,6 +2,8 @@ package com.xavierclavel
 
 import com.xavierclavel.config.appModules
 import com.xavierclavel.plugins.*
+import common.dto.UserDTO
+import common.utils.URL.USER_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.request.*
@@ -52,6 +54,40 @@ abstract class ApplicationTest: KoinTest {
             }
             block(client)
         })
+    }
+
+    suspend fun HttpClient.createUser(username: String)  {
+        this.post(USER_URL){
+            contentType(ContentType.Application.Json)
+            header(HttpHeaders.ContentType, ContentType.Application.Json)
+            setBody(UserDTO(username))
+        }.apply {
+            assertEquals(HttpStatusCode.Created, status)
+        }
+
+        this.get("$USER_URL/$username").apply {
+            assertEquals(HttpStatusCode.OK, status)
+            val data = Json.decodeFromString<UserDTO>(bodyAsText())
+            assertNotNull(data)
+            assertEquals(username, data.username)
+        }
+    }
+
+    suspend fun HttpClient.deleteUser(username: String) {
+        this.delete("$USER_URL/$username").apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+
+        this.get("$USER_URL/$username").apply {
+            assertEquals(HttpStatusCode.NotFound, status)
+        }
+    }
+
+    suspend fun HttpClient.listUsers() : Set<UserDTO> {
+        this.get(USER_URL).apply {
+            assertEquals(HttpStatusCode.OK, status)
+            return Json.decodeFromString<Set<UserDTO>>(bodyAsText())
+        }
     }
 
 

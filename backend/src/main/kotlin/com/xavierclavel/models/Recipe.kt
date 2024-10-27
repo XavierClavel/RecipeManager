@@ -1,6 +1,7 @@
 package com.xavierclavel.models
 
 import com.xavierclavel.models.jointables.Like
+import common.dto.RecipeDTO
 import jakarta.persistence.CascadeType
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
@@ -47,4 +48,11 @@ class Recipe (
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL])
     var likes: MutableSet<Like> = mutableSetOf(),
 
-) : Model()
+) : Model() {
+    fun mergeDTO(recipeDTO: RecipeDTO){
+        title = recipeDTO.title
+        description = recipeDTO.description
+        steps = recipeDTO.steps
+        
+    }
+}

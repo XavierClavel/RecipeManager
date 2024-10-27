@@ -1,11 +1,12 @@
-package common
+package common.dto
 
 import common.enums.AmountUnit
 import kotlinx.serialization.*
 
 @Serializable
-data class Recipe (
+data class RecipeDTO (
     val title: String,
+    val description: String,
     val portions: Int,
     val preparationTime: Int?,
     val cookingTime: Int?,
