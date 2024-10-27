@@ -18,9 +18,7 @@ class UserService: KoinComponent {
         QUser().username.eq(username).findOne()
 
     fun createUser(userDTO: UserDTO) {
-        val diet = DietaryRestrictions()
-        DB.save(diet)
-        DB.save(User.from(userDTO, diet))
+        User.from(userDTO).insert()
     }
 
     fun deleteUserById(userId: Long) =

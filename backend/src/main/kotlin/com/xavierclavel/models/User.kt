@@ -4,6 +4,7 @@ import com.xavierclavel.models.jointables.Follower
 import com.xavierclavel.models.jointables.Like
 import common.dto.UserDTO
 import common.enums.UserRole
+import io.ebean.Model
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -39,18 +40,20 @@ class User (
 
     @ManyToMany
     var circles: Set<Circle> = setOf(),
-
+/*
     @OneToOne(cascade = [CascadeType.ALL])
     var dietaryRestrictions: DietaryRestrictions = DietaryRestrictions(),
 
-) {
+ */
+
+): Model() {
 
     companion object {
-        fun from(userDTO: UserDTO, diet: DietaryRestrictions) =
+        fun from(userDTO: UserDTO) =
             User(
                 username = userDTO.username,
                 role = userDTO.role,
-                dietaryRestrictions = diet,
+                //dietaryRestrictions = diet,
             )
     }
 

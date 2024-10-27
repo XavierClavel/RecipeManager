@@ -1,5 +1,6 @@
 package com.xavierclavel
 
+import com.xavierclavel.config.appModules
 import com.xavierclavel.controllers.HealthController
 import com.xavierclavel.controllers.UserController
 import com.xavierclavel.utils.use
@@ -19,7 +20,7 @@ import org.koin.java.KoinJavaComponent.inject
 fun main() {
     startKoin {
         modules(
-            services
+            appModules
     )}
 
     DatabaseManager.init()
@@ -40,10 +41,4 @@ fun Application.module() {
 fun Application.serveRoutes() = routing {
     use(HealthController)
     use(UserController)
-}
-
-//Services declaration
-val services = module {
-    single { RecipeService() }
-    single { UserService() }
 }

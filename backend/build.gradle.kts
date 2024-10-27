@@ -27,6 +27,7 @@ application {
 
 dependencies {
     val ebeanVersion = "15.7.0"
+    val koinVersion = "4.0.0"
 
     implementation(project(":common"))
 
@@ -41,7 +42,8 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("io.insert-koin:koin-ktor:4.0.0")
+    implementation("io.insert-koin:koin-ktor:$koinVersion")
+    implementation("io.insert-koin:koin-test-jvm:$koinVersion")
 
 
     //DB
@@ -52,6 +54,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core:10.20.0")
     implementation("io.ebean:ebean:$ebeanVersion")
     implementation("io.ebean:ebean-ddl-generator:$ebeanVersion")
+    //implementation("io.ebean:eabn-api:$ebeanVersion")
     implementation("io.ebean:ebean-migration:14.2.0")
     testImplementation("io.ebean:ebean-test:$ebeanVersion")
     kapt("io.ebean:querybean-generator:$ebeanVersion")

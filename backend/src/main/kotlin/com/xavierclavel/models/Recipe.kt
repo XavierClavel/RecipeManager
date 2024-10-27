@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import io.ebean.Model
 
 @Entity
 @Table(name = "recipes")
@@ -46,4 +47,4 @@ class Recipe (
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL])
     var likes: MutableSet<Like> = mutableSetOf(),
 
-)
+) : Model()

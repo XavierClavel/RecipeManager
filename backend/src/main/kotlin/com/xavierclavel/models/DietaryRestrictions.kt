@@ -1,5 +1,6 @@
 package com.xavierclavel.models
 
+import io.ebean.Model
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
@@ -19,4 +20,4 @@ class DietaryRestrictions(
     var isPorkOk: Boolean = true,
     var isGlutenOk: Boolean = true,
     var isSugarOk: Boolean = true,
-)
+): Model()
