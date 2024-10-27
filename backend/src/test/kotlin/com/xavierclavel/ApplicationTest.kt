@@ -2,6 +2,8 @@ package com.xavierclavel
 
 import com.xavierclavel.config.appModules
 import com.xavierclavel.plugins.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -10,6 +12,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.testing.*
 import io.ktor.utils.io.KtorDsl
 import kotlinx.coroutines.test.TestResult
+import kotlinx.serialization.json.Json
 import org.junit.Rule
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -30,7 +33,7 @@ abstract class ApplicationTest: KoinTest {
     val koinTestRule= KoinTestRule()
 
     @KtorDsl
-    public fun runTest(block: suspend ApplicationTestBuilder.() -> Unit): TestResult {
+    public fun runTest(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit): TestResult {
         return testApplication(EmptyCoroutineContext, {
             install(ContentNegotiation) {
                 json()
@@ -38,9 +41,20 @@ abstract class ApplicationTest: KoinTest {
             application {
                 serveRoutes()
             }
-            block()
+            val client = createClient {
+                install(HttpCookies) // this is for logging in
+                install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
+                    json(Json {
+                        prettyPrint = true
+                        isLenient = true
+                    })
+                }
+            }
+            block(client)
         })
     }
+
+
 
 }
 
