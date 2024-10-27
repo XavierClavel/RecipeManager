@@ -17,4 +17,11 @@ class RecipeService: KoinComponent {
     fun findAllByOwnerId(userId: Long): List<Recipe> =
         QRecipe().owner.id.eq(userId).findList()
 
+    fun findAllByOwnerUsername(username: String): List<Recipe> =
+        QRecipe().owner.username.eq(username).findList()
+
+    fun deleteById(recipeId: Long) {
+        QRecipe().id.eq(recipeId).delete()
+    }
+
 }
