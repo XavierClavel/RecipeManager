@@ -21,7 +21,11 @@ class UserService: KoinComponent {
         QUser().username.eq(username).findOne()
 
     fun createUser(userDTO: UserDTO) {
-        val diet = DietaryRestrictions().insertAndGet()
+        User.from(userDTO).insert()
+    }
+
+    fun editUser(user: User, userDTO: UserDTO) {
+        user.merge(userDTO)
         User.from(userDTO).insert()
     }
 

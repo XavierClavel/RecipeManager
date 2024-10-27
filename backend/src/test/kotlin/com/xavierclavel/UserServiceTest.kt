@@ -18,18 +18,24 @@ class UserServiceTest: ApplicationTest() {
     val userService : UserService by inject(UserService::class.java)
 
     @Test
-    fun test() {
+    fun `create user`() {
         createUser("test")
-        assert(QUser().username.eq("test").findCount() == 1)
-
         createUser("test2")
-        assert(QUser().username.eq("test2").findCount() == 1)
+    }
+
+    @Test
+    fun `delete user`() {
+        createUser("test")
+        deleteUser("test")
     }
 
     fun createUser(username: String) {
         userService.createUser(UserDTO(username, UserRole.USER))
-        val user = QUser().username.eq(username).findOne()
-        logger.info {"id : ${user.id}" }
+        assert(QUser().username.eq(username).findCount() == 1)
+    }
 
+    fun deleteUser(username: String) {
+        userService.deleteUserByUsername(username)
+        assert(!QUser().username.eq(username).exists())
     }
 }
