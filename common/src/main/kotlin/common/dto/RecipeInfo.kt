@@ -1,6 +1,5 @@
 package common.dto
 
-import common.enums.AmountUnit
 import kotlinx.serialization.*
 
 @Serializable
@@ -28,6 +27,5 @@ data class RecipeInfo (
                 cookingTime == dto.preparationTime &&
                 cookingTemperature == dto.cookingTemperature &&
                 steps == dto.steps
-
     }
 }

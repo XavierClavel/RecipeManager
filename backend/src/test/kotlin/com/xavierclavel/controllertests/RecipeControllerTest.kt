@@ -2,27 +2,18 @@ package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import common.dto.RecipeDTO
-import common.dto.RecipeInfo
-import common.dto.UserDTO
 import common.utils.URL.RECIPE_URL
-import common.utils.URL.USER_URL
-import io.ktor.client.request.get
 import io.ktor.client.request.header
-import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import kotlinx.serialization.json.Json
 import org.junit.Test
 import kotlin.test.assertEquals
-import io.ktor.client.request.delete
 import io.ktor.client.request.put
 import junit.framework.TestCase.assertTrue
 import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
 
 class RecipeControllerTest : ApplicationTest() {
     @Test
@@ -35,7 +26,8 @@ class RecipeControllerTest : ApplicationTest() {
                 "cook"
             )
         )
-        it.createRecipe(recipeDTO)
+        val response = it.createRecipe(recipeDTO)
+        it.assertRecipeExists(response.id)
     }
 
     @Test
@@ -107,7 +99,7 @@ class RecipeControllerTest : ApplicationTest() {
             )
         )
         val recipeInfo = it.createRecipe(recipeDTO)
-        it.getRecipe(recipeInfo.id)
+        it.assertRecipeExists(recipeInfo.id)
         it.deleteRecipe(recipeInfo.id)
 
     }

@@ -1,7 +1,6 @@
 package com.xavierclavel
 
 import com.xavierclavel.config.appModules
-import com.xavierclavel.plugins.*
 import common.dto.RecipeDTO
 import common.dto.RecipeInfo
 import common.dto.UserDTO
@@ -16,11 +15,8 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.testing.*
 import io.ktor.utils.io.KtorDsl
-import kotlinx.coroutines.test.TestResult
 import kotlinx.serialization.json.Json
 import org.junit.Rule
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -38,7 +34,7 @@ abstract class ApplicationTest: KoinTest {
     val koinTestRule= KoinTestRule()
 
     @KtorDsl
-    public fun runTest(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit): TestResult {
+    fun runTest(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
         return testApplication(EmptyCoroutineContext, {
             install(ContentNegotiation) {
                 json()
@@ -67,12 +63,14 @@ abstract class ApplicationTest: KoinTest {
         }.apply {
             assertEquals(HttpStatusCode.Created, status)
         }
+        val response = this.getUser(username)
+        assertEquals(username, response.username)
+    }
 
+    suspend fun HttpClient.getUser(username: String): UserDTO {
         this.get("$USER_URL/$username").apply {
             assertEquals(HttpStatusCode.OK, status)
-            val data = Json.decodeFromString<UserDTO>(bodyAsText())
-            assertNotNull(data)
-            assertEquals(username, data.username)
+            return Json.decodeFromString<UserDTO>(bodyAsText())
         }
     }
 
@@ -80,7 +78,16 @@ abstract class ApplicationTest: KoinTest {
         this.delete("$USER_URL/$username").apply {
             assertEquals(HttpStatusCode.OK, status)
         }
+        this.assertUserDoesNotExist(username)
+    }
 
+    suspend fun HttpClient.assertUserExists(username: String) {
+        this.get("$USER_URL/$username").apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+    }
+
+    suspend fun HttpClient.assertUserDoesNotExist(username: String) {
         this.get("$USER_URL/$username").apply {
             assertEquals(HttpStatusCode.NotFound, status)
         }
@@ -132,6 +139,16 @@ abstract class ApplicationTest: KoinTest {
         this.delete("$RECIPE_URL/$recipeId").apply{
             assertEquals(HttpStatusCode.OK, status)
         }
+        this.assertRecipeDoesNotExist(recipeId)
+    }
+
+    suspend fun HttpClient.assertRecipeExists(recipeId: Long) {
+        this.get("$RECIPE_URL/$recipeId").apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+    }
+
+    suspend fun HttpClient.assertRecipeDoesNotExist(recipeId: Long) {
         this.get("$RECIPE_URL/$recipeId").apply {
             assertEquals(HttpStatusCode.NotFound, status)
         }
