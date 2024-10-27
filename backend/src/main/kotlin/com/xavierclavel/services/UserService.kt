@@ -3,8 +3,11 @@ package com.xavierclavel.services
 import com.xavierclavel.models.DietaryRestrictions
 import com.xavierclavel.models.User
 import com.xavierclavel.models.query.QUser
+import com.xavierclavel.utils.DbTransaction
+import com.xavierclavel.utils.DbTransaction.insertAndGet
 import common.dto.UserDTO
 import io.ebean.DB
+import io.ebean.Model
 import org.koin.core.component.KoinComponent
 
 class UserService: KoinComponent {
@@ -18,8 +21,10 @@ class UserService: KoinComponent {
         QUser().username.eq(username).findOne()
 
     fun createUser(userDTO: UserDTO) {
+        val diet = DietaryRestrictions().insertAndGet()
         User.from(userDTO).insert()
     }
+
 
     fun deleteUserById(userId: Long) =
         QUser().id.eq(userId).delete()

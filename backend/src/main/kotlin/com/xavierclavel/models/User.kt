@@ -10,6 +10,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
@@ -40,11 +41,11 @@ class User (
 
     @ManyToMany
     var circles: Set<Circle> = setOf(),
-/*
+
     @OneToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name="diet_id", referencedColumnName = "id")
     var dietaryRestrictions: DietaryRestrictions = DietaryRestrictions(),
 
- */
 
 ): Model() {
 
@@ -53,7 +54,6 @@ class User (
             User(
                 username = userDTO.username,
                 role = userDTO.role,
-                //dietaryRestrictions = diet,
             )
     }
 

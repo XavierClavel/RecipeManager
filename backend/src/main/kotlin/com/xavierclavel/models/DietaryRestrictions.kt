@@ -10,8 +10,7 @@ import jakarta.persistence.Table
 @Table(name = "dietary_restrictions")
 class DietaryRestrictions(
     @Id
-    @GeneratedValue
-    var id: Long = -1,
+    var id: Long = 0,
 
     var isMeatOk: Boolean = true,
     var isFishOk: Boolean = true,

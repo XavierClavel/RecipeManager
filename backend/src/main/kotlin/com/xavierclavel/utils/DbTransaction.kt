@@ -2,8 +2,8 @@ package com.xavierclavel.utils
 
 import io.ebean.Model
 
-class DbTransaction {
-    fun <T: Model> T.insert() = apply {insert()}
-    fun <T: Model> T.update() = apply {update()}
+object DbTransaction {
+    fun <T: Model> T.insertAndGet() = apply {insert()}
+    fun <T: Model> T.updateAndGet() = apply {update()}
     fun <T: Model> T.delete() = apply {delete()}
 }

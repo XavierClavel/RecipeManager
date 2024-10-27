@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <createTable name="circle" pkName="pk_circle">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="title" type="varchar" notnull="true"/>
+            <column name="is_public" type="boolean" defaultValue="false" notnull="true"/>
+        </createTable>
+        <createTable name="circle_recipes" pkName="pk_circle_recipes">
+            <column name="circle_id" type="bigint" notnull="true" primaryKey="true"/>
+            <column name="recipes_id" type="bigint" notnull="true" primaryKey="true"/>
+            <foreignKey name="fk_circle_recipes_circle" columnNames="circle_id" refColumnNames="id" refTableName="circle" indexName="ix_circle_recipes_circle"/>
+            <foreignKey name="fk_circle_recipes_recipes" columnNames="recipes_id" refColumnNames="id" refTableName="recipes" indexName="ix_circle_recipes_recipes"/>
+        </createTable>
+        <createTable name="circle_circle_users" pkName="pk_circle_circle_users">
+            <column name="circle_id" type="bigint" notnull="true" primaryKey="true"/>
+            <column name="circle_users_id" type="bigint" notnull="true" primaryKey="true"/>
+            <foreignKey name="fk_circle_circle_users_circle" columnNames="circle_id" refColumnNames="id" refTableName="circle" indexName="ix_circle_circle_users_circle"/>
+            <foreignKey name="fk_circle_circle_users_circle_users" columnNames="circle_users_id" refColumnNames="id" refTableName="circle_users" indexName="ix_circle_circle_users_circle_users"/>
+        </createTable>
+        <createTable name="circle_users" identityType="identity" pkName="pk_circle_users">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="user_id" type="bigint" references="users.id" foreignKeyName="fk_circle_users_user_id" foreignKeyIndex="ix_circle_users_user_id"/>
+            <column name="circle_id" type="bigint" references="circle.id" foreignKeyName="fk_circle_users_circle_id" foreignKeyIndex="ix_circle_users_circle_id"/>
+            <column name="role" type="integer" notnull="true" checkConstraint="check ( role in (0,1,2))" checkConstraintName="ck_circle_users_role"/>
+            <column name="pending" type="boolean" defaultValue="false" notnull="true"/>
+        </createTable>
+        <createTable name="dietary_restrictions" pkName="pk_dietary_restrictions">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="is_meat_ok" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="is_fish_ok" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="is_egg_ok" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="is_alcohol_ok" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="is_pork_ok" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="is_gluten_ok" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="is_sugar_ok" type="boolean" defaultValue="false" notnull="true"/>
+        </createTable>
+        <createTable name="followers" identityType="identity" pkName="pk_followers">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="follower_id" type="bigint" notnull="true" references="users.id" foreignKeyName="fk_followers_follower_id" foreignKeyIndex="ix_followers_follower_id"/>
+            <column name="user_id" type="bigint" notnull="true" references="users.id" foreignKeyName="fk_followers_user_id" foreignKeyIndex="ix_followers_user_id"/>
+            <column name="pending" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="followed_since" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="ingredients" pkName="pk_ingredients">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="recipe_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_ingredients_recipe_id" foreignKeyIndex="ix_ingredients_recipe_id"/>
+            <column name="name" type="varchar" notnull="true"/>
+            <column name="type" type="integer" notnull="true" checkConstraint="check ( type in (0,1,2,3,4,5,6,7,8,9,10))" checkConstraintName="ck_ingredients_type"/>
+        </createTable>
+        <createTable name="likes" identityType="identity" pkName="pk_likes">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="user_id" type="bigint" notnull="true" references="users.id" foreignKeyName="fk_likes_user_id" foreignKeyIndex="ix_likes_user_id"/>
+            <column name="recipe_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_likes_recipe_id" foreignKeyIndex="ix_likes_recipe_id"/>
+            <column name="created_ad" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="recipes" identityType="identity" pkName="pk_recipes">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="local_id" type="bigint" notnull="true"/>
+            <column name="title" type="varchar" notnull="true"/>
+            <column name="description" type="varchar" notnull="true"/>
+            <column name="creation_date" type="bigint" notnull="true"/>
+            <column name="modification_date" type="bigint" notnull="true"/>
+            <column name="owner_id" type="bigint" references="users.id" foreignKeyName="fk_recipes_owner_id" foreignKeyIndex="ix_recipes_owner_id"/>
+        </createTable>
+        <createTable name="recipes_steps" pkName="pk_recipes_steps">
+            <column name="recipes_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_recipes_steps_recipes_id" foreignKeyIndex="ix_recipes_steps_recipes_id"/>
+            <column name="value" type="varchar" notnull="true"/>
+        </createTable>
+        <createTable name="recipes_circle" pkName="pk_recipes_circle">
+            <column name="recipes_id" type="bigint" notnull="true" primaryKey="true"/>
+            <column name="circle_id" type="bigint" notnull="true" primaryKey="true"/>
+            <foreignKey name="fk_recipes_circle_recipes" columnNames="recipes_id" refColumnNames="id" refTableName="recipes" indexName="ix_recipes_circle_recipes"/>
+            <foreignKey name="fk_recipes_circle_circle" columnNames="circle_id" refColumnNames="id" refTableName="circle" indexName="ix_recipes_circle_circle"/>
+        </createTable>
+        <createTable name="recipe_ingredients" identityType="identity" pkName="pk_recipe_ingredients">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="recipe_id" type="bigint" references="recipes.id" foreignKeyName="fk_recipe_ingredients_recipe_id" foreignKeyIndex="ix_recipe_ingredients_recipe_id"/>
+            <column name="ingredient_id" type="bigint" references="ingredients.id" foreignKeyName="fk_recipe_ingredients_ingredient_id" foreignKeyIndex="ix_recipe_ingredients_ingredient_id"/>
+            <column name="amount" type="float" notnull="true"/>
+            <column name="unit" type="integer" notnull="true" checkConstraint="check ( unit in (0,1,2,3,4,5,6))" checkConstraintName="ck_recipe_ingredients_unit"/>
+        </createTable>
+        <createTable name="users" pkName="pk_users">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="username" type="varchar" notnull="true"/>
+            <column name="role" type="integer" notnull="true" checkConstraint="check ( role in (0,1))" checkConstraintName="ck_users_role"/>
+            <column name="diet_id" type="bigint" notnull="true" uniqueOneToOne="uq_users_diet_id" references="dietary_restrictions.id" foreignKeyName="fk_users_diet_id"/>
+        </createTable>
+        <createTable name="users_circle" pkName="pk_users_circle">
+            <column name="users_id" type="bigint" notnull="true" primaryKey="true"/>
+            <column name="circle_id" type="bigint" notnull="true" primaryKey="true"/>
+            <foreignKey name="fk_users_circle_users" columnNames="users_id" refColumnNames="id" refTableName="users" indexName="ix_users_circle_users"/>
+            <foreignKey name="fk_users_circle_circle" columnNames="circle_id" refColumnNames="id" refTableName="circle" indexName="ix_users_circle_circle"/>
+        </createTable>
+    </changeSet>
+</migration>
