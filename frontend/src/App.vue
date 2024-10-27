@@ -25,7 +25,7 @@
         <v-list-item prepend-icon="mdi-dots-grid" rounded="xl" link title="Recipes" href="/recipe/list"></v-list-item>
         <v-list-item prepend-icon="mdi-heart-outline" rounded="xl" link title="Likes" href="/"></v-list-item>
         <v-list-item prepend-icon="mdi-compass-outline" rounded="xl" link title="Browse" href="/"></v-list-item>
-        <v-list-item prepend-icon="mdi-security" rounded="xl" link title="Admin" href="/"></v-list-item>
+        <v-list-item prepend-icon="mdi-security" rounded="xl" link title="Admin" href="/users"></v-list-item>
         <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link title="About" href="/"></v-list-item>
       </v-list>
     </v-navigation-drawer>

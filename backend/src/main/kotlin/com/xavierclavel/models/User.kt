@@ -64,7 +64,7 @@ class User (
         )
 
     fun merge(userDTO: UserDTO) {
-        username = userDTO.username,
-        role = userDTO.role,
+        username = userDTO.username
+        role = userDTO.role
     }
 }

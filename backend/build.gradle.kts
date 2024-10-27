@@ -36,6 +36,7 @@ dependencies {
     //Server
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-webjars-jvm")
+    implementation("io.ktor:ktor-server-cors:")
     implementation("org.webjars:jquery:3.2.1")
     implementation("io.github.smiley4:ktor-swagger-ui:4.0.0")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
