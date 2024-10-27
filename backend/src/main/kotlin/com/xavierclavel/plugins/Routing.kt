@@ -15,8 +15,8 @@ fun Application.configureRouting() {
     }
     install(SwaggerUI) {
         swagger {
-            swaggerUrl = "swagger-ui"
-            forwardRoot = true
+            //swaggerUrl = "swagger-ui"
+            //forwardRoot = true
         }
         info {
             title = "Example API"

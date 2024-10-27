@@ -7,6 +7,7 @@ import common.enums.UserRole
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.OneToMany
@@ -18,8 +19,7 @@ import jakarta.persistence.Table
 class User (
 
     @Id
-    @GeneratedValue
-    var id: Long = -1,
+    var id: Long = 0,
 
     var username: String = "",
 
@@ -40,7 +40,7 @@ class User (
     @ManyToMany
     var circles: Set<Circle> = setOf(),
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL])
     var dietaryRestrictions: DietaryRestrictions = DietaryRestrictions(),
 
 ) {

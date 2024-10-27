@@ -32,9 +32,9 @@ object UserController: Controller("v1/user") {
         call.respond(userService.listUsers())
     }
 
-    private fun Route.getUser() = get("/{id}") {
-        val id = call.parameters["id"]!!.toLong()
-        val user = userService.getUser(id)
+    private fun Route.getUser() = get("/{username}") {
+        val username = call.parameters["username"]!!
+        val user = userService.getUserByUsername(username)
         if (user == null) {
             call.respond(HttpStatusCode.NotFound, "User does not exist")
             return@get
@@ -42,9 +42,9 @@ object UserController: Controller("v1/user") {
         else call.respond(user)
     }
 
-    private fun Route.deleteUser() = delete("/{id}") {
-        val id = call.parameters["id"]!!.toLong()
-        userService.deleteUser(id)
+    private fun Route.deleteUser() = delete("/{username}") {
+        val username = call.parameters["username"]!!
+        userService.deleteUserByUsername(username)
         call.respond(HttpStatusCode.OK)
     }
 }

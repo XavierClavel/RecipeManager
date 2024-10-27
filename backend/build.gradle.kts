@@ -36,7 +36,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-webjars-jvm")
     implementation("org.webjars:jquery:3.2.1")
-    implementation("io.github.smiley4:ktor-swagger-ui:2.9.0")
+    implementation("io.github.smiley4:ktor-swagger-ui:4.0.0")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
@@ -53,6 +53,7 @@ dependencies {
     implementation("io.ebean:ebean:$ebeanVersion")
     implementation("io.ebean:ebean-ddl-generator:$ebeanVersion")
     implementation("io.ebean:ebean-migration:14.2.0")
+    testImplementation("io.ebean:ebean-test:$ebeanVersion")
     kapt("io.ebean:querybean-generator:$ebeanVersion")
     testImplementation("io.ebean:ebean:$ebeanVersion")
 

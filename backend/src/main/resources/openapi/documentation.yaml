@@ -6,32 +6,6 @@ info:
 servers:
 - url: "https://RecipeManager"
 paths:
-  /:
-    get:
-      description: ""
-      responses:
-        "200":
-          description: "OK"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Hello World!"
-  /webjars:
-    get:
-      description: ""
-      responses:
-        "200":
-          description: "OK"
-          content:
-            text/html:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "<script src='/webjars/jquery/jquery.js'></script>"
   /json/kotlinx-serialization:
     get:
       description: ""
@@ -42,81 +16,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Map_String"
-  /users:
-    post:
-      description: "Create user"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ExposedUser"
-        required: true
-      responses:
-        "201":
-          description: "Created"
-          content:
-            '*/*':
-              schema:
-                type: "integer"
-                format: "int32"
-  /users/{id}:
-    delete:
-      description: "Delete user"
-      parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        schema:
-          type: "integer"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                type: "object"
-    get:
-      description: "Read user"
-      parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        schema:
-          type: "integer"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ExposedUser"
-        "404":
-          description: "Not Found"
-          content:
-            '*/*':
-              schema:
-                type: "object"
-    put:
-      description: "Update user"
-      parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        schema:
-          type: "integer"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ExposedUser"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                type: "object"
 components:
   schemas:
     Map:
@@ -124,13 +23,3 @@ components:
       properties: {}
     Map_String:
       type: "string"
-    ExposedUser:
-      type: "object"
-      properties:
-        name:
-          type: "string"
-        age:
-          type: "integer"
-          format: "int32"
-      required:
-      - "name"

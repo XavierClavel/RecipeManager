@@ -14,17 +14,23 @@ class UserService: KoinComponent {
     fun findById(userId: Long) : User? =
         QUser().id.eq(userId).findOne()
 
+    fun findByUsername(username: String) : User? =
+        QUser().username.eq(username).findOne()
+
     fun createUser(userDTO: UserDTO) {
         val diet = DietaryRestrictions()
-        DB.getDefault().save(diet)
-        DB.getDefault().save(User.from(userDTO, diet))
+        DB.save(diet)
+        DB.save(User.from(userDTO, diet))
     }
 
-    fun deleteUser(userId: Long) =
+    fun deleteUserById(userId: Long) =
         QUser().id.eq(userId).delete()
 
-    fun getUser(userId: Long) : UserDTO? {
-        return findById(userId)?.toDTO()
+    fun deleteUserByUsername(username: String) =
+        QUser().username.eq(username).delete()
+
+    fun getUserByUsername(username: String) : UserDTO? {
+        return findByUsername(username)?.toDTO()
     }
 
     fun listUsers(): List<UserDTO> =
