@@ -7,7 +7,7 @@
 
     <form @submit.prevent="submit" class="mx-auto">
       <v-card-title class="text-primary text-h3">
-        Signup
+        Login
       </v-card-title>
       <v-text-field
         v-model="user.title"
@@ -19,37 +19,15 @@
       ></v-text-field>
 
       <v-text-field
-        v-model="user.email"
-        prepend-icon="mdi-email-outline"
-        label="Email address"
-        class="mx-auto px-3"
-        color="primary"
-        :rules="[rules.required]"
-      ></v-text-field>
-
-      <v-text-field
         v-model="user.password"
         prepend-icon="mdi-lock-outline"
         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-        :rules="[rules.required, rules.min]"
+        :rules="[rules.required]"
         :type="show1 ? 'text' : 'password'"
         hint="At least 8 characters"
         label="Password"
         counter
         @click:append="show1 = !show1"
-        class="mx-3"
-      ></v-text-field>
-
-      <v-text-field
-        v-model="password2"
-        prepend-icon="mdi-lock-check-outline"
-        :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-        :rules="[rules.required, rules.passwordMatch]"
-        :type="show2 ? 'text' : 'password'"
-        hint="Passwords must match"
-        label="Confirm password"
-        counter
-        @click:append="show2 = !show2"
         class="mx-3"
       ></v-text-field>
 
@@ -62,8 +40,8 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-          :href="`/login`"
-        >Log in</v-btn>
+          :href="`/signup`"
+        >Sign up</v-btn>
         <v-btn
           @click="submit"
           prepend-icon="mdi-send"
@@ -73,7 +51,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-        >Sign up</v-btn>
+        >Log in</v-btn>
       </span>
 
 
