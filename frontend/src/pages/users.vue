@@ -44,7 +44,6 @@
 </template>
 
 <script lang="ts" setup>
-import axios from 'axios'
 import {getUsers, deleteUser} from "@/scripts/users";
 let users = ref<string[]>([])
 

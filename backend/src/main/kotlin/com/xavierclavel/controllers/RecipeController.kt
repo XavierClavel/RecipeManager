@@ -1,11 +1,7 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.services.RecipeService
-import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
-import com.xavierclavel.utils.logger
-import common.dto.RecipeDTO
-import common.dto.UserDTO
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -22,6 +18,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     override fun Route.routes() {
         getRecipe()
+        listRecipes()
         getUserRecipes()
         getCircleRecipes()
         createRecipe()
@@ -33,6 +30,10 @@ object RecipeController: Controller(RECIPE_URL) {
         val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest)
         val recipe = recipeService.findById(recipeId) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(recipe)
+    }
+
+    private fun Route.listRecipes() = get {
+        call.respond(recipeService.findList())
     }
 
     private fun Route.createRecipe() = post {

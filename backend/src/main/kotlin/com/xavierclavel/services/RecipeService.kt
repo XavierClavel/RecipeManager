@@ -12,6 +12,9 @@ class RecipeService: KoinComponent {
     fun countAll() =
         QRecipe().findCount()
 
+    fun findList() : List<RecipeInfo> =
+        QRecipe().findList().map { it.toInfo() }
+
     fun findById(recipeId: Long) : RecipeInfo? =
         QRecipe().id.eq(recipeId).findOne()?.toInfo()
 

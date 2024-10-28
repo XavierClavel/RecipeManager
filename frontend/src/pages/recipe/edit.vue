@@ -188,6 +188,7 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
+import {getRecipe, createRecipe} from "@/scripts/recipes";
 
 // Get the route object
 const route = useRoute();
@@ -232,7 +233,20 @@ const submit = () => {
     steps: steps.value,
   }
   console.log(recipe)
+  createRecipe(recipe)
 }
+
+if (recipeId != undefined) {
+  getRecipe(recipeId).then (
+    function (response) {
+      console.log(response)
+    }).catch(function (error) {
+    console.log(error);
+  }).finally(function () {
+    // always executed
+  });
+}
+
 
 
 </script>
