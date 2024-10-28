@@ -107,6 +107,8 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
+import {getRecipe} from "@/scripts/recipes";
+import {ref} from "vue";
 
 // Get the route object
 const route = useRoute();
@@ -115,19 +117,25 @@ const displayRecipe = true
 const errorMessage = ref<String>("This recipe does not exist")
 const isOwner = true
 
-const recipe = {
-  title: "My title",
-  description: "My description",
-  servings: 4,
-  preparationTime: 20,
-  cookingTime: 30,
-  ingredients: [
-    {
-      name: "tomates",
-      amount: 3,
-    }
-  ],
-  steps: ["Couper", "cuire"],
+const recipe = ref<object>({
+  steps: [''],
+  ingredients: [],
+})
+
+if (recipeId != undefined) {
+  getRecipe(recipeId).then (
+    function (response) {
+      recipe.value.title = response.data.title
+      recipe.value.description = response.data.description
+      recipe.value.servings = response.data.portions
+      recipe.value.ingredients = response.data.ingredients
+      recipe.value.steps = response.data.steps
+      console.log(recipe.value)
+    }).catch(function (error) {
+    console.log(error);
+  }).finally(function () {
+    // always executed
+  });
 }
 
 </script>
