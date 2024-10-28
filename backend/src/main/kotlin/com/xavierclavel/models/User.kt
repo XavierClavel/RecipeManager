@@ -1,5 +1,6 @@
 package com.xavierclavel.models
 
+import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.models.jointables.Follower
 import com.xavierclavel.models.jointables.Like
 import common.dto.UserDTO
@@ -24,6 +25,8 @@ class User (
     var id: Long = 0,
 
     var username: String = "",
+
+    var passwordHash: String = "",
 
     var role: UserRole = UserRole.USER,
 
@@ -53,6 +56,7 @@ class User (
         fun from(userDTO: UserDTO) =
             User(
                 username = userDTO.username,
+                passwordHash = BCrypt.withDefaults().hashToString(12,userDTO.password.toCharArray()),
                 role = userDTO.role,
             )
     }

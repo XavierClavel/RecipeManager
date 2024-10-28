@@ -1,5 +1,6 @@
 package com.xavierclavel.plugins
 
+import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.logger
@@ -39,22 +40,8 @@ fun Application.configureAuthentication() {
             realm = "Access to the '/' path"
             validate { credentials ->
                 logger.info {credentials}
-                //if (credentials.name == "jetbrains" && credentials.password == "foobar") {
-                if (userService.findByUsername(credentials.name) != null) {
-                    logger.info {"login accepted"}
-                    UserIdPrincipal(credentials.name)
-                } else {
-                    logger.error {"login rejected"}
-                    null
-                }
-            }
-        }
-        form("auth-form") {
-            userParamName = "username"
-            passwordParamName = "password"
-            validate { credentials ->
-                logger.info {credentials}
-                if (credentials.name == "jetbrains" && credentials.password == "foobar") {
+                val hashedPassword = userService.findByUsername(credentials.name)?.passwordHash
+                if (hashedPassword != null && BCrypt.verifyer().verify(credentials.password.toCharArray(), hashedPassword).verified) {
                     logger.info {"login accepted"}
                     UserIdPrincipal(credentials.name)
                 } else {

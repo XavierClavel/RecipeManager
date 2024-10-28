@@ -53,7 +53,7 @@ dependencies {
     implementation("io.insert-koin:koin-test-jvm:$koinVersion")
 
 
-    //DB
+    //DB -> Ebean
     implementation("org.hibernate:hibernate-core:6.6.1.Final")
     implementation("org.postgresql:postgresql:42.7.4")
     implementation("com.h2database:h2:$h2_version")
@@ -61,11 +61,14 @@ dependencies {
     implementation("org.flywaydb:flyway-core:10.20.0")
     implementation("io.ebean:ebean:$ebeanVersion")
     implementation("io.ebean:ebean-ddl-generator:$ebeanVersion")
-    //implementation("io.ebean:eabn-api:$ebeanVersion")
     implementation("io.ebean:ebean-migration:14.2.0")
     testImplementation("io.ebean:ebean-test:$ebeanVersion")
     kapt("io.ebean:querybean-generator:$ebeanVersion")
     testImplementation("io.ebean:ebean:$ebeanVersion")
+
+    //Encryption -> bcrypt
+    implementation("at.favre.lib:bcrypt:0.10.2")
+
 
 
 

@@ -38,4 +38,13 @@ class UserService: KoinComponent {
     fun listUsers(): List<UserDTO> =
         QUser().findList().map { it.toDTO() }
 
+    //TODO :parameterize password
+    fun setupDefaultAdmin() {
+        if (findByUsername("admin") != null) return
+        createUser(UserDTO(
+            username = "admin",
+            password = "Passw0rd",
+        ))
+    }
+
 }
