@@ -226,7 +226,12 @@ const submit = () => {
 if (recipeId != undefined) {
   getRecipe(recipeId).then (
     function (response) {
-      console.log(response)
+      recipe.value.title = response.data.title
+      recipe.value.description = response.data.description
+      recipe.value.servings = response.data.portions
+      recipe.value.ingredients = response.data.ingredients
+      recipe.value.steps = response.data.steps
+      console.log(recipe.value)
     }).catch(function (error) {
     console.log(error);
   }).finally(function () {
