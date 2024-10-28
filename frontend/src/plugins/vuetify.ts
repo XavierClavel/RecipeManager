@@ -19,7 +19,7 @@ const customTheme: ThemeDefinition = {
     surface: '#254441',
     primary: '#ff6f59',
     secondary: '#f4b634',
-    error: '#B00020',
+    error: '#ff6f59',
     info: '#2196F3',
     success: '#4CAF50',
     warning: '#FB8C00',
