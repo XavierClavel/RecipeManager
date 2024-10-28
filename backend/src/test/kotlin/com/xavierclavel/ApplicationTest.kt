@@ -1,6 +1,8 @@
 package com.xavierclavel
 
 import com.xavierclavel.config.appModules
+import com.xavierclavel.plugins.configureAuthentication
+import com.xavierclavel.services.UserService
 import common.dto.RecipeDTO
 import common.dto.RecipeInfo
 import common.dto.UserDTO
@@ -24,11 +26,13 @@ import org.junit.runners.model.Statement
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
+import org.koin.test.inject
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class ApplicationTest: KoinTest {
+    val userService: UserService by inject()
 
     @get:Rule
     val koinTestRule= KoinTestRule()
@@ -36,10 +40,12 @@ abstract class ApplicationTest: KoinTest {
     @KtorDsl
     fun runTest(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
         return testApplication(EmptyCoroutineContext, {
+            userService.setupDefaultAdmin()
             install(ContentNegotiation) {
                 json()
             }
             application {
+                configureAuthentication()
                 serveRoutes()
             }
             val client = createClient {
@@ -50,6 +56,9 @@ abstract class ApplicationTest: KoinTest {
                         isLenient = true
                     })
                 }
+            }
+            client.post("/login") {
+                basicAuth(username = "admin", password = "Passw0rd")
             }
             block(client)
         })

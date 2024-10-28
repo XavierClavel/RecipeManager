@@ -10,7 +10,6 @@ import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.basic
-import io.ktor.server.auth.form
 import io.ktor.server.auth.principal
 import io.ktor.server.auth.session
 import io.ktor.server.response.respondRedirect
@@ -72,7 +71,6 @@ fun Application.configureAuthentication() {
             post("/login") {
                 val userName = call.principal<UserIdPrincipal>()?.name.toString()
                 call.sessions.set(UserSession(name = userName, count = 1))
-                call.respondRedirect("/hello")
             }
         }
 

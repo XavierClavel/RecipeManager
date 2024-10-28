@@ -3,6 +3,7 @@ package com.xavierclavel.services
 import com.xavierclavel.models.User
 import com.xavierclavel.models.query.QUser
 import common.dto.UserDTO
+import common.enums.UserRole
 import org.koin.core.component.KoinComponent
 
 class UserService: KoinComponent {
@@ -44,6 +45,7 @@ class UserService: KoinComponent {
         createUser(UserDTO(
             username = "admin",
             password = "Passw0rd",
+            role = UserRole.ADMIN,
         ))
     }
 

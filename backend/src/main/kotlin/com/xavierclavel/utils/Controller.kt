@@ -1,12 +1,15 @@
 package com.xavierclavel.utils
 
+import io.ktor.server.auth.authenticate
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.route
 
 abstract class Controller(val base: String) {
     fun serve(route: Route) = route.run {
-        route(base) {
-            routes()
+        authenticate("auth-session") {
+            route(base) {
+                routes()
+            }
         }
     }
 

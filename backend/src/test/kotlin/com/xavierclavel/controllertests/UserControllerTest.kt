@@ -2,7 +2,7 @@ package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import org.junit.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class UserControllerTest : ApplicationTest() {
     @Test
@@ -25,6 +25,8 @@ class UserControllerTest : ApplicationTest() {
         val usernames = setOf("test_user1", "test_user2")
         usernames.forEach { username -> it.createUser(username = username) }
         val response = it.listUsers().map { it.username }.toSet()
-        assertEquals(usernames, response)
+        for (username in usernames) {
+            assertTrue { response.contains(username) }
+        }
     }
 }
