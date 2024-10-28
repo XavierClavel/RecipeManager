@@ -33,17 +33,22 @@ dependencies {
 
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
-    //Server
+    //Server -> Ktor
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-webjars-jvm")
-    implementation("io.ktor:ktor-server-cors:")
-    implementation("org.webjars:jquery:3.2.1")
-    implementation("io.github.smiley4:ktor-swagger-ui:4.0.0")
+    implementation("io.ktor:ktor-server-cors")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-client-content-negotiation")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.ktor:ktor-server-sessions")
+    implementation("io.ktor:ktor-server-auth")
+
+    implementation("org.webjars:jquery:3.2.1")
+    implementation("io.github.smiley4:ktor-swagger-ui:4.0.0")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+
+    //Dependency injection -> Koin
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-test-jvm:$koinVersion")
 

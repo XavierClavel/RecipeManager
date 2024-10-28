@@ -6,10 +6,7 @@ import com.xavierclavel.controllers.RecipeController
 import com.xavierclavel.controllers.UserController
 import com.xavierclavel.utils.use
 import com.xavierclavel.plugins.*
-import com.xavierclavel.services.RecipeService
-import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.logger
-import io.ebean.DatabaseFactory
 import io.ktor.http.HttpHeaders
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -17,8 +14,6 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.routing.routing
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.dsl.module
-import org.koin.java.KoinJavaComponent.inject
 
 fun main() {
     startKoin {
@@ -41,6 +36,9 @@ fun Application.module() {
         anyMethod()
         allowHeader(HttpHeaders.ContentType)
     }
+    configureAuthentication()
+
+
 
     serveRoutes()
 }
