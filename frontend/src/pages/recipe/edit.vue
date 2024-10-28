@@ -7,21 +7,21 @@
 
     <form @submit.prevent="submit" class="mx-auto">
       <v-text-field
-        v-model="title"
+        v-model="recipe.title"
         label="Title"
         class="mx-auto px-3"
         color="primary"
       ></v-text-field>
 
       <v-textarea
-        v-model="description"
+        v-model="recipe.description"
         label="Description"
         class="mx-auto px-3"
         color="primary"
       ></v-textarea>
 
       <v-number-input
-        v-model="servings"
+        v-model="recipe.servings"
         label="Yield"
         class="mx-auto px-3"
         type="number"
@@ -30,7 +30,7 @@
       ></v-number-input>
 
       <v-text-field
-        v-model="preparationTime"
+        v-model="recipe.preparationTime"
         label="Preparation Time (minutes)"
         class="mx-auto px-3"
         type="number"
@@ -38,7 +38,7 @@
       ></v-text-field>
 
       <v-text-field
-        v-model="cookingTime"
+        v-model="recipe.cookingTime"
         label="Cooking time (minutes)"
         class="mx-auto px-3"
         type="number"
@@ -47,7 +47,7 @@
 
       <h2 class="my-3" >Ingredients</h2>
 
-      <draggable v-model="ingredients" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
+      <draggable v-model="recipe.ingredients" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
@@ -58,7 +58,7 @@
             >mdi-drag</v-icon>
 
             <v-text-field
-              v-model="ingredients[index].name"
+              v-model="recipe.ingredients[index].name"
               :label="`Ingredient ${index + 1}`"
               outlined
               class="flex-grow-1"
@@ -66,7 +66,7 @@
             ></v-text-field>
 
             <v-select
-              v-model="ingredients[index].unit"
+              v-model="recipe.ingredients[index].unit"
               label="Unit"
               outlined
               class="flex-grow-1 mx-2"
@@ -77,7 +77,7 @@
             ></v-select>
 
             <v-number-input
-              v-model="ingredients[index].amount"
+              v-model="recipe.ingredients[index].amount"
               label="Amount"
               outlined
               class="flex-grow-1"
@@ -114,7 +114,7 @@
 
       <h2 class="my-3" >Steps</h2>
 
-      <draggable v-model="steps" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
+      <draggable v-model="recipe.steps" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
@@ -126,7 +126,7 @@
 
             <!-- Editable text field -->
             <v-text-field
-              v-model="steps[index]"
+              v-model="recipe.steps[index]"
               :label="`Step ${index + 1}`"
               outlined
               class="flex-grow-1"
@@ -194,46 +194,33 @@ import {getRecipe, createRecipe} from "@/scripts/recipes";
 const route = useRoute();
 const recipeId = route.query.id
 
-const title = ref<string>()
-const description = ref<string>()
-const servings = ref<number>()
-const preparationTime = ref<number>()
-const cookingTime = ref<number>()
-const ingredients = ref<object[]>([
-  {name:''}
-]);
-const steps = ref<string[]>(['']);
+const recipe = ref<object>({
+  steps: [''],
+  ingredients: [],
+})
 
 // Function to add a new item
 const addStep = () => {
-  steps.value.push('');
+  console.log(recipe.value)
+  recipe.value.steps.push('');
 };
 
 const addIngredient = () => {
-  ingredients.value.push({name:''});
+  recipe.value.ingredients.push({name:''});
 }
 
 // Function to add a new item
 const removeStep = (index) => {
-  steps.value.splice(index,1);
+  recipe.value.steps.splice(index,1);
 };
 
 const removeIngredient = (index) => {
-  ingredients.value.splice(index,1);
+  recipe.ingredients.value.splice(index,1);
 }
 
 const submit = () => {
-  const recipe = {
-    title: title.value,
-    description: description.value,
-    servings: servings.value,
-    preparationTime: preparationTime.value,
-    cookingTime: cookingTime.value,
-    ingredients: ingredients.value,
-    steps: steps.value,
-  }
-  console.log(recipe)
-  createRecipe(recipe)
+  console.log(recipe.value)
+  //createRecipe(recipe)
 }
 
 if (recipeId != undefined) {
