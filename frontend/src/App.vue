@@ -5,6 +5,7 @@
       v-model="drawer"
       color="#surface"
       floating
+      v-if="showSidebar"
     >
       <v-list>
         <v-list-item title="Recipe Manager"></v-list-item>
@@ -45,6 +46,7 @@
         transform: translate(-50%, -50%);
         position: absolute;
         z-index: 1;"
+           v-if="showSidebar"
       >
         <v-card
           min-width="500px"
@@ -77,6 +79,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 // Create a ref to control the visibility of the drawer
 const drawer = ref(true)
@@ -85,4 +90,9 @@ const drawer = ref(true)
 const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
+
+console.log(route.name)
+const showSidebar = computed(() => route.name !== '/login' && route.name !== '/signup');
+
+
 </script>
