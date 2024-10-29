@@ -17,7 +17,7 @@ import kotlin.test.assertFalse
 
 class RecipeControllerTest : ApplicationTest() {
     @Test
-    fun `create recipe`() = runTest {
+    fun `create recipe`() = runTestAsAdmin {
         val recipeDTO = RecipeDTO(
             title = "My recipe",
             description = "My description",
@@ -31,7 +31,7 @@ class RecipeControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `get recipe`() = runTest {
+    fun `get recipe`() = runTestAsAdmin {
         val recipeDTO = RecipeDTO(
             title = "My recipe",
             description = "My description",
@@ -46,7 +46,7 @@ class RecipeControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `update recipe`() = runTest {
+    fun `update recipe`() = runTestAsAdmin {
         val recipeDTO = RecipeDTO(
             title = "My recipe",
             description = "My description",
@@ -70,7 +70,7 @@ class RecipeControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `updating unexisting recipe returns NotFound`() = runTest {
+    fun `updating unexisting recipe returns NotFound`() = runTestAsAdmin {
         val recipeDTO = RecipeDTO(
             title = "My recipe",
             description = "My description",
@@ -89,7 +89,7 @@ class RecipeControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `delete recipe`() = runTest {
+    fun `delete recipe`() = runTestAsAdmin {
         val recipeDTO = RecipeDTO(
             title = "My recipe",
             description = "My description",

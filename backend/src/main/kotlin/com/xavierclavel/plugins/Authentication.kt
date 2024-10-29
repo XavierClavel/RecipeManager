@@ -66,27 +66,4 @@ fun Application.configureAuthentication() {
         }
     }
 
-    routing {
-        authenticate("auth-basic") {
-            post("/login") {
-                val userName = call.principal<UserIdPrincipal>()?.name.toString()
-                call.sessions.set(UserSession(name = userName, count = 1))
-            }
-        }
-
-        authenticate("auth-session") {
-            get("/hello") {
-                val userSession = call.principal<UserSession>()
-                call.sessions.set(userSession?.copy(count = userSession.count + 1))
-                call.respondText("Hello, ${userSession?.name}! Visit count is ${userSession?.count}.")
-            }
-        }
-
-        get("/logout") {
-            call.sessions.clear<UserSession>()
-            call.respondRedirect("/login")
-        }
-    }
-
-
 }

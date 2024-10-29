@@ -1,8 +1,11 @@
 package com.xavierclavel.services
 
+import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.models.User
 import com.xavierclavel.models.query.QUser
+import com.xavierclavel.utils.logger
 import common.dto.UserDTO
+import common.dto.UserInfo
 import common.enums.UserRole
 import org.koin.core.component.KoinComponent
 
@@ -15,6 +18,12 @@ class UserService: KoinComponent {
 
     fun findByUsername(username: String) : User? =
         QUser().username.eq(username).findOne()
+
+    fun findByMail(mail: String) : User? {
+        val mailHash = BCrypt.withDefaults().hashToString(12,mail.toCharArray())
+        logger.info {mailHash}
+        return QUser().mailHash.eq(mailHash).findOne()
+    }
 
     fun createUser(userDTO: UserDTO) {
         User.from(userDTO).insert()
@@ -32,12 +41,12 @@ class UserService: KoinComponent {
     fun deleteUserByUsername(username: String) =
         QUser().username.eq(username).delete()
 
-    fun getUserByUsername(username: String) : UserDTO? {
-        return findByUsername(username)?.toDTO()
+    fun getUserByUsername(username: String) : UserInfo? {
+        return findByUsername(username)?.toInfo()
     }
 
-    fun listUsers(): List<UserDTO> =
-        QUser().findList().map { it.toDTO() }
+    fun listUsers(): List<UserInfo> =
+        QUser().findList().map { it.toInfo() }
 
     //TODO :parameterize password
     fun setupDefaultAdmin() {
@@ -48,5 +57,12 @@ class UserService: KoinComponent {
             role = UserRole.ADMIN,
         ))
     }
+
+    fun isUsernameAvailable(username: String): Boolean =
+        findByUsername(username) == null
+
+    fun isMailAvailable(mail: String): Boolean =
+        findByMail(mail) == null
+
 
 }

@@ -1,6 +1,7 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.services.UserService
+import com.xavierclavel.utils.AuthenticatedController
 import com.xavierclavel.utils.Controller
 import common.dto.UserDTO
 import common.utils.URL.USER_URL
@@ -14,7 +15,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import org.koin.java.KoinJavaComponent.inject
 
-object UserController: Controller(USER_URL) {
+object UserController: AuthenticatedController(USER_URL) {
     val userService : UserService by inject(UserService::class.java)
 
     override fun Route.routes() {

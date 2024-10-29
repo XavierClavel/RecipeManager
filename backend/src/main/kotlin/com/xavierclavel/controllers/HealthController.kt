@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.utils.AuthenticatedController
 import com.xavierclavel.utils.Controller
 import io.ktor.server.application.*
 import io.ktor.server.response.*

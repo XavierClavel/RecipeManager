@@ -3,7 +3,9 @@ package com.xavierclavel.models
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.models.jointables.Follower
 import com.xavierclavel.models.jointables.Like
+import com.xavierclavel.utils.logger
 import common.dto.UserDTO
+import common.dto.UserInfo
 import common.enums.UserRole
 import io.ebean.Model
 import jakarta.persistence.CascadeType
@@ -27,6 +29,8 @@ class User (
     var username: String = "",
 
     var passwordHash: String = "",
+
+    val mailHash: String = "",
 
     var role: UserRole = UserRole.USER,
 
@@ -53,16 +57,22 @@ class User (
 ): Model() {
 
     companion object {
-        fun from(userDTO: UserDTO) =
-            User(
+        fun from(userDTO: UserDTO): User {
+            val passwordHash = BCrypt.withDefaults().hashToString(12, userDTO.password.toCharArray())
+            val mailHash = BCrypt.withDefaults().hashToString(12, userDTO.mail.toCharArray())
+            logger.info {mailHash}
+
+            return User(
                 username = userDTO.username,
-                passwordHash = BCrypt.withDefaults().hashToString(12,userDTO.password.toCharArray()),
+                passwordHash = passwordHash,
+                mailHash = mailHash,
                 role = userDTO.role,
             )
+        }
     }
 
-    fun toDTO() =
-        UserDTO(
+    fun toInfo() =
+        UserInfo(
             username = username,
             role = role,
         )

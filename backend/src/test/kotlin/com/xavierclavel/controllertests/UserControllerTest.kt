@@ -6,14 +6,14 @@ import kotlin.test.assertTrue
 
 class UserControllerTest : ApplicationTest() {
     @Test
-    fun `create user`() = runTest {
+    fun `create user`() = runTestAsAdmin {
         val username = "test_user"
         it.createUser(username = username)
         it.assertUserExists(username)
     }
 
     @Test
-    fun `delete user`() = runTest {
+    fun `delete user`() = runTestAsAdmin {
         val username = "test_user"
         it.createUser(username = username)
         it.assertUserExists(username)
@@ -21,7 +21,7 @@ class UserControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `list users`() = runTest {
+    fun `list users`() = runTestAsAdmin {
         val usernames = setOf("test_user1", "test_user2")
         usernames.forEach { username -> it.createUser(username = username) }
         val response = it.listUsers().map { it.username }.toSet()

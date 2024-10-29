@@ -5,7 +5,7 @@ import com.xavierclavel.plugins.configureAuthentication
 import com.xavierclavel.services.UserService
 import common.dto.RecipeDTO
 import common.dto.RecipeInfo
-import common.dto.UserDTO
+import common.dto.UserInfo
 import common.utils.URL.RECIPE_URL
 import common.utils.URL.USER_URL
 import io.ktor.client.HttpClient
@@ -38,7 +38,7 @@ abstract class ApplicationTest: KoinTest {
     val koinTestRule= KoinTestRule()
 
     @KtorDsl
-    fun runTest(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
+    fun runTestAsAdmin(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
         return testApplication(EmptyCoroutineContext, {
             userService.setupDefaultAdmin()
             install(ContentNegotiation) {
@@ -57,8 +57,32 @@ abstract class ApplicationTest: KoinTest {
                     })
                 }
             }
-            client.post("/login") {
+            client.post("/v1/auth/login") {
                 basicAuth(username = "admin", password = "Passw0rd")
+            }
+            block(client)
+        })
+    }
+
+    @KtorDsl
+    fun runTestUnauthenticated(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
+        return testApplication(EmptyCoroutineContext, {
+            userService.setupDefaultAdmin()
+            install(ContentNegotiation) {
+                json()
+            }
+            application {
+                configureAuthentication()
+                serveRoutes()
+            }
+            val client = createClient {
+                install(HttpCookies) // this is for logging in
+                install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
+                    json(Json {
+                        prettyPrint = true
+                        isLenient = true
+                    })
+                }
             }
             block(client)
         })
@@ -68,7 +92,7 @@ abstract class ApplicationTest: KoinTest {
         this.post(USER_URL){
             contentType(ContentType.Application.Json)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
-            setBody(UserDTO(username))
+            setBody(UserInfo(username))
         }.apply {
             assertEquals(HttpStatusCode.Created, status)
         }
@@ -76,10 +100,10 @@ abstract class ApplicationTest: KoinTest {
         assertEquals(username, response.username)
     }
 
-    suspend fun HttpClient.getUser(username: String): UserDTO {
+    suspend fun HttpClient.getUser(username: String): UserInfo {
         this.get("$USER_URL/$username").apply {
             assertEquals(HttpStatusCode.OK, status)
-            return Json.decodeFromString<UserDTO>(bodyAsText())
+            return Json.decodeFromString<UserInfo>(bodyAsText())
         }
     }
 
@@ -102,10 +126,10 @@ abstract class ApplicationTest: KoinTest {
         }
     }
 
-    suspend fun HttpClient.listUsers() : Set<UserDTO> {
+    suspend fun HttpClient.listUsers() : Set<UserInfo> {
         this.get(USER_URL).apply {
             assertEquals(HttpStatusCode.OK, status)
-            return Json.decodeFromString<Set<UserDTO>>(bodyAsText())
+            return Json.decodeFromString<Set<UserInfo>>(bodyAsText())
         }
     }
 
