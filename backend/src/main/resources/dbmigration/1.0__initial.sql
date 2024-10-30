@@ -104,6 +104,7 @@ create table users (
   diet_id                       bigint not null,
   username                      varchar(255) not null,
   password_hash                 varchar(255) not null,
+  mail_hash                     varchar(255) not null,
   constraint ck_users_role check ( role in (0,1)),
   constraint uq_users_diet_id unique (diet_id),
   constraint pk_users primary key (id)

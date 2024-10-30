@@ -8,13 +8,13 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
+import {authenticated} from "@/scripts/common";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes),
 })
 
-const isAuthenticated = false
 const noLoginRedirect = ['/login', '/signup']
 
 router.beforeEach(async (to, from) => {
@@ -24,7 +24,7 @@ router.beforeEach(async (to, from) => {
   }
   if (
     // make sure the user is authenticated
-    !isAuthenticated
+    !authenticated
   ) {
     // redirect the user to the login page
     return { name: '/login' }

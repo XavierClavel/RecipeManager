@@ -84,6 +84,7 @@
             <column name="id" type="bigint" primaryKey="true"/>
             <column name="username" type="varchar" notnull="true"/>
             <column name="password_hash" type="varchar" notnull="true"/>
+            <column name="mail_hash" type="varchar" notnull="true"/>
             <column name="role" type="integer" notnull="true" checkConstraint="check ( role in (0,1))" checkConstraintName="ck_users_role"/>
             <column name="diet_id" type="bigint" notnull="true" uniqueOneToOne="uq_users_diet_id" references="dietary_restrictions.id" foreignKeyName="fk_users_diet_id"/>
         </createTable>

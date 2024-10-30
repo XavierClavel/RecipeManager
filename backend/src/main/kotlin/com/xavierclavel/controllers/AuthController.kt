@@ -40,10 +40,12 @@ object AuthController: Controller(AUTH_URL) {
     private fun Route.login() = post("/login") {
         val userName = call.principal<UserIdPrincipal>()?.name.toString()
         call.sessions.set(UserSession(name = userName, count = 1))
+        call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.logout() = get("/logout") {
         call.sessions.clear<UserSession>()
+        call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.signup() = post("/signup") {

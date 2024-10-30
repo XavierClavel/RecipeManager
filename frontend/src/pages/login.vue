@@ -10,7 +10,7 @@
         Login
       </v-card-title>
       <v-text-field
-        v-model="user.title"
+        v-model="user.username"
         prepend-icon="mdi-account"
         label="Username"
         class="mx-auto px-3"
@@ -64,16 +64,12 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
-import {getRecipe, createRecipe} from "@/scripts/recipes";
+import {login} from '@/scripts/common'
 
 // Get the route object
 const route = useRoute();
-const recipeId = route.query.id
 const show1 = ref<boolean>(false)
-const show2 = ref<boolean>(false)
-const password2 = ref<string>('')
 
 const rules = {
     required: value => !!value || 'Required.',
@@ -83,33 +79,16 @@ const rules = {
 
 const user = ref<object>({
   username: '',
-  email: '',
   password: '',
 })
 
 
 
 const submit = () => {
-  console.log(password2)
   console.log(user.password)
   console.log(user)
+  login(user.value)
   //createRecipe(recipe)
-}
-
-if (recipeId != undefined) {
-  getRecipe(recipeId).then (
-    function (response) {
-      recipe.value.title = response.data.title
-      recipe.value.description = response.data.description
-      recipe.value.servings = response.data.portions
-      recipe.value.ingredients = response.data.ingredients
-      recipe.value.steps = response.data.steps
-      console.log(recipe.value)
-    }).catch(function (error) {
-    console.log(error);
-  }).finally(function () {
-    // always executed
-  });
 }
 
 
