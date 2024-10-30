@@ -14,6 +14,23 @@ const router = createRouter({
   routes: setupLayouts(routes),
 })
 
+const isAuthenticated = false
+const noLoginRedirect = ['/login', '/signup']
+
+router.beforeEach(async (to, from) => {
+  console.log(to.name)
+  if (noLoginRedirect.includes(to.name)) {
+    return
+  }
+  if (
+    // make sure the user is authenticated
+    !isAuthenticated
+  ) {
+    // redirect the user to the login page
+    return { name: '/login' }
+  }
+})
+
 // Workaround for https://github.com/vitejs/vite/issues/11804
 router.onError((err, to) => {
   if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {
