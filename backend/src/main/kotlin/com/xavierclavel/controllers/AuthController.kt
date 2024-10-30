@@ -32,6 +32,9 @@ object AuthController: Controller(AUTH_URL) {
         authenticate("auth-basic") {
             login()
         }
+        authenticate("auth-session") {
+            whoami()
+        }
         logout()
         signup()
         resetPassword()
@@ -48,8 +51,11 @@ object AuthController: Controller(AUTH_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun Route.me() = get("/me") {
-
+    private fun Route.whoami() = get("/me") {
+        val userSession = call.principal<UserSession>()
+        if (userSession == null) return@get call.respond(HttpStatusCode.Unauthorized)
+        val userInfo = userService.getUserByUsername(userSession.name)!!
+        call.respond(userInfo)
     }
 
     private fun Route.signup() = post("/signup") {

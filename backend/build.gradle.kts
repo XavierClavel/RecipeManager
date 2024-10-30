@@ -80,6 +80,10 @@ ktor {
     docker {
         localImageName.set("recipe-manager-backend")
         imageTag.set(rootProject.version.toString())
+
+    }
+    docker {
+
     }
 }
 
