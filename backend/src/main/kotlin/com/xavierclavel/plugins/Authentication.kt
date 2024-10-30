@@ -4,6 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.logger
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
@@ -12,6 +13,7 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.basic
 import io.ktor.server.auth.principal
 import io.ktor.server.auth.session
+import io.ktor.server.response.respond
 import io.ktor.server.response.respondRedirect
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
@@ -61,7 +63,7 @@ fun Application.configureAuthentication() {
                 }
             }
             challenge {
-                call.respondRedirect("/login")
+                call.respond(HttpStatusCode.Unauthorized)
             }
         }
     }

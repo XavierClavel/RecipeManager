@@ -93,7 +93,6 @@ const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
 
-console.log(route.name)
 const showSidebar = computed(() => route.name !== '/login' && route.name !== '/signup');
 
 

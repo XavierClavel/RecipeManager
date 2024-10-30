@@ -48,6 +48,10 @@ object AuthController: Controller(AUTH_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
+    private fun Route.me() = get("/me") {
+
+    }
+
     private fun Route.signup() = post("/signup") {
         val userDTO = call.receive(UserDTO::class)
         if (!userService.isUsernameAvailable(userDTO.username)) return@post call.respond(HttpStatusCode.Conflict)

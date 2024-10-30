@@ -1,8 +1,6 @@
 package com.xavierclavel.controllers
 
-import com.xavierclavel.utils.AuthenticatedController
 import com.xavierclavel.utils.Controller
-import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.util.Properties

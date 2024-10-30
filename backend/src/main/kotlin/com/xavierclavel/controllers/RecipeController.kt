@@ -1,7 +1,6 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.services.RecipeService
-import com.xavierclavel.utils.AuthenticatedController
 import com.xavierclavel.utils.Controller
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
@@ -14,7 +13,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import org.koin.java.KoinJavaComponent.inject
 
-object RecipeController: AuthenticatedController(RECIPE_URL) {
+object RecipeController: Controller(RECIPE_URL) {
     val recipeService : RecipeService by inject(RecipeService::class.java)
 
     override fun Route.routes() {

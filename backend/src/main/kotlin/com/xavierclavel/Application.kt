@@ -11,6 +11,7 @@ import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.logger
 import io.ktor.http.HttpHeaders
 import io.ktor.server.application.*
+import io.ktor.server.auth.authenticate
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.cors.routing.CORS
@@ -50,8 +51,10 @@ fun Application.module() {
 
 //Controllers declaration
 fun Application.serveRoutes() = routing {
-    use(HealthController)
-    use(UserController)
-    use(RecipeController)
+    authenticate("auth-session") {
+        use(HealthController)
+        use(UserController)
+        use(RecipeController)
+    }
     use(AuthController)
 }
