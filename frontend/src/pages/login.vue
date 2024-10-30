@@ -40,7 +40,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-          :href="`/signup`"
+          @click="toSignup"
         >Sign up</v-btn>
         <v-btn
           @click="submit"
@@ -65,7 +65,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {login} from '@/scripts/common'
+import {login, toSignup} from '@/scripts/common'
 
 // Get the route object
 const route = useRoute();

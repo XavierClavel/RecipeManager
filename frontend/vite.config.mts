@@ -12,18 +12,6 @@ import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import {aliases, mdi} from "vuetify/iconsets/mdi";
 
-// This is a global mixin, it is applied to every vue instance.
-// Mixins must be instantiated *before* your call to new Vue(...)
-Vue.mixin({
-  data: function() {
-    return {
-      isAuthenticated() {
-        return "Can't change me!";
-      }
-    }
-  }
-})
-
 // https://vitejs.dev/config/
 export default defineConfig({
   icons: {

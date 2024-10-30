@@ -12,22 +12,22 @@
         <v-list-item class="d-flex justify-center">
           <v-btn
             prepend-icon="mdi-pencil"
-            link href="/recipe/edit"
             rounded
             min-height="50px"
             min-width="200px"
             class="elevation-0"
             color="primary"
+            @click="toCreateRecipe"
           >
             New recipe
           </v-btn>
         </v-list-item>
-        <v-list-item prepend-icon="mdi-home" rounded="xl" link title="Home" href="/home"></v-list-item>
-        <v-list-item prepend-icon="mdi-dots-grid" rounded="xl" link title="Recipes" href="/recipe/list"></v-list-item>
-        <v-list-item prepend-icon="mdi-heart-outline" rounded="xl" link title="Likes" href="/"></v-list-item>
-        <v-list-item prepend-icon="mdi-compass-outline" rounded="xl" link title="Browse" href="/"></v-list-item>
-        <v-list-item prepend-icon="mdi-security" rounded="xl" link title="Admin" href="/users"></v-list-item>
-        <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link title="About" href="/"></v-list-item>
+        <v-list-item prepend-icon="mdi-home" rounded="xl" link title="Home" @click="toHome"></v-list-item>
+        <v-list-item prepend-icon="mdi-dots-grid" rounded="xl" link title="Recipes" @click="toListRecipe"></v-list-item>
+        <v-list-item prepend-icon="mdi-heart-outline" rounded="xl" link title="Likes" @click="toHome"></v-list-item>
+        <v-list-item prepend-icon="mdi-compass-outline" rounded="xl" link title="Browse" @click="toHome"></v-list-item>
+        <v-list-item prepend-icon="mdi-security" rounded="xl" link title="Admin" @click="toUsers"></v-list-item>
+        <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link title="About" @click="toHome"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -80,6 +80,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router';
+import router from "@/router";
+import {toCreateRecipe, toHome, toListRecipe, toUsers} from "@/scripts/common";
 
 const route = useRoute();
 
@@ -93,6 +95,7 @@ const toggleDrawer = () => {
 
 console.log(route.name)
 const showSidebar = computed(() => route.name !== '/login' && route.name !== '/signup');
+
 
 
 </script>

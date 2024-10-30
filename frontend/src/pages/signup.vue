@@ -62,7 +62,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-          :href="`/login`"
+          @click="toLogin"
         >Log in</v-btn>
         <v-btn
           @click="submit"
@@ -89,6 +89,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe} from "@/scripts/recipes";
+import {toLogin} from "@/scripts/common";
 
 // Get the route object
 const route = useRoute();

@@ -8,7 +8,7 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
-import {authenticated} from "@/scripts/common";
+import { useAuthStore } from '@/stores/auth';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,14 +18,12 @@ const router = createRouter({
 const noLoginRedirect = ['/login', '/signup']
 
 router.beforeEach(async (to, from) => {
-  console.log(to.name)
   if (noLoginRedirect.includes(to.name)) {
     return
   }
-  if (
-    // make sure the user is authenticated
-    !authenticated
-  ) {
+  const authStore = useAuthStore();
+  console.log("auth store : ",authStore.isAuthenticated)
+  if (!authStore.isAuthenticated) {
     // redirect the user to the login page
     return { name: '/login' }
   }

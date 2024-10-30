@@ -97,7 +97,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-          :href="`/recipe/edit?id=${recipeId}`"
+          @click="toEditRecipe(recipeId)"
         >Edit</v-btn>
       </span>
 
@@ -109,6 +109,7 @@
 import { useRoute } from 'vue-router';
 import {getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
+import {toEditRecipe} from "@/scripts/common";
 
 // Get the route object
 const route = useRoute();
