@@ -24,7 +24,6 @@
         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
         :rules="[rules.required]"
         :type="show1 ? 'text' : 'password'"
-        hint="At least 8 characters"
         label="Password"
         counter
         @click:append="show1 = !show1"

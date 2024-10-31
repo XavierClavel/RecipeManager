@@ -2,7 +2,7 @@
   <v-card
     class="mx-auto rounded-xl pa-5 ma-auto my-5 d-flex flex-row"
     max-width="1000px"
-    v-if="!displayRecipe"
+    v-if="displayError"
   >
     <v-icon color="primary" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
     <v-card-title prepend-icon="mdi-alert" class="text-primary text-h4">
@@ -13,7 +13,7 @@
   <v-card
   class="mx-auto rounded-xl pa-5 ma-auto my-5"
   max-width="1000px"
-  v-if="displayRecipe"
+  v-if="!displayError"
   >
     <v-card-title
       class="mx-auto px-3 text-primary text-h3"
@@ -114,7 +114,7 @@ import {toEditRecipe} from "@/scripts/common";
 // Get the route object
 const route = useRoute();
 const recipeId = route.query.id
-const displayRecipe = true
+let displayError = ref<Boolean>(false)
 const errorMessage = ref<String>("This recipe does not exist")
 const isOwner = true
 
@@ -123,20 +123,21 @@ const recipe = ref<object>({
   ingredients: [],
 })
 
-if (recipeId != undefined) {
-  getRecipe(recipeId).then (
-    function (response) {
-      recipe.value.title = response.data.title
-      recipe.value.description = response.data.description
-      recipe.value.servings = response.data.portions
-      recipe.value.ingredients = response.data.ingredients
-      recipe.value.steps = response.data.steps
-      console.log(recipe.value)
-    }).catch(function (error) {
-    console.log(error);
-  }).finally(function () {
-    // always executed
-  });
-}
+getRecipe(recipeId).then (
+  function (response) {
+    recipe.value.title = response.data.title
+    recipe.value.description = response.data.description
+    recipe.value.servings = response.data.portions
+    recipe.value.ingredients = response.data.ingredients
+    recipe.value.steps = response.data.steps
+    console.log(recipe.true)
+  }).catch(function (error) {
+    displayError.value = true
+  console.log(error);
+    console.log(displayError)
+}).finally(function () {
+  // always executed
+});
+
 
 </script>
