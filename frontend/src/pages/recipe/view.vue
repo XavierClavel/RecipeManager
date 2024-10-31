@@ -80,7 +80,7 @@
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" v-if="isOwner" >
         <v-btn
-          @click="addStep"
+          @click="remove(recipeId)"
           prepend-icon="mdi-delete"
           color="primary"
           flat
@@ -107,9 +107,9 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import {getRecipe} from "@/scripts/recipes";
+import {deleteRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
-import {toEditRecipe} from "@/scripts/common";
+import {toEditRecipe, toListRecipe} from "@/scripts/common";
 
 // Get the route object
 const route = useRoute();
@@ -139,5 +139,9 @@ getRecipe(recipeId).then (
   // always executed
 });
 
+const remove = (id) => {
+  deleteRecipe(id)
+  toListRecipe()
+}
 
 </script>

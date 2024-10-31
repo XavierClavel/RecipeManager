@@ -21,9 +21,9 @@ async function createRecipe(recipe) {
 }
 
 async function updateRecipe(id,recipe) {
-  return await apiClient.put(`$/recipe/${id}`, recipe)
+  return await apiClient.put(`/recipe/${id}`, recipe)
 }
 
 async function deleteRecipe(id) {
-  return await apiClient.delete(`$/recipe/${id}`)
+  return await apiClient.delete(`/recipe/${id}`)
 }
