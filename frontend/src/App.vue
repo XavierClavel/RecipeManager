@@ -82,7 +82,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import router from "@/router";
-import {logout, toCreateRecipe, toHome, toListRecipe, toUsers, whoami} from "@/scripts/common";
+import {logout, noLoginRedirect, toCreateRecipe, toHome, toListRecipe, toUsers, whoami} from "@/scripts/common";
 
 const route = useRoute();
 
@@ -94,6 +94,6 @@ const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
 
-const showSidebar = computed(() => route.name !== '/login' && route.name !== '/signup');
+const showSidebar = computed(() => !noLoginRedirect.includes(route.name));
 
 </script>

@@ -16,6 +16,7 @@ export {
   toLogin,
   toSignup,
   whoami,
+  noLoginRedirect,
 }
 
 const toCreateRecipe = () => router.push(`/recipe/edit`)
@@ -26,6 +27,8 @@ const toHome = () => router.push('/home')
 const toUsers = () => router.push('/users')
 const toLogin = () => router.push('/login')
 const toSignup = () => router.push('/signup')
+
+const noLoginRedirect = ['/login', '/logout', '/signup']
 
 const base_url = "http://localhost:8080/v1"
 
@@ -50,7 +53,7 @@ async function logout() {
     withCredentials: true
   })
   if (result.status == 200) {
-    router.push(`/home`)
+    router.push(`/logout`)
     const authStore = useAuthStore();
     authStore.logout()
   }
