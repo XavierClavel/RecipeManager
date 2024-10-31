@@ -1,7 +1,7 @@
 import axios from "axios";
 import router from "@/router";
-import app from "@/App.vue";
-import {useAuthStore} from "@/stores/auth";
+import apiClient from '@/plugins/axios.js';
+import {useAuthStore, declareLogin} from "@/stores/auth";
 
 export {
   base_url,
@@ -14,6 +14,7 @@ export {
   toUsers,
   toLogin,
   toSignup,
+  whoami,
 }
 
 const toCreateRecipe = () => router.push(`/recipe/edit`)
@@ -28,16 +29,30 @@ const toSignup = () => router.push('/signup')
 const base_url = "http://localhost:8080/v1"
 
 async function login(user) {
-  const result = await axios.post(`${base_url}/auth/login`, {}, {
+  const result = await apiClient.post(`${base_url}/auth/login`, {}, {
     auth: {
       username: user.username,
       password: user.password,
-    }
+    },
+    withCredentials: true
   })
   if (result.status == 200) {
-    const authStore = useAuthStore();
-    authStore.login({ username: 'test_user' });
     router.push(`/home`)
+    const authStore = useAuthStore();
+    authStore.login()
   }
   return result
+}
+
+async function whoami() {
+  const result = await apiClient.get(`${base_url}/auth/me`).then( function (response) {
+    authStore.login({ username: 'test_user' });
+    }
+  ).catch (function (error) {
+    console.log("logged out")
+    const authStore = useAuthStore();
+    authStore.logout()
+    toLogin()
+  })
+
 }

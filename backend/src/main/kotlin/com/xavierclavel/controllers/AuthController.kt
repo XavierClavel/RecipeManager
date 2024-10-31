@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.models.User
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
@@ -21,6 +22,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.sessions.clear
+import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import org.koin.java.KoinJavaComponent.inject
@@ -46,13 +48,13 @@ object AuthController: Controller(AUTH_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun Route.logout() = get("/logout") {
+    private fun Route.logout() = post("/logout") {
         call.sessions.clear<UserSession>()
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.whoami() = get("/me") {
-        val userSession = call.principal<UserSession>()
+        val userSession = call.sessions.get<UserSession>()
         if (userSession == null) return@get call.respond(HttpStatusCode.Unauthorized)
         val userInfo = userService.getUserByUsername(userSession.name)!!
         call.respond(userInfo)

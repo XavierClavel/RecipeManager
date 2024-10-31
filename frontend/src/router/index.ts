@@ -22,7 +22,8 @@ router.beforeEach(async (to, from) => {
     return
   }
   const authStore = useAuthStore();
-  console.log("auth store : ",authStore.isAuthenticated)
+  await authStore.checkAuth()
+  console.log("auth status : ",authStore.isAuthenticated)
   if (!authStore.isAuthenticated) {
     // redirect the user to the login page
     return { name: '/login' }

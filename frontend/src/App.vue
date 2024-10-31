@@ -81,7 +81,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import router from "@/router";
-import {toCreateRecipe, toHome, toListRecipe, toUsers} from "@/scripts/common";
+import {toCreateRecipe, toHome, toListRecipe, toUsers, whoami} from "@/scripts/common";
 
 const route = useRoute();
 
@@ -94,7 +94,5 @@ const toggleDrawer = () => {
 }
 
 const showSidebar = computed(() => route.name !== '/login' && route.name !== '/signup');
-
-
 
 </script>

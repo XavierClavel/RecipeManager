@@ -21,8 +21,9 @@ fun Application.configureAuthentication() {
 
     install(Sessions) {
         cookie<UserSession>("user_session") {
+            cookie.httpOnly = true
             cookie.path = "/"
-            cookie.maxAgeInSeconds = 60
+            cookie.maxAgeInSeconds = 7 * 24 * 60 * 60
         }
     }
 

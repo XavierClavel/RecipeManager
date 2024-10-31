@@ -40,7 +40,8 @@ fun Application.module() {
         anyMethod()
         allowHeader(HttpHeaders.ContentType)
         allowHeader(HttpHeaders.Authorization)
-        //allowCredentials = true
+        allowCredentials = true
+
     }
     configureAuthentication()
     serveRoutes()
