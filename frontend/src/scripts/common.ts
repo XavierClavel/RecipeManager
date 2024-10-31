@@ -6,6 +6,7 @@ import {useAuthStore, declareLogin} from "@/stores/auth";
 export {
   base_url,
   login,
+  logout,
   toCreateRecipe,
   toEditRecipe,
   toViewRecipe,
@@ -40,6 +41,18 @@ async function login(user) {
     router.push(`/home`)
     const authStore = useAuthStore();
     authStore.login()
+  }
+  return result
+}
+
+async function logout() {
+  const result = await apiClient.post("/auth/logout", {}, {
+    withCredentials: true
+  })
+  if (result.status == 200) {
+    router.push(`/home`)
+    const authStore = useAuthStore();
+    authStore.logout()
   }
   return result
 }

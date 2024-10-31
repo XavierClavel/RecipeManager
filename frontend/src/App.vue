@@ -28,6 +28,7 @@
         <v-list-item prepend-icon="mdi-compass-outline" rounded="xl" link title="Browse" @click="toHome"></v-list-item>
         <v-list-item prepend-icon="mdi-security" rounded="xl" link title="Admin" @click="toUsers"></v-list-item>
         <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link title="About" @click="toHome"></v-list-item>
+        <v-list-item prepend-icon="mdi-logout" rounded="xl" link title="Logout" @click="logout"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -81,7 +82,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import router from "@/router";
-import {toCreateRecipe, toHome, toListRecipe, toUsers, whoami} from "@/scripts/common";
+import {logout, toCreateRecipe, toHome, toListRecipe, toUsers, whoami} from "@/scripts/common";
 
 const route = useRoute();
 
