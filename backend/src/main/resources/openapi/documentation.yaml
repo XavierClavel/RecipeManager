@@ -6,6 +6,22 @@ info:
 servers:
 - url: "https://RecipeManager"
 paths:
+  /:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IngredientDTO"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                type: "object"
   /json/kotlinx-serialization:
     get:
       description: ""
@@ -18,6 +34,28 @@ paths:
                 $ref: "#/components/schemas/Map_String"
 components:
   schemas:
+    IngredientDTO:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        type:
+          type: "string"
+          enum:
+          - "VEGETABLE"
+          - "FRUIT"
+          - "CHEESE"
+          - "FISH"
+          - "MEET"
+          - "PASTA"
+          - "SPICE"
+          - "OIL"
+          - "SAUCE"
+          - "EGG"
+          - "OTHER"
+      required:
+      - "name"
+      - "type"
     Map:
       type: "object"
       properties: {}

@@ -7,21 +7,23 @@ import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import com.xavierclavel.utils.DbTransaction.deleteAndGet
 import com.xavierclavel.utils.DbTransaction.insertAndGet
+import com.xavierclavel.utils.DbTransaction.updateAndGet
+import common.infodto.IngredientInfo
 
 class IngredientService: KoinComponent {
     fun countAll() =
         QIngredient().findCount()
 
-    fun findById(ingredientId: Long) : IngredientDTO? =
+    fun findById(ingredientId: Long) : IngredientInfo? =
         QIngredient().id.eq(ingredientId).findOne()?.toInfo()
 
-    fun createIngredient(ingredientDTO: IngredientDTO): IngredientDTO =
+    fun createIngredient(ingredientDTO: IngredientDTO): IngredientInfo =
         Ingredient().mergeDTO(ingredientDTO).insertAndGet().toInfo()
 
-    fun updateIngredient(id:Long, ingredientDTO: IngredientDTO): IngredientDTO? =
+    fun updateIngredient(id:Long, ingredientDTO: IngredientDTO): IngredientInfo? =
         QIngredient().id.eq(id).findOne()
             ?.mergeDTO(ingredientDTO)
-            ?.insertAndGet()
+            ?.updateAndGet()
             ?.toInfo()
 
 

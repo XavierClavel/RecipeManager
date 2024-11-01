@@ -5,13 +5,11 @@ import com.xavierclavel.models.jointables.Follower
 import com.xavierclavel.models.jointables.Like
 import com.xavierclavel.utils.logger
 import common.dto.UserDTO
-import common.dto.UserInfo
+import common.infodto.UserInfo
 import common.enums.UserRole
 import io.ebean.Model
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToMany

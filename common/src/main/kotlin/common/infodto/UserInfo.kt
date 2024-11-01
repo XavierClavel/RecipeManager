@@ -1,4 +1,4 @@
-package common.dto
+package common.infodto
 
 import common.enums.UserRole
 import kotlinx.serialization.Serializable

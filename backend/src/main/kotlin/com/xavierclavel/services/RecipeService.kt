@@ -5,7 +5,7 @@ import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import common.dto.RecipeDTO
-import common.dto.RecipeInfo
+import common.infodto.RecipeInfo
 import org.koin.core.component.KoinComponent
 
 class RecipeService: KoinComponent {

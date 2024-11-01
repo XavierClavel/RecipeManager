@@ -5,7 +5,7 @@ import com.xavierclavel.models.User
 import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.logger
 import common.dto.UserDTO
-import common.dto.UserInfo
+import common.infodto.UserInfo
 import common.enums.UserRole
 import org.koin.core.component.KoinComponent
 

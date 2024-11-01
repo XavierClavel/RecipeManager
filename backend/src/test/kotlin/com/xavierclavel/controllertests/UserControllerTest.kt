@@ -1,6 +1,10 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
+import main.com.xavierclavel.utils.assertUserExists
+import main.com.xavierclavel.utils.createUser
+import main.com.xavierclavel.utils.deleteUser
+import main.com.xavierclavel.utils.listUsers
 import org.junit.Test
 import kotlin.test.assertTrue
 

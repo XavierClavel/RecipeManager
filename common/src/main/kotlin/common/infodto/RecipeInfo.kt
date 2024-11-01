@@ -1,5 +1,7 @@
-package common.dto
+package common.infodto
 
+import common.dto.RecipeDTO
+import common.dto.RecipeIngredient
 import kotlinx.serialization.*
 
 @Serializable
@@ -18,7 +20,7 @@ data class RecipeInfo (
     var creationDate: Long = 0,
     var editionDate: Long? = null,
 
-) {
+    ) {
     fun compareToDTO(dto: RecipeDTO): Boolean {
         return title == dto.title &&
                 description == dto.description &&

@@ -1,10 +1,9 @@
-package main.com.xavierclavel.controllertests.com.xavierclavel.controllertests
+package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import common.dto.UserDTO
-import common.dto.UserInfo
+import common.infodto.UserInfo
 import common.utils.URL.AUTH_URL
-import common.utils.URL.USER_URL
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -17,7 +16,6 @@ import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class AuthControllerTest : ApplicationTest() {
     @Test

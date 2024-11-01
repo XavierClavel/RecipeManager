@@ -21,6 +21,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
 
     override fun Route.routes() {
         createIngredient()
+        getIngredient()
         updateIngredient()
         listIngredients()
         deleteIngredient()
@@ -28,8 +29,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
 
     private fun Route.createIngredient() = post {
         val ingredientDTO = call.receive<IngredientDTO>()
-        ingredientService.createIngredient(ingredientDTO)
-        call.respond(HttpStatusCode.Created)
+        call.respond(HttpStatusCode.Created, ingredientService.createIngredient(ingredientDTO))
     }
 
     private fun Route.updateIngredient() = put("/{id}") {

@@ -2,7 +2,7 @@ package com.xavierclavel.models
 
 import com.xavierclavel.models.jointables.Like
 import common.dto.RecipeDTO
-import common.dto.RecipeInfo
+import common.infodto.RecipeInfo
 import jakarta.persistence.CascadeType
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
@@ -36,7 +36,7 @@ class Recipe (
     @ElementCollection
     var steps: List<String> = listOf(),
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @ManyToMany(fetch = FetchType.EAGER, cascade = [])
     var ingredients: List<Ingredient> = listOf(),
 
 

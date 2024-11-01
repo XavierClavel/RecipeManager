@@ -42,9 +42,8 @@
             <column name="pending" type="boolean" defaultValue="false" notnull="true"/>
             <column name="followed_since" type="localdatetime" notnull="true"/>
         </createTable>
-        <createTable name="ingredients" pkName="pk_ingredients">
+        <createTable name="ingredients" identityType="identity" pkName="pk_ingredients">
             <column name="id" type="bigint" primaryKey="true"/>
-            <column name="recipe_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_ingredients_recipe_id" foreignKeyIndex="ix_ingredients_recipe_id"/>
             <column name="name" type="varchar" notnull="true"/>
             <column name="type" type="integer" notnull="true" checkConstraint="check ( type in (0,1,2,3,4,5,6,7,8,9,10))" checkConstraintName="ck_ingredients_type"/>
         </createTable>
@@ -66,6 +65,12 @@
         <createTable name="recipes_steps" pkName="pk_recipes_steps">
             <column name="recipes_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_recipes_steps_recipes_id" foreignKeyIndex="ix_recipes_steps_recipes_id"/>
             <column name="value" type="varchar" notnull="true"/>
+        </createTable>
+        <createTable name="recipes_ingredients" pkName="pk_recipes_ingredients">
+            <column name="recipes_id" type="bigint" notnull="true" primaryKey="true"/>
+            <column name="ingredients_id" type="bigint" notnull="true" primaryKey="true"/>
+            <foreignKey name="fk_recipes_ingredients_recipes" columnNames="recipes_id" refColumnNames="id" refTableName="recipes" indexName="ix_recipes_ingredients_recipes"/>
+            <foreignKey name="fk_recipes_ingredients_ingredients" columnNames="ingredients_id" refColumnNames="id" refTableName="ingredients" indexName="ix_recipes_ingredients_ingredients"/>
         </createTable>
         <createTable name="recipes_circle" pkName="pk_recipes_circle">
             <column name="recipes_id" type="bigint" notnull="true" primaryKey="true"/>

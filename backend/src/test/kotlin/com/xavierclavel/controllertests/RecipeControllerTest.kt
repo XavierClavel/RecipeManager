@@ -13,6 +13,11 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import io.ktor.client.request.put
 import junit.framework.TestCase.assertTrue
+import main.com.xavierclavel.utils.assertRecipeExists
+import main.com.xavierclavel.utils.createRecipe
+import main.com.xavierclavel.utils.deleteRecipe
+import main.com.xavierclavel.utils.getRecipe
+import main.com.xavierclavel.utils.updateRecipe
 import kotlin.test.assertFalse
 
 class RecipeControllerTest : ApplicationTest() {
