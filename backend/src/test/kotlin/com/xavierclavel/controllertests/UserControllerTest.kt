@@ -11,14 +11,14 @@ import kotlin.test.assertTrue
 class UserControllerTest : ApplicationTest() {
     @Test
     fun `create user`() = runTestAsAdmin {
-        val username = "test_user"
+        val username = "test_user4"
         it.createUser(username = username)
         it.assertUserExists(username)
     }
 
     @Test
     fun `delete user`() = runTestAsAdmin {
-        val username = "test_user"
+        val username = "test_user3"
         it.createUser(username = username)
         it.assertUserExists(username)
         it.deleteUser(username = username)

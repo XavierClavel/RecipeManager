@@ -5,7 +5,7 @@ enum class IngredientType {
     FRUIT,
     CHEESE,
     FISH,
-    MEET,
+    MEAT,
     PASTA,
     SPICE,
     OIL,

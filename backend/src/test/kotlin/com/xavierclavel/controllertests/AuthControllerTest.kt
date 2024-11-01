@@ -33,7 +33,7 @@ class AuthControllerTest : ApplicationTest() {
     @Test
     fun `reset password`() = runTestUnauthenticated {
         val mail = "test_user@example.com"
-        val username = "test_user"
+        val username = "test_user_reset"
         val userDTO = UserDTO(username, mail, "123456")
         it.post("$AUTH_URL/signup") {
             contentType(ContentType.Application.Json)

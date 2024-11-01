@@ -11,6 +11,7 @@ export {
   toEditRecipe,
   toViewRecipe,
   toListRecipe,
+  toListIngredient,
   toHome,
   toUsers,
   toLogin,
@@ -23,6 +24,9 @@ const toCreateRecipe = () => router.push(`/recipe/edit`)
 const toEditRecipe = (id) => router.push(`/recipe/edit/?id=${id}`)
 const toViewRecipe = (id) => router.push(`/recipe/view/?id=${id}`)
 const toListRecipe = () => router.push(`/recipe/list`)
+
+const toListIngredient = () => router.push(`/ingredients`)
+
 const toHome = () => router.push('/home')
 const toUsers = () => router.push('/users')
 const toLogin = () => router.push('/login')

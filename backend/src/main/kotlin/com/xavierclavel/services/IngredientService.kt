@@ -36,11 +36,12 @@ class IngredientService: KoinComponent {
         QIngredient().id.eq(ingredientId).findOne().deleteAndGet() != null
 
 
-    fun search(searchString: String, paging: Paging): List<Ingredient> =
+    fun search(searchString: String, paging: Paging): List<IngredientInfo> =
         QIngredient()
             .name.like("%$searchString%")
             .setPaging(paging)
             .findList()
+            .map{it.toInfo()}
 
     //Ebean.find(MyClass.class).order("id").findPagedList(page,size);
 
