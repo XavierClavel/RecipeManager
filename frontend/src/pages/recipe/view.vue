@@ -23,6 +23,16 @@
       class="mx-auto px-3"
     > {{recipe.description}} </v-card-text>
 
+    <v-img
+      color="surface-variant"
+      height="562px"
+      width="1000px"
+      class="mt-n3"
+      rounded="lg"
+      src="https://cdn.vuetifyjs.com/docs/images/cards/purple-flowers.jpg"
+      cover
+    ></v-img>
+
       <span class="d-flex flex-row">
         <span class="d-flex row align-center justify-center mx-auto">
           <v-icon

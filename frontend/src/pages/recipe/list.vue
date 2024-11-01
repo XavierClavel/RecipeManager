@@ -1,6 +1,6 @@
 <template>
-  <v-layout class="rounded rounded-md">
-    <span v-for="recipe in recipes">
+  <v-layout class="rounded rounded-md d-flex flex-wrap  justify-space-evenly">
+    <span v-for="recipe in recipes" class="justify-start ">
       <v-btn
         :color="color"
         :variant="variant"
