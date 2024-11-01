@@ -21,7 +21,9 @@ object IngredientController: Controller(INGREDIENT_URL) {
 
     override fun Route.routes() {
         createIngredient()
+        updateIngredient()
         listIngredients()
+        deleteIngredient()
     }
 
     private fun Route.createIngredient() = post {
@@ -30,27 +32,29 @@ object IngredientController: Controller(INGREDIENT_URL) {
         call.respond(HttpStatusCode.Created)
     }
 
-//    private fun Route.editUser() = put {
-//        val userDTO = call.receive<UserDTO>()
-//        val user = userService.findByUsername(userDTO.username) ?: return@put call.respond(HttpStatusCode.BadRequest)
-//        //userService.editUser(user, userDTO)
-//        call.respond(HttpStatusCode.OK)
-//    }
+    private fun Route.updateIngredient() = put("/{id}") {
+        val id = call.parameters["id"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
+        val ingredientDTO = call.receive<IngredientDTO>()
+        val ingredient = ingredientService.updateIngredient(id, ingredientDTO) ?: return@put call.respond(HttpStatusCode.NotFound)
+        call.respond(ingredient)
+    }
+
+    private fun Route.deleteIngredient() = delete("/{id}") {
+        val id = call.parameters["id"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        val result = ingredientService.deleteById(id)
+        return@delete if (result) call.respond(HttpStatusCode.OK)
+            else call.respond(HttpStatusCode.NotFound)
+    }
 
     private fun Route.listIngredients() = get {
         val searchString = call.request.queryParameters["search"] ?: ""
         call.respond(ingredientService.search(searchString, getPaging()))
     }
 
-//    private fun Route.getUser() = get("/{username}") {
-//        val username = call.parameters["username"]!!
-//        val user = userService.getUserByUsername(username) ?: return@get call.respond(HttpStatusCode.NotFound)
-//        call.respond(user)
-//    }
+    private fun Route.getIngredient() = get("/{id}") {
+        val id = call.parameters["id"]?.toLongOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val result = ingredientService.findById(id) ?: return@get call.respond(HttpStatusCode.NotFound)
+        call.respond(result)
+    }
 
-//    private fun Route.deleteUser() = delete("/{username}") {
-//        val username = call.parameters["username"]!!
-//        userService.deleteUserByUsername(username)
-//        call.respond(HttpStatusCode.OK)
-//    }
 }

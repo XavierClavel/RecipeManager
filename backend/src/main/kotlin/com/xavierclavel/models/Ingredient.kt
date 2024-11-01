@@ -19,10 +19,16 @@ class Ingredient (
 
     var type: IngredientType = IngredientType.OTHER,
 ): Model() {
-    companion object {
-        fun from(ingredientDTO: IngredientDTO) = Ingredient(
-            name = ingredientDTO.name,
-            type = ingredientDTO.type,
-        )
+
+    fun mergeDTO(ingredientDTO: IngredientDTO): Ingredient {
+        this.name = ingredientDTO.name,
+        this.type = ingredientDTO.type,
+
+        return this
     }
+
+    fun toInfo() = IngredientDTO(
+        name = name,
+        type = type,
+    )
 }
