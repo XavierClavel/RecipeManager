@@ -38,7 +38,7 @@
         <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       </template>
       <template v-slot:append>
-        <v-btn icon="mdi-account"></v-btn>
+        <v-btn icon="mdi-account" @click="toMyProfile"></v-btn>
       </template>
       <v-app-bar-title>Recipe Manager</v-app-bar-title>
       <div class="d-flex flex-grow-1 justify-center align-center position-absolute"
@@ -88,7 +88,7 @@ import {
   toCreateRecipe,
   toHome,
   toListIngredient,
-  toListRecipe,
+  toListRecipe, toMyProfile,
   toUsers,
   whoami
 } from "@/scripts/common";

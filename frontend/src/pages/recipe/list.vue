@@ -6,9 +6,20 @@
         :variant="variant"
         class="ma-4"
         rounded="lg"
-        min-height="200px"
+        min-height="300px"
+        width="300px"
         @click="toViewRecipe(recipe.id)"
       >
+        <span class="flex-column">
+        <v-img
+          color="surface-variant"
+          height="169px"
+          width="300px"
+          class="mt-n3"
+          rounded="t-lg"
+          src="https://cdn.vuetifyjs.com/docs/images/cards/purple-flowers.jpg"
+          cover
+        ></v-img>
       <v-card-item>
         <div>
           <div class="text-h6 mb-1 text-primary">
@@ -49,6 +60,7 @@
         </span>
       </span>
       </v-card-item>
+          </span>
 
     </v-btn>
     </span>

@@ -29,21 +29,25 @@
         min="1"
       ></v-number-input>
 
-      <v-text-field
+      <v-number-input
         v-model="recipe.preparationTime"
         label="Preparation Time (minutes)"
         class="mx-auto px-3"
         type="number"
         color="primary"
-      ></v-text-field>
+        :step="5"
+        :min="0"
+      ></v-number-input>
 
-      <v-text-field
+      <v-number-input
         v-model="recipe.cookingTime"
         label="Cooking time (minutes)"
         class="mx-auto px-3"
         type="number"
         color="primary"
-      ></v-text-field>
+        :step="5"
+        :min="0"
+      ></v-number-input>
 
       <h2 class="my-3" >Ingredients</h2>
 

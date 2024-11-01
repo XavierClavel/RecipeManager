@@ -33,6 +33,16 @@ class Recipe (
 
     var modificationDate: Long = 0,
 
+    var tips: List<String> = listOf(),
+
+    //metadata
+    var yield: Int = 0,
+    var preparationTime: Int = 0,
+    var cookingTime: Int = 0,
+    var cookingTemperature: Int = 0,
+    var conservationTime: Int = 0,
+
+
     @ElementCollection
     var steps: List<String> = listOf(),
 
@@ -50,11 +60,14 @@ class Recipe (
     var likes: MutableSet<Like> = mutableSetOf(),
 
 ) : Model() {
-    fun mergeDTO(recipeDTO: RecipeDTO) : Recipe{
-        title = recipeDTO.title
-        description = recipeDTO.description
-        steps = recipeDTO.steps
-        return this
+    fun mergeDTO(recipeDTO: RecipeDTO) : Recipe = apply {
+        this.title = recipeDTO.title
+        this.description = recipeDTO.description
+        this.steps = recipeDTO.steps
+    }
+
+    fun setOwner(user: User): Recipe = apply {
+        this.owner = user
     }
 
     fun toInfo() = RecipeInfo(

@@ -16,6 +16,7 @@ export {
   toUsers,
   toLogin,
   toSignup,
+  toMyProfile,
   whoami,
   noLoginRedirect,
 }
@@ -31,6 +32,11 @@ const toHome = () => router.push('/home')
 const toUsers = () => router.push('/users')
 const toLogin = () => router.push('/login')
 const toSignup = () => router.push('/signup')
+
+const toMyProfile = () => {
+  const authStore = useAuthStore();
+  router.push(`/user?username=${authStore.username}`)
+}
 
 const noLoginRedirect = ['/login', '/logout', '/signup']
 
