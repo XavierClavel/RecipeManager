@@ -37,6 +37,21 @@
             </tr>
             </tbody>
           </v-table>
+        <v-container>
+          <v-row justify="center">
+            <v-col cols="6">
+              <v-container class="max-width">
+                <v-pagination
+                  v-model="page"
+                  :length="pagesCount"
+                  class="my-4"
+                  active-color="primary"
+                  @update:modelValue="updateDisplay"
+                ></v-pagination>
+              </v-container>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card>
 
     </v-main>
@@ -44,9 +59,11 @@
 </template>
 
 <script lang="ts" setup>
-import {deleteIngredient, getIngredients} from "@/scripts/ingredients";
+import {deleteIngredient, getCount, getIngredients} from "@/scripts/ingredients";
 
-let ingredients = ref<object[]>([])
+const ingredients = ref<object[]>([])
+const page = ref<number>(1)
+const pagesCount = ref<number>(1)
 
 const performDelete = (id) => {
   deleteIngredient(id).then(
@@ -63,14 +80,28 @@ const performDelete = (id) => {
 
 };
 
-getIngredients().then (
+const updateDisplay = () => {
+  console.log(page)
+  getIngredients(page.value - 1).then (
+    function (response) {
+      console.log(response)
+      ingredients.value = response.data
+    }).catch(function (error) {
+    console.log(error);
+  })
+}
+
+updateDisplay()
+
+
+getCount().then (
   function (response) {
     console.log(response)
-    ingredients.value = response.data
-}).catch(function (error) {
+    pagesCount.value = Math.ceil(response.data / 20)
+    console.log(pagesCount.value)
+  }).catch(function (error) {
   console.log(error);
-}).finally(function () {
-    // always executed
-  });
+})
+
 
 </script>

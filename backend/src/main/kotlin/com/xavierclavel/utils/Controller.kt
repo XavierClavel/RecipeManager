@@ -24,6 +24,6 @@ fun Route.use(vararg controller: Controller) {
 
 fun RoutingContext.getPaging():Paging =
     Paging.of(
-        call.queryParameters["page"]?.toIntOrNull() ?: 0,
+        call.request.queryParameters["page"]?.toIntOrNull() ?: 0,
         call.request.queryParameters["size"]?.toIntOrNull() ?: 20
     )

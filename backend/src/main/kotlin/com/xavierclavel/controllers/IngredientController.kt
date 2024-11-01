@@ -25,6 +25,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
         updateIngredient()
         listIngredients()
         deleteIngredient()
+        getCount()
     }
 
     private fun Route.createIngredient() = post {
@@ -55,6 +56,10 @@ object IngredientController: Controller(INGREDIENT_URL) {
         val id = call.parameters["id"]?.toLongOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest)
         val result = ingredientService.findById(id) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(result)
+    }
+
+    private fun Route.getCount() = get("/count") {
+        call.respond(ingredientService.countAll())
     }
 
 }
