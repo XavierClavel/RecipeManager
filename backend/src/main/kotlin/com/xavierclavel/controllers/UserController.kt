@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import common.dto.UserDTO
@@ -16,6 +17,7 @@ import org.koin.java.KoinJavaComponent.inject
 
 object UserController: Controller(USER_URL) {
     val userService : UserService by inject(UserService::class.java)
+    val imageService: ImageService by inject(ImageService::class.java)
 
     override fun Route.routes() {
         createUser()
@@ -50,7 +52,9 @@ object UserController: Controller(USER_URL) {
 
     private fun Route.deleteUser() = delete("/{username}") {
         val username = call.parameters["username"]!!
-        userService.deleteUserByUsername(username)
+        val user = userService.getUserByUsername(username) ?: return@delete call.respond(HttpStatusCode.NotFound)
+        userService.deleteUserById(user.id)
+        imageService.deleteUserImage(user.id)
         call.respond(HttpStatusCode.OK)
     }
 }

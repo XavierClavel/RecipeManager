@@ -71,8 +71,9 @@ class User (
 
     fun toInfo() =
         UserInfo(
-            username = username,
-            role = role,
+            id = this.id,
+            username = this.username,
+            role = this.role,
         )
 
     fun merge(userDTO: UserDTO) {

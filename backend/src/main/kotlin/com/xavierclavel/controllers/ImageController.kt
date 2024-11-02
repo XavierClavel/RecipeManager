@@ -37,20 +37,21 @@ object ImageController: Controller(IMAGE_URL) {
                 call.response.headers.append(HttpHeaders.ETag, file.name.toString())
             }
         }
+
         uploadRecipeImage()
         uploadUserIcon()
     }
 
 
     private fun Route.uploadRecipeImage() = post("/recipes/{id}") {
-        val id = call.parameters["id"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        val id = call.parameters["id"]?.toLongOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
         val multipartData = call.receiveMultipart()
         imageService.saveRecipeImage(id, multipartData)
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.uploadUserIcon() = post("/users/{id}") {
-        val id = call.parameters["id"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        val id = call.parameters["id"]?.toLongOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
         val multipartData = call.receiveMultipart()
         imageService.saveUserImage(id, multipartData)
         call.respond(HttpStatusCode.OK)

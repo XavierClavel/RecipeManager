@@ -13,16 +13,24 @@ import javax.imageio.ImageIO
 import kotlin.io.path.Path
 import kotlin.io.path.createFile
 import kotlin.io.path.createParentDirectories
+import kotlin.io.path.deleteIfExists
 import kotlin.io.path.exists
 
 class ImageService: KoinComponent {
 
 
-    suspend fun saveRecipeImage(id: String, multipartData: MultiPartData) =
+    suspend fun saveRecipeImage(id: Long, multipartData: MultiPartData) =
         saveImage("$RECIPES_IMG_PATH/${id}.webp", multipartData)
 
-    suspend fun saveUserImage(id: String, multipartData: MultiPartData) =
+    suspend fun saveUserImage(id: Long, multipartData: MultiPartData) =
         saveImage("$USERS_IMG_PATH/${id}.webp", multipartData)
+
+    fun deleteRecipeImage(id: Long) = deleteImage("$RECIPES_IMG_PATH/${id}")
+
+    fun deleteUserImage(id: Long) = deleteImage("$USERS_IMG_PATH/${id}")
+
+    private fun deleteImage(path:String) =
+        Path(path).deleteIfExists()
 
 
     private suspend fun saveImage(path: String, multipartData: MultiPartData) {

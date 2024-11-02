@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
@@ -18,6 +19,7 @@ import org.koin.java.KoinJavaComponent.inject
 object RecipeController: Controller(RECIPE_URL) {
     val recipeService: RecipeService by inject(RecipeService::class.java)
     val userService: UserService by inject(UserService::class.java)
+    val imageService: ImageService by inject(ImageService::class.java)
 
     override fun Route.routes() {
         getRecipe()
@@ -54,6 +56,7 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.deleteRecipe() = delete("/{recipe}") {
         val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest)
         recipeService.deleteRecipe(recipeId)
+        imageService.deleteRecipeImage(recipeId)
         call.respond(HttpStatusCode.OK)
     }
 

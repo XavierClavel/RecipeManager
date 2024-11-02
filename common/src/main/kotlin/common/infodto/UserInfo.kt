@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserInfo(
+    val id: Long,
     val username: String,
     val role: UserRole = UserRole.USER,
 )
