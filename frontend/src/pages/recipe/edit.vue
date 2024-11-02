@@ -40,6 +40,17 @@
              fluid
              @click="triggerFileInput"
       >
+        <v-container class="image-overlay d-flex flex-column"  >
+          <v-btn
+            width="100px"
+            height="100px"
+            rounded="xl"
+            color="primary"
+            icon="mdi-pencil"
+            class="text-h4 overlay-button"
+          ></v-btn>
+        </v-container>
+
       </v-img>
 
       <v-number-input
@@ -301,5 +312,31 @@ if (recipeId != undefined) {
   cursor: grab;
   display:flex;
   align-items: center;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0);
+  transition: background-color 0.3s ease;
+}
+
+.preview-image:hover .image-overlay {
+  background-color: rgba(255, 255, 255, 0.3); /* Adjust opacity for desired whitening effect */
+}
+
+.overlay-button {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.preview-image:hover .overlay-button {
+  opacity: 1; /* Button becomes visible on hover */
 }
 </style>
