@@ -19,8 +19,28 @@
         class="mx-auto px-3"
         color="primary"
       ></v-textarea>
+      <v-file-input
+        @change="Preview_image"
+        v-model="image"
+        style="display: none"
+        ref="fileInput"
+        accept="image/*"
+      >
 
-      <v-file-input class="my-10" v-model="image"></v-file-input>
+      </v-file-input>
+
+      <v-img :src="url"
+             cover
+             color="surface-variant"
+             height="562px"
+             width="1000px"
+             class="preview-image my-6"
+             rounded="lg"
+             fill-height
+             fluid
+             @click="triggerFileInput"
+      >
+      </v-img>
 
       <v-number-input
         v-model="recipe.servings"
@@ -195,18 +215,32 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, uploadRecipeImage} from "@/scripts/recipes";
-import {toViewRecipe} from "@/scripts/common";
+import {base_url, toViewRecipe} from "@/scripts/common";
+
+const fileInput = ref(null)
 
 // Get the route object
 const route = useRoute();
 const recipeId = route.query.id
 
 const image = ref<File | null>(null)
+const url = ref<string>(`${base_url}/image/recipes/${recipeId}.webp`)
+
+const Preview_image = () => {
+  url.value = URL.createObjectURL(image.value)
+}
 
 const recipe = ref<object>({
   steps: [''],
   ingredients: [],
 })
+
+// Trigger the v-file-input click
+function triggerFileInput() {
+  if (fileInput.value) {
+    fileInput.value.click();
+  }
+}
 
 // Function to add a new item
 const addStep = () => {
@@ -257,6 +291,10 @@ if (recipeId != undefined) {
 <style scoped>
 .ghost {
   opacity: 0.5;
+}
+
+.preview-image {
+  cursor: pointer;
 }
 
 .drag-handle {
