@@ -1,7 +1,9 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.services.RecipeService
+import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getSessionUsername
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -14,7 +16,8 @@ import io.ktor.server.routing.put
 import org.koin.java.KoinJavaComponent.inject
 
 object RecipeController: Controller(RECIPE_URL) {
-    val recipeService : RecipeService by inject(RecipeService::class.java)
+    val recipeService: RecipeService by inject(RecipeService::class.java)
+    val userService: UserService by inject(UserService::class.java)
 
     override fun Route.routes() {
         getRecipe()
@@ -37,7 +40,9 @@ object RecipeController: Controller(RECIPE_URL) {
     }
 
     private fun Route.createRecipe() = post {
-        call.respond(HttpStatusCode.Created, recipeService.createRecipe(call.receive()))
+        val username = getSessionUsername() ?: return@post call.respond(HttpStatusCode.Unauthorized)
+        val user = userService.findByUsername(username) ?: return@post call.respond(HttpStatusCode.Unauthorized)
+        call.respond(HttpStatusCode.Created, recipeService.createRecipe(call.receive(), user))
     }
 
     private fun Route.updateRecipe() = put("/{recipe}") {

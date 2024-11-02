@@ -9,7 +9,7 @@ import common.dto.RecipeDTO
 import common.infodto.RecipeInfo
 import org.koin.core.component.KoinComponent
 
-class RecipeService: KoinComponent {
+class RecipeImageService: KoinComponent {
     fun countAll() =
         QRecipe().findCount()
 

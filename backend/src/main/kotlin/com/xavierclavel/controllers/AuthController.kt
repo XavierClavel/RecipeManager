@@ -1,26 +1,19 @@
 package com.xavierclavel.controllers
 
-import com.xavierclavel.models.User
-import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
-import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.utils.URL.AUTH_URL
-import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
-import io.ktor.server.response.respondRedirect
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
-import io.ktor.server.routing.put
 import io.ktor.server.sessions.clear
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
@@ -43,8 +36,9 @@ object AuthController: Controller(AUTH_URL) {
     }
 
     private fun Route.login() = post("/login") {
-        val userName = call.principal<UserIdPrincipal>()?.name.toString()
-        call.sessions.set(UserSession(name = userName, count = 1))
+        val username = call.principal<UserIdPrincipal>()?.name.toString()
+        val role = userService.getUserByUsername(username)!!.role
+        call.sessions.set(UserSession(username = username, role = role))
         call.respond(HttpStatusCode.OK)
     }
 
@@ -56,7 +50,7 @@ object AuthController: Controller(AUTH_URL) {
     private fun Route.whoami() = get("/me") {
         val userSession = call.sessions.get<UserSession>()
         if (userSession == null) return@get call.respond(HttpStatusCode.Unauthorized)
-        val userInfo = userService.getUserByUsername(userSession.name)!!
+        val userInfo = userService.getUserByUsername(userSession.username)!!
         call.respond(userInfo)
     }
 

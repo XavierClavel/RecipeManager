@@ -45,7 +45,7 @@ fun Application.configureAuthentication() {
         session<UserSession>("auth-session") {
             validate { session ->
                 logger.info {session}
-                if(userService.findByUsername(session.name) != null) {
+                if(userService.findByUsername(session.username) != null) {
                     logger.info {"session accepted"}
                     session
                 } else {
