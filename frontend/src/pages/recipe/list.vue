@@ -17,7 +17,7 @@
           width="300px"
           class="mt-n3"
           rounded="t-lg"
-          src="https://cdn.vuetifyjs.com/docs/images/cards/purple-flowers.jpg"
+          :src="`${base_url}/image/recipes/${recipe.id}.png`"
           cover
         ></v-img>
       <v-card-item>
@@ -71,7 +71,7 @@
 
 <script lang="ts" setup>
 import {listRecipes} from "@/scripts/recipes";
-import {toViewRecipe} from "@/scripts/common";
+import {base_url, toViewRecipe} from "@/scripts/common";
 
 const recipes = ref<object[]>([])
 
