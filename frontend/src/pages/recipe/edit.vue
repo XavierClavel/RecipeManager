@@ -20,6 +20,8 @@
         color="primary"
       ></v-textarea>
 
+      <v-file-input class="my-10" v-model="image"></v-file-input>
+
       <v-number-input
         v-model="recipe.servings"
         label="Yield"
@@ -192,12 +194,14 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
-import {getRecipe, createRecipe} from "@/scripts/recipes";
+import {getRecipe, createRecipe, uploadRecipeImage} from "@/scripts/recipes";
 import {toViewRecipe} from "@/scripts/common";
 
 // Get the route object
 const route = useRoute();
 const recipeId = route.query.id
+
+const image = ref<File | null>(null)
 
 const recipe = ref<object>({
   steps: [''],
@@ -225,6 +229,8 @@ const removeIngredient = (index) => {
 
 const submit = () => {
   console.log(recipe.value)
+  console.log(image.value)
+  uploadRecipeImage(recipeId, image.value)
   //createRecipe(recipe)
 }
 
