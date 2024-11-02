@@ -1,6 +1,6 @@
 package com.xavierclavel.config
 
-import com.xavierclavel.models.Ingredient
+import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.IngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
@@ -10,4 +10,5 @@ val appModules = module {
     single { RecipeService() }
     single { UserService() }
     single { IngredientService() }
+    single { ImageService() }
 }
