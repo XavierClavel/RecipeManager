@@ -20,7 +20,7 @@
         color="primary"
       ></v-textarea>
       <v-file-input
-        @change="Preview_image"
+        @change="onImageUpload"
         v-model="image"
         style="display: none"
         ref="fileInput"
@@ -229,6 +229,7 @@ import {getRecipe, createRecipe, uploadRecipeImage} from "@/scripts/recipes";
 import {base_url, toViewRecipe} from "@/scripts/common";
 
 const fileInput = ref(null)
+const imageUpdated = ref<Boolean>(false)
 
 // Get the route object
 const route = useRoute();
@@ -237,8 +238,9 @@ const recipeId = route.query.id
 const image = ref<File | null>(null)
 const url = ref<string>(`${base_url}/image/recipes/${recipeId}.webp`)
 
-const Preview_image = () => {
+const onImageUpload = () => {
   url.value = URL.createObjectURL(image.value)
+  imageUpdated.value = true
 }
 
 const recipe = ref<object>({
@@ -275,8 +277,12 @@ const removeIngredient = (index) => {
 const submit = () => {
   console.log(recipe.value)
   console.log(image.value)
-  uploadRecipeImage(recipeId, image.value)
   //createRecipe(recipe)
+  if (imageUpdated.value) {
+    uploadRecipeImage(recipeId, image.value)
+  }
+  toViewRecipe(recipeId)
+
 }
 
 if (recipeId != undefined) {
