@@ -17,7 +17,7 @@
           width="300px"
           class="mt-n3"
           rounded="t-lg"
-          :src="`${base_url}/image/recipes/${recipe.id}.png`"
+          :src="`${base_url}/image/recipes/${recipe.id}.webp`"
           cover
         ></v-img>
       <v-card-item>

@@ -30,6 +30,7 @@
       class="mt-n3"
       rounded="lg"
       :src="imageUrl"
+
       cover
     ></v-img>
 
@@ -128,7 +129,7 @@ let displayError = ref<Boolean>(false)
 const errorMessage = ref<String>("This recipe does not exist")
 const isOwner = true
 
-const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.png`);
+const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.webp`);
 
 const recipe = ref<object>({
   steps: [''],

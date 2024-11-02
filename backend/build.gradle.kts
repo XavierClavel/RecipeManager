@@ -69,7 +69,8 @@ dependencies {
     //Encryption -> bcrypt
     implementation("at.favre.lib:bcrypt:0.10.2")
 
-
+    //Webp support
+    implementation("org.sejda.imageio:webp-imageio:0.1.6")
 
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
