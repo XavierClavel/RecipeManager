@@ -20,17 +20,21 @@ class ImageService: KoinComponent {
 
 
     suspend fun saveRecipeImage(id: Long, multipartData: MultiPartData) =
-        saveImage("$RECIPES_IMG_PATH/${id}.webp", multipartData)
+        saveImage(getRecipeImagePath(id), multipartData)
 
     suspend fun saveUserImage(id: Long, multipartData: MultiPartData) =
-        saveImage("$USERS_IMG_PATH/${id}.webp", multipartData)
+        saveImage(getUserImagePath(id), multipartData)
 
-    fun deleteRecipeImage(id: Long) = deleteImage("$RECIPES_IMG_PATH/${id}")
+    fun deleteRecipeImage(id: Long) = deleteImage(getRecipeImagePath(id))
 
-    fun deleteUserImage(id: Long) = deleteImage("$USERS_IMG_PATH/${id}")
+    fun deleteUserImage(id: Long) = deleteImage(getUserImagePath(id))
 
-    private fun deleteImage(path:String) =
-        Path(path).deleteIfExists()
+    private fun deleteImage(path:String) = Path(path).deleteIfExists()
+
+    private fun getRecipeImagePath(id: Long) = "$RECIPES_IMG_PATH/${id}.webp"
+
+    private fun getUserImagePath(id:Long) = "$USERS_IMG_PATH/${id}.webp"
+
 
 
     private suspend fun saveImage(path: String, multipartData: MultiPartData) {
