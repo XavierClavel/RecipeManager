@@ -2,6 +2,7 @@ package com.xavierclavel.services
 
 import com.xavierclavel.utils.logger
 import common.utils.Filepath.RECIPES_IMG_PATH
+import common.utils.Filepath.USERS_IMG_PATH
 import io.ktor.http.content.MultiPartData
 import io.ktor.http.content.PartData
 import io.ktor.http.content.forEachPart
@@ -19,6 +20,9 @@ class ImageService: KoinComponent {
 
     suspend fun saveRecipeImage(id: String, multipartData: MultiPartData) =
         saveImage("$RECIPES_IMG_PATH/${id}.webp", multipartData)
+
+    suspend fun saveUserImage(id: String, multipartData: MultiPartData) =
+        saveImage("$USERS_IMG_PATH/${id}.webp", multipartData)
 
 
     private suspend fun saveImage(path: String, multipartData: MultiPartData) {
