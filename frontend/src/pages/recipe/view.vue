@@ -29,7 +29,7 @@
       width="1000px"
       class="mt-n3"
       rounded="lg"
-      src="https://cdn.vuetifyjs.com/docs/images/cards/purple-flowers.jpg"
+      :src="imageUrl"
       cover
     ></v-img>
 
@@ -119,7 +119,7 @@
 import { useRoute } from 'vue-router';
 import {deleteRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
-import {toEditRecipe, toListRecipe} from "@/scripts/common";
+import {base_url, toEditRecipe, toListRecipe} from "@/scripts/common";
 
 // Get the route object
 const route = useRoute();
@@ -128,11 +128,13 @@ let displayError = ref<Boolean>(false)
 const errorMessage = ref<String>("This recipe does not exist")
 const isOwner = true
 
+const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.png`);
+
 const recipe = ref<object>({
   steps: [''],
   ingredients: [],
 })
-
+/*
 getRecipe(recipeId).then (
   function (response) {
     recipe.value.title = response.data.title
@@ -148,6 +150,8 @@ getRecipe(recipeId).then (
 }).finally(function () {
   // always executed
 });
+
+ */
 
 const remove = (id) => {
   deleteRecipe(id)
