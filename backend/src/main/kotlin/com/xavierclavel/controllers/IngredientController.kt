@@ -4,7 +4,6 @@ import com.xavierclavel.services.IngredientService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPaging
 import common.dto.IngredientDTO
-import common.dto.UserDTO
 import common.utils.URL.INGREDIENT_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -23,7 +22,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
         createIngredient()
         getIngredient()
         updateIngredient()
-        listIngredients()
+        searchIngredients()
         deleteIngredient()
         getCount()
     }
@@ -47,7 +46,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
             else call.respond(HttpStatusCode.NotFound)
     }
 
-    private fun Route.listIngredients() = get {
+    private fun Route.searchIngredients() = get {
         val searchString = call.request.queryParameters["search"] ?: ""
         call.respond(ingredientService.search(searchString, getPaging()))
     }

@@ -117,13 +117,19 @@
               small
             >mdi-drag</v-icon>
 
-            <v-text-field
-              v-model="recipe.ingredients[index].name"
+            <v-autocomplete
+              v-model="recipe.ingredients[index].id"
               :label="`Ingredient ${index + 1}`"
               outlined
               class="flex-grow-1"
               color="primary"
-            ></v-text-field>
+              :items="autocompleteList[index]"
+              item-color="primary"
+              item-title="name"
+              item-value="id"
+              @update:search="(query) => onIngredientAutocompleteChange(query, index)"
+              :key="index"
+            ></v-autocomplete>
 
             <v-select
               v-model="recipe.ingredients[index].unit"
@@ -250,6 +256,7 @@ import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage} from "@/scripts/recipes";
 import {base_url, toViewRecipe} from "@/scripts/common";
+import {searchIngredients} from "@/scripts/ingredients";
 
 const fileInput = ref(null)
 const imageUpdated = ref<Boolean>(false)
@@ -263,6 +270,14 @@ const recipeId = route.query.id
 const image = ref<File | null>(null)
 const baseImageUrl = `${base_url}/image/recipes/${recipeId}.webp`
 const imageUrl = ref<string>(baseImageUrl)
+
+const autocompleteList = ref([])
+
+const onIngredientAutocompleteChange = async (query, index) => {
+  const response = await searchIngredients(query, 0, 20);
+  autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: item.name }));
+  console.log(autocompleteList.value)
+}
 
 
 
@@ -323,7 +338,7 @@ const addStep = () => {
 };
 
 const addIngredient = () => {
-  recipe.value.ingredients.push({name:''});
+  recipe.value.ingredients.push({});
 }
 
 // Function to add a new item
@@ -409,4 +424,5 @@ if (recipeId != undefined) {
 .preview-image:hover .overlay-button {
   opacity: 1; /* Button becomes visible on hover */
 }
+
 </style>

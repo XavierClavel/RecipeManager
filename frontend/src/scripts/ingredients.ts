@@ -3,15 +3,15 @@ import {base_url} from "@/scripts/common";
 import apiClient from '@/plugins/axios.js';
 
 export{
-  getIngredients,
+  searchIngredients,
   deleteIngredient,
   getCount,
 }
 
 
 
-async function getIngredients(page) {
-  return await apiClient.get(`${base_url}/ingredient?page=${page}&size=20`)
+async function searchIngredients(query, page, size) {
+  return await apiClient.get(`${base_url}/ingredient?search=${query}&page=${page}&size=${size}`)
 }
 
 async function getCount() {

@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-import {deleteIngredient, getCount, getIngredients} from "@/scripts/ingredients";
+import {deleteIngredient, getCount, searchIngredients} from "@/scripts/ingredients";
 
 const ingredients = ref<object[]>([])
 const page = ref<number>(1)
@@ -82,7 +82,7 @@ const performDelete = (id) => {
 
 const updateDisplay = () => {
   console.log(page)
-  getIngredients(page.value - 1).then (
+  searchIngredients("",page.value - 1, 20).then (
     function (response) {
       console.log(response)
       ingredients.value = response.data
