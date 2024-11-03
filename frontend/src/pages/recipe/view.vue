@@ -121,13 +121,14 @@ import { useRoute } from 'vue-router';
 import {deleteRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {base_url, toEditRecipe, toListRecipe} from "@/scripts/common";
+import {useAuthStore} from "@/stores/auth";
 
 // Get the route object
 const route = useRoute();
 const recipeId = route.query.id
 let displayError = ref<Boolean>(false)
 const errorMessage = ref<String>("This recipe does not exist")
-const isOwner = true
+const isOwner = ref<Boolean>(false)
 
 const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.webp`);
 
@@ -135,7 +136,7 @@ const recipe = ref<object>({
   steps: [''],
   ingredients: [],
 })
-/*
+
 getRecipe(recipeId).then (
   function (response) {
     recipe.value.title = response.data.title
@@ -143,7 +144,9 @@ getRecipe(recipeId).then (
     recipe.value.servings = response.data.portions
     recipe.value.ingredients = response.data.ingredients
     recipe.value.steps = response.data.steps
-    console.log(recipe.true)
+    const authStore = useAuthStore()
+    isOwner.value = response.data.owner == authStore.username
+    console.log(response.data.owner)
   }).catch(function (error) {
     displayError.value = true
   console.log(error);
@@ -152,7 +155,7 @@ getRecipe(recipeId).then (
   // always executed
 });
 
- */
+
 
 const remove = (id) => {
   deleteRecipe(id)

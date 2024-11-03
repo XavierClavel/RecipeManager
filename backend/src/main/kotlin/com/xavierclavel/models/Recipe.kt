@@ -76,5 +76,6 @@ class Recipe (
         description = description,
         steps = steps,
         ingredients = listOf(),
+        owner = this.owner!!.username,
     )
 }

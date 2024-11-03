@@ -7,6 +7,7 @@ export {
   base_url,
   login,
   logout,
+  signup,
   toCreateRecipe,
   toEditRecipe,
   toViewRecipe,
@@ -54,6 +55,14 @@ async function login(user) {
     router.push(`/home`)
     const authStore = useAuthStore();
     authStore.login()
+  }
+  return result
+}
+
+async function signup(user) {
+  const result = await apiClient.post(`/auth/signup`, user)
+  if (result.status == 200) {
+    router.push(`/login`)
   }
   return result
 }

@@ -8,6 +8,7 @@ import kotlinx.serialization.*
 data class RecipeInfo (
     val id: Long,
     val title: String,
+    val owner: String,
     val description: String,
     val portions: Int? = null,
     val preparationTime: Int? = null,

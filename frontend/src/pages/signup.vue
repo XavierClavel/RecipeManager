@@ -10,7 +10,7 @@
         Signup
       </v-card-title>
       <v-text-field
-        v-model="user.title"
+        v-model="user.username"
         prepend-icon="mdi-account"
         label="Username"
         class="mx-auto px-3"
@@ -89,7 +89,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe} from "@/scripts/recipes";
-import {toLogin} from "@/scripts/common";
+import {signup, toLogin} from "@/scripts/common";
 
 // Get the route object
 const route = useRoute();
@@ -116,7 +116,7 @@ const submit = () => {
   console.log(password2)
   console.log(user.password)
   console.log(user)
-  //createRecipe(recipe)
+  signup(user.value)
 }
 
 if (recipeId != undefined) {
