@@ -56,7 +56,7 @@ async function deleteRecipeImage(id) {
 }
 
 async function downloadRecipe(id) {
-  return await apiClient.get(`/export/recipe/${id}`, {}, {
+  return await apiClient.get(`/export/recipe/${id}`, {
     responseType: 'arraybuffer',
     headers: {
       'Accept': 'application/pdf'

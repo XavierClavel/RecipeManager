@@ -12,34 +12,27 @@ import java.io.ByteArrayOutputStream
 
 class ExportService: KoinComponent {
 
-    fun generateHTMLContent(recipes: List<RecipeInfo>) {
-
-    }
-
-    fun generateHTMLContent(recipe: RecipeInfo) {
-
-    }
-
     fun generatePDF(recipe: RecipeInfo) = generatePDF(listOf(recipe))
 
     fun generatePDF(recipes: List<RecipeInfo>): ByteArray {
-        val doc = PDDocument()
-        val page = PDPage()
-        doc.addPage(page)
-        val pdfFont=  PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
+        PDDocument().use { doc ->
+            val page = PDPage()
+            doc.addPage(page)
+            val pdfFont=  PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
 
-        PDPageContentStream(doc, page).use { contentStream ->
-            contentStream.beginText()
-            contentStream.setFont(pdfFont, 12F)
-            contentStream.newLineAtOffset(100F, 700F)
-            contentStream.showText("Hello, PDF World!")
-            contentStream.endText()
-        }
+            PDPageContentStream(doc, page).use { contentStream ->
+                contentStream.beginText()
+                contentStream.setFont(pdfFont, 12F)
+                contentStream.newLineAtOffset(100F, 700F)
+                contentStream.showText("Hello, PDF World!")
+                contentStream.endText()
+            }
 
-        // Write the PDF document to a ByteArrayOutputStream
-        ByteArrayOutputStream().use { outputStream ->
-            doc.save(outputStream)
-            return outputStream.toByteArray()  // Return as byte array
+            // Write the PDF document to a ByteArrayOutputStream
+            ByteArrayOutputStream().use { outputStream ->
+                doc.save(outputStream)
+                return outputStream.toByteArray()  // Return as byte array
+            }
         }
     }
 
