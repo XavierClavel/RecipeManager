@@ -4,7 +4,9 @@ import common.infodto.RecipeInfo
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
+import org.apache.pdfbox.pdmodel.font.PDFont
 import org.apache.pdfbox.pdmodel.font.PDType1Font
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts
 import org.koin.core.component.KoinComponent
 import java.io.ByteArrayOutputStream
 
@@ -24,10 +26,11 @@ class ExportService: KoinComponent {
         val doc = PDDocument()
         val page = PDPage()
         doc.addPage(page)
+        val pdfFont=  PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
 
         PDPageContentStream(doc, page).use { contentStream ->
             contentStream.beginText()
-            //contentStream.setFont(PDType1Font, 12F)
+            contentStream.setFont(pdfFont, 12F)
             contentStream.newLineAtOffset(100F, 700F)
             contentStream.showText("Hello, PDF World!")
             contentStream.endText()

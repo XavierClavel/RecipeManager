@@ -121,7 +121,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-          @click="toEditRecipe(recipeId)"
+          @click="downloadRecipe(recipeId)"
         >Download</v-btn>
       </span>
 
@@ -133,7 +133,7 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import {deleteRecipe, getRecipe} from "@/scripts/recipes";
+import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {base_url, toEditRecipe, toListRecipe} from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";

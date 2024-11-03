@@ -2,6 +2,7 @@ package com.xavierclavel
 
 import com.xavierclavel.config.appModules
 import com.xavierclavel.controllers.AuthController
+import com.xavierclavel.controllers.ExportController
 import com.xavierclavel.controllers.HealthController
 import com.xavierclavel.controllers.IngredientController
 import com.xavierclavel.controllers.RecipeController
@@ -60,6 +61,7 @@ fun Application.serveRoutes() = routing {
         use(RecipeController)
         use(IngredientController)
         use(ImageController)
+        use(ExportController)
     }
     use(AuthController)
 }

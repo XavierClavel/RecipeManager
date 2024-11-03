@@ -4,6 +4,7 @@ import com.xavierclavel.services.ExportService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.utils.URL.EXPORT_URL
 import common.utils.URL.USER_URL
@@ -25,9 +26,30 @@ object ExportController: Controller(EXPORT_URL) {
 
     override fun Route.routes() {
         exportRecipe()
+        exportUser()
+        exportCircle()
     }
 
-    private fun Route.exportRecipe() = get {
+    private fun Route.exportRecipe() = get("/recipe/{id}") {
+        try {
+            val byteArray = exportService.generatePDF(listOf())
+            val filename = "example.pdf"
+            call.response.header("Content-Disposition", "attachment; filename=\"$filename\"")
+            call.respondBytes(byteArray, contentType = ContentType.Application.Pdf)
+        } catch (e: Exception) {
+            logger.error(e.message)
+        }
+
+    }
+
+    private fun Route.exportUser() = get("/user/{id}") {
+        val byteArray = exportService.generatePDF(listOf())
+        val filename = "example.pdf"
+        call.response.header("Content-Disposition", "attachment; filename=\"$filename\"")
+        call.respondBytes(byteArray, contentType = ContentType.Application.Pdf)
+    }
+
+    private fun Route.exportCircle() = get("/circle/{id}") {
         val byteArray = exportService.generatePDF(listOf())
         val filename = "example.pdf"
         call.response.header("Content-Disposition", "attachment; filename=\"$filename\"")
