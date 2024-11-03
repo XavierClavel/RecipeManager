@@ -1,5 +1,6 @@
 package main.com.xavierclavel.utils
 
+import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.utils.URL.USER_URL
 import io.ktor.client.HttpClient
@@ -20,7 +21,7 @@ suspend fun HttpClient.createUser(username: String)  {
     this.post(USER_URL){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
-        setBody(UserInfo(username))
+        setBody(UserDTO(username))
     }.apply {
         assertEquals(HttpStatusCode.Created, status)
     }

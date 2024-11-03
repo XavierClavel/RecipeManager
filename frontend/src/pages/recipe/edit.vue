@@ -261,12 +261,11 @@ const route = useRoute();
 const recipeId = route.query.id
 
 const image = ref<File | null>(null)
-const imageUrl = ref<string>(`${base_url}/image/recipes/${recipeId}.webp`)
+const baseImageUrl = `${base_url}/image/recipes/${recipeId}.webp`
+const imageUrl = ref<string>(baseImageUrl)
 
-const onImageUpload = () => {
-  imageUrl.value = URL.createObjectURL(image.value)
-  imageUpdated.value = true
-}
+
+
 
 const recipe = ref<object>({
   steps: [''],
@@ -280,6 +279,11 @@ function triggerFileInput() {
   }
 }
 
+const onImageUpload = () => {
+  imageUrl.value = URL.createObjectURL(image.value)
+  imageUpdated.value = true
+}
+
 function undoImageChange() {
   imageUpdated.value = false
   imageDeleted.value = false
@@ -287,21 +291,27 @@ function undoImageChange() {
 }
 
 function deleteImage() {
-  imageDeleted.value = true
-  imageUpdated.value = true
+  imageDeleted.value = recipeHasImage.value
+  imageUpdated.value = recipeHasImage.value
+
+  console.log(imageDeleted.value)
+  console.log(imageUpdated.value)
+
   imageUrl.value = `${base_url}/image/recipes/default.webp`
 }
 
 function handleImageLoad(url) {
   // Only consider the primary image for setting imageExists
-  if (url === imageUrl.value) {
+  if (url === baseImageUrl.value) {
+    console.log("image success")
     recipeHasImage.value = true
   }
 }
 
 function handleImageError(url) {
   // If primary image fails, set imageExists to false and hide the button
-  if (url === imageUrl.value) {
+  if (url === baseImageUrl.value) {
+    console.log("image error")
     recipeHasImage.value = false
   }
 }

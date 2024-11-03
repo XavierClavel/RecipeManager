@@ -6,4 +6,5 @@ object URL {
     const val RECIPE_URL = "v1/recipe"
     const val AUTH_URL = "v1/auth"
     const val IMAGE_URL = "v1/image"
+    const val EXPORT_URL = "v1/export"
 }

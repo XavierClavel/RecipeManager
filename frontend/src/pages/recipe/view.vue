@@ -112,6 +112,21 @@
         >Edit</v-btn>
       </span>
 
+    <span class="d-flex align-center justify-center mb-2 ga-16">
+        <v-btn
+          prepend-icon="mdi-tray-arrow-down"
+          color="primary"
+          flat
+          rounded
+          class="mb-10 text-h6"
+          min-height="70px"
+          min-width="300px"
+          @click="toEditRecipe(recipeId)"
+        >Download</v-btn>
+      </span>
+
+
+
   </v-card>
 
 </template>

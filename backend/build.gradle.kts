@@ -72,6 +72,10 @@ dependencies {
     //Webp support
     implementation("org.sejda.imageio:webp-imageio:0.1.6")
 
+    //PDF write
+    implementation("org.apache.pdfbox:pdfbox:3.0.3")
+
+
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

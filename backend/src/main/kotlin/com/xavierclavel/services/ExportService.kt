@@ -1,7 +1,12 @@
 package com.xavierclavel.services
 
 import common.infodto.RecipeInfo
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.pdmodel.PDPage
+import org.apache.pdfbox.pdmodel.PDPageContentStream
+import org.apache.pdfbox.pdmodel.font.PDType1Font
 import org.koin.core.component.KoinComponent
+import java.io.ByteArrayOutputStream
 
 class ExportService: KoinComponent {
 
@@ -10,45 +15,29 @@ class ExportService: KoinComponent {
     }
 
     fun generateHTMLContent(recipe: RecipeInfo) {
-        """
-            ""${'"'}
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Your Simple HTML Page</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    background-color: #f0f0f0;
-                }
-                .container {
-                    max-width: 800px;
-                    margin: 0 auto;
-                    padding: 20px;
-                    background-color: #ffffff;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
-                h1 {
-                    color: #333333;
-                }
-                p {
-                    color: #666666;
-                    line-height: 1.6;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>Generate A PDF File</h1>
-            </div>
-        </body>
-        </html>
-    ""${'"'}
-        """.trimIndent()
+
+    }
+
+    fun generatePDF(recipe: RecipeInfo) = generatePDF(listOf(recipe))
+
+    fun generatePDF(recipes: List<RecipeInfo>): ByteArray {
+        val doc = PDDocument()
+        val page = PDPage()
+        doc.addPage(page)
+
+        PDPageContentStream(doc, page).use { contentStream ->
+            contentStream.beginText()
+            //contentStream.setFont(PDType1Font, 12F)
+            contentStream.newLineAtOffset(100F, 700F)
+            contentStream.showText("Hello, PDF World!")
+            contentStream.endText()
+        }
+
+        // Write the PDF document to a ByteArrayOutputStream
+        ByteArrayOutputStream().use { outputStream ->
+            doc.save(outputStream)
+            return outputStream.toByteArray()  // Return as byte array
+        }
     }
 
 
