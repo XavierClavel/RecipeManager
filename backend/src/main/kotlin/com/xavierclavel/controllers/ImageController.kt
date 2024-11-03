@@ -1,7 +1,9 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getSessionUsername
 import common.utils.Filepath.RECIPES_IMG_PATH
 import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.IMAGE_URL
@@ -12,6 +14,7 @@ import io.ktor.server.http.content.staticFiles
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import org.koin.java.KoinJavaComponent.inject
@@ -62,6 +65,7 @@ object ImageController: Controller(IMAGE_URL) {
 
     private fun Route.deleteRecipeImage() = delete("/recipes/{id}") {
         val id = call.parameters["id"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        if (!isAuthorizedToEditRecipe(id)) return@delete call.respond(HttpStatusCode.Unauthorized)
         imageService.deleteRecipeImage(id)
         call.respond(HttpStatusCode.OK)
     }
@@ -72,6 +76,11 @@ object ImageController: Controller(IMAGE_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
+
+    private fun RoutingContext.isAuthorizedToEditRecipe(recipeId: Long) : Boolean {
+        val currentUser = getSessionUsername() ?: return false
+        return  recipeService.getRecipeOwner(recipeId) != currentUser
+    }
 
 
 }

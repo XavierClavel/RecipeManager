@@ -10,6 +10,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -49,12 +50,14 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.updateRecipe() = put("/{recipe}") {
         val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
+        if (!isAuthorizedToEditRecipe(recipeId)) return@put call.respond(HttpStatusCode.Unauthorized)
         val info = recipeService.updateRecipe(recipeId, call.receive()) ?: return@put call.respond(HttpStatusCode.NotFound)
         call.respond(HttpStatusCode.OK, info)
     }
 
     private fun Route.deleteRecipe() = delete("/{recipe}") {
         val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        if (!isAuthorizedToEditRecipe(recipeId)) return@delete call.respond(HttpStatusCode.Unauthorized)
         recipeService.deleteRecipe(recipeId)
         imageService.deleteRecipeImage(recipeId)
         call.respond(HttpStatusCode.OK)
@@ -71,5 +74,12 @@ object RecipeController: Controller(RECIPE_URL) {
         val recipes = recipeService.findAllByCircleId(circleId)
         call.respond(recipes)
     }
+
+    private fun RoutingContext.isAuthorizedToEditRecipe(recipeId: Long): Boolean {
+        val currentUser = getSessionUsername() ?: return false
+        return recipeService.getRecipeOwner(recipeId) == currentUser
+    }
+
+
 
 }

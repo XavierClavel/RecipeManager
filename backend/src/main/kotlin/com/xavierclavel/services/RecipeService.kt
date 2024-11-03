@@ -32,6 +32,8 @@ class RecipeService: KoinComponent {
         QRecipe().id.eq(recipeId).delete()
     }
 
+    fun getRecipeOwner(recipeId: Long) = findById(recipeId)!!.owner
+
     fun createRecipe(recipeDTO: RecipeDTO, owner: User): RecipeInfo =
         Recipe()
             .mergeDTO(recipeDTO)
