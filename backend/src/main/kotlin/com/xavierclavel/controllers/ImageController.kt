@@ -12,6 +12,7 @@ import io.ktor.server.http.content.staticFiles
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import org.koin.java.KoinJavaComponent.inject
 import java.io.File
@@ -40,6 +41,8 @@ object ImageController: Controller(IMAGE_URL) {
 
         uploadRecipeImage()
         uploadUserIcon()
+        deleteRecipeImage()
+        deleteUserImage()
     }
 
 
@@ -54,6 +57,18 @@ object ImageController: Controller(IMAGE_URL) {
         val id = call.parameters["id"]?.toLongOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
         val multipartData = call.receiveMultipart()
         imageService.saveUserImage(id, multipartData)
+        call.respond(HttpStatusCode.OK)
+    }
+
+    private fun Route.deleteRecipeImage() = delete("/recipes/{id}") {
+        val id = call.parameters["id"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        imageService.deleteRecipeImage(id)
+        call.respond(HttpStatusCode.OK)
+    }
+
+    private fun Route.deleteUserImage() = delete("/users/{id}") {
+        val id = call.parameters["id"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        imageService.deleteUserImage(id)
         call.respond(HttpStatusCode.OK)
     }
 

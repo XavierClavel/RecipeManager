@@ -29,7 +29,9 @@
 
       </v-file-input>
 
-      <v-img :src="url"
+      <v-img :src="imageUrl"
+             @load="handleImageLoad"
+             @error="handleImageError"
              cover
              color="surface-variant"
              height="562px"
@@ -40,7 +42,7 @@
              fluid
              @click="triggerFileInput"
       >
-        <v-container class="image-overlay d-flex flex-column"  >
+        <v-container class="image-overlay d-flex flex-row ga-16"  >
           <v-btn
             width="100px"
             height="100px"
@@ -48,6 +50,27 @@
             color="primary"
             icon="mdi-pencil"
             class="text-h4 overlay-button"
+            hint="hihi"
+          ></v-btn>
+          <v-btn
+            width="100px"
+            height="100px"
+            rounded="xl"
+            color="primary"
+            icon="mdi-arrow-u-left-top"
+            class="text-h4 overlay-button"
+            v-if="imageUpdated"
+            @click.stop="undoImageChange"
+          ></v-btn>
+          <v-btn
+            width="100px"
+            height="100px"
+            rounded="xl"
+            color="primary"
+            icon="mdi-close"
+            class="text-h4 overlay-button"
+            v-if="recipeHasImage && !imageDeleted"
+            @click.stop="deleteImage"
           ></v-btn>
         </v-container>
 
@@ -203,14 +226,14 @@
         >Cancel</v-btn>
         <v-btn
           @click="submit"
-          prepend-icon="mdi-send"
+          prepend-icon="mdi-content-save"
           color="primary"
           flat
           rounded
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-        >Validate</v-btn>
+        >Save</v-btn>
       </span>
 
 
@@ -225,21 +248,23 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
-import {getRecipe, createRecipe, uploadRecipeImage} from "@/scripts/recipes";
+import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage} from "@/scripts/recipes";
 import {base_url, toViewRecipe} from "@/scripts/common";
 
 const fileInput = ref(null)
 const imageUpdated = ref<Boolean>(false)
+const imageDeleted = ref<Boolean>(false)
+const recipeHasImage = ref<Boolean>(false)
 
 // Get the route object
 const route = useRoute();
 const recipeId = route.query.id
 
 const image = ref<File | null>(null)
-const url = ref<string>(`${base_url}/image/recipes/${recipeId}.webp`)
+const imageUrl = ref<string>(`${base_url}/image/recipes/${recipeId}.webp`)
 
 const onImageUpload = () => {
-  url.value = URL.createObjectURL(image.value)
+  imageUrl.value = URL.createObjectURL(image.value)
   imageUpdated.value = true
 }
 
@@ -252,6 +277,32 @@ const recipe = ref<object>({
 function triggerFileInput() {
   if (fileInput.value) {
     fileInput.value.click();
+  }
+}
+
+function undoImageChange() {
+  imageUpdated.value = false
+  imageDeleted.value = false
+  imageUrl.value = `${base_url}/image/recipes/${recipeId}.webp`
+}
+
+function deleteImage() {
+  imageDeleted.value = true
+  imageUpdated.value = true
+  imageUrl.value = `${base_url}/image/recipes/default.webp`
+}
+
+function handleImageLoad(url) {
+  // Only consider the primary image for setting imageExists
+  if (url === imageUrl.value) {
+    recipeHasImage.value = true
+  }
+}
+
+function handleImageError(url) {
+  // If primary image fails, set imageExists to false and hide the button
+  if (url === imageUrl.value) {
+    recipeHasImage.value = false
   }
 }
 
@@ -278,7 +329,10 @@ const submit = () => {
   console.log(recipe.value)
   console.log(image.value)
   //createRecipe(recipe)
-  if (imageUpdated.value) {
+  console.log(imageDeleted.value)
+  if (imageDeleted.value) {
+    deleteRecipeImage(recipeId)
+  } else if (imageUpdated.value) {
     uploadRecipeImage(recipeId, image.value)
   }
   toViewRecipe(recipeId)

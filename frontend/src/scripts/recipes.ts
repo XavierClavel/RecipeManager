@@ -7,6 +7,7 @@ export {
   createRecipe,
   deleteRecipe,
   uploadRecipeImage,
+  deleteRecipeImage,
 }
 
 async function getRecipe(id) {
@@ -47,4 +48,8 @@ async function uploadRecipeImage(id, file) {
       console.log('FAILURE!!');
       console.log(error)
     });
+}
+
+async function deleteRecipeImage(id) {
+  return await apiClient.delete(`/image/recipes/${id}`)
 }
