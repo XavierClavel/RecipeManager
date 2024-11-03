@@ -2,7 +2,7 @@ package com.xavierclavel.services
 
 import com.itextpdf.io.font.PdfEncodings
 import com.itextpdf.io.image.ImageDataFactory
-import com.itextpdf.kernel.colors.ColorConstants
+import com.itextpdf.kernel.colors.DeviceRgb
 import com.itextpdf.kernel.font.PdfFontFactory
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
@@ -17,8 +17,8 @@ import java.io.ByteArrayOutputStream
 
 class ExportService: KoinComponent {
     val imageService: ImageService by inject()
-
     val robotoFont = ExportService::class.java.getResource("/fonts/Roboto-Regular.ttf")!!.readBytes()
+    val titleColor = DeviceRgb(255, 111, 89)
 
     fun generatePDF(recipe: RecipeInfo) = generatePDF(listOf(recipe))
 
@@ -72,7 +72,7 @@ class ExportService: KoinComponent {
 
     private fun Document.addTitle(title: String) = this.add(Paragraph(
         Text(title)
-            .setFontColor(ColorConstants.ORANGE)
+            .setFontColor(titleColor)
             .setFontSize(17f)
             .setBold()
     ))
@@ -83,7 +83,7 @@ class ExportService: KoinComponent {
 
     private fun Document.addParagraphTitle(title: String) = this.add(Paragraph(
         Text(title)
-            .setFontColor(ColorConstants.ORANGE)
+            .setFontColor(titleColor)
             .setFontSize(14f)
             .setBold()
     ))
