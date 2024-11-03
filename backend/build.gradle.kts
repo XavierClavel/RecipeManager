@@ -28,6 +28,7 @@ application {
 dependencies {
     val ebeanVersion = "15.7.0"
     val koinVersion = "4.0.0"
+    val itextVersion = "8.0.5"
 
     implementation(project(":common"))
 
@@ -73,7 +74,8 @@ dependencies {
     implementation("org.sejda.imageio:webp-imageio:0.1.6")
 
     //PDF write
-    implementation("org.apache.pdfbox:pdfbox:3.0.3")
+    implementation("com.itextpdf:itext-core:$itextVersion")
+    implementation("com.itextpdf:bouncy-castle-adapter:$itextVersion")
 
 
 

@@ -9,6 +9,10 @@ import io.ktor.http.content.forEachPart
 import io.ktor.server.plugins.BadRequestException
 import io.ktor.utils.io.jvm.javaio.toInputStream
 import org.koin.core.component.KoinComponent
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 import javax.imageio.ImageIO
 import kotlin.io.path.Path
 import kotlin.io.path.createFile
@@ -31,7 +35,7 @@ class ImageService: KoinComponent {
 
     private fun deleteImage(path:String) = Path(path).deleteIfExists()
 
-    private fun getRecipeImagePath(id: Long) = "$RECIPES_IMG_PATH/${id}.webp"
+    fun getRecipeImagePath(id: Long) = "$RECIPES_IMG_PATH/${id}.webp"
 
     private fun getUserImagePath(id:Long) = "$USERS_IMG_PATH/${id}.webp"
 
@@ -63,6 +67,30 @@ class ImageService: KoinComponent {
         if (!fileReceived) {
             throw BadRequestException("File not received")
         }
+    }
+
+    private fun convertWebPToJpeg(webpBytes: ByteArray): ByteArray {
+        val image = ImageIO.read(ByteArrayInputStream(webpBytes))
+        ByteArrayOutputStream().use { baos ->
+            ImageIO.write(image, "jpg", baos)
+            return baos.toByteArray()
+        }
+    }
+
+    /**
+     * Reads a webp image and returns it as a jpeg byte array
+     */
+    fun getRecipeImageAsJpegBytes(id: Long): ByteArray {
+        // Specify the path to the WebP file
+        val webpPath = getRecipeImagePath(id)
+
+        // Read the WebP image from the filesystem
+        val webpBytes = Files.readAllBytes(Paths.get(webpPath))
+
+        // Convert WebP to JPEG format
+        val jpegBytes = convertWebPToJpeg(webpBytes)
+
+        return jpegBytes
     }
 
 }
