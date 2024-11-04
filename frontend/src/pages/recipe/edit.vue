@@ -254,7 +254,7 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
-import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage} from "@/scripts/recipes";
+import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRecipe} from "@/scripts/recipes";
 import {base_url, toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 
@@ -265,7 +265,7 @@ const recipeHasImage = ref<Boolean>(false)
 
 // Get the route object
 const route = useRoute();
-const recipeId = route.query.id
+let recipeId = route.query.id
 
 const image = ref<File | null>(null)
 const baseImageUrl = `${base_url}/image/recipes/${recipeId}.webp`
@@ -283,6 +283,7 @@ const onIngredientAutocompleteChange = async (query, index) => {
 
 
 const recipe = ref<object>({
+  description: "",
   steps: [''],
   ingredients: [],
 })
@@ -350,15 +351,25 @@ const removeIngredient = (index) => {
   recipe.ingredients.value.splice(index,1);
 }
 
-const submit = () => {
+async function submit() {
   console.log(recipe.value)
   console.log(image.value)
   //createRecipe(recipe)
   console.log(imageDeleted.value)
+
+  console.log(recipeId)
+
+  if (recipeId == null) {
+    const response = await createRecipe(recipe.value)
+    recipeId = response.data.id
+  } else {
+    await updateRecipe(recipeId, recipe.value)
+  }
+
   if (imageDeleted.value) {
-    deleteRecipeImage(recipeId)
+    await deleteRecipeImage(recipeId)
   } else if (imageUpdated.value) {
-    uploadRecipeImage(recipeId, image.value)
+    await uploadRecipeImage(recipeId, image.value)
   }
   toViewRecipe(recipeId)
 

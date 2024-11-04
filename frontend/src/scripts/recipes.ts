@@ -5,6 +5,7 @@ export {
   getRecipe,
   listRecipes,
   createRecipe,
+  updateRecipe,
   deleteRecipe,
   uploadRecipeImage,
   deleteRecipeImage,

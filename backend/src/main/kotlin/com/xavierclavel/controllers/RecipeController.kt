@@ -5,6 +5,7 @@ import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getSessionUsername
+import com.xavierclavel.utils.logger
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -43,9 +44,14 @@ object RecipeController: Controller(RECIPE_URL) {
     }
 
     private fun Route.createRecipe() = post {
-        val username = getSessionUsername() ?: return@post call.respond(HttpStatusCode.Unauthorized)
-        val user = userService.findByUsername(username) ?: return@post call.respond(HttpStatusCode.Unauthorized)
-        call.respond(HttpStatusCode.Created, recipeService.createRecipe(call.receive(), user))
+        try {
+            val username = getSessionUsername() ?: return@post call.respond(HttpStatusCode.Unauthorized)
+            val user = userService.findByUsername(username) ?: return@post call.respond(HttpStatusCode.Unauthorized)
+            call.respond(HttpStatusCode.Created, recipeService.createRecipe(call.receive(), user))
+        } catch (e: Exception) {
+            logger.error {e.message}
+        }
+
     }
 
     private fun Route.updateRecipe() = put("/{recipe}") {
