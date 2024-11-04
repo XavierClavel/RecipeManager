@@ -105,8 +105,8 @@
         :min="0"
       ></v-number-input>
 
+      <!-- Ingredients -->
       <h2 class="my-3" >Ingredients</h2>
-
       <draggable v-model="recipe.ingredients" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
@@ -120,7 +120,6 @@
             <v-autocomplete
               v-model="recipe.ingredients[index].id"
               :label="`Ingredient ${index + 1}`"
-              outlined
               class="flex-grow-1"
               color="primary"
               :items="autocompleteList[index]"
@@ -168,7 +167,65 @@
         </template>
       </draggable>
 
-      <!-- Button to add a new item -->
+      <!-- Custom ingredients -->
+      <h2 class="my-3" v-if="recipe.customIngredients.length > 0">Custom ingredients</h2>
+      <draggable v-model="recipe.customIngredients" tag="div2" ghost-class="ghost" item-key="index" handle=".drag-handle">
+        <template #item="{ element, index }">
+          <div class="d-flex align-center mb-2">
+            <!-- Add a handle for dragging -->
+            <v-icon
+              class="mr-2 drag-handle mb-5"
+              color="primary"
+              small
+            >mdi-drag</v-icon>
+
+            <v-text-field
+              v-model="recipe.customIngredients[index].name"
+              :label="`Custom ingredient ${index + 1}`"
+              class="flex-grow-1"
+              color="primary"
+              item-color="primary"
+              :key="index"
+            ></v-text-field>
+
+            <v-select
+              v-model="recipe.customIngredients[index].unit"
+              label="Unit"
+              outlined
+              class="flex-grow-1 mx-2"
+              :items="['unit','g','lb','teaspoon', 'sugarspoon', 'cup']"
+              variant="outlined"
+              max-width="200px"
+              color="primary"
+            ></v-select>
+
+            <v-number-input
+              v-model="recipe.customIngredients[index].amount"
+              label="Amount"
+              outlined
+              class="flex-grow-1"
+              type="number"
+              max-width="150px"
+              color="primary"
+              control-variant="stacked"
+              min="0"
+            ></v-number-input>
+
+            <div>
+              <v-btn
+                @click="removeCustomIngredient(index)"
+                icon="mdi-delete"
+                color="primary"
+                class="rounded-lg ml-4 mb-5"
+              ></v-btn>
+            </div>
+
+
+          </div>
+        </template>
+      </draggable>
+
+      <!-- Button to add ingredient -->
       <v-btn
         @click="addIngredient"
         prepend-icon="mdi-plus-circle-outline"
@@ -178,8 +235,26 @@
         class="mb-10"
       >Add new ingredient</v-btn>
 
-      <h2 class="my-3" >Steps</h2>
+      <!-- Button to add custom ingredient -->
+      <v-tooltip text="Custom ingredients should only be used if an ingredient you want to add is not registered in the database."
+      location="bottom">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            @click="addCustomIngredient"
+            prepend-icon="mdi-plus-circle-outline"
+            color="primary"
+            flat
+            rounded
+            class="mb-10 ml-8"
+            variant="outlined"
+          >Add custom ingredient</v-btn>
+        </template>
+      </v-tooltip>
 
+
+      <!-- Steps -->
+      <h2 class="my-3" >Steps</h2>
       <draggable v-model="recipe.steps" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
@@ -286,6 +361,7 @@ const recipe = ref<object>({
   description: "",
   steps: [''],
   ingredients: [],
+  customIngredients: [],
 })
 
 // Trigger the v-file-input click
@@ -309,9 +385,6 @@ function undoImageChange() {
 function deleteImage() {
   imageDeleted.value = recipeHasImage.value
   imageUpdated.value = recipeHasImage.value
-
-  console.log(imageDeleted.value)
-  console.log(imageUpdated.value)
 
   imageUrl.value = `${base_url}/image/recipes/default.webp`
 }
@@ -342,13 +415,21 @@ const addIngredient = () => {
   recipe.value.ingredients.push({});
 }
 
+const addCustomIngredient = () => {
+  recipe.value.customIngredients.push({});
+}
+
 // Function to add a new item
 const removeStep = (index) => {
   recipe.value.steps.splice(index,1);
 };
 
 const removeIngredient = (index) => {
-  recipe.ingredients.value.splice(index,1);
+  recipe.value.ingredients.splice(index,1);
+}
+
+const removeCustomIngredient = (index) => {
+  recipe.value.customIngredients.splice(index,1);
 }
 
 async function submit() {

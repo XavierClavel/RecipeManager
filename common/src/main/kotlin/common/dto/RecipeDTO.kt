@@ -13,11 +13,19 @@ data class RecipeDTO (
     val cookingTemperature: Int? = null,
 
     val ingredients: MutableList<RecipeIngredient> = mutableListOf(),
+    val customIngredients: MutableList<RecipeCustomIngredient> = mutableListOf(),
     val steps: MutableList<String> = mutableListOf(),
 )
 
 @Serializable
 data class RecipeIngredient (
+    val id: Long,
+    val unit: AmountUnit,
+    val amount: Float,
+)
+
+@Serializable
+data class RecipeCustomIngredient (
     val name: String,
     val unit: AmountUnit,
     val amount: Float,

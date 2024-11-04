@@ -25,6 +25,13 @@
             <column name="role" type="integer" notnull="true" checkConstraint="check ( role in (0,1,2))" checkConstraintName="ck_circle_users_role"/>
             <column name="pending" type="boolean" defaultValue="false" notnull="true"/>
         </createTable>
+        <createTable name="custom_ingredients" identityType="identity" pkName="pk_custom_ingredients">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="recipe_id" type="bigint" references="recipes.id" foreignKeyName="fk_custom_ingredients_recipe_id" foreignKeyIndex="ix_custom_ingredients_recipe_id"/>
+            <column name="ingredient" type="varchar" notnull="true"/>
+            <column name="amount" type="float" notnull="true"/>
+            <column name="unit" type="integer" notnull="true" checkConstraint="check ( unit in (0,1,2,3,4,5,6))" checkConstraintName="ck_custom_ingredients_unit"/>
+        </createTable>
         <createTable name="dietary_restrictions" pkName="pk_dietary_restrictions">
             <column name="id" type="bigint" primaryKey="true"/>
             <column name="is_meat_ok" type="boolean" defaultValue="false" notnull="true"/>
@@ -70,12 +77,6 @@
         <createTable name="recipes_steps" pkName="pk_recipes_steps">
             <column name="recipes_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_recipes_steps_recipes_id" foreignKeyIndex="ix_recipes_steps_recipes_id"/>
             <column name="value" type="varchar" notnull="true"/>
-        </createTable>
-        <createTable name="recipes_ingredients" pkName="pk_recipes_ingredients">
-            <column name="recipes_id" type="bigint" notnull="true" primaryKey="true"/>
-            <column name="ingredients_id" type="bigint" notnull="true" primaryKey="true"/>
-            <foreignKey name="fk_recipes_ingredients_recipes" columnNames="recipes_id" refColumnNames="id" refTableName="recipes" indexName="ix_recipes_ingredients_recipes"/>
-            <foreignKey name="fk_recipes_ingredients_ingredients" columnNames="ingredients_id" refColumnNames="id" refTableName="ingredients" indexName="ix_recipes_ingredients_ingredients"/>
         </createTable>
         <createTable name="recipes_circle" pkName="pk_recipes_circle">
             <column name="recipes_id" type="bigint" notnull="true" primaryKey="true"/>

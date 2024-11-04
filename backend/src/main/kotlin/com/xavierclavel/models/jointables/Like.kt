@@ -17,7 +17,7 @@ class Like (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = -1,
+    var id: Long = 0,
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
