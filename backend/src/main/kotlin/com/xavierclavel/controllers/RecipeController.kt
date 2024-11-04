@@ -55,10 +55,16 @@ object RecipeController: Controller(RECIPE_URL) {
     }
 
     private fun Route.updateRecipe() = put("/{recipe}") {
-        val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
-        if (!isAuthorizedToEditRecipe(recipeId)) return@put call.respond(HttpStatusCode.Unauthorized)
-        val info = recipeService.updateRecipe(recipeId, call.receive()) ?: return@put call.respond(HttpStatusCode.NotFound)
-        call.respond(HttpStatusCode.OK, info)
+        try {
+            val recipeId =
+                call.parameters["recipe"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
+            if (!isAuthorizedToEditRecipe(recipeId)) return@put call.respond(HttpStatusCode.Unauthorized)
+            val info =
+                recipeService.updateRecipe(recipeId, call.receive()) ?: return@put call.respond(HttpStatusCode.NotFound)
+            call.respond(HttpStatusCode.OK, info)
+        } catch (e: Exception) {
+            logger.error {e.message}
+        }
     }
 
     private fun Route.deleteRecipe() = delete("/{recipe}") {

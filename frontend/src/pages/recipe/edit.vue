@@ -380,7 +380,7 @@ if (recipeId != undefined) {
     function (response) {
       recipe.value.title = response.data.title
       recipe.value.description = response.data.description
-      recipe.value.servings = response.data.portions
+      recipe.value.portions = response.data.portions
       recipe.value.ingredients = response.data.ingredients
       recipe.value.steps = response.data.steps
       console.log(recipe.value)
