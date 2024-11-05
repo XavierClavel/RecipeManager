@@ -6,7 +6,42 @@
         <v-card-title class="text-primary">
           Ingredients
         </v-card-title>
-          <v-table
+        <v-btn prepend-icon="mdi-plus-box-outline" color="primary" rounded="lg" flat class="ml-8">New ingredient</v-btn>
+        <v-btn
+          color="surface-variant"
+          text="Open Dialog"
+          variant="flat"
+          @click="isActive.value=true"
+        ></v-btn>
+        <v-dialog max-width="500">
+          <template v-slot:activator="{ props: activatorProps }">
+            <v-btn
+              v-bind="activatorProps"
+              color="surface-variant"
+              text="Open Dialog"
+              variant="flat"
+            ></v-btn>
+          </template>
+
+          <template v-slot:default="{ isActive }">
+            <v-card title="Dialog">
+              <v-card-text>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </v-card-text>
+r
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                  text="Close Dialog"
+                  @click="isActive.value = false"
+                ></v-btn>
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
+
+        <v-table
             min-height="300px"
             fixed-header
           >
@@ -17,6 +52,9 @@
               </th>
               <th class="text-left">
                 Type
+              </th>
+              <th class="text-left">
+                Calories
               </th>
               <th class="text-left">
                 Actions
@@ -30,6 +68,7 @@
             >
               <td>{{ ingredient.name }}</td>
               <td>{{ ingredient.type }}</td>
+              <td>{{ ingredient.calories }}</td>
               <td class="y-5">
                 <v-btn icon="mdi-pencil" color="primary" rounded="e" flat class="mr-1"></v-btn>
                 <v-btn icon="mdi-delete" color="primary" rounded="s" flat @click="performDelete(ingredient.id)"></v-btn>
