@@ -75,7 +75,7 @@ class RecipeControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `updating unexisting recipe returns NotFound`() = runTestAsAdmin {
+    fun `updating unexisting recipe returns Unauthorized`() = runTestAsAdmin {
         val recipeDTO = RecipeDTO(
             title = "My recipe",
             description = "My description",

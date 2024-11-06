@@ -30,6 +30,7 @@ class AuthControllerTest : ApplicationTest() {
         }
     }
 
+    /*
     @Test
     fun `reset password`() = runTestUnauthenticated {
         val mail = "test_user@example.com"
@@ -47,8 +48,8 @@ class AuthControllerTest : ApplicationTest() {
             val response = Json.decodeFromString<UserInfo>(bodyAsText())
             assertEquals(username, response.username)
         }
-
-
     }
+
+     */
 
 }

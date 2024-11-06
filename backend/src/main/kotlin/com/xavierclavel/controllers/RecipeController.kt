@@ -6,6 +6,7 @@ import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getSessionUsername
 import com.xavierclavel.utils.logger
+import common.infodto.RecipeInfo
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -58,7 +59,8 @@ object RecipeController: Controller(RECIPE_URL) {
         try {
             val recipeId =
                 call.parameters["recipe"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
-            if (!isAuthorizedToEditRecipe(recipeId)) return@put call.respond(HttpStatusCode.Unauthorized)
+            val recipe = recipeService.findById(recipeId) ?: return@put call.respond(HttpStatusCode.NotFound)
+            if (!isAuthorizedToEditRecipe(recipe)) return@put call.respond(HttpStatusCode.Unauthorized)
             val info =
                 recipeService.updateRecipe(recipeId, call.receive()) ?: return@put call.respond(HttpStatusCode.NotFound)
             call.respond(HttpStatusCode.OK, info)
@@ -69,7 +71,8 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.deleteRecipe() = delete("/{recipe}") {
         val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest)
-        if (!isAuthorizedToEditRecipe(recipeId)) return@delete call.respond(HttpStatusCode.Unauthorized)
+        val recipe = recipeService.findById(recipeId) ?: return@delete call.respond(HttpStatusCode.NotFound)
+        if (!isAuthorizedToEditRecipe(recipe)) return@delete call.respond(HttpStatusCode.Unauthorized)
         recipeService.deleteRecipe(recipeId)
         imageService.deleteRecipeImage(recipeId)
         call.respond(HttpStatusCode.OK)
@@ -87,9 +90,9 @@ object RecipeController: Controller(RECIPE_URL) {
         call.respond(recipes)
     }
 
-    private fun RoutingContext.isAuthorizedToEditRecipe(recipeId: Long): Boolean {
+    private fun RoutingContext.isAuthorizedToEditRecipe(recipe: RecipeInfo): Boolean {
         val currentUser = getSessionUsername() ?: return false
-        return recipeService.getRecipeOwner(recipeId) == currentUser
+        return recipe.owner == currentUser
     }
 
 
