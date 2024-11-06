@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class IngredientDTO(
     val name: String,
     val type: IngredientType,
-    //val caloriesPer100g: Int,
+    val calories: Int,
     //val weightPerUnit: Float,
     //val containsSugar: Boolean,
 )

@@ -6,12 +6,14 @@ export{
   searchIngredients,
   deleteIngredient,
   getCount,
+  createIngredient,
+  updateIngredient,
 }
 
 
 
 async function searchIngredients(query, page, size) {
-  return await apiClient.get(`=/ingredient?search=${query}&page=${page}&size=${size}`)
+  return await apiClient.get(`/ingredient?search=${query}&page=${page}&size=${size}`)
 }
 
 async function getCount() {

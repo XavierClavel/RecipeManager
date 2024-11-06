@@ -58,7 +58,7 @@
           @click="toViewRecipe(recipeId)"
         >Delete</v-btn>
         <v-btn
-          @click="submit"
+          @click="save"
           prepend-icon="mdi-content-save"
           color="primary"
           flat
@@ -128,7 +128,7 @@
 </template>
 
 <script lang="ts" setup>
-import {deleteIngredient, getCount, searchIngredients} from "@/scripts/ingredients";
+import {createIngredient, deleteIngredient, getCount, searchIngredients, updateIngredient} from "@/scripts/ingredients";
 import {toViewRecipe} from "@/scripts/common";
 
 const ingredients = ref<object[]>([])
@@ -143,12 +143,14 @@ const ingredientTypes = [
 ]
 const action = ref<string>("Create ingredient")
 
-const save = () => {
+async function save() {
+  const { id, ...ingredientToUpdate} = ingredient.value
   if (ingredient.value.id == undefined) {
-
+    await createIngredient(ingredientToUpdate)
   } else {
-
+    await updateIngredient(ingredient.value.id, ingredientToUpdate)
   }
+  updateDisplay()
 }
 
 const editIngredient = (ingredientToEdit) => {
@@ -178,10 +180,8 @@ const performDelete = (id) => {
 };
 
 const updateDisplay = () => {
-  console.log(page)
   searchIngredients("",page.value - 1, 20).then (
     function (response) {
-      console.log(response)
       ingredients.value = response.data
     }).catch(function (error) {
     console.log(error);
@@ -193,9 +193,7 @@ updateDisplay()
 
 getCount().then (
   function (response) {
-    console.log(response)
     pagesCount.value = Math.ceil(response.data / 20)
-    console.log(pagesCount.value)
   }).catch(function (error) {
   console.log(error);
 })
