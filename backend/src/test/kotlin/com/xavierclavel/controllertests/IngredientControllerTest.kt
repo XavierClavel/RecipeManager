@@ -1,4 +1,4 @@
-package main.com.xavierclavel.controllertests.com.xavierclavel.controllertests
+package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import common.dto.IngredientDTO
@@ -28,6 +28,7 @@ class IngredientControllerTest : ApplicationTest() {
         val ingredientDTO = IngredientDTO(
             name = "My ingredient",
             type = IngredientType.CHEESE,
+            calories = 10,
         )
         val response = it.createIngredient(ingredientDTO)
         it.assertIngredientExists(response.id)
@@ -38,6 +39,7 @@ class IngredientControllerTest : ApplicationTest() {
         val ingredientDTO = IngredientDTO(
             name = "My ingredient",
             type = IngredientType.CHEESE,
+            calories = 10,
         )
         val ingredientInfo = it.createIngredient(ingredientDTO)
         val result = it.getIngredient(ingredientInfo.id)
@@ -49,11 +51,13 @@ class IngredientControllerTest : ApplicationTest() {
         val ingredientDTO = IngredientDTO(
             name = "My ingredient",
             type = IngredientType.CHEESE,
+            calories = 10,
         )
         val response = it.createIngredient(ingredientDTO)
         val ingredientDTO2 = IngredientDTO(
             name = "My better ingredient",
             type = IngredientType.VEGETABLE,
+            calories = 10,
         )
         it.updateIngredient(response.id, ingredientDTO2)
         assertFalse(it.getIngredient(response.id).compareToDTO(ingredientDTO))
@@ -65,6 +69,7 @@ class IngredientControllerTest : ApplicationTest() {
         val ingredientDTO = IngredientDTO(
             name = "My ingredient",
             type = IngredientType.CHEESE,
+            calories = 10,
         )
         it.put("$INGREDIENT_URL/-1"){
             contentType(ContentType.Application.Json)
@@ -80,6 +85,7 @@ class IngredientControllerTest : ApplicationTest() {
         val ingredientDTO = IngredientDTO(
             name = "My ingredient",
             type = IngredientType.CHEESE,
+            calories = 10,
         )
         val ingredientInfo = it.createIngredient(ingredientDTO)
         it.assertIngredientExists(ingredientInfo.id)
