@@ -1,8 +1,10 @@
 package com.xavierclavel
 
 import com.xavierclavel.config.appModules
+import com.xavierclavel.plugins.DatabaseManager
 import com.xavierclavel.plugins.configureAuthentication
 import com.xavierclavel.services.UserService
+import com.xavierclavel.utils.logger
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.request.*
@@ -12,6 +14,7 @@ import io.ktor.server.testing.*
 import io.ktor.utils.io.KtorDsl
 import kotlinx.serialization.json.Json
 import org.junit.Rule
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -27,7 +30,12 @@ abstract class ApplicationTest: KoinTest {
     val userService: UserService by inject()
 
     @get:Rule
-    val koinTestRule= KoinTestRule()
+    val koinTestRule = KoinTestRule()
+
+    @get:Rule
+    val cleanDbRule = CleanDbRule()
+
+
 
     @KtorDsl
     fun runTestAsAdmin(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
@@ -97,6 +105,21 @@ class KoinTestRule : TestRule {
                 } finally {
                     stopKoin()
                 }
+            }
+        }
+    }
+}
+
+class CleanDbRule : TestRule {
+
+    override fun apply(base: Statement, description: Description): Statement {
+        return object : Statement() {
+
+            override fun evaluate() {
+                DatabaseManager.getTables().forEach {
+                    it.findList().forEach { it.delete() }
+                }
+                base.evaluate()
             }
         }
     }

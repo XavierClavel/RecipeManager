@@ -1,14 +1,14 @@
 package com.xavierclavel.plugins
 
-import com.xavierclavel.main
+import com.xavierclavel.models.query.QIngredient
+import com.xavierclavel.models.query.QRecipe
+import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.logger
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ebean.Database
 import io.ebean.DatabaseFactory
-import io.ebean.annotation.Platform
 import io.ebean.config.DatabaseConfig
-import io.ebean.dbmigration.DbMigration
 import io.ebean.migration.MigrationConfig
 import io.ebean.migration.MigrationRunner
 import kotlinx.coroutines.delay
@@ -16,6 +16,12 @@ import kotlinx.coroutines.runBlocking
 
 object DatabaseManager {
     var mainDB : Database? = null
+
+    fun getTables() = listOf(
+        QRecipe(),
+        QUser(),
+        QIngredient()
+    )
 
     private fun hikari(): HikariDataSource {
         val hikariConfig = HikariConfig("/db.properties")
