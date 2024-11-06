@@ -7,39 +7,68 @@
           Ingredients
         </v-card-title>
         <v-btn prepend-icon="mdi-plus-box-outline" color="primary" rounded="lg" flat class="ml-8">New ingredient</v-btn>
+
+        <v-container>
+          <v-card-title
+          class="text-primary"
+          >
+            {{ action }}
+          </v-card-title>
+          <v-text-field
+            v-model="ingredient.name"
+            label="Name"
+            class="mx-auto px-3"
+            color="primary"
+          ></v-text-field>
+          <v-select
+            v-model="ingredient.type"
+            label="Type"
+            class="mx-auto px-3"
+            color="primary"
+            :items="ingredientTypes"
+          ></v-select>
+          <v-number-input
+            v-model="ingredient.calories"
+            label="Calories"
+            class="mx-auto px-3"
+            type="number"
+            color="primary"
+            :min="0"
+            :step="10"
+          ></v-number-input>
+          <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
-          color="surface-variant"
-          text="Open Dialog"
-          variant="flat"
-          @click="isActive.value=true"
-        ></v-btn>
-        <v-dialog max-width="500">
-          <template v-slot:activator="{ props: activatorProps }">
-            <v-btn
-              v-bind="activatorProps"
-              color="surface-variant"
-              text="Open Dialog"
-              variant="flat"
-            ></v-btn>
-          </template>
-
-          <template v-slot:default="{ isActive }">
-            <v-card title="Dialog">
-              <v-card-text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </v-card-text>
-r
-              <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn
-                  text="Close Dialog"
-                  @click="isActive.value = false"
-                ></v-btn>
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
+          prepend-icon="mdi-close-circle-outline"
+          color="primary"
+          flat
+          rounded
+          class="mb-10 text-h6"
+          min-height="70px"
+          min-width="200px"
+          @click="toViewRecipe(recipeId)"
+        >Cancel</v-btn>
+        <v-btn
+          prepend-icon="mdi-delete"
+          color="primary"
+          flat
+          rounded
+          class="mb-10 text-h6"
+          min-height="70px"
+          min-width="200px"
+          @click="toViewRecipe(recipeId)"
+        >Delete</v-btn>
+        <v-btn
+          @click="submit"
+          prepend-icon="mdi-content-save"
+          color="primary"
+          flat
+          rounded
+          class="mb-10 text-h6"
+          min-height="70px"
+          min-width="200px"
+        >Save</v-btn>
+      </span>
+        </v-container>
 
         <v-table
             min-height="300px"
@@ -65,6 +94,7 @@ r
             <tr
               v-for="ingredient in ingredients"
               :key="ingredient.username"
+              @click="editIngredient(ingredient)"
             >
               <td>{{ ingredient.name }}</td>
               <td>{{ ingredient.type }}</td>
@@ -99,10 +129,38 @@ r
 
 <script lang="ts" setup>
 import {deleteIngredient, getCount, searchIngredients} from "@/scripts/ingredients";
+import {toViewRecipe} from "@/scripts/common";
 
 const ingredients = ref<object[]>([])
+const ingredient = ref({})
 const page = ref<number>(1)
 const pagesCount = ref<number>(1)
+const ingredientTypes = [
+  "CHEESE",
+  "VEGETABLE",
+  "MEAT",
+
+]
+const action = ref<string>("Create ingredient")
+
+const save = () => {
+  if (ingredient.value.id == undefined) {
+
+  } else {
+
+  }
+}
+
+const editIngredient = (ingredientToEdit) => {
+  if (ingredient.value.id == ingredientToEdit.id) {
+    ingredient.value = {}
+    action.value = "Create ingredient"
+  } else {
+    ingredient.value = ingredientToEdit
+    action.value = `Edit ingredient "${ingredientToEdit.name}"`
+  }
+
+}
 
 const performDelete = (id) => {
   deleteIngredient(id).then(
