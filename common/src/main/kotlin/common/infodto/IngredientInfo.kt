@@ -9,6 +9,7 @@ data class IngredientInfo(
     val id: Long,
     val name: String,
     val type: IngredientType,
+    val calories: Int,
     //val caloriesPer100g: Int,
     //val weightPerUnit: Float,
     //val containsSugar: Boolean,

@@ -48,6 +48,7 @@
           @click="toViewRecipe(recipeId)"
         >Cancel</v-btn>
         <v-btn
+          v-if="ingredient.id != undefined"
           prepend-icon="mdi-delete"
           color="primary"
           flat
@@ -55,7 +56,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="200px"
-          @click="toViewRecipe(recipeId)"
+          @click="performDelete(ingredient.id)"
         >Delete</v-btn>
         <v-btn
           @click="save"

@@ -20,11 +20,14 @@ class Ingredient (
     var name: String = "",
 
     var type: IngredientType = IngredientType.OTHER,
+
+    var calories: Int = 0,
 ): Model() {
 
     fun mergeDTO(ingredientDTO: IngredientDTO): Ingredient {
         this.name = ingredientDTO.name
         this.type = ingredientDTO.type
+        this.calories = ingredientDTO.calories
 
         return this
     }
@@ -33,5 +36,6 @@ class Ingredient (
         id = this.id,
         name = this.name,
         type = this.type,
+        calories = this.calories,
     )
 }
