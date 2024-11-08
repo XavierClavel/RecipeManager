@@ -6,70 +6,74 @@
         <v-card-title class="text-primary">
           Ingredients
         </v-card-title>
-        <v-btn prepend-icon="mdi-plus-box-outline" color="primary" rounded="lg" flat class="ml-8">New ingredient</v-btn>
-
-        <v-container>
-          <v-card-title
-          class="text-primary"
-          >
-            {{ action }}
-          </v-card-title>
-          <v-text-field
-            v-model="ingredient.name"
-            label="Name"
-            class="mx-auto px-3"
-            color="primary"
-          ></v-text-field>
-          <v-select
-            v-model="ingredient.type"
-            label="Type"
-            class="mx-auto px-3"
-            color="primary"
-            :items="ingredientTypes"
-          ></v-select>
-          <v-number-input
-            v-model="ingredient.calories"
-            label="Calories"
-            class="mx-auto px-3"
-            type="number"
-            color="primary"
-            :min="0"
-            :step="10"
-          ></v-number-input>
-          <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
+        <v-btn prepend-icon="mdi-plus-box-outline" color="primary" rounded="lg" flat class="ml-8" @click="newIngredient">New ingredient</v-btn>
+        <v-slide-x-reverse-transition v-show="isPanelOpen">
+          <v-sheet class="pa-4 right-panel" elevation="3" z-index="50" style='z-index:20001;'>
+            <v-btn icon @click="isPanelOpen = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-card-title
+              class="text-primary"
+            >
+              {{ action }}
+            </v-card-title>
+            <v-text-field
+              v-model="ingredient.name"
+              label="Name"
+              class="mx-auto px-3"
+              color="primary"
+            ></v-text-field>
+            <v-select
+              v-model="ingredient.type"
+              label="Type"
+              class="mx-auto px-3"
+              color="primary"
+              :items="ingredientTypes"
+            ></v-select>
+            <v-number-input
+              v-model="ingredient.calories"
+              label="Calories"
+              class="mx-auto px-3"
+              type="number"
+              color="primary"
+              :min="0"
+              :step="10"
+            ></v-number-input>
+            <span class="d-flex flex-row align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
-          prepend-icon="mdi-close-circle-outline"
+          icon="mdi-close-circle-outline"
           color="primary"
           flat
-          rounded
+          rounded="lg"
           class="mb-10 text-h6"
           min-height="70px"
-          min-width="200px"
-          @click="toViewRecipe(recipeId)"
-        >Cancel</v-btn>
+          min-width="70px"
+          @click="cancel"
+        ></v-btn>
         <v-btn
           v-if="ingredient.id != undefined"
-          prepend-icon="mdi-delete"
+          icon="mdi-delete"
           color="primary"
           flat
-          rounded
+          rounded="lg"
           class="mb-10 text-h6"
           min-height="70px"
-          min-width="200px"
+          min-width="70px"
           @click="performDelete(ingredient.id)"
-        >Delete</v-btn>
+        ></v-btn>
         <v-btn
           @click="save"
-          prepend-icon="mdi-content-save"
+          icon="mdi-content-save"
           color="primary"
           flat
-          rounded
+          rounded="lg"
           class="mb-10 text-h6"
           min-height="70px"
-          min-width="200px"
-        >Save</v-btn>
+          min-width="70px"
+        ></v-btn>
       </span>
-        </v-container>
+          </v-sheet>
+        </v-slide-x-reverse-transition>
 
         <v-table
             min-height="300px"
@@ -86,9 +90,6 @@
               <th class="text-left">
                 Calories
               </th>
-              <th class="text-left">
-                Actions
-              </th>
             </tr>
             </thead>
             <tbody>
@@ -100,10 +101,6 @@
               <td>{{ ingredient.name }}</td>
               <td>{{ ingredient.type }}</td>
               <td>{{ ingredient.calories }}</td>
-              <td class="y-5">
-                <v-btn icon="mdi-pencil" color="primary" rounded="e" flat class="mr-1"></v-btn>
-                <v-btn icon="mdi-delete" color="primary" rounded="s" flat @click="performDelete(ingredient.id)"></v-btn>
-              </td>
             </tr>
             </tbody>
           </v-table>
@@ -136,6 +133,7 @@ const ingredients = ref<object[]>([])
 const ingredient = ref({})
 const page = ref<number>(1)
 const pagesCount = ref<number>(1)
+const isPanelOpen = ref<boolean>(false)
 const ingredientTypes = [
   "CHEESE",
   "VEGETABLE",
@@ -154,11 +152,22 @@ async function save() {
   updateDisplay()
 }
 
+const cancel = () => {
+  ingredient.value = {}
+  isPanelOpen.value = false
+}
+
+const newIngredient = () => {
+  isPanelOpen.value = true
+  ingredient.value = {}
+  action.value = "Create ingredient"
+}
+
 const editIngredient = (ingredientToEdit) => {
   if (ingredient.value.id == ingredientToEdit.id) {
-    ingredient.value = {}
-    action.value = "Create ingredient"
+    cancel()
   } else {
+    isPanelOpen.value = true
     ingredient.value = ingredientToEdit
     action.value = `Edit ingredient "${ingredientToEdit.name}"`
   }
@@ -201,3 +210,15 @@ getCount().then (
 
 
 </script>
+
+<style scoped>
+/* Styling to make the overlay appear as a fixed panel on the right */
+.right-panel {
+  position: fixed;
+  top: 0;
+  right: 0;         /* Sticks the panel to the right side */
+  height: 100vh;    /* Full vertical height */
+  width: 400px;
+  overflow-y: auto; /* Enables scrolling within the panel if content is long */
+}
+</style>
