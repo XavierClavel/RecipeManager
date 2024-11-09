@@ -134,7 +134,6 @@ import {createIngredient, deleteIngredient, getCount, searchIngredients, updateI
 import { useTheme } from 'vuetify'
 
 const theme = useTheme()
-const selectedRow = ref<number>(1)
 
 const ingredients = ref<object[]>([])
 const selectedIngredient = ref({})
