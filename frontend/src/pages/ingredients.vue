@@ -156,6 +156,7 @@ async function save() {
     await updateIngredient(selectedIngredient.value.id, ingredientToUpdate)
   }
   updateDisplay()
+  cancel()
 }
 
 const cancel = () => {
