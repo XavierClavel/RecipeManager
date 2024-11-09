@@ -18,20 +18,20 @@
               {{ action }}
             </v-card-title>
             <v-text-field
-              v-model="ingredient.name"
+              v-model="selectedIngredient.name"
               label="Name"
               class="mx-auto px-3"
               color="primary"
             ></v-text-field>
             <v-select
-              v-model="ingredient.type"
+              v-model="selectedIngredient.type"
               label="Type"
               class="mx-auto px-3"
               color="primary"
               :items="ingredientTypes"
             ></v-select>
             <v-number-input
-              v-model="ingredient.calories"
+              v-model="selectedIngredient.calories"
               label="Calories"
               class="mx-auto px-3"
               type="number"
@@ -51,7 +51,7 @@
           @click="cancel"
         ></v-btn>
         <v-btn
-          v-if="ingredient.id != undefined"
+          v-if="selectedIngredient.id != undefined"
           icon="mdi-delete"
           color="primary"
           flat
@@ -59,7 +59,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="70px"
-          @click="performDelete(ingredient.id)"
+          @click="performDelete(selectedIngredient.id)"
         ></v-btn>
         <v-btn
           @click="save"
@@ -97,6 +97,10 @@
               v-for="ingredient in ingredients"
               :key="ingredient.username"
               @click="editIngredient(ingredient)"
+              :class="{'primary': ingredient.id == 3  }"
+              :style="{
+                backgroundColor: isPanelOpen && ingredient && ingredient.id === selectedIngredient.id ? theme.current.value.colors.secondary : '',
+              }"
             >
               <td>{{ ingredient.name }}</td>
               <td>{{ ingredient.type }}</td>
@@ -127,10 +131,13 @@
 
 <script lang="ts" setup>
 import {createIngredient, deleteIngredient, getCount, searchIngredients, updateIngredient} from "@/scripts/ingredients";
-import {toViewRecipe} from "@/scripts/common";
+import { useTheme } from 'vuetify'
+
+const theme = useTheme()
+const selectedRow = ref<number>(1)
 
 const ingredients = ref<object[]>([])
-const ingredient = ref({})
+const selectedIngredient = ref({})
 const page = ref<number>(1)
 const pagesCount = ref<number>(1)
 const isPanelOpen = ref<boolean>(false)
@@ -143,32 +150,38 @@ const ingredientTypes = [
 const action = ref<string>("Create ingredient")
 
 async function save() {
-  const { id, ...ingredientToUpdate} = ingredient.value
-  if (ingredient.value.id == undefined) {
+  const { id, ...ingredientToUpdate} = selectedIngredient.value
+  if (selectedIngredient.value.id == undefined) {
     await createIngredient(ingredientToUpdate)
   } else {
-    await updateIngredient(ingredient.value.id, ingredientToUpdate)
+    await updateIngredient(selectedIngredient.value.id, ingredientToUpdate)
   }
   updateDisplay()
 }
 
 const cancel = () => {
-  ingredient.value = {}
+  if (selectedIngredient != {}) {
+    let {...copy} = selectedIngredient.value;
+    copy.id = -1
+    selectedIngredient.value = copy
+  }
+
+
   isPanelOpen.value = false
 }
 
 const newIngredient = () => {
   isPanelOpen.value = true
-  ingredient.value = {}
+  selectedIngredient.value = {}
   action.value = "Create ingredient"
 }
 
 const editIngredient = (ingredientToEdit) => {
-  if (ingredient.value.id == ingredientToEdit.id) {
+  if (selectedIngredient.value.id == ingredientToEdit.id) {
     cancel()
   } else {
     isPanelOpen.value = true
-    ingredient.value = ingredientToEdit
+    selectedIngredient.value = ingredientToEdit
     action.value = `Edit ingredient "${ingredientToEdit.name}"`
   }
 
