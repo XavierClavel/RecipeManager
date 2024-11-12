@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import io.ebean.Model
+import java.time.Instant
 
 @Entity
 @Table(name = "recipes")
@@ -31,9 +32,9 @@ class Recipe (
 
     var description: String = "",
 
-    var creationDate: Long = 0,
+    var creationDate: Long = Instant.now().epochSecond,
 
-    var modificationDate: Long = 0,
+    var modificationDate: Long = Instant.now().epochSecond,
 
     var tips: List<String> = listOf(),
 
@@ -69,6 +70,7 @@ class Recipe (
         this.title = recipeDTO.title
         this.description = recipeDTO.description
         this.steps = recipeDTO.steps
+        this.modificationDate = Instant.now().epochSecond
     }
 
     fun setOwner(user: User): Recipe = apply {
@@ -82,5 +84,7 @@ class Recipe (
         steps = steps,
         ingredients = listOf(),
         owner = this.owner!!.username,
+        creationDate = this.creationDate,
+        editionDate = this.modificationDate,
     )
 }

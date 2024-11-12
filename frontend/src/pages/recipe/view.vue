@@ -23,6 +23,14 @@
       class="mx-auto px-3"
     > {{recipe.description}} </v-card-text>
 
+    <v-card-text
+      class="mx-auto px-3"
+    > Created on : {{new Date(recipe.creationDate * 1000).toLocaleDateString()}} </v-card-text>
+
+    <v-card-text
+      class="mx-auto px-3"
+    > Last edited on : {{new Date(recipe.editionDate * 1000).toLocaleDateString()}} </v-card-text>
+
     <v-img
       color="surface-variant"
       height="562px"
@@ -154,11 +162,8 @@ const recipe = ref<object>({
 
 getRecipe(recipeId).then (
   function (response) {
-    recipe.value.title = response.data.title
-    recipe.value.description = response.data.description
-    recipe.value.servings = response.data.portions
-    recipe.value.ingredients = response.data.ingredients
-    recipe.value.steps = response.data.steps
+    recipe.value = response.data
+    console.log(recipe.value)
     const authStore = useAuthStore()
     isOwner.value = response.data.owner == authStore.username
     console.log(response.data.owner)

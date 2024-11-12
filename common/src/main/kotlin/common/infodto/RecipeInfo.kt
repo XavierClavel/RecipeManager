@@ -1,7 +1,7 @@
 package common.infodto
 
 import common.dto.RecipeDTO
-import common.dto.RecipeIngredient
+import common.dto.RecipeIngredientDTO
 import kotlinx.serialization.*
 
 @Serializable
@@ -15,8 +15,9 @@ data class RecipeInfo (
     val cookingTime: Int? = null,
     val cookingTemperature: Int? = null,
 
-    val ingredients: List<RecipeIngredient> = listOf(),
+    val ingredients: List<RecipeIngredientInfo> = listOf(),
     val steps: List<String> = listOf(),
+    val tips: List<String> = listOf(),
 
     var creationDate: Long = 0,
     var editionDate: Long? = null,
