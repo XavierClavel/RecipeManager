@@ -351,7 +351,6 @@ const autocompleteList = ref([])
 const onIngredientAutocompleteChange = async (query, index) => {
   const response = await searchIngredients(query, 0, 20);
   autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: item.name }));
-  console.log(autocompleteList.value)
 }
 
 
@@ -434,12 +433,6 @@ const removeCustomIngredient = (index) => {
 
 async function submit() {
   console.log(recipe.value)
-  console.log(image.value)
-  //createRecipe(recipe)
-  console.log(imageDeleted.value)
-
-  console.log(recipeId)
-
   if (recipeId == null) {
     const response = await createRecipe(recipe.value)
     recipeId = response.data.id
@@ -459,11 +452,7 @@ async function submit() {
 if (recipeId != undefined) {
   getRecipe(recipeId).then (
     function (response) {
-      recipe.value.title = response.data.title
-      recipe.value.description = response.data.description
-      recipe.value.portions = response.data.portions
-      recipe.value.ingredients = response.data.ingredients
-      recipe.value.steps = response.data.steps
+      recipe.value = response.data
       console.log(recipe.value)
     }).catch(function (error) {
     console.log(error);

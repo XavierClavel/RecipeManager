@@ -4,6 +4,7 @@ import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getSessionUsername
 import com.xavierclavel.utils.logger
 import common.infodto.RecipeInfo
@@ -28,6 +29,7 @@ object RecipeController: Controller(RECIPE_URL) {
         getRecipe()
         listRecipes()
         getUserRecipes()
+        getUserRecipesCount()
         getCircleRecipes()
         createRecipe()
         updateRecipe()
@@ -80,7 +82,14 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.getUserRecipes() = get("/user/{username}") {
         val username = call.parameters["username"] ?: return@get call.respond(HttpStatusCode.BadRequest)
-        val recipes = recipeService.findAllByOwnerUsername(username)
+        val paging = getPaging()
+        val recipes = recipeService.findByOwner(username, paging)
+        call.respond(recipes)
+    }
+
+    private fun Route.getUserRecipesCount() = get("/user/{username}/count") {
+        val username = call.parameters["username"] ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val recipes = recipeService.countByOwner(username)
         call.respond(recipes)
     }
 

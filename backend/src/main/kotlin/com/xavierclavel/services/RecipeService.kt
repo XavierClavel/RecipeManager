@@ -7,11 +7,16 @@ import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import common.dto.RecipeDTO
 import common.infodto.RecipeInfo
+import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 
 class RecipeService: KoinComponent {
     fun countAll() =
         QRecipe().findCount()
+
+    fun countByOwner(username: String) =
+        queryByOwner(username).findCount()
+
 
     fun findList() : List<RecipeInfo> =
         QRecipe().findList().map { it.toInfo() }
@@ -26,7 +31,13 @@ class RecipeService: KoinComponent {
         QRecipe().owner.id.eq(userId).findList()
 
     fun findAllByOwnerUsername(username: String): List<Recipe> =
-        QRecipe().owner.username.eq(username).findList()
+        queryByOwner(username).findList()
+
+    fun findByOwner(username: String, paging: Paging): List<RecipeInfo> =
+        queryByOwner(username)
+            .setPaging(paging)
+            .findList()
+            .map{it.toInfo()}
 
     fun deleteById(recipeId: Long) {
         QRecipe().id.eq(recipeId).delete()
@@ -49,5 +60,8 @@ class RecipeService: KoinComponent {
     fun deleteRecipe(id: Long) {
         QRecipe().id.eq(id).delete()
     }
+
+    private fun queryByOwner(username: String) =
+        QRecipe().owner.username.eq(username)
 
 }

@@ -41,6 +41,13 @@ suspend fun HttpClient.getRecipe(recipeId: Long): RecipeInfo {
     }
 }
 
+suspend fun HttpClient.countRecipeByUser(username: String): Int {
+    this.get("$RECIPE_URL/user/$username/count").apply {
+        assertEquals(HttpStatusCode.OK, status)
+        return bodyAsText().toInt()
+    }
+}
+
 suspend fun HttpClient.updateRecipe(recipeId: Long, recipe: RecipeDTO): RecipeInfo {
     this.put("$RECIPE_URL/$recipeId"){
         contentType(ContentType.Application.Json)
