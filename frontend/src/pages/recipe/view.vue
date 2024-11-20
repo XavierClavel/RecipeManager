@@ -43,35 +43,9 @@
     ></v-img>
 
       <span class="d-flex flex-row">
-        <span class="d-flex row align-center justify-center mx-auto">
-          <v-icon
-            class="mx-auto px-3 text-h3"
-            color="primary"
-          > mdi-silverware-fork-knife </v-icon>
-          <v-card-text
-            class="mx-auto px-3  align-center text-h4"
-          > {{ recipe.servings }} </v-card-text>
-        </span>
-
-        <span class="d-flex row align-center justify-center mx-auto">
-          <v-icon
-            class="mx-auto px-3 text-h3"
-            color="primary"
-          > mdi-chef-hat </v-icon>
-          <v-card-text
-            class="mx-auto px-3  align-center text-h4"
-          > {{ recipe.preparationTime }} min </v-card-text>
-        </span>
-
-        <span class="d-flex row align-center justify-center mx-auto">
-          <v-icon
-            class="mx-auto px-3 text-h3"
-            color="primary"
-          > mdi-stove </v-icon>
-          <v-card-text
-            class="mx-auto px-3  align-center text-h4"
-          > {{ recipe.cookingTime }} min </v-card-text>
-        </span>
+        <picto-info :value="recipe.servings" icon="mdi-silverware-fork-knife"></picto-info>
+        <picto-info :value="`${recipe.preparationTime} min`" icon="mdi-chef-hat"></picto-info>
+        <picto-info :value="`${recipe.cookingTime} min`" icon="mdi-stove"></picto-info>
       </span>
 
       <h2 class="my-3" >Ingredients</h2>
@@ -145,6 +119,7 @@ import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {base_url, toEditRecipe, toListRecipe} from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
+//import PictoInfo from "@/components/RecipeInfo.vue";
 
 // Get the route object
 const route = useRoute();

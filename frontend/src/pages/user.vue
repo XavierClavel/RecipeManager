@@ -19,6 +19,17 @@
       class="mx-auto px-3 text-primary text-h3"
     >{{ user.username }}</v-card-title>
 
+    <span>
+      <v-container>
+        <v-card-text>
+          {{recipesOwned}}
+        </v-card-text>
+        <v-card-text>
+          Recipes
+        </v-card-text>
+      </v-container>
+    </span>
+
   </v-card>
 
 </template>
@@ -28,7 +39,7 @@ import { useRoute } from 'vue-router';
 import {deleteRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {toEditRecipe, toListRecipe} from "@/scripts/common";
-import {getUser} from "@/scripts/users";
+import {getUser, getUserRecipesCount} from "@/scripts/users";
 
 // Get the route object
 const route = useRoute();
@@ -38,6 +49,7 @@ const errorMessage = ref<String>("This user does not exist")
 const isOwner = true
 
 const user = ref<object>({})
+const recipesOwned = ref<number>(0)
 
 getUser(username).then (
   function (response) {
@@ -50,6 +62,17 @@ getUser(username).then (
 }).finally(function () {
   // always executed
 });
+
+getUserRecipesCount(username).then (
+  function (response) {
+    console.log(response)
+    recipesOwned.value = response.data
+  }).catch(function (error) {
+    displayError.value = true
+    console.log(error);
+    console.log(displayError);
+  }
+)
 
 const remove = (id) => {
   deleteRecipe(id)

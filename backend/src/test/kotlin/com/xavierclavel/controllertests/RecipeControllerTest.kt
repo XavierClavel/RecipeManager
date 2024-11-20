@@ -54,7 +54,7 @@ class RecipeControllerTest : ApplicationTest() {
             description = "My new description",
             steps = mutableListOf(
                 "slice",
-                "cool"
+                "cool",
             )
         )
         it.updateRecipe(response.id, recipeDTO2)
@@ -64,7 +64,6 @@ class RecipeControllerTest : ApplicationTest() {
 
     @Test
     fun `updating unexisting recipe returns Unauthorized`() = runTestAsAdmin {
-
         it.put("$RECIPE_URL/-1"){
             contentType(ContentType.Application.Json)
             header(HttpHeaders.ContentType, ContentType.Application.Json)

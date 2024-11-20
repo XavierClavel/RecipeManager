@@ -4,11 +4,15 @@ import apiClient from '@/plugins/axios.js';
 export{
   getUser,
   getUsers,
+  getUserRecipesCount,
   deleteUser,
 }
 
 async function getUser(username) {
   return await apiClient.get(`${base_url}/user/${username}`)
+
+}async function getUserRecipesCount(username) {
+  return await apiClient.get(`${base_url}/recipe/user/${username}/count`)
 }
 
 async function getUsers() {
