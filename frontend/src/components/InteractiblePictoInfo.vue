@@ -9,7 +9,7 @@ defineProps({
     required: true,
   },
   action: {
-    type: () => {},
+    type: Function,
   }
 })
 </script>

@@ -43,7 +43,9 @@ object RecipeController: Controller(RECIPE_URL) {
     }
 
     private fun Route.listRecipes() = get {
-        call.respond(recipeService.findList())
+        val paging = getPaging()
+        val owner = call.request.queryParameters["owner"]
+        call.respond(recipeService.findList(paging, owner))
     }
 
     private fun Route.createRecipe() = post {
@@ -59,8 +61,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.updateRecipe() = put("/{recipe}") {
         try {
-            val recipeId =
-                call.parameters["recipe"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
+            val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
             val recipe = recipeService.findById(recipeId) ?: return@put call.respond(HttpStatusCode.NotFound)
             if (!isAuthorizedToEditRecipe(recipe)) return@put call.respond(HttpStatusCode.Unauthorized)
             val info =

@@ -18,8 +18,12 @@ class RecipeService: KoinComponent {
         queryByOwner(username).findCount()
 
 
-    fun findList() : List<RecipeInfo> =
-        QRecipe().findList().map { it.toInfo() }
+    fun findList(paging: Paging, owner: String?) : List<RecipeInfo> =
+        QRecipe()
+            .filterByOwner(owner)
+            .setPaging(paging)
+            .findList()
+            .map { it.toInfo() }
 
     fun findById(recipeId: Long) : RecipeInfo? =
         QRecipe().id.eq(recipeId).findOne()?.toInfo()
@@ -64,4 +68,6 @@ class RecipeService: KoinComponent {
     private fun queryByOwner(username: String) =
         QRecipe().owner.username.eq(username)
 
+    private fun QRecipe.filterByOwner(username: String?) =
+        this.let { if (owner == null) it else it.owner.username.eq(username) }
 }
