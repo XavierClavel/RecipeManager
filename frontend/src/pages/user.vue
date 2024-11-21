@@ -19,15 +19,11 @@
       class="mx-auto px-3 text-primary text-h3"
     >{{ user.username }}</v-card-title>
 
-    <span>
-      <v-container>
-        <v-card-text>
-          {{recipesOwned}}
-        </v-card-text>
-        <v-card-text>
-          Recipes
-        </v-card-text>
-      </v-container>
+    <span class="d-flex flex-row">
+      <picto-info :value="recipesOwned" icon="mdi-notebook"></picto-info>
+      <picto-info :value="recipesOwned" icon="mdi-heart"></picto-info>
+      <picto-info :value="recipesOwned" icon="mdi-account-heart"></picto-info>
+      <picto-info :value="recipesOwned" icon="mdi-account-multiple"></picto-info>
     </span>
 
   </v-card>
