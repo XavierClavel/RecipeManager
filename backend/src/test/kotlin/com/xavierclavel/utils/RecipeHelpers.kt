@@ -41,6 +41,18 @@ suspend fun HttpClient.getRecipe(recipeId: Long): RecipeInfo {
     }
 }
 
+suspend fun HttpClient.listRecipes(owner: String?): List<RecipeInfo> {
+    this.get(RECIPE_URL) {
+        url {
+            owner?.let { parameters.append("owner", owner) }
+        }
+    }.apply {
+        assertEquals(HttpStatusCode.OK, status)
+        val response = Json.decodeFromString<List<RecipeInfo>>(bodyAsText())
+        return response
+    }
+}
+
 suspend fun HttpClient.countRecipeByUser(username: String): Int {
     this.get("$RECIPE_URL/user/$username/count").apply {
         assertEquals(HttpStatusCode.OK, status)

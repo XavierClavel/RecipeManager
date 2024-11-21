@@ -45,6 +45,7 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.listRecipes() = get {
         val paging = getPaging()
         val owner = call.request.queryParameters["owner"]
+        logger.info { owner }
         call.respond(recipeService.findList(paging, owner))
     }
 

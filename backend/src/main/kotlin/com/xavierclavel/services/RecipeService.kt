@@ -69,5 +69,6 @@ class RecipeService: KoinComponent {
         QRecipe().owner.username.eq(username)
 
     private fun QRecipe.filterByOwner(username: String?) =
-        this.let { if (owner == null) it else it.owner.username.eq(username) }
+        if (username == null) this else this.owner.username.eq(username)
+
 }

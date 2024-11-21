@@ -18,7 +18,7 @@ import main.com.xavierclavel.utils.countRecipeByUser
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.deleteRecipe
 import main.com.xavierclavel.utils.getRecipe
-import main.com.xavierclavel.utils.getUser
+import main.com.xavierclavel.utils.listRecipes
 import main.com.xavierclavel.utils.updateRecipe
 import kotlin.test.assertFalse
 
@@ -87,5 +87,35 @@ class RecipeControllerTest : ApplicationTest() {
         it.createRecipe(recipeDTO)
         val count2 = it.countRecipeByUser("admin")
         assertEquals(count2, 1)
+    }
+
+    @Test
+    fun `get recipes by owner`() = runTestAsAdmin {
+        val count1 = it.countRecipeByUser("admin")
+        assertEquals(count1, 0)
+        it.createRecipe(recipeDTO)
+        val count2 = it.countRecipeByUser("admin")
+        assertEquals(count2, 1)
+    }
+
+    @Test
+    fun `list recipes by owner`() = runTestAsAdmin {
+        val result = it.listRecipes("admin")
+        assertEquals(result.count(), 0)
+        it.createRecipe(recipeDTO)
+        val result2 = it.listRecipes("admin")
+        assertEquals(result2.count(), 1)
+        val result3 = it.listRecipes("user")
+        assertEquals(result3.count(), 0)
+    }
+    @Test
+    fun `list recipes`() = runTestAsAdmin {
+        val result = it.listRecipes(null)
+        println(result.count())
+        assertEquals(0, result.count())
+        it.createRecipe(recipeDTO)
+        val result2 = it.listRecipes(null)
+        println(result2.count())
+        assertEquals(1, result2.count())
     }
 }
