@@ -20,10 +20,10 @@
     >{{ user.username }}</v-card-title>
 
     <span class="d-flex flex-row">
-      <picto-info :value="recipesOwned" icon="mdi-notebook"></picto-info>
-      <picto-info :value="recipesOwned" icon="mdi-heart"></picto-info>
-      <picto-info :value="recipesOwned" icon="mdi-account-heart"></picto-info>
-      <picto-info :value="recipesOwned" icon="mdi-account-multiple"></picto-info>
+      <interactible-picto-info :value="recipesOwned" icon="mdi-notebook" :action="test"></interactible-picto-info>
+      <interactible-picto-info :value="recipesOwned" icon="mdi-heart"></interactible-picto-info>
+      <interactible-picto-info :value="recipesOwned" icon="mdi-account-heart"></interactible-picto-info>
+      <interactible-picto-info :value="recipesOwned" icon="mdi-account-multiple"></interactible-picto-info>
     </span>
 
   </v-card>
@@ -36,6 +36,7 @@ import {deleteRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {toEditRecipe, toListRecipe} from "@/scripts/common";
 import {getUser, getUserRecipesCount} from "@/scripts/users";
+import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 
 // Get the route object
 const route = useRoute();
@@ -46,6 +47,10 @@ const isOwner = true
 
 const user = ref<object>({})
 const recipesOwned = ref<number>(0)
+
+const test = () => {
+  console.log("test")
+}
 
 getUser(username).then (
   function (response) {

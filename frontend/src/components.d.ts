@@ -10,6 +10,8 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     FileUpload: typeof import('./components/FileUpload.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    Interactible: typeof import('./components/Interactible.vue')['default']
+    InteractiblePictoInfo: typeof import('./components/InteractiblePictoInfo.vue')['default']
     PictoInfo: typeof import('./components/PictoInfo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
