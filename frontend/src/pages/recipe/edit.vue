@@ -19,62 +19,9 @@
         class="mx-auto px-3"
         color="primary"
       ></v-textarea>
-      <v-file-input
-        @change="onImageUpload"
-        v-model="image"
-        style="display: none"
-        ref="fileInput"
-        accept="image/*"
-      >
 
-      </v-file-input>
+       <editable-picture path="image/recipes" :id="recipeId"></editable-picture>
 
-      <v-img :src="imageUrl"
-             @load="handleImageLoad"
-             @error="handleImageError"
-             cover
-             color="surface-variant"
-             height="562px"
-             width="1000px"
-             class="preview-image my-6"
-             rounded="lg"
-             fill-height
-             fluid
-             @click="triggerFileInput"
-      >
-        <v-container class="image-overlay d-flex flex-row ga-16"  >
-          <v-btn
-            width="100px"
-            height="100px"
-            rounded="xl"
-            color="primary"
-            icon="mdi-pencil"
-            class="text-h4 overlay-button"
-            hint="hihi"
-          ></v-btn>
-          <v-btn
-            width="100px"
-            height="100px"
-            rounded="xl"
-            color="primary"
-            icon="mdi-arrow-u-left-top"
-            class="text-h4 overlay-button"
-            v-if="imageUpdated"
-            @click.stop="undoImageChange"
-          ></v-btn>
-          <v-btn
-            width="100px"
-            height="100px"
-            rounded="xl"
-            color="primary"
-            icon="mdi-close"
-            class="text-h4 overlay-button"
-            v-if="recipeHasImage && !imageDeleted"
-            @click.stop="deleteImage"
-          ></v-btn>
-        </v-container>
-
-      </v-img>
 
       <v-number-input
         v-model="recipe.servings"
@@ -316,10 +263,6 @@
           min-width="300px"
         >Save</v-btn>
       </span>
-
-
-
-
     </form>
   </v-card>
 
@@ -332,19 +275,15 @@ import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRecipe} from "@/scripts/recipes";
 import {base_url, toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
+import EditablePicture from "@/components/EditablePicture.vue";
 
-const fileInput = ref(null)
-const imageUpdated = ref<Boolean>(false)
-const imageDeleted = ref<Boolean>(false)
-const recipeHasImage = ref<Boolean>(false)
+
 
 // Get the route object
 const route = useRoute();
 let recipeId = route.query.id
 
-const image = ref<File | null>(null)
-const baseImageUrl = `${base_url}/image/recipes/${recipeId}.webp`
-const imageUrl = ref<string>(baseImageUrl)
+
 
 const autocompleteList = ref([])
 
@@ -363,46 +302,7 @@ const recipe = ref<object>({
   customIngredients: [],
 })
 
-// Trigger the v-file-input click
-function triggerFileInput() {
-  if (fileInput.value) {
-    fileInput.value.click();
-  }
-}
 
-const onImageUpload = () => {
-  imageUrl.value = URL.createObjectURL(image.value)
-  imageUpdated.value = true
-}
-
-function undoImageChange() {
-  imageUpdated.value = false
-  imageDeleted.value = false
-  imageUrl.value = `${base_url}/image/recipes/${recipeId}.webp`
-}
-
-function deleteImage() {
-  imageDeleted.value = recipeHasImage.value
-  imageUpdated.value = recipeHasImage.value
-
-  imageUrl.value = `${base_url}/image/recipes/default.webp`
-}
-
-function handleImageLoad(url) {
-  // Only consider the primary image for setting imageExists
-  if (url === baseImageUrl.value) {
-    console.log("image success")
-    recipeHasImage.value = true
-  }
-}
-
-function handleImageError(url) {
-  // If primary image fails, set imageExists to false and hide the button
-  if (url === baseImageUrl.value) {
-    console.log("image error")
-    recipeHasImage.value = false
-  }
-}
 
 // Function to add a new item
 const addStep = () => {
@@ -470,9 +370,7 @@ if (recipeId != undefined) {
   opacity: 0.5;
 }
 
-.preview-image {
-  cursor: pointer;
-}
+
 
 .drag-handle {
   cursor: grab;
@@ -480,30 +378,5 @@ if (recipeId != undefined) {
   align-items: center;
 }
 
-.image-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0);
-  transition: background-color 0.3s ease;
-}
-
-.preview-image:hover .image-overlay {
-  background-color: rgba(255, 255, 255, 0.3); /* Adjust opacity for desired whitening effect */
-}
-
-.overlay-button {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.preview-image:hover .overlay-button {
-  opacity: 1; /* Button becomes visible on hover */
-}
 
 </style>

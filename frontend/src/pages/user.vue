@@ -15,16 +15,33 @@
   max-width="1000px"
   v-if="!displayError"
   >
-    <v-card-title
-      class="mx-auto px-3 text-primary text-h3"
-    >{{ user.username }}</v-card-title>
+    <v-container class="d-flex flex-row">
+      <editable-picture
+        path="image/recipes"
+        :id="recipeId"
+        rounded="circle"
+        height="200px"
+        width="200px"
+        buttons-size="50px"
+        buttons-icon-size="text-h7"
+        buttons-spacing="ga-4"
+        buttons-rounded="lg"
+      ></editable-picture>
+      <v-container>
+        <v-card-title
+          class="mx-auto px-3 text-primary text-h3"
+        >{{ user.username }}</v-card-title>
+        <span class="d-flex flex-row">
+          <interactible-picto-info :value="recipesOwned" icon="mdi-notebook" :action="test"></interactible-picto-info>
+          <interactible-picto-info :value="recipesOwned" icon="mdi-heart"></interactible-picto-info>
+          <interactible-picto-info :value="recipesOwned" icon="mdi-account-heart"></interactible-picto-info>
+          <interactible-picto-info :value="recipesOwned" icon="mdi-account-multiple"></interactible-picto-info>
+        </span>
+      </v-container>
 
-    <span class="d-flex flex-row">
-      <interactible-picto-info :value="recipesOwned" icon="mdi-notebook" :action="test"></interactible-picto-info>
-      <interactible-picto-info :value="recipesOwned" icon="mdi-heart"></interactible-picto-info>
-      <interactible-picto-info :value="recipesOwned" icon="mdi-account-heart"></interactible-picto-info>
-      <interactible-picto-info :value="recipesOwned" icon="mdi-account-multiple"></interactible-picto-info>
-    </span>
+    </v-container>
+
+
 
   </v-card>
 
@@ -37,6 +54,7 @@ import {ref} from "vue";
 import {toEditRecipe, toListRecipe} from "@/scripts/common";
 import {getUser, getUserRecipesCount} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
+import EditablePicture from "@/components/EditablePicture.vue";
 
 // Get the route object
 const route = useRoute();
