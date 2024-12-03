@@ -115,7 +115,7 @@
       </draggable>
 
       <!-- Custom ingredients -->
-      <h2 class="my-3" v-if="recipe.customIngredients.length > 0">Custom ingredients</h2>
+      <h2 class="my-3" v-if="recipe.customIngredients && recipe.customIngredients.length > 0">Custom ingredients</h2>
       <draggable v-model="recipe.customIngredients" tag="div2" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
@@ -332,12 +332,17 @@ const removeCustomIngredient = (index) => {
 }
 
 async function submit() {
-  console.log(recipe.value)
+  const submitted = {}
+  submitted["title"] = recipe.value.title
+  submitted["description"] = recipe.value.description
+  submitted["steps"] = recipe.value.steps
+  console.log(submitted)
   if (recipeId == null) {
-    const response = await createRecipe(recipe.value)
+    const response = await createRecipe(submitted)
     recipeId = response.data.id
+
   } else {
-    await updateRecipe(recipeId, recipe.value)
+    await updateRecipe(recipeId, submitted)
   }
 
   await editablePicture.value.submitImage()
