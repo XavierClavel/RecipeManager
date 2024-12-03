@@ -17,8 +17,8 @@
   >
     <v-container class="d-flex flex-row">
       <editable-picture
-        path="image/recipes"
-        :id="recipeId"
+        path="image/users"
+        :id="userId"
         rounded="circle"
         height="200px"
         width="200px"
@@ -26,6 +26,7 @@
         buttons-icon-size="text-h7"
         buttons-spacing="ga-4"
         buttons-rounded="lg"
+        ref="editablePicture"
       ></editable-picture>
       <v-container>
         <v-card-title
@@ -109,12 +110,16 @@ getUser(userId).then (
   // always executed
 });
 
+const editablePicture = ref(null)
+
 async function submit() {
   const submitted = {}
   submitted["username"] = user.value.username
   submitted["bio"] = user.value.bio
   console.log(submitted)
   await updateUser(userId, submitted)
+  await editablePicture.value.submitImage()
+
   toViewUser(userId)
 }
 

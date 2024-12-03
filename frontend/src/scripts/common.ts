@@ -25,6 +25,10 @@ export {
   toSignup,
   toMyProfile,
   whoami,
+
+  uploadImage,
+  deleteImage,
+
   noLoginRedirect,
 }
 
@@ -99,4 +103,28 @@ async function whoami() {
     toLogin()
   })
 
+}
+
+async function uploadImage(id, file, path) {
+  let formData = new FormData()
+  formData.append('file', file)
+  return await apiClient.post( `/${path}/${id}`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  ).then(function(response){
+    console.log('SUCCESS!!');
+    console.log(response)
+  })
+    .catch(function(error){
+      console.log('FAILURE!!');
+      console.log(error)
+    });
+}
+
+async function deleteImage(id, path) {
+  return await apiClient.delete(`/${path}/${id}`)
 }

@@ -56,6 +56,8 @@
 
 <script setup lang="ts">
 
+import {createRecipe, deleteRecipeImage, updateRecipe, uploadRecipeImage} from "@/scripts/recipes";
+
 const props = defineProps({
   id: {
     type: [Number],
@@ -102,7 +104,7 @@ const props = defineProps({
   },
 })
 
-import {base_url} from "@/scripts/common";
+import {base_url, toViewRecipe, uploadImage} from "@/scripts/common";
 import {ref} from "vue";
 
 const image = ref<File | null>(null)
@@ -158,6 +160,19 @@ function handleImageError(url) {
     hasImage.value = false
   }
 }
+
+async function submitImage() {
+  if (imageDeleted.value) {
+    await deleteImage(props.id, props.path)
+  } else if (imageUpdated.value) {
+    await uploadImage(props.id, image.value, props.path)
+  }
+}
+
+defineExpose({
+  submitImage,
+})
+
 </script>
 
 <style scoped>

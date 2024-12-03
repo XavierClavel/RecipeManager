@@ -18,8 +18,7 @@
     <v-container class="d-flex flex-row">
       <v-img
         color="surface-variant"
-        :path="imageUrl"
-        :id="recipeId"
+        :src="imageUrl"
         rounded="circle"
         height="200px"
         width="200px"
