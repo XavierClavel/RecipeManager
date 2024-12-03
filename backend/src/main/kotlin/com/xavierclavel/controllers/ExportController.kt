@@ -1,14 +1,11 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.services.ExportService
-import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.RecipeService
-import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.logger
-import common.dto.UserDTO
 import common.utils.URL.EXPORT_URL
-import common.utils.URL.USER_URL
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.header
@@ -29,7 +26,7 @@ object ExportController: Controller(EXPORT_URL) {
     }
 
     private fun Route.exportRecipe() = get("/recipe/{id}") {
-        val id = call.parameters["id"]?.toLongOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
         val recipe = recipeService.findById(id) ?: return@get call.respond(HttpStatusCode.NotFound, "Recipe not found")
         try {
             val byteArray = exportService.generatePDF(recipe)

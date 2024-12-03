@@ -2,7 +2,9 @@ package com.xavierclavel.services
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.models.User
+import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.models.query.QUser
+import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.infodto.UserInfo
@@ -29,10 +31,9 @@ class UserService: KoinComponent {
         User.from(userDTO).insert()
     }
 
-    fun editUser(user: User, userDTO: UserDTO) {
-        user.merge(userDTO)
-        User.from(userDTO).insert()
-    }
+    fun editUser(id: Long, userDTO: UserDTO) =
+        QUser().id.eq(id).findOne()?.merge(userDTO)?.updateAndGet()?.toInfo()
+
 
 
     fun deleteUserById(userId: Long) =
@@ -44,6 +45,9 @@ class UserService: KoinComponent {
     fun getUserByUsername(username: String) : UserInfo? {
         return findByUsername(username)?.toInfo()
     }
+
+    fun getUser(id: Long) : UserInfo? =
+        QUser().id.eq(id).findOne()?.toInfo()
 
     fun listUsers(): List<UserInfo> =
         QUser().findList().map { it.toInfo() }

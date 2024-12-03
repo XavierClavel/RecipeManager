@@ -3,6 +3,8 @@ package com.xavierclavel.controllers
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getPathId
+import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.utils.URL.USER_URL
 import io.ktor.http.HttpStatusCode
@@ -33,26 +35,26 @@ object UserController: Controller(USER_URL) {
         call.respond(HttpStatusCode.Created)
     }
 
-    private fun Route.editUser() = put {
+    private fun Route.editUser() = put("/{id}") {
+        val id = getPathId() ?: return@put call.respond(HttpStatusCode.BadRequest)
         val userDTO = call.receive<UserDTO>()
-        val user = userService.findByUsername(userDTO.username) ?: return@put call.respond(HttpStatusCode.BadRequest)
-        userService.editUser(user, userDTO)
-        call.respond(HttpStatusCode.OK)
+        val response = userService.editUser(id, userDTO) ?: return@put call.respond(HttpStatusCode.NotFound)
+        call.respond(response)
     }
 
     private fun Route.listUsers() = get {
         call.respond(userService.listUsers())
     }
 
-    private fun Route.getUser() = get("/{username}") {
-        val username = call.parameters["username"]!!
-        val user = userService.getUserByUsername(username) ?: return@get call.respond(HttpStatusCode.NotFound)
+    private fun Route.getUser() = get("/{id}") {
+        val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val user = userService.getUser(id) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(user)
     }
 
-    private fun Route.deleteUser() = delete("/{username}") {
-        val username = call.parameters["username"]!!
-        val user = userService.getUserByUsername(username) ?: return@delete call.respond(HttpStatusCode.NotFound)
+    private fun Route.deleteUser() = delete("/{id}") {
+        val id = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        val user = userService.getUser(id) ?: return@delete call.respond(HttpStatusCode.NotFound)
         userService.deleteUserById(user.id)
         imageService.deleteUserImage(user.id)
         call.respond(HttpStatusCode.OK)

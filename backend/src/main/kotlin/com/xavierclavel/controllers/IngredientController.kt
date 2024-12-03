@@ -2,6 +2,7 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.services.IngredientService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getPaging
 import common.dto.IngredientDTO
 import common.utils.URL.INGREDIENT_URL
@@ -33,14 +34,14 @@ object IngredientController: Controller(INGREDIENT_URL) {
     }
 
     private fun Route.updateIngredient() = put("/{id}") {
-        val id = call.parameters["id"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId() ?: return@put call.respond(HttpStatusCode.BadRequest)
         val ingredientDTO = call.receive<IngredientDTO>()
         val ingredient = ingredientService.updateIngredient(id, ingredientDTO) ?: return@put call.respond(HttpStatusCode.NotFound)
         call.respond(ingredient)
     }
 
     private fun Route.deleteIngredient() = delete("/{id}") {
-        val id = call.parameters["id"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
         val result = ingredientService.deleteById(id)
         return@delete if (result) call.respond(HttpStatusCode.OK)
             else call.respond(HttpStatusCode.NotFound)
@@ -52,7 +53,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
     }
 
     private fun Route.getIngredient() = get("/{id}") {
-        val id = call.parameters["id"]?.toLongOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
         val result = ingredientService.findById(id) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(result)
     }

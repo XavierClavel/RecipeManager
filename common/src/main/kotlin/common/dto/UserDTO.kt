@@ -9,4 +9,5 @@ data class UserDTO(
     val password: String = "password",
     val mail: String = "mail@example.com",
     val role: UserRole = UserRole.USER,
+    val bio: String = "",
 )

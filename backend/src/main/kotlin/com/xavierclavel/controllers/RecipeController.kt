@@ -5,6 +5,7 @@ import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPaging
+import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUsername
 import com.xavierclavel.utils.logger
 import common.infodto.RecipeInfo
@@ -36,8 +37,8 @@ object RecipeController: Controller(RECIPE_URL) {
         deleteRecipe()
     }
 
-    private fun Route.getRecipe() = get("/{recipe}") {
-        val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest)
+    private fun Route.getRecipe() = get("/{id}") {
+        val recipeId = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
         val recipe = recipeService.findById(recipeId) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(recipe)
     }
@@ -60,9 +61,9 @@ object RecipeController: Controller(RECIPE_URL) {
 
     }
 
-    private fun Route.updateRecipe() = put("/{recipe}") {
+    private fun Route.updateRecipe() = put("/{id}") {
         try {
-            val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@put call.respond(HttpStatusCode.BadRequest)
+            val recipeId = getPathId() ?: return@put call.respond(HttpStatusCode.BadRequest)
             val recipe = recipeService.findById(recipeId) ?: return@put call.respond(HttpStatusCode.NotFound)
             if (!isAuthorizedToEditRecipe(recipe)) return@put call.respond(HttpStatusCode.Unauthorized)
             val info =
@@ -73,8 +74,8 @@ object RecipeController: Controller(RECIPE_URL) {
         }
     }
 
-    private fun Route.deleteRecipe() = delete("/{recipe}") {
-        val recipeId = call.parameters["recipe"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+    private fun Route.deleteRecipe() = delete("/{id}") {
+        val recipeId = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
         val recipe = recipeService.findById(recipeId) ?: return@delete call.respond(HttpStatusCode.NotFound)
         if (!isAuthorizedToEditRecipe(recipe)) return@delete call.respond(HttpStatusCode.Unauthorized)
         recipeService.deleteRecipe(recipeId)

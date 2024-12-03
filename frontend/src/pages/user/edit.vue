@@ -31,15 +31,39 @@
         <v-card-title
           class="mx-auto px-3 text-primary text-h3"
         >{{ user.username }}</v-card-title>
-        <span class="d-flex flex-row">
-          <interactible-picto-info :value="recipesOwned" icon="mdi-notebook" :action="test"></interactible-picto-info>
-          <interactible-picto-info :value="recipesOwned" icon="mdi-heart"></interactible-picto-info>
-          <interactible-picto-info :value="recipesOwned" icon="mdi-account-heart"></interactible-picto-info>
-          <interactible-picto-info :value="recipesOwned" icon="mdi-account-multiple"></interactible-picto-info>
-        </span>
       </v-container>
 
     </v-container>
+
+    <v-textarea
+        v-model="user.bio"
+        label="Description"
+        class="mx-auto px-3"
+        color="primary"
+    ></v-textarea>
+
+    <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
+        <v-btn
+            prepend-icon="mdi-close-circle-outline"
+            color="primary"
+            flat
+            rounded
+            class="mb-10 text-h6"
+            min-height="70px"
+            min-width="300px"
+            @click="toViewUser(userId)"
+        >Cancel</v-btn>
+        <v-btn
+            @click="submit"
+            prepend-icon="mdi-content-save"
+            color="primary"
+            flat
+            rounded
+            class="mb-10 text-h6"
+            min-height="70px"
+            min-width="300px"
+        >Save</v-btn>
+      </span>
 
 
 
@@ -49,16 +73,23 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import {deleteRecipe, getRecipe} from "@/scripts/recipes";
+import {
+  createRecipe,
+  deleteRecipe,
+  deleteRecipeImage,
+  getRecipe,
+  updateRecipe,
+  uploadRecipeImage
+} from "@/scripts/recipes";
 import {ref} from "vue";
-import {toEditRecipe, toListRecipe} from "@/scripts/common";
-import {getUser, getUserRecipesCount} from "@/scripts/users";
+import {toEditRecipe, toListRecipe, toViewRecipe, toViewUser} from "@/scripts/common";
+import {getUser, getUserRecipesCount, updateUser} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import EditablePicture from "@/components/EditablePicture.vue";
 
 // Get the route object
 const route = useRoute();
-const username = route.query.username
+const userId = route.query.id
 let displayError = ref<Boolean>(false)
 const errorMessage = ref<String>("This user does not exist")
 const isOwner = true
@@ -66,11 +97,7 @@ const isOwner = true
 const user = ref<object>({})
 const recipesOwned = ref<number>(0)
 
-const test = () => {
-  console.log("test")
-}
-
-getUser(username).then (
+getUser(userId).then (
   function (response) {
     console.log(response)
     user.value = response.data
@@ -82,20 +109,13 @@ getUser(username).then (
   // always executed
 });
 
-getUserRecipesCount(username).then (
-  function (response) {
-    console.log(response)
-    recipesOwned.value = response.data
-  }).catch(function (error) {
-    displayError.value = true
-    console.log(error);
-    console.log(displayError);
-  }
-)
-
-const remove = (id) => {
-  deleteRecipe(id)
-  toListRecipe()
+async function submit() {
+  const submitted = {}
+  submitted["username"] = user.value.username
+  submitted["bio"] = user.value.bio
+  console.log(submitted)
+  await updateUser(userId, submitted)
+  toViewUser(userId)
 }
 
 </script>

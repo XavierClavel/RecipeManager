@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToMany
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
+import java.time.Instant
 
 @Entity
 @Table(name = "users")
@@ -31,6 +32,10 @@ class User (
     val mailHash: String = "",
 
     var role: UserRole = UserRole.USER,
+
+    var bio: String = "",
+
+    var joinDate: Long = Instant.now().epochSecond,
 
     @OneToMany
     var recipes: Set<Recipe> = setOf(),
@@ -74,10 +79,12 @@ class User (
             id = this.id,
             username = this.username,
             role = this.role,
+            joinDate = this.joinDate,
+            bio = this.bio,
         )
 
-    fun merge(userDTO: UserDTO) {
+    fun merge(userDTO: UserDTO) = this.apply {
         username = userDTO.username
-        role = userDTO.role
+        bio = userDTO.bio
     }
 }

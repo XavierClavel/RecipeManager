@@ -3,6 +3,7 @@ package com.xavierclavel.controllers
 import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUsername
 import common.utils.Filepath.RECIPES_IMG_PATH
 import common.utils.Filepath.USERS_IMG_PATH
@@ -50,28 +51,28 @@ object ImageController: Controller(IMAGE_URL) {
 
 
     private fun Route.uploadRecipeImage() = post("/recipes/{id}") {
-        val id = call.parameters["id"]?.toLongOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        val id = getPathId() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
         val multipartData = call.receiveMultipart()
         imageService.saveRecipeImage(id, multipartData)
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.uploadUserIcon() = post("/users/{id}") {
-        val id = call.parameters["id"]?.toLongOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        val id = getPathId() ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
         val multipartData = call.receiveMultipart()
         imageService.saveUserImage(id, multipartData)
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.deleteRecipeImage() = delete("/recipes/{id}") {
-        val id = call.parameters["id"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        val id = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
         if (!isAuthorizedToEditRecipe(id)) return@delete call.respond(HttpStatusCode.Unauthorized)
         imageService.deleteRecipeImage(id)
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.deleteUserImage() = delete("/users/{id}") {
-        val id = call.parameters["id"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        val id = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
         imageService.deleteUserImage(id)
         call.respond(HttpStatusCode.OK)
     }

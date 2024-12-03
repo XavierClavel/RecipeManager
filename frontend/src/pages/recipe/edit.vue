@@ -346,7 +346,6 @@ async function submit() {
     await uploadRecipeImage(recipeId, image.value)
   }
   toViewRecipe(recipeId)
-
 }
 
 if (recipeId != undefined) {

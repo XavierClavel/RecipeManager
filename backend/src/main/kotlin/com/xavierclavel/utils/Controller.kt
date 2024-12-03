@@ -31,3 +31,5 @@ fun RoutingContext.getPaging():Paging =
 
 fun RoutingContext.getSessionUsername(): String? =
     call.sessions.get<UserSession>()?.username
+
+fun RoutingContext.getPathId(): Long? = call.parameters["id"]?.toLongOrNull()

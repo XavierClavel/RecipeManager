@@ -8,11 +8,17 @@ export {
   login,
   logout,
   signup,
+
   toCreateRecipe,
   toEditRecipe,
   toViewRecipe,
   toListRecipe,
+
+  toViewUser,
+  toEditUser,
+
   toListIngredient,
+
   toHome,
   toUsers,
   toLogin,
@@ -27,6 +33,9 @@ const toEditRecipe = (id) => router.push(`/recipe/edit/?id=${id}`)
 const toViewRecipe = (id) => router.push(`/recipe/view/?id=${id}`)
 const toListRecipe = () => router.push(`/recipe/list`)
 
+const toViewUser = (id) => router.push(`/user/view/?id=${id}`)
+const toEditUser = (id) => router.push(`/user/edit/?id=${id}`)
+
 const toListIngredient = () => router.push(`/ingredients`)
 
 const toHome = () => router.push('/home')
@@ -36,7 +45,7 @@ const toSignup = () => router.push('/signup')
 
 const toMyProfile = () => {
   const authStore = useAuthStore();
-  router.push(`/user?username=${authStore.username}`)
+  router.push(`/user/view?id=${authStore.id}`)
 }
 
 const noLoginRedirect = ['/login', '/logout', '/signup']
