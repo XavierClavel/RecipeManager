@@ -4,6 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.models.User
 import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.models.query.QUser
+import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.logger
 import common.dto.UserDTO
@@ -27,11 +28,11 @@ class UserService: KoinComponent {
         return QUser().mailHash.eq(mailHash).findOne()
     }
 
-    fun createUser(userDTO: UserDTO) {
-        User.from(userDTO).insert()
-    }
+    fun createUser(userDTO: UserDTO): UserInfo =
+        User.from(userDTO).insertAndGet().toInfo()
 
-    fun editUser(id: Long, userDTO: UserDTO) =
+
+    fun editUser(id: Long, userDTO: UserDTO): UserInfo? =
         QUser().id.eq(id).findOne()?.merge(userDTO)?.updateAndGet()?.toInfo()
 
 
