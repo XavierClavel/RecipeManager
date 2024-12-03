@@ -20,7 +20,7 @@
         color="primary"
       ></v-textarea>
 
-       <editable-picture path="image/recipes" :id="recipeId"></editable-picture>
+       <editable-picture path="image/recipes" :id="recipeId" ref="editablePicture"></editable-picture>
 
 
       <v-number-input
@@ -282,7 +282,7 @@ import EditablePicture from "@/components/EditablePicture.vue";
 // Get the route object
 const route = useRoute();
 let recipeId = route.query.id
-
+const editablePicture = ref(null)
 
 
 const autocompleteList = ref([])
@@ -340,11 +340,8 @@ async function submit() {
     await updateRecipe(recipeId, recipe.value)
   }
 
-  if (imageDeleted.value) {
-    await deleteRecipeImage(recipeId)
-  } else if (imageUpdated.value) {
-    await uploadRecipeImage(recipeId, image.value)
-  }
+  await editablePicture.value.submitImage()
+
   toViewRecipe(recipeId)
 }
 

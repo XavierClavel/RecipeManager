@@ -94,6 +94,7 @@ const userId = route.query.id
 let displayError = ref<Boolean>(false)
 const errorMessage = ref<String>("This user does not exist")
 const isOwner = true
+const editablePicture = ref(null)
 
 const user = ref<object>({})
 const recipesOwned = ref<number>(0)
@@ -109,8 +110,6 @@ getUser(userId).then (
 }).finally(function () {
   // always executed
 });
-
-const editablePicture = ref(null)
 
 async function submit() {
   const submitted = {}
