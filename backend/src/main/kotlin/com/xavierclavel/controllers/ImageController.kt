@@ -27,19 +27,19 @@ object ImageController: Controller(IMAGE_URL) {
     override fun Route.routes() {
         //Serve static images for recipes
         staticFiles("/recipes", File(RECIPES_IMG_PATH)) {
-            default("index.html")
-            preCompressed(CompressedFileType.BROTLI, CompressedFileType.GZIP)
+            default("default.webp")
             modify { file, call ->
-                call.response.headers.append(HttpHeaders.ETag, file.name.toString())
+                call.response.headers.append(HttpHeaders.ETag, file.lastModified().toString())
+                call.response.headers.append(HttpHeaders.CacheControl, "public, max-age=3600, must-revalidate")
             }
         }
 
         //Serve static images for users icon
         staticFiles("/users", File(USERS_IMG_PATH)) {
-            default("index.html")
-            preCompressed(CompressedFileType.BROTLI, CompressedFileType.GZIP)
+            default("default.webp")
             modify { file, call ->
-                call.response.headers.append(HttpHeaders.ETag, file.name.toString())
+                call.response.headers.append(HttpHeaders.ETag, file.lastModified().toString())
+                call.response.headers.append(HttpHeaders.CacheControl, "public, max-age=3600, must-revalidate")
             }
         }
 

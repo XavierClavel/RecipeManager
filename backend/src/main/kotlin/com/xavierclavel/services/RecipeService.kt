@@ -25,8 +25,11 @@ class RecipeService: KoinComponent {
             .findList()
             .map { it.toInfo() }
 
+    fun findEntityById(recipeId: Long) : Recipe? =
+        QRecipe().id.eq(recipeId).findOne()
+
     fun findById(recipeId: Long) : RecipeInfo? =
-        QRecipe().id.eq(recipeId).findOne()?.toInfo()
+        findEntityById(recipeId)?.toInfo()
 
     fun findAllByCircleId(circleId: Long): List<Recipe> =
         QRecipe().circles.id.eq(circleId).findList()

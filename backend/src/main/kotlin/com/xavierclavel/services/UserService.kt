@@ -2,7 +2,6 @@ package com.xavierclavel.services
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.models.User
-import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
@@ -16,7 +15,7 @@ class UserService: KoinComponent {
     fun countAll() =
         QUser().findCount()
 
-    fun findById(userId: Long) : User? =
+    fun findEntityById(userId: Long) : User? =
         QUser().id.eq(userId).findOne()
 
     fun findByUsername(username: String) : User? =
