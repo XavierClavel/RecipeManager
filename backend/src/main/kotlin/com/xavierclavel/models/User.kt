@@ -37,10 +37,10 @@ class User (
 
     var joinDate: Long = Instant.now().epochSecond,
 
-    @OneToMany
+    @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL], orphanRemoval = true)
     var recipes: Set<Recipe> = setOf(),
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     var likes : Set<Like> = setOf(),
 
     @OneToMany(mappedBy = "user")

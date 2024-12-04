@@ -62,7 +62,7 @@ class Recipe (
     @ManyToMany
     var circles: MutableSet<Circle> = mutableSetOf(),
 
-    @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
     var likes: MutableSet<Like> = mutableSetOf(),
 
 ) : Model() {

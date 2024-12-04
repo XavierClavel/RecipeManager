@@ -5,6 +5,7 @@ import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUserId
+import com.xavierclavel.utils.logger
 import common.utils.URL.LIKE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
@@ -25,7 +26,7 @@ object LikeController: Controller(LIKE_URL) {
 
     private fun Route.getLikes() = get {
         val userId = call.queryParameters["user"]?.toLongOrNull()
-        val recipeId = call.parameters["recipe"]?.toLongOrNull()
+        val recipeId = call.queryParameters["recipe"]?.toLongOrNull()
         val paging = getPaging()
         call.respond(likeService.find(recipeId, userId, paging))
     }

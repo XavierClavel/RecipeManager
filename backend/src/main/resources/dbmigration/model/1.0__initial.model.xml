@@ -59,7 +59,7 @@
             <column name="id" type="bigint" primaryKey="true"/>
             <column name="user_id" type="bigint" notnull="true" references="users.id" foreignKeyName="fk_likes_user_id" foreignKeyIndex="ix_likes_user_id"/>
             <column name="recipe_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_likes_recipe_id" foreignKeyIndex="ix_likes_recipe_id"/>
-            <column name="created_ad" type="localdatetime" notnull="true"/>
+            <column name="creation_date" type="bigint" notnull="true"/>
         </createTable>
         <createTable name="recipes" identityType="identity" pkName="pk_recipes">
             <column name="id" type="bigint" primaryKey="true"/>

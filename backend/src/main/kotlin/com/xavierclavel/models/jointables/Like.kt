@@ -4,6 +4,7 @@ import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
 import common.infodto.LikeInfo
 import io.ebean.Model
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -24,11 +25,11 @@ class Like (
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    var user: User? =  null,
+    var user: User,
 
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
-    var recipe: Recipe? = null,
+    var recipe: Recipe,
 
     var creationDate: Long = Instant.now().epochSecond,
 
@@ -41,7 +42,7 @@ class Like (
         recipe = LikeInfo.Recipe(
             this.recipe.id,
             this.recipe.title,
-        )
+        ),
         creationDate = this.creationDate,
     )
 }

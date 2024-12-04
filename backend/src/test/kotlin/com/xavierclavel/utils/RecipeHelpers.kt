@@ -19,7 +19,16 @@ import kotlinx.serialization.json.Json
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-suspend fun HttpClient.createRecipe(recipe: RecipeDTO) : RecipeInfo {
+val recipeDTO = RecipeDTO(
+    title = "My recipe",
+    description = "My description",
+    steps = mutableListOf(
+        "cut",
+        "cook"
+    )
+)
+
+suspend fun HttpClient.createRecipe(recipe: RecipeDTO = recipeDTO) : RecipeInfo {
     this.post(RECIPE_URL){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)

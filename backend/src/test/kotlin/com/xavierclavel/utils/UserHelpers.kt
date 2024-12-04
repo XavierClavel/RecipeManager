@@ -2,6 +2,7 @@ package main.com.xavierclavel.utils
 
 import common.dto.UserDTO
 import common.infodto.UserInfo
+import common.utils.URL.AUTH_URL
 import common.utils.URL.USER_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
@@ -31,6 +32,13 @@ suspend fun HttpClient.createUser(username: String)  {
 
 suspend fun HttpClient.getUser(username: String): UserInfo {
     this.get("$USER_URL/$username").apply {
+        assertEquals(HttpStatusCode.OK, status)
+        return Json.decodeFromString<UserInfo>(bodyAsText())
+    }
+}
+
+suspend fun HttpClient.getMe(): UserInfo {
+    this.get("$AUTH_URL/me").apply {
         assertEquals(HttpStatusCode.OK, status)
         return Json.decodeFromString<UserInfo>(bodyAsText())
     }
