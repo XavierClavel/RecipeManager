@@ -20,6 +20,8 @@ object LikeController: Controller(LIKE_URL) {
 
     override fun Route.routes() {
         getLikes()
+        isLiked()
+        countLikes()
         createLike()
         deleteLike()
     }
@@ -29,6 +31,18 @@ object LikeController: Controller(LIKE_URL) {
         val recipeId = call.queryParameters["recipe"]?.toLongOrNull()
         val paging = getPaging()
         call.respond(likeService.find(recipeId, userId, paging))
+    }
+
+    private fun Route.isLiked() = get("/{id}") {
+        val recipeId = call.parameters["id"]?.toLongOrNull()
+        val userId = getSessionUserId()
+        call.respond(likeService.exists(recipeId, userId))
+    }
+
+    private fun Route.countLikes() = get("/count") {
+        val userId = call.queryParameters["user"]?.toLongOrNull()
+        val recipeId = call.queryParameters["recipe"]?.toLongOrNull()
+        call.respond(likeService.count(recipeId, userId))
     }
 
     private fun Route.createLike() = post("/{id}") {

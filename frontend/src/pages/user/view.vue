@@ -30,9 +30,9 @@
         >{{ user.username }}</v-card-title>
         <span class="d-flex flex-row">
           <interactible-picto-info :value="recipesOwned" icon="mdi-notebook" :action="redirectRecipesOwned"></interactible-picto-info>
-          <interactible-picto-info :value="recipesOwned" icon="mdi-heart"></interactible-picto-info>
-          <interactible-picto-info :value="recipesOwned" icon="mdi-account-heart"></interactible-picto-info>
-          <interactible-picto-info :value="recipesOwned" icon="mdi-account-multiple"></interactible-picto-info>
+          <interactible-picto-info :value="recipesLiked" icon="mdi-heart" :action="redirectRecipesLiked"></interactible-picto-info>
+          <interactible-picto-info :value="-1" icon="mdi-account-heart"></interactible-picto-info>
+          <interactible-picto-info :value="-1" icon="mdi-account-multiple"></interactible-picto-info>
         </span>
       </v-container>
 
@@ -69,21 +69,28 @@ import {base_url, toEditRecipe, toEditUser, toListRecipe} from "@/scripts/common
 import {getUser, getUserRecipesCount} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import EditablePicture from "@/components/EditablePicture.vue";
+import {countUserLikes} from "@/scripts/likes";
 
 // Get the route object
 const route = useRoute();
 const userId = route.query.id
-let displayError = ref<Boolean>(false)
-const errorMessage = ref<String>("This user does not exist")
+let displayError = ref<boolean>(false)
+const errorMessage = ref<string>("This user does not exist")
 const isOwner = true
 
 const user = ref<object>({})
 const imageUrl = computed(() => `${base_url}/image/users/${userId}.webp`);
-const recipesOwned = ref<number>(0)
+const recipesOwned = ref<number>(null)
+const recipesLiked = ref<number>(null)
 
 const redirectRecipesOwned = () => {
   toListRecipe(`?owner=${userId}`)
 }
+
+const redirectRecipesLiked = () => {
+  toListRecipe(`?likedBy=${userId}`)
+}
+
 
 getUser(userId).then (
   function (response) {
@@ -97,11 +104,11 @@ getUser(userId).then (
   // always executed
 });
 
-/*
-getUserRecipesCount(username).then (
+
+getUserRecipesCount(userId).then (
   function (response) {
     console.log(response)
-    recipesOwned.value = response.data
+    recipesOwned.value = response
   }).catch(function (error) {
     displayError.value = true
     console.log(error);
@@ -109,7 +116,12 @@ getUserRecipesCount(username).then (
   }
 )
 
- */
+countUserLikes(userId).then (
+  function (response) {
+    recipesLiked.value = response
+  }
+)
+
 
 const remove = (id) => {
   deleteRecipe(id)

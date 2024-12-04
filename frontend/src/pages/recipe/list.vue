@@ -78,9 +78,9 @@ const recipes = ref<object[]>([])
 
 const route = useRoute();
 const owner = route.query.owner
+const likedBy = route.query.likedBy
 
-
-listRecipes(`?owner=${owner}`).then(
+listRecipes(`?owner=${owner}&likedBy=${likedBy}`).then(
   function (response) {
     console.log(response)
     recipes.value = response.data

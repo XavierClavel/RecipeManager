@@ -45,7 +45,8 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.listRecipes() = get {
         val paging = getPaging()
         val owner = call.request.queryParameters["owner"]?.toLongOrNull()
-        call.respond(recipeService.findList(paging, owner))
+        val likedBy = call.request.queryParameters["likedBy"]?.toLongOrNull()
+        call.respond(recipeService.findList(paging, owner, likedBy))
     }
 
     private fun Route.createRecipe() = post {

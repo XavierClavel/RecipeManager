@@ -48,6 +48,21 @@
         <picto-info :value="`${recipe.cookingTime} min`" icon="mdi-stove"></picto-info>
       </span>
 
+    <span class="d-flex align-center justify-center mb-2 my-5">
+      <v-btn
+        v-if="recipeLiked != null"
+        :icon="recipeLiked ? 'mdi-heart' : 'mdi-heart-outline' "
+        color="primary"
+        flat
+        rounded="circle"
+        class="mb-10 text-h6"
+        min-height="70px"
+        min-width="70px"
+        @click="onLikeButtonClick"
+        variant="outlined"
+      ></v-btn>
+    </span>
+
       <h2 class="my-3" >Ingredients</h2>
 
       <span v-for="(ingredient, index) in recipe.ingredients">
@@ -119,14 +134,16 @@ import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {base_url, toEditRecipe, toListRecipe} from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
+import {addLike, isLiked, removeLike} from "@/scripts/likes";
 //import PictoInfo from "@/components/RecipeInfo.vue";
 
 // Get the route object
 const route = useRoute();
 const recipeId = route.query.id
-let displayError = ref<Boolean>(false)
-const errorMessage = ref<String>("This recipe does not exist")
-const isOwner = ref<Boolean>(false)
+let displayError = ref<boolean>(false)
+const errorMessage = ref<string>("This recipe does not exist")
+const isOwner = ref<boolean>(false)
+const recipeLiked = ref<string>(null)
 
 const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.webp`);
 
@@ -150,11 +167,26 @@ getRecipe(recipeId).then (
   // always executed
 });
 
+isLiked(recipeId).then (
+  function (response) {
+    recipeLiked.value = response
+    console.log(response)
+  }
+)
 
 
 const remove = (id) => {
   deleteRecipe(id)
   toListRecipe()
+}
+
+const onLikeButtonClick = () => {
+  if (recipeLiked.value) {
+    removeLike(recipeId)
+  } else {
+    addLike(recipeId)
+  }
+  recipeLiked.value = !recipeLiked.value
 }
 
 </script>

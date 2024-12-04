@@ -19,7 +19,8 @@ async function updateUser(id, user) {
 }
 
 async function getUserRecipesCount(id) {
-  return await apiClient.get(`${base_url}/recipe/user/${id}/count`)
+  const response = await apiClient.get(`${base_url}/recipe?owner=${id}`)
+  return response.data.length
 }
 
 async function getUsers() {

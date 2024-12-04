@@ -29,6 +29,18 @@ class LikeService: KoinComponent {
             .findList()
             .map { it.toInfo() }
 
+    fun count(recipeId: Long?, userId: Long?): Int =
+        QLike()
+            .filterByRecipe(recipeId)
+            .filterByUser(userId)
+            .findCount()
+
+    fun exists(recipeId: Long?, userId: Long?): Boolean =
+        QLike()
+            .filterByRecipe(recipeId)
+            .filterByUser(userId)
+            .exists()
+
     fun createLike(recipeId: Long, userId: Long): LikeInfo =
         Like(
             recipe = recipeService.findEntityById(recipeId)!!,
