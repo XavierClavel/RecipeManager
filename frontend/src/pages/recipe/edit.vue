@@ -243,6 +243,7 @@
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
+          v-if="recipeId != null"
           prepend-icon="mdi-close-circle-outline"
           color="primary"
           flat
@@ -281,7 +282,7 @@ import EditablePicture from "@/components/EditablePicture.vue";
 
 // Get the route object
 const route = useRoute();
-let recipeId = route.query.id
+let recipeId = ref(route.query.id)
 const editablePicture = ref(null)
 
 
@@ -337,21 +338,21 @@ async function submit() {
   submitted["description"] = recipe.value.description
   submitted["steps"] = recipe.value.steps
   console.log(submitted)
-  if (recipeId == null) {
+  if (recipeId.value == null) {
     const response = await createRecipe(submitted)
-    recipeId = response.data.id
-
+    recipeId.value = response.data.id
+    await nextTick()
   } else {
-    await updateRecipe(recipeId, submitted)
+    await updateRecipe(recipeId.value, submitted)
   }
 
   await editablePicture.value.submitImage()
 
-  toViewRecipe(recipeId)
+  toViewRecipe(recipeId.value)
 }
 
-if (recipeId != undefined) {
-  getRecipe(recipeId).then (
+if (recipeId.value != null) {
+  getRecipe(recipeId.value).then (
     function (response) {
       recipe.value = response.data
       console.log(recipe.value)

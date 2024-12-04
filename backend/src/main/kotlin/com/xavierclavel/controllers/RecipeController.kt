@@ -64,7 +64,6 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.updateRecipe() = put("/{id}") {
         try {
             val recipeId = getPathId() ?: return@put call.respond(HttpStatusCode.BadRequest)
-            logger.info {recipeId}
             val recipe = recipeService.findById(recipeId) ?: return@put call.respond(HttpStatusCode.NotFound)
             if (!isAuthorizedToEditRecipe(recipe)) return@put call.respond(HttpStatusCode.Unauthorized)
             val info =
