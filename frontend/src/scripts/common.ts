@@ -35,7 +35,7 @@ export {
 const toCreateRecipe = () => router.push(`/recipe/edit`)
 const toEditRecipe = (id) => router.push(`/recipe/edit/?id=${id}`)
 const toViewRecipe = (id) => router.push(`/recipe/view/?id=${id}`)
-const toListRecipe = () => router.push(`/recipe/list`)
+const toListRecipe = (search) => router.push(`/recipe/list${search}`)
 
 const toViewUser = (id) => router.push(`/user/view/?id=${id}`)
 const toEditUser = (id) => router.push(`/user/edit/?id=${id}`)

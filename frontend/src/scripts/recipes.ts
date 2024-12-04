@@ -16,8 +16,8 @@ async function getRecipe(id) {
   return await apiClient.get(`/recipe/${id}`)
 }
 
-async function listRecipes() {
-  return await apiClient.get(`/recipe`)
+async function listRecipes(query) {
+  return await apiClient.get(`/recipe${query}`)
 }
 
 async function createRecipe(recipe) {

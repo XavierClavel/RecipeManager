@@ -29,7 +29,7 @@
           class="mx-auto px-3 text-primary text-h3"
         >{{ user.username }}</v-card-title>
         <span class="d-flex flex-row">
-          <interactible-picto-info :value="recipesOwned" icon="mdi-notebook" :action="test"></interactible-picto-info>
+          <interactible-picto-info :value="recipesOwned" icon="mdi-notebook" :action="redirectRecipesOwned"></interactible-picto-info>
           <interactible-picto-info :value="recipesOwned" icon="mdi-heart"></interactible-picto-info>
           <interactible-picto-info :value="recipesOwned" icon="mdi-account-heart"></interactible-picto-info>
           <interactible-picto-info :value="recipesOwned" icon="mdi-account-multiple"></interactible-picto-info>
@@ -81,8 +81,8 @@ const user = ref<object>({})
 const imageUrl = computed(() => `${base_url}/image/users/${userId}.webp`);
 const recipesOwned = ref<number>(0)
 
-const test = () => {
-  console.log("test")
+const redirectRecipesOwned = () => {
+  toListRecipe(`?owner=${userId}`)
 }
 
 getUser(userId).then (

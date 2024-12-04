@@ -29,7 +29,6 @@ object RecipeController: Controller(RECIPE_URL) {
     override fun Route.routes() {
         getRecipe()
         listRecipes()
-        getUserRecipes()
         getUserRecipesCount()
         getCircleRecipes()
         createRecipe()
@@ -45,8 +44,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.listRecipes() = get {
         val paging = getPaging()
-        val owner = call.request.queryParameters["owner"]
-        logger.info { owner }
+        val owner = call.request.queryParameters["owner"]?.toLongOrNull()
         call.respond(recipeService.findList(paging, owner))
     }
 
@@ -81,13 +79,6 @@ object RecipeController: Controller(RECIPE_URL) {
         recipeService.deleteRecipe(recipeId)
         imageService.deleteRecipeImage(recipeId)
         call.respond(HttpStatusCode.OK)
-    }
-
-    private fun Route.getUserRecipes() = get("/user/{username}") {
-        val username = call.parameters["username"] ?: return@get call.respond(HttpStatusCode.BadRequest)
-        val paging = getPaging()
-        val recipes = recipeService.findByOwner(username, paging)
-        call.respond(recipes)
     }
 
     private fun Route.getUserRecipesCount() = get("/user/{username}/count") {

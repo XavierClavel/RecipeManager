@@ -72,10 +72,15 @@
 <script lang="ts" setup>
 import {listRecipes} from "@/scripts/recipes";
 import {base_url, toViewRecipe} from "@/scripts/common";
+import {useRoute} from "vue-router";
 
 const recipes = ref<object[]>([])
 
-listRecipes().then(
+const route = useRoute();
+const owner = route.query.owner
+
+
+listRecipes(`?owner=${owner}`).then(
   function (response) {
     console.log(response)
     recipes.value = response.data
