@@ -18,7 +18,7 @@ import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
 import kotlin.test.assertEquals
 
-suspend fun HttpClient.createUser(username: String): UserInfo  {
+suspend fun HttpClient.createUser(username: String = "user"): UserInfo  {
     this.post(USER_URL){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)

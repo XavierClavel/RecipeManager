@@ -37,9 +37,11 @@ fun RoutingContext.getSessionUsername(): String? =
 fun RoutingContext.getSessionUserId(): Long? =
     call.sessions.get<UserSession>()?.id
 
-fun RoutingContext.getPathId(): Long? = call.parameters["id"]?.toLongOrNull()
+fun RoutingContext.getPathId(): Long? = getIdPathVariable("id")
 
-fun RoutingContext.getIdQueryParam(value: String): Long? = call.parameters[value]?.toLongOrNull()
+fun RoutingContext.getIdPathVariable(value: String): Long? = call.parameters[value]?.toLongOrNull()
+
+fun RoutingContext.getIdQueryParam(value: String): Long? = call.queryParameters[value]?.toLongOrNull()
 
 suspend fun RoutingContext.handleDeletion(deleted: Boolean?) {
     if (deleted == null) call.respond(HttpStatusCode.NotFound)

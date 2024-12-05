@@ -12,6 +12,7 @@ import com.xavierclavel.models.query.QCookbook
 import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
+import com.xavierclavel.utils.Extensions.page
 import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
 import common.dto.UserDTO
@@ -19,7 +20,9 @@ import common.enums.CookbookRole
 import common.infodto.UserInfo
 import common.enums.UserRole
 import common.infodto.CookbookInfo
+import common.infodto.CookbookRecipeInfo
 import common.infodto.CookbookUserInfo
+import common.infodto.RecipeInfo
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -41,12 +44,21 @@ class CookbookService: KoinComponent {
 
     fun getCookbook(id: Long) = findEntityById(id)?.toInfo()
 
-    fun getCookbookUsers(id: Long, paging: Paging): List<CookbookUserInfo> =
-        QCookbookUser()
-            .cookbook.id.eq(id)
-            .setPaging(paging)
-            .findList()
-            .map { it.toInfo() }
+    fun getCookbookUsers(id: Long, paging: Paging): List<CookbookUserInfo>? =
+        QCookbook()
+            .id.eq(id)
+            .findOne()
+            ?.users
+            ?.map { it.toInfo() }
+            ?.page(paging)
+
+    fun getCookbookRecipes(id: Long, paging: Paging): List<CookbookRecipeInfo>? =
+        QCookbook()
+            .id.eq(id)
+            .findOne()
+            ?.recipes
+            ?.map { it.toInfo() }
+            ?.page(paging)
 
     fun updateCookbook(id: Long, cookbookDTO: CookbookDTO) =
         findEntityById(id)
@@ -65,19 +77,19 @@ class CookbookService: KoinComponent {
             role = role,
             cookbook = cookbook,
         ).insertAndGet()
+    }
 
-        cookbook
-            .apply { users.add(cookbookUser) }
-            .update()
+    fun addRecipeToCookbook(cookbookId: Long, recipeId: Long, userId: Long) {
+        val cookbook = findEntityById(cookbookId) ?: throw NotFoundException("Cookbook $cookbookId not found")
+        val recipe = recipeService.findEntityById(recipeId) ?: throw NotFoundException("Recipe $recipeId not found")
+        val cookbookRecipe = CookbookRecipe(
+            cookbook = cookbook,
+            addedBy = userService.findEntityById(userId) ?: throw NotFoundException("User $userId not found"),
+            recipe = recipe,
+        ).insertAndGet()
 
     }
 
-    fun addRecipeToCookbook(cookbookId: Long, recipeId: Long, userId: Long) =
-        CookbookRecipe(
-            cookbook = findEntityById(cookbookId) ?: throw NotFoundException("Cookbook $cookbookId not found"),
-            addedBy = userService.findEntityById(userId) ?: throw NotFoundException("User $userId not found"),
-            recipe = recipeService.findEntityById(recipeId) ?: throw NotFoundException("Recipe $recipeId not found"),
-        ).insert()
 
     fun removeRecipeFromCookbook(cookbookId: Long, recipeId: Long): Boolean? =
         QCookbookRecipe()
@@ -90,6 +102,8 @@ class CookbookService: KoinComponent {
 
     fun removeUserFromCookbook(cookbookId: Long, userId: Long): Boolean? =
         QCookbookUser()
+            .apply { logger.info {cookbookId} }
+            .apply { logger.info { userId } }
             .user.id.eq(userId)
             .and()
             .cookbook.id.eq(cookbookId)

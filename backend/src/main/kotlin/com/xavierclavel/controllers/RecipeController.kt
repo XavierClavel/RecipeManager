@@ -4,7 +4,7 @@ import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
-import com.xavierclavel.utils.getIdQueryParam
+import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUsername
@@ -44,9 +44,9 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.listRecipes() = get {
         val paging = getPaging()
-        val owner = getIdQueryParam("owner")
-        val likedBy = getIdQueryParam("likedBy")
-        val cookbook = getIdQueryParam("cookbook")
+        val owner = getIdPathVariable("owner")
+        val likedBy = getIdPathVariable("likedBy")
+        val cookbook = getIdPathVariable("cookbook")
         call.respond(recipeService.findList(paging, owner, likedBy, cookbook))
     }
 

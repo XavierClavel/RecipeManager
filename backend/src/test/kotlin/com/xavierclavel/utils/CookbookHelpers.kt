@@ -4,6 +4,7 @@ import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
 import common.enums.CookbookRole
 import common.infodto.CookbookInfo
+import common.infodto.CookbookRecipeInfo
 import common.infodto.CookbookUserInfo
 import common.utils.URL.COOKBOOK_URL
 import io.ktor.client.HttpClient
@@ -52,6 +53,18 @@ suspend fun HttpClient.getCookbookUsers(id: Long): Set<CookbookUserInfo> {
         }
 }
 
+suspend fun HttpClient.getCookbookRecipes(id: Long): Set<CookbookRecipeInfo> {
+    this.get("$COOKBOOK_URL/$id/recipes")
+        .apply {
+            logger.info {this}
+            assertEquals(HttpStatusCode.OK, status)
+            return Json.decodeFromString<Set<CookbookRecipeInfo>>(bodyAsText())
+        }
+}
+
+
+
+
 suspend fun HttpClient.assertCookbookExists(id:Long) {
     this.getCookbook(id)
 }
@@ -79,6 +92,20 @@ suspend fun HttpClient.addCookbookUser(cookbookId: Long, userId: Long, role: Coo
 
 suspend fun HttpClient.deleteCookbookUser(cookbookId: Long, userId: Long) {
     this.delete("$COOKBOOK_URL/$cookbookId/user/$userId")
+        .apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+}
+
+suspend fun HttpClient.addCookbookRecipe(cookbookId: Long, recipeId: Long) {
+    this.post("$COOKBOOK_URL/$cookbookId/recipe/$recipeId")
+        .apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+}
+
+suspend fun HttpClient.deleteCookbookRecipe(cookbookId: Long, recipeId: Long) {
+    this.delete("$COOKBOOK_URL/$cookbookId/recipe/$recipeId")
         .apply {
             assertEquals(HttpStatusCode.OK, status)
         }

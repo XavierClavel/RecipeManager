@@ -1,5 +1,6 @@
 package main.com.xavierclavel.utils
 
+import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.infodto.RecipeInfo
 import common.utils.URL.RECIPE_URL

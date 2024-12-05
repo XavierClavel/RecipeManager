@@ -4,6 +4,7 @@ import com.xavierclavel.models.Cookbook
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
 import common.enums.CookbookRole
+import common.infodto.CookbookRecipeInfo
 import io.ebean.Model
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -19,7 +20,7 @@ class CookbookRecipe (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 1,
+    var id: Long = 0,
 
     @ManyToOne
     var recipe: Recipe,
@@ -32,4 +33,12 @@ class CookbookRecipe (
 
     var additionDate: Long = Instant.now().epochSecond,
 
-): Model()
+): Model() {
+    fun toInfo() = CookbookRecipeInfo(
+        id = recipe.id,
+        title = recipe.title,
+        addedById = addedBy.id,
+        addedByUsername = addedBy.username,
+        additionDate = additionDate
+    )
+}
