@@ -18,20 +18,21 @@ import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
 import kotlin.test.assertEquals
 
-suspend fun HttpClient.createUser(username: String)  {
+suspend fun HttpClient.createUser(username: String): UserInfo  {
     this.post(USER_URL){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
         setBody(UserDTO(username))
     }.apply {
         assertEquals(HttpStatusCode.Created, status)
+        return Json.decodeFromString<UserInfo>(bodyAsText())
     }
-    val response = this.getUser(username)
-    assertEquals(username, response.username)
+    //val response = this.getUser(username)
+    //assertEquals(username, response.username)
 }
 
-suspend fun HttpClient.getUser(username: String): UserInfo {
-    this.get("$USER_URL/$username").apply {
+suspend fun HttpClient.getUser(id: Long): UserInfo {
+    this.get("$USER_URL/$id").apply {
         assertEquals(HttpStatusCode.OK, status)
         return Json.decodeFromString<UserInfo>(bodyAsText())
     }
@@ -44,21 +45,21 @@ suspend fun HttpClient.getMe(): UserInfo {
     }
 }
 
-suspend fun HttpClient.deleteUser(username: String) {
-    this.delete("$USER_URL/$username").apply {
+suspend fun HttpClient.deleteUser(id: Long) {
+    this.delete("$USER_URL/$id").apply {
         assertEquals(HttpStatusCode.OK, status)
     }
-    this.assertUserDoesNotExist(username)
+    this.assertUserDoesNotExist(id)
 }
 
-suspend fun HttpClient.assertUserExists(username: String) {
-    this.get("$USER_URL/$username").apply {
+suspend fun HttpClient.assertUserExists(id: Long) {
+    this.get("$USER_URL/$id").apply {
         assertEquals(HttpStatusCode.OK, status)
     }
 }
 
-suspend fun HttpClient.assertUserDoesNotExist(username: String) {
-    this.get("$USER_URL/$username").apply {
+suspend fun HttpClient.assertUserDoesNotExist(id: Long) {
+    this.get("$USER_URL/$id").apply {
         assertEquals(HttpStatusCode.NotFound, status)
     }
 }

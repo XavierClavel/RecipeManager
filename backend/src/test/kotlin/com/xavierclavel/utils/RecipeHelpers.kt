@@ -50,10 +50,10 @@ suspend fun HttpClient.getRecipe(recipeId: Long): RecipeInfo {
     }
 }
 
-suspend fun HttpClient.listRecipes(owner: String?): List<RecipeInfo> {
+suspend fun HttpClient.listRecipes(owner: Long?): List<RecipeInfo> {
     this.get(RECIPE_URL) {
         url {
-            owner?.let { parameters.append("owner", owner) }
+            owner?.let { parameters.append("owner", owner.toString()) }
         }
     }.apply {
         assertEquals(HttpStatusCode.OK, status)

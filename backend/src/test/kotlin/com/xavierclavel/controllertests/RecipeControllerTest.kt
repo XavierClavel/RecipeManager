@@ -100,12 +100,14 @@ class RecipeControllerTest : ApplicationTest() {
 
     @Test
     fun `list recipes by owner`() = runTestAsAdmin {
-        val result = it.listRecipes("admin")
+        val admin = userService.getUserByUsername("admin")!!
+        val user = userService.getUserByUsername("user1")!!
+        val result = it.listRecipes(admin.id)
         assertEquals(result.count(), 0)
         it.createRecipe(recipeDTO)
-        val result2 = it.listRecipes("admin")
+        val result2 = it.listRecipes(admin.id)
         assertEquals(result2.count(), 1)
-        val result3 = it.listRecipes("user")
+        val result3 = it.listRecipes(user.id)
         assertEquals(result3.count(), 0)
     }
     @Test

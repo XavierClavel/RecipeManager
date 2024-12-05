@@ -5,6 +5,7 @@ import com.xavierclavel.plugins.DatabaseManager
 import com.xavierclavel.plugins.configureAuthentication
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.logger
+import common.dto.UserDTO
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.request.*
@@ -60,6 +61,8 @@ abstract class ApplicationTest: KoinTest {
     fun runTest(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
         return testApplication(EmptyCoroutineContext, {
             userService.setupDefaultAdmin()
+            userService.createUser(UserDTO("user1"))
+            userService.createUser(UserDTO("user2"))
             install(ContentNegotiation) {
                 json()
             }

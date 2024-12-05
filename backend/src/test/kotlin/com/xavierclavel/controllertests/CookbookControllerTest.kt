@@ -3,6 +3,7 @@ package main.com.xavierclavel.controllertests
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
 import common.enums.CookbookRole
+import main.com.xavierclavel.utils.addCookbookUser
 import main.com.xavierclavel.utils.assertCookbookDoesNotExist
 import main.com.xavierclavel.utils.assertCookbookExists
 import main.com.xavierclavel.utils.assertLikeDoesNotExist
@@ -17,6 +18,7 @@ import main.com.xavierclavel.utils.getLikes
 import main.com.xavierclavel.utils.getMe
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class CookbookControllerTest : ApplicationTest() {
     @Test
@@ -40,6 +42,17 @@ class CookbookControllerTest : ApplicationTest() {
         it.assertCookbookExists(cookbook.id)
         it.deleteCookbook(cookbook.id)
         it.assertCookbookDoesNotExist(cookbook.id)
+    }
+
+    @Test
+    fun `add user to cookbook`() = runTestAsAdmin {
+        val cookbook = it.createCookbook()
+        it.assertCookbookExists(cookbook.id)
+        val user = userService.getUserByUsername("user1")!!
+        it.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+        val users = it.getCookbookUsers(cookbook.id)
+        assertEquals(2, users.size)
+        assertTrue(users.any { it.username == "user1" })
     }
 
 }

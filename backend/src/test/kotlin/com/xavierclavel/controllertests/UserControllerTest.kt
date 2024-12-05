@@ -12,16 +12,16 @@ class UserControllerTest : ApplicationTest() {
     @Test
     fun `create user`() = runTestAsAdmin {
         val username = "test_user"
-        it.createUser(username = username)
-        it.assertUserExists(username)
+        val user = it.createUser(username = username)
+        it.assertUserExists(user.id)
     }
 
     @Test
     fun `delete user`() = runTestAsAdmin {
         val username = "test_user"
-        it.createUser(username = username)
-        it.assertUserExists(username)
-        it.deleteUser(username = username)
+        val user = it.createUser(username = username)
+        it.assertUserExists(user.id)
+        it.deleteUser(user.id)
     }
 
     @Test

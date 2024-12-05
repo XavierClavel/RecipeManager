@@ -65,15 +65,11 @@ class CookbookService: KoinComponent {
             role = role,
             cookbook = cookbook,
         ).insertAndGet()
-        /*
-        return cookbook
-            .apply {
-                users.add(cookbookUser)
-            }
-            .updateAndGet()
-            .toInfo()
 
-         */
+        cookbook
+            .apply { users.add(cookbookUser) }
+            .update()
+
     }
 
     fun addRecipeToCookbook(cookbookId: Long, recipeId: Long, userId: Long) =

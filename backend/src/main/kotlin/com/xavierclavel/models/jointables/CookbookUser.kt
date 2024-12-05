@@ -34,6 +34,7 @@ class CookbookUser (
     var joinDate: Long = Instant.now().epochSecond,
 
 ): Model() {
+
     fun toInfo() = CookbookUserInfo(
         id = user.id,
         username = user.username,

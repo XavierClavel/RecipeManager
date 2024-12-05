@@ -2,6 +2,7 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getIdQueryParam
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUserId
@@ -72,9 +73,9 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
     private fun Route.addCookbookUser() = post("/{id}/user/{user}") {
         val cookbookId = getPathId() ?: return@post call.respond(HttpStatusCode.BadRequest)
-        val userId = call.parameters["user"]?.toLongOrNull() ?: return@post call.respond(HttpStatusCode.BadRequest)
-        val role = call.parameters["role"]?.let { CookbookRole.valueOf(it) } ?: return@post call.respond(HttpStatusCode.BadRequest)
-        cookbookService.addUserToCookbook(userId, cookbookId, role)
+        val userId = getIdQueryParam("user") ?: return@post call.respond(HttpStatusCode.BadRequest)
+        val role = call.parameters["role"]?.let { CookbookRole.valueOf(it) } ?: CookbookRole.READER
+        cookbookService.addUserToCookbook(cookbookId, userId, role)
         call.respond(HttpStatusCode.OK)
     }
 
