@@ -1,5 +1,9 @@
 package com.xavierclavel.plugins
 
+import com.xavierclavel.models.jointables.query.QCookbookRecipe
+import com.xavierclavel.models.jointables.query.QCookbookUser
+import com.xavierclavel.models.jointables.query.QLike
+import com.xavierclavel.models.query.QCookbook
 import com.xavierclavel.models.query.QIngredient
 import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.models.query.QUser
@@ -20,7 +24,11 @@ object DatabaseManager {
     fun getTables() = listOf(
         QRecipe(),
         QUser(),
-        QIngredient()
+        QIngredient(),
+        QLike(),
+        QCookbook(),
+        QCookbookUser(),
+        QCookbookRecipe()
     )
 
     private fun hikari(): HikariDataSource {

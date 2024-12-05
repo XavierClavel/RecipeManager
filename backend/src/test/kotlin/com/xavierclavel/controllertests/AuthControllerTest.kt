@@ -15,7 +15,7 @@ import kotlin.test.assertEquals
 
 class AuthControllerTest : ApplicationTest() {
     @Test
-    fun `signup`() = runTestUnauthenticated {
+    fun `signup`() = runTest {
         val userDTO = UserDTO("test_user", "test_user@example.com", "123456")
         it.post("$AUTH_URL/signup") {
             contentType(ContentType.Application.Json)

@@ -1,0 +1,71 @@
+package main.com.xavierclavel.utils
+
+import com.xavierclavel.utils.logger
+import common.dto.CookbookDTO
+import common.infodto.CookbookInfo
+import common.infodto.CookbookUserInfo
+import common.utils.URL.COOKBOOK_URL
+import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import kotlinx.serialization.json.Json
+import kotlin.test.assertEquals
+
+val sampleCookbookDto = CookbookDTO(
+    title="sample cookbook",
+    description="sample cookbook description",
+)
+
+suspend fun HttpClient.createCookbook(cookbookDto: CookbookDTO = sampleCookbookDto) : CookbookInfo {
+    this.post(COOKBOOK_URL){
+        contentType(ContentType.Application.Json)
+        header(HttpHeaders.ContentType, ContentType.Application.Json)
+        setBody(cookbookDto)
+    }.apply {
+        assertEquals(HttpStatusCode.Created, status)
+        return Json.decodeFromString<CookbookInfo>(bodyAsText())
+    }
+}
+
+suspend fun HttpClient.getCookbook(id: Long): CookbookInfo {
+    this.get("$COOKBOOK_URL/$id")
+        .apply {
+            assertEquals(HttpStatusCode.OK, status)
+            return Json.decodeFromString<CookbookInfo>(bodyAsText())
+        }
+}
+
+suspend fun HttpClient.getCookbookUsers(id: Long): Set<CookbookUserInfo> {
+    this.get("$COOKBOOK_URL/$id/users")
+        .apply {
+            assertEquals(HttpStatusCode.OK, status)
+            return Json.decodeFromString<Set<CookbookUserInfo>>(bodyAsText())
+        }
+}
+
+suspend fun HttpClient.assertCookbookExists(id:Long) {
+    this.getCookbook(id)
+}
+
+suspend fun HttpClient.assertCookbookDoesNotExist(id:Long) {
+    this.get("$COOKBOOK_URL/$id")
+        .apply {
+            assertEquals(HttpStatusCode.NotFound, status)
+        }
+}
+
+suspend fun HttpClient.deleteCookbook(id: Long) {
+    this.delete("$COOKBOOK_URL/$id")
+        .apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+}
+

@@ -1,21 +1,16 @@
-package main.com.xavierclavel.controllertests.com.xavierclavel.controllertests
+package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
 import main.com.xavierclavel.utils.assertLikeDoesNotExist
 import main.com.xavierclavel.utils.assertLikeExists
-import main.com.xavierclavel.utils.assertUserExists
 import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
-import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.deleteLike
-import main.com.xavierclavel.utils.deleteUser
 import main.com.xavierclavel.utils.getLikes
 import main.com.xavierclavel.utils.getMe
-import main.com.xavierclavel.utils.listUsers
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class LikeControllerTest : ApplicationTest() {
     @Test

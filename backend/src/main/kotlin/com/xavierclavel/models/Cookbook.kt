@@ -40,6 +40,11 @@ class Cookbook (
         )
     }
 
+    fun merge(cookbookDTO: CookbookDTO) = this.apply {
+        this.title = cookbookDTO.title
+        this.description = cookbookDTO.description
+    }
+
     fun toInfo() = CookbookInfo(
         id = this.id,
         title = this.title,

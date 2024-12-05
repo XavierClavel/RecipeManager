@@ -12,6 +12,7 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.testing.*
 import io.ktor.utils.io.KtorDsl
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.Rule
 import org.junit.jupiter.api.BeforeEach
@@ -39,34 +40,24 @@ abstract class ApplicationTest: KoinTest {
 
     @KtorDsl
     fun runTestAsAdmin(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
-        return testApplication(EmptyCoroutineContext, {
-            userService.setupDefaultAdmin()
-            install(ContentNegotiation) {
-                json()
+        runTest {
+            runAs("admin", "Passw0rd", it) {
+                block(it)
             }
-            application {
-                configureAuthentication()
-                serveRoutes()
-            }
-            val client = createClient {
-                install(HttpCookies) // this is for logging in
-                install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
-                    json(Json {
-                        prettyPrint = true
-                        isLenient = true
-                    })
-                }
-            }
-            client.post("/v1/auth/login") {
-                basicAuth(username = "admin", password = "Passw0rd")
-            }
-            block(client)
-            client.post("/v1/auth/logout")
-        })
+        }
     }
 
     @KtorDsl
-    fun runTestUnauthenticated(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
+    suspend fun ApplicationTestBuilder.runAs(username: String, password: String = "Passw0rd", client: HttpClient, block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
+        client.post("/v1/auth/login") {
+            basicAuth(username = username, password = password)
+        }
+        block(client)
+        client.post("/v1/auth/logout")
+    }
+
+    @KtorDsl
+    fun runTest(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
         return testApplication(EmptyCoroutineContext, {
             userService.setupDefaultAdmin()
             install(ContentNegotiation) {

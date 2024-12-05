@@ -19,6 +19,8 @@ import common.enums.CookbookRole
 import common.infodto.UserInfo
 import common.enums.UserRole
 import common.infodto.CookbookInfo
+import common.infodto.CookbookUserInfo
+import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -37,15 +39,31 @@ class CookbookService: KoinComponent {
     fun createCookbook(cookbookDTO: CookbookDTO): CookbookInfo =
         Cookbook.from(cookbookDTO).insertAndGet().toInfo()
 
+    fun getCookbook(id: Long) = findEntityById(id)?.toInfo()
+
+    fun getCookbookUsers(id: Long, paging: Paging): List<CookbookUserInfo> =
+        QCookbookUser()
+            .cookbook.id.eq(id)
+            .setPaging(paging)
+            .findList()
+            .map { it.toInfo() }
+
+    fun updateCookbook(id: Long, cookbookDTO: CookbookDTO) =
+        findEntityById(id)
+            ?.merge(cookbookDTO)
+            ?.updateAndGet()
+            ?.toInfo()
+
     fun deleteCookbook(id: Long): Boolean? =
         findEntityById(id)?.delete()
 
     fun addUserToCookbook(cookbookId: Long, userId: Long, role: CookbookRole) {
-        val cookbook = findEntityById(cookbookId)!!
-        val user = userService.findEntityById(userId)
+        val cookbook = findEntityById(cookbookId) ?: throw NotFoundException("Cookbook not found")
+        val user = userService.findEntityById(userId) ?: throw NotFoundException("User not found")
         val cookbookUser = CookbookUser(
             user = user,
             role = role,
+            cookbook = cookbook,
         ).insertAndGet()
         /*
         return cookbook

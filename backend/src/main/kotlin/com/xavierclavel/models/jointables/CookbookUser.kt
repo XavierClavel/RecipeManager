@@ -3,6 +3,7 @@ package com.xavierclavel.models.jointables
 import com.xavierclavel.models.Cookbook
 import com.xavierclavel.models.User
 import common.enums.CookbookRole
+import common.infodto.CookbookUserInfo
 import io.ebean.Model
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -21,10 +22,10 @@ class CookbookUser (
     var id: Long = 0,
 
     @ManyToOne
-    var user: User? =  null,
+    var user: User,
 
     @ManyToOne
-    var cookbook: Cookbook? = null,
+    var cookbook: Cookbook,
 
     var role: CookbookRole = CookbookRole.READER,
 
@@ -32,4 +33,11 @@ class CookbookUser (
 
     var joinDate: Long = Instant.now().epochSecond,
 
-): Model()
+): Model() {
+    fun toInfo() = CookbookUserInfo(
+        id = user.id,
+        username = user.username,
+        role = role,
+        joinDate = joinDate,
+    )
+}
