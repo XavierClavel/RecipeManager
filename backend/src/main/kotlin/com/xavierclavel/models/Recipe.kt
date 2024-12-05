@@ -60,12 +60,12 @@ class Recipe (
     var owner: User? = null,
 
     @ManyToMany
-    var circles: MutableSet<Circle> = mutableSetOf(),
+    var cookbooks: MutableSet<Cookbook> = mutableSetOf(),
 
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
     var likes: MutableSet<Like> = mutableSetOf(),
 
-) : Model() {
+    ) : Model() {
     fun mergeDTO(recipeDTO: RecipeDTO) : Recipe = apply {
         this.title = recipeDTO.title
         this.description = recipeDTO.description

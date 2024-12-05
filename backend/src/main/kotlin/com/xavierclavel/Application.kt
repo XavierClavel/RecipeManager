@@ -2,6 +2,7 @@ package com.xavierclavel
 
 import com.xavierclavel.config.appModules
 import com.xavierclavel.controllers.AuthController
+import com.xavierclavel.controllers.CookbookController
 import com.xavierclavel.controllers.ExportController
 import com.xavierclavel.controllers.HealthController
 import com.xavierclavel.controllers.IngredientController
@@ -11,6 +12,7 @@ import com.xavierclavel.controllers.LikeController
 import com.xavierclavel.controllers.UserController
 import com.xavierclavel.utils.use
 import com.xavierclavel.plugins.*
+import com.xavierclavel.services.CookbookService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.logger
 import io.ktor.http.HttpHeaders
@@ -64,6 +66,7 @@ fun Application.serveRoutes() = routing {
         use(ImageController)
         use(ExportController)
         use(LikeController)
+        use(CookbookController)
     }
     use(AuthController)
 }

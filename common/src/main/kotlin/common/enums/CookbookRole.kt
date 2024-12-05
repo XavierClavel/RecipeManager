@@ -1,6 +1,6 @@
 package common.enums
 
-enum class CircleRole {
+enum class CookbookRole {
     READER,
     WRITER,
     OWNER,

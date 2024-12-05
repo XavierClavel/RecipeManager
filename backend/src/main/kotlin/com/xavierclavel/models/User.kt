@@ -1,6 +1,7 @@
 package com.xavierclavel.models
 
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.xavierclavel.models.jointables.CookbookUser
 import com.xavierclavel.models.jointables.Follower
 import com.xavierclavel.models.jointables.Like
 import com.xavierclavel.utils.logger
@@ -43,21 +44,21 @@ class User (
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     var likes : Set<Like> = setOf(),
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     var follows: Set<Follower> = setOf(),
 
-    @OneToMany(mappedBy = "follower")
+    @OneToMany(mappedBy = "follower", cascade = [CascadeType.ALL], orphanRemoval = true)
     var followedBy: Set<Follower> = setOf(),
 
-    @ManyToMany
-    var circles: Set<Circle> = setOf(),
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var cookbooks: Set<CookbookUser> = setOf(),
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name="diet_id", referencedColumnName = "id")
     var dietaryRestrictions: DietaryRestrictions = DietaryRestrictions(),
 
 
-): Model() {
+    ): Model() {
 
     companion object {
         fun from(userDTO: UserDTO): User {

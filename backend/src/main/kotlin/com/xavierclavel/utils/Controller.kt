@@ -1,6 +1,8 @@
 package com.xavierclavel.utils
 
 import io.ebean.Paging
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.route
@@ -36,3 +38,9 @@ fun RoutingContext.getSessionUserId(): Long? =
     call.sessions.get<UserSession>()?.id
 
 fun RoutingContext.getPathId(): Long? = call.parameters["id"]?.toLongOrNull()
+
+suspend fun RoutingContext.handleDeletion(deleted: Boolean?) {
+    if (deleted == null) call.respond(HttpStatusCode.NotFound)
+    else if (!deleted) call.respond(HttpStatusCode.InternalServerError)
+    else call.respond(HttpStatusCode.OK)
+}

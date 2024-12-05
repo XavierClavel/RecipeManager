@@ -18,10 +18,11 @@ class RecipeService: KoinComponent {
         queryByOwner(username).findCount()
 
 
-    fun findList(paging: Paging, owner: Long?, likedBy: Long?) : List<RecipeInfo> =
+    fun findList(paging: Paging, owner: Long?, likedBy: Long?, cookbook: Long?) : List<RecipeInfo> =
         QRecipe()
             .filterByOwner(owner)
             .filterByLikes(likedBy)
+            .filterByCookbook(cookbook)
             .setPaging(paging)
             .findList()
             .map { it.toInfo() }
@@ -32,20 +33,6 @@ class RecipeService: KoinComponent {
     fun findById(recipeId: Long) : RecipeInfo? =
         findEntityById(recipeId)?.toInfo()
 
-    fun findAllByCircleId(circleId: Long): List<Recipe> =
-        QRecipe().circles.id.eq(circleId).findList()
-
-    fun findAllByOwnerId(userId: Long): List<Recipe> =
-        QRecipe().owner.id.eq(userId).findList()
-
-    fun findAllByOwnerUsername(username: String): List<Recipe> =
-        queryByOwner(username).findList()
-
-    fun findByOwner(username: String, paging: Paging): List<RecipeInfo> =
-        queryByOwner(username)
-            .setPaging(paging)
-            .findList()
-            .map{it.toInfo()}
 
     fun deleteById(recipeId: Long) {
         QRecipe().id.eq(recipeId).delete()
@@ -72,13 +59,14 @@ class RecipeService: KoinComponent {
     private fun queryByOwner(username: String) =
         QRecipe().owner.username.eq(username)
 
-    private fun QRecipe.filterByOwner(username: String?) =
-        if (username == null) this else this.owner.username.eq(username)
 
     private fun QRecipe.filterByOwner(userId: Long?) =
         if (userId == null) this else this.owner.id.eq(userId)
 
     private fun QRecipe.filterByLikes(userId: Long?) =
         if (userId == null) this else this.likes.user.id.eq(userId)
+
+    private fun QRecipe.filterByCookbook(cookbookId: Long?) =
+        if (cookbookId == null) this else this.cookbooks.id.eq(cookbookId)
 
 }

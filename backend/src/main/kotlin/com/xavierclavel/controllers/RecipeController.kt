@@ -30,7 +30,6 @@ object RecipeController: Controller(RECIPE_URL) {
         getRecipe()
         listRecipes()
         getUserRecipesCount()
-        getCircleRecipes()
         createRecipe()
         updateRecipe()
         deleteRecipe()
@@ -46,7 +45,8 @@ object RecipeController: Controller(RECIPE_URL) {
         val paging = getPaging()
         val owner = call.request.queryParameters["owner"]?.toLongOrNull()
         val likedBy = call.request.queryParameters["likedBy"]?.toLongOrNull()
-        call.respond(recipeService.findList(paging, owner, likedBy))
+        val cookbook = call.request.queryParameters["cookbook"]?.toLongOrNull()
+        call.respond(recipeService.findList(paging, owner, likedBy, cookbook))
     }
 
     private fun Route.createRecipe() = post {
@@ -85,12 +85,6 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.getUserRecipesCount() = get("/user/{username}/count") {
         val username = call.parameters["username"] ?: return@get call.respond(HttpStatusCode.BadRequest)
         val recipes = recipeService.countByOwner(username)
-        call.respond(recipes)
-    }
-
-    private fun Route.getCircleRecipes() = get("/circle/{circleId}") {
-        val circleId = call.parameters["circleId"]?.toLongOrNull() ?: return@get call.respond(HttpStatusCode.BadRequest)
-        val recipes = recipeService.findAllByCircleId(circleId)
         call.respond(recipes)
     }
 
