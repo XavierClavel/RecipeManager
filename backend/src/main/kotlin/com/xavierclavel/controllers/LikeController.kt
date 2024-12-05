@@ -4,8 +4,8 @@ import com.xavierclavel.services.LikeService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
+import com.xavierclavel.utils.getIdQueryParam
 import com.xavierclavel.utils.getSessionUserId
-import com.xavierclavel.utils.logger
 import common.utils.URL.LIKE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
@@ -27,21 +27,21 @@ object LikeController: Controller(LIKE_URL) {
     }
 
     private fun Route.getLikes() = get {
-        val userId = call.queryParameters["user"]?.toLongOrNull()
-        val recipeId = call.queryParameters["recipe"]?.toLongOrNull()
+        val userId = getIdQueryParam("user")
+        val recipeId = getIdQueryParam("recipe")
         val paging = getPaging()
         call.respond(likeService.find(recipeId, userId, paging))
     }
 
     private fun Route.isLiked() = get("/{id}") {
-        val recipeId = call.parameters["id"]?.toLongOrNull()
+        val recipeId = getIdQueryParam("id")
         val userId = getSessionUserId()
         call.respond(likeService.exists(recipeId, userId))
     }
 
     private fun Route.countLikes() = get("/count") {
-        val userId = call.queryParameters["user"]?.toLongOrNull()
-        val recipeId = call.queryParameters["recipe"]?.toLongOrNull()
+        val userId = getIdQueryParam("user")
+        val recipeId = getIdQueryParam("recipe")
         call.respond(likeService.count(recipeId, userId))
     }
 
