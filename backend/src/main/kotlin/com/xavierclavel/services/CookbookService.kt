@@ -9,6 +9,7 @@ import com.xavierclavel.models.jointables.CookbookUser
 import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.jointables.query.QCookbookUser
 import com.xavierclavel.models.query.QCookbook
+import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
@@ -23,6 +24,7 @@ import common.infodto.CookbookInfo
 import common.infodto.CookbookRecipeInfo
 import common.infodto.CookbookUserInfo
 import common.infodto.RecipeInfo
+import io.ebean.ExpressionList
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -109,6 +111,23 @@ class CookbookService: KoinComponent {
             .cookbook.id.eq(cookbookId)
             .findOne()
             ?.delete()
+
+    private fun filterUserList(id: Long) =
+        QCookbookUser()
+            .user.id.eq(id)
+            .expressionList
+
+    private fun filterRecipeList(id: Long) =
+        QCookbookRecipe()
+            .recipe.id.eq(id)
+            .expressionList
+
+
+    private fun QCookbook.filterByUser(userId: Long?) =
+        if (userId == null) this else this.users.filterMany(filterUserList(userId))
+
+    private fun QCookbook.filterByRecipe(recipeId: Long?) =
+        if (recipeId == null) this else this.recipes.filterMany(filterRecipeList(recipeId))
 
 
 }

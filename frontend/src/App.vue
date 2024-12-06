@@ -27,8 +27,7 @@
         <v-list-item prepend-icon="mdi-heart-outline" rounded="xl" link title="Likes" @click="toHome"></v-list-item>
         <v-list-item prepend-icon="mdi-food-apple-outline" rounded="xl" link title="Ingredients" @click="toListIngredient"></v-list-item>
         <v-list-item prepend-icon="mdi-security" rounded="xl" link title="Admin" @click="toUsers"></v-list-item>
-        <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link title="About" @click="toHome"></v-list-item>
-        <v-list-item prepend-icon="mdi-logout" rounded="xl" link title="Logout" @click="logout"></v-list-item>
+
       </v-list>
     </v-navigation-drawer>
 
@@ -36,8 +35,28 @@
       <template v-slot:prepend>
         <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       </template>
-      <template v-slot:append>
-        <v-btn icon="mdi-account-circle" @click="toMyProfile"></v-btn>
+      <template v-slot:append v-if="showSidebar">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-img
+              color="surface-variant"
+              :src="imageUrl"
+              height="50px"
+              width="50px"
+              rounded="circle"
+              cover
+              v-bind="props"
+              class="clickable_image"
+            ></v-img>
+          </template>
+
+          <v-list>
+            <v-list-item prepend-icon="mdi-account-circle" rounded="xl" link title="Profile" @click="toMyProfile" ></v-list-item>
+            <v-list-item prepend-icon="mdi-cog" rounded="xl" link title="Settings" @click="toMyProfile" ></v-list-item>
+            <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link title="About" @click="toHome"></v-list-item>
+            <v-list-item prepend-icon="mdi-logout" rounded="xl" link title="Logout" @click="logout" ></v-list-item>
+          </v-list>
+        </v-menu>
       </template>
       <v-app-bar-title>Recipe Manager</v-app-bar-title>
       <div class="d-flex flex-grow-1 justify-center align-center position-absolute"
@@ -82,6 +101,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import {
+  base_url,
   logout,
   noLoginRedirect,
   toCreateRecipe,
@@ -91,6 +111,10 @@ import {
   toUsers,
   whoami
 } from "@/scripts/common";
+import {useAuthStore} from "@/stores/auth";
+
+const authStore = useAuthStore()
+const imageUrl = computed(() => `${base_url}/image/users/${authStore.id}.webp`);
 
 const route = useRoute();
 
@@ -105,3 +129,8 @@ const toggleDrawer = () => {
 const showSidebar = computed(() => !noLoginRedirect.includes(route.name));
 
 </script>
+<style scoped>
+.clickable_image {
+  cursor: pointer
+}
+</style>

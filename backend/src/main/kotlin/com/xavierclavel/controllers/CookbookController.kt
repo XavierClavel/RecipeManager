@@ -3,6 +3,7 @@ package com.xavierclavel.controllers
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getIdPathVariable
+import com.xavierclavel.utils.getIdQueryParam
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUserId
@@ -46,6 +47,16 @@ object CookbookController: Controller(COOKBOOK_URL) {
         cookbookService.addUserToCookbook(cookbook.id, userId, CookbookRole.OWNER)
         call.respond(HttpStatusCode.Created, cookbook)
     }
+
+    /*
+    private fun Route.listCookbooks() = get {
+        val userId = getIdQueryParam("user")
+        val recipeId = getIdQueryParam("recipe")
+        val paging = getPaging()
+        val cookbook = cookbookService.getCookbook(id) ?: return@get call.respond(HttpStatusCode.NotFound)
+        call.respond(cookbook)
+    }
+     */
 
     private fun Route.getCookbook() = get("/{id}") {
         val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
