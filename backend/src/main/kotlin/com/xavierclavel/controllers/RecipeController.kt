@@ -30,7 +30,6 @@ object RecipeController: Controller(RECIPE_URL) {
     override fun Route.routes() {
         getRecipe()
         listRecipes()
-        getUserRecipesCount()
         createRecipe()
         updateRecipe()
         deleteRecipe()
@@ -81,12 +80,6 @@ object RecipeController: Controller(RECIPE_URL) {
         recipeService.deleteRecipe(recipeId)
         imageService.deleteRecipeImage(recipeId)
         call.respond(HttpStatusCode.OK)
-    }
-
-    private fun Route.getUserRecipesCount() = get("/user/{username}/count") {
-        val username = call.parameters["username"] ?: return@get call.respond(HttpStatusCode.BadRequest)
-        val recipes = recipeService.countByOwner(username)
-        call.respond(recipes)
     }
 
     private fun RoutingContext.isAuthorizedToEditRecipe(recipe: RecipeInfo): Boolean {

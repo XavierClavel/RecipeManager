@@ -8,4 +8,6 @@ data class CookbookInfo(
     val id: Long,
     val title: String,
     val description: String = "",
+    val recipesCount: Int,
+    val usersCount: Int,
 )

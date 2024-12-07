@@ -5,7 +5,6 @@ export{
   getUser,
   updateUser,
   getUsers,
-  getUserRecipesCount,
   deleteUser,
 }
 
@@ -16,11 +15,6 @@ async function getUser(id) {
 
 async function updateUser(id, user) {
   return await apiClient.put(`${base_url}/user/${id}`, user)
-}
-
-async function getUserRecipesCount(id) {
-  const response = await apiClient.get(`${base_url}/recipe?owner=${id}`)
-  return response.data.length
 }
 
 async function getUsers() {

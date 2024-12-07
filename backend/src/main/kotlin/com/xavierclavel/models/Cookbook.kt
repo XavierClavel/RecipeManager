@@ -52,6 +52,8 @@ class Cookbook (
         id = this.id,
         title = this.title,
         description = this.description,
+        recipesCount = this.recipes.size,
+        usersCount = this.users.size,
     )
 
 }

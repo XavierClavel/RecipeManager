@@ -82,6 +82,9 @@ class User (
             role = this.role,
             joinDate = this.joinDate,
             bio = this.bio,
+            recipesCount = this.recipes.size,
+            likesCount = this.likes.size,
+            cookbooksCount = this.cookbooks.size,
         )
 
     fun merge(userDTO: UserDTO) = this.apply {

@@ -10,4 +10,7 @@ data class UserInfo(
     val role: UserRole = UserRole.USER,
     val joinDate: Long,
     val bio: String,
+    val recipesCount: Int,
+    val likesCount: Int,
+    val cookbooksCount: Int,
 )
