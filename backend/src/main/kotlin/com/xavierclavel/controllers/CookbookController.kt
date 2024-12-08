@@ -56,7 +56,6 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val recipeId = getIdQueryParam("recipe")
         val paging = getPaging()
         val sort = getSort()
-        logger.info {userId}
         val cookbook = cookbookService.listCookbooks(paging, sort, userId)
         call.respond(cookbook)
     }

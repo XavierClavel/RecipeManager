@@ -85,12 +85,8 @@ dependencies {
 
 ktor {
     docker {
-        localImageName.set("recipe-manager-backend")
+        localImageName.set("cooknco/backend")
         imageTag.set(rootProject.version.toString())
-
-    }
-    docker {
-
     }
 }
 

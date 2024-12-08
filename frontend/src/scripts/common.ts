@@ -19,6 +19,10 @@ export {
 
   toListIngredient,
 
+  toCreateCookbook,
+  toListCookbooks,
+  toMyCookbooks,
+
   toHome,
   toUsers,
   toLogin,
@@ -41,6 +45,14 @@ const toViewUser = (id) => router.push(`/user/view/?id=${id}`)
 const toEditUser = (id) => router.push(`/user/edit/?id=${id}`)
 
 const toListIngredient = () => router.push(`/ingredients`)
+
+const toCreateCookbook = () => router.push(`/cookbook/edit`)
+const toListCookbooks = (id) => router.push(`/cookbook/list?user=${id}`)
+
+const toMyCookbooks = () => {
+  const authStore = useAuthStore();
+  toListCookbooks(authStore.id)
+}
 
 const toHome = () => router.push('/home')
 const toUsers = () => router.push('/users')
