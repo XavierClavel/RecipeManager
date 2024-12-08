@@ -95,6 +95,7 @@ class RecipeControllerTest : ApplicationTest() {
         val result3 = it.listRecipes(user.id)
         assertEquals(result3.count(), 0)
     }
+
     @Test
     fun `list recipes`() = runTestAsAdmin {
         val result = it.listRecipes(null)
@@ -117,8 +118,21 @@ class RecipeControllerTest : ApplicationTest() {
         val result2 = it.listRecipes(null, Sort.LIKES_ASCENDING)
         assertEquals(2, result2.count())
         assertEquals(recipe2.id, result2[0].id)
+    }
 
+    @Test
+    fun `sort recipes by date`() = runTestAsAdmin {
+        val recipe1 = it.createRecipe()
+        val recipe2 = it.createRecipe()
+        val recipe3 = it.createRecipe()
 
+        val dateOrderAscending = setOf(recipe1.id, recipe2.id, recipe3.id)
+        val dateOrderDescending = setOf(recipe3.id, recipe2.id, recipe1.id)
 
+        val result1 = it.listRecipes(null, Sort.DATE_DESCENDING)
+        assertEquals(dateOrderDescending, result1.map {it.id}.toSet())
+
+        val result2 = it.listRecipes(null, Sort.DATE_ASCENDING)
+        assertEquals(dateOrderAscending, result2.map {it.id}.toSet())
     }
 }
