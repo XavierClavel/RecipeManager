@@ -1,5 +1,6 @@
 package com.xavierclavel.utils
 
+import common.enums.Sort
 import io.ebean.Paging
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
@@ -30,6 +31,9 @@ fun RoutingContext.getPaging():Paging =
         call.request.queryParameters["page"]?.toIntOrNull() ?: 0,
         call.request.queryParameters["size"]?.toIntOrNull() ?: 20
     )
+
+fun RoutingContext.getSort(): Sort =
+    Sort.valueOf(call.request.queryParameters["sort"] ?: "NONE")
 
 fun RoutingContext.getSessionUsername(): String? =
     call.sessions.get<UserSession>()?.username

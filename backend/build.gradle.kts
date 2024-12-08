@@ -12,7 +12,7 @@ plugins {
 
     id("io.ktor.plugin") version "3.0.0"
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("io.ebean") version "15.7.0"
+    id("io.ebean") version "15.8.0"
     id("org.jetbrains.kotlin.kapt")
     //id("com.google.devtools.ksp") version "1.5.30-1.0.0"
 
@@ -26,7 +26,7 @@ application {
 }
 
 dependencies {
-    val ebeanVersion = "15.7.0"
+    val ebeanVersion = "15.8.0"
     val koinVersion = "4.0.0"
     val itextVersion = "8.0.5"
 

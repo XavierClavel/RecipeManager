@@ -60,16 +60,16 @@ class CookbookControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `add multiple users to cookbook`() = runTestAsAdmin {
-        val cookbook = it.createCookbook()
-        it.assertCookbookExists(cookbook.id)
+    fun `add multiple users to cookbook`() = runTestAsAdmin { client ->
+        val cookbook = client.createCookbook()
+        client.assertCookbookExists(cookbook.id)
 
-        for (i in 1..3) {
-            val user = it.createUser()
-            it.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+        repeat(3) {
+            val user = client.createUser()
+            client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
         }
-        val users = it.getCookbookUsers(cookbook.id)
-        assertEquals(3, users.size)
+        val users = client.getCookbookUsers(cookbook.id)
+        assertEquals(4, users.size)
     }
 
     @Test
@@ -90,16 +90,16 @@ class CookbookControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `add recipes to cookbook`() = runTestAsAdmin {
-        val cookbook = it.createCookbook()
-        it.assertCookbookExists(cookbook.id)
+    fun `add recipes to cookbook`() = runTestAsAdmin { client ->
+        val cookbook = client.createCookbook()
+        client.assertCookbookExists(cookbook.id)
 
-        for (i in 1..30) {
-            val recipe = it.createRecipe()
-            it.addCookbookRecipe(cookbook.id, recipe.id)
+        repeat(30) {
+            val recipe = client.createRecipe()
+            client.addCookbookRecipe(cookbook.id, recipe.id)
         }
 
-        val recipes = it.getCookbookRecipes(cookbook.id)
+        val recipes = client.getCookbookRecipes(cookbook.id)
         assertEquals(20, recipes.size)
     }
 

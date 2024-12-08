@@ -1,8 +1,10 @@
 package com.xavierclavel.models
 
+import com.xavierclavel.models.jointables.CookbookRecipe
 import com.xavierclavel.models.jointables.Like
 import com.xavierclavel.models.jointables.RecipeIngredient
 import com.xavierclavel.models.jointables.CustomIngredient
+import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.infodto.RecipeInfo
 import jakarta.persistence.CascadeType
@@ -17,6 +19,8 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import io.ebean.Model
+import io.ebean.annotation.Aggregation
+import jakarta.persistence.JoinTable
 import java.time.Instant
 
 @Entity
@@ -59,11 +63,11 @@ class Recipe (
     @ManyToOne
     var owner: User? = null,
 
-    @ManyToMany
-    var cookbooks: MutableSet<Cookbook> = mutableSetOf(),
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    var cookbooks: MutableList<CookbookRecipe> = mutableListOf(),
 
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var likes: MutableSet<Like> = mutableSetOf(),
+    var likes: MutableList<Like> = mutableListOf(),
 
     ) : Model() {
     fun mergeDTO(recipeDTO: RecipeDTO) : Recipe = apply {
@@ -86,5 +90,6 @@ class Recipe (
         owner = this.owner!!.username,
         creationDate = this.creationDate,
         editionDate = this.modificationDate,
+        likesCount = this.likes.size,
     )
 }

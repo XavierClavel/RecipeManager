@@ -6,6 +6,7 @@ enum class DishType {
     TART,
     POELEE,
     EN_SAUCE,
+    PIZZA,
 
     SOUP,
     CAKE,

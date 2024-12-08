@@ -22,6 +22,8 @@ data class RecipeInfo (
     var creationDate: Long = 0,
     var editionDate: Long? = null,
 
+    var likesCount: Int,
+
     ) {
     fun compareToDTO(dto: RecipeDTO): Boolean {
         return title == dto.title &&

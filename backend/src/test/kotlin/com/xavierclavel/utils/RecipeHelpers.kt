@@ -2,6 +2,7 @@ package main.com.xavierclavel.utils
 
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
+import common.enums.Sort
 import common.infodto.RecipeInfo
 import common.utils.URL.RECIPE_URL
 import io.ktor.client.HttpClient
@@ -51,22 +52,16 @@ suspend fun HttpClient.getRecipe(recipeId: Long): RecipeInfo {
     }
 }
 
-suspend fun HttpClient.listRecipes(owner: Long?): List<RecipeInfo> {
+suspend fun HttpClient.listRecipes(owner: Long?, sort: Sort? = null): List<RecipeInfo> {
     this.get(RECIPE_URL) {
         url {
             owner?.let { parameters.append("owner", owner.toString()) }
+            sort?.let { parameters.append("sort", it.toString()) }
         }
     }.apply {
         assertEquals(HttpStatusCode.OK, status)
         val response = Json.decodeFromString<List<RecipeInfo>>(bodyAsText())
         return response
-    }
-}
-
-suspend fun HttpClient.countRecipeByUser(username: String): Int {
-    this.get("$RECIPE_URL/user/$username/count").apply {
-        assertEquals(HttpStatusCode.OK, status)
-        return bodyAsText().toInt()
     }
 }
 

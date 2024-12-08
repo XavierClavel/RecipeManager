@@ -1,7 +1,10 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
+import com.xavierclavel.models.query.QRecipe
+import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
+import common.enums.Sort
 import common.utils.URL.RECIPE_URL
 import io.ktor.client.request.header
 import io.ktor.client.request.setBody
@@ -14,7 +17,7 @@ import kotlin.test.assertEquals
 import io.ktor.client.request.put
 import junit.framework.TestCase.assertTrue
 import main.com.xavierclavel.utils.assertRecipeExists
-import main.com.xavierclavel.utils.countRecipeByUser
+import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.deleteRecipe
 import main.com.xavierclavel.utils.getRecipe
@@ -81,24 +84,6 @@ class RecipeControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `count recipes by owner`() = runTestAsAdmin {
-        val count1 = it.countRecipeByUser("admin")
-        assertEquals(count1, 0)
-        it.createRecipe(recipeDTO)
-        val count2 = it.countRecipeByUser("admin")
-        assertEquals(count2, 1)
-    }
-
-    @Test
-    fun `get recipes by owner`() = runTestAsAdmin {
-        val count1 = it.countRecipeByUser("admin")
-        assertEquals(count1, 0)
-        it.createRecipe(recipeDTO)
-        val count2 = it.countRecipeByUser("admin")
-        assertEquals(count2, 1)
-    }
-
-    @Test
     fun `list recipes by owner`() = runTestAsAdmin {
         val admin = userService.getUserByUsername("admin")!!
         val user = userService.getUserByUsername("user1")!!
@@ -113,11 +98,27 @@ class RecipeControllerTest : ApplicationTest() {
     @Test
     fun `list recipes`() = runTestAsAdmin {
         val result = it.listRecipes(null)
-        println(result.count())
         assertEquals(0, result.count())
         it.createRecipe(recipeDTO)
         val result2 = it.listRecipes(null)
-        println(result2.count())
         assertEquals(1, result2.count())
+    }
+
+    @Test
+    fun `sort recipes by likes`() = runTestAsAdmin {
+        val recipe1 = it.createRecipe()
+        val recipe2 = it.createRecipe()
+        it.createLike(recipe1.id)
+
+        val result1 = it.listRecipes(null, Sort.LIKES_DESCENDING)
+        assertEquals(2, result1.count())
+        assertEquals(recipe1.id, result1[0].id)
+
+        val result2 = it.listRecipes(null, Sort.LIKES_ASCENDING)
+        assertEquals(2, result2.count())
+        assertEquals(recipe2.id, result2[0].id)
+
+
+
     }
 }

@@ -8,6 +8,7 @@ import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUsername
+import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.logger
 import common.infodto.RecipeInfo
 import common.utils.URL.RECIPE_URL
@@ -43,10 +44,11 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.listRecipes() = get {
         val paging = getPaging()
+        val sort = getSort()
         val owner = getIdPathVariable("owner")
         val likedBy = getIdPathVariable("likedBy")
         val cookbook = getIdPathVariable("cookbook")
-        call.respond(recipeService.findList(paging, owner, likedBy, cookbook))
+        call.respond(recipeService.findList(paging, sort, owner, likedBy, cookbook))
     }
 
     private fun Route.createRecipe() = post {

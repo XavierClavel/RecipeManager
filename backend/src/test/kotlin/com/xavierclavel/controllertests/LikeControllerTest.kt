@@ -9,6 +9,8 @@ import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.deleteLike
 import main.com.xavierclavel.utils.getLikes
 import main.com.xavierclavel.utils.getMe
+import main.com.xavierclavel.utils.getRecipe
+import main.com.xavierclavel.utils.getUser
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -44,5 +46,15 @@ class LikeControllerTest : ApplicationTest() {
         it.createLike(recipe2.id)
         val result = it.getLikes(userId, null)
         assertEquals(2, result.size)
+    }
+
+    @Test
+    fun `count likes per recipe`() = runTestAsAdmin {
+        val recipeInfo = it.createRecipe()
+        val result = it.getRecipe(recipeInfo.id)
+        assertEquals(0, result.likesCount)
+        it.createLike(result.id)
+        val result2 = it.getRecipe(recipeInfo.id)
+        assertEquals(1, result2.likesCount)
     }
 }
