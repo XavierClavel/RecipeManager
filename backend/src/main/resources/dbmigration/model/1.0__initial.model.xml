@@ -42,8 +42,8 @@
         </createTable>
         <createTable name="followers" identityType="identity" pkName="pk_followers">
             <column name="id" type="bigint" primaryKey="true"/>
-            <column name="follower_id" type="bigint" notnull="true" references="users.id" foreignKeyName="fk_followers_follower_id" foreignKeyIndex="ix_followers_follower_id"/>
-            <column name="user_id" type="bigint" notnull="true" references="users.id" foreignKeyName="fk_followers_user_id" foreignKeyIndex="ix_followers_user_id"/>
+            <column name="follower_id" type="bigint" references="users.id" foreignKeyName="fk_followers_follower_id" foreignKeyIndex="ix_followers_follower_id"/>
+            <column name="user_id" type="bigint" references="users.id" foreignKeyName="fk_followers_user_id" foreignKeyIndex="ix_followers_user_id"/>
             <column name="pending" type="boolean" defaultValue="false" notnull="true"/>
             <column name="followed_since" type="localdatetime" notnull="true"/>
         </createTable>
@@ -77,12 +77,6 @@
             <column name="recipes_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_recipes_steps_recipes_id" foreignKeyIndex="ix_recipes_steps_recipes_id"/>
             <column name="value" type="varchar" notnull="true"/>
         </createTable>
-        <createTable name="recipes_cookbooks" pkName="pk_recipes_cookbooks">
-            <column name="recipes_id" type="bigint" notnull="true" primaryKey="true"/>
-            <column name="cookbooks_id" type="bigint" notnull="true" primaryKey="true"/>
-            <foreignKey name="fk_recipes_cookbooks_recipes" columnNames="recipes_id" refColumnNames="id" refTableName="recipes" indexName="ix_recipes_cookbooks_recipes"/>
-            <foreignKey name="fk_recipes_cookbooks_cookbooks" columnNames="cookbooks_id" refColumnNames="id" refTableName="cookbooks" indexName="ix_recipes_cookbooks_cookbooks"/>
-        </createTable>
         <createTable name="recipe_ingredients" identityType="identity" pkName="pk_recipe_ingredients">
             <column name="id" type="bigint" primaryKey="true"/>
             <column name="recipe_id" type="bigint" references="recipes.id" foreignKeyName="fk_recipe_ingredients_recipe_id" foreignKeyIndex="ix_recipe_ingredients_recipe_id"/>
@@ -98,7 +92,8 @@
             <column name="role" type="integer" notnull="true" checkConstraint="check ( role in (0,1))" checkConstraintName="ck_users_role"/>
             <column name="bio" type="varchar" notnull="true"/>
             <column name="join_date" type="bigint" notnull="true"/>
-            <column name="diet_id" type="bigint" notnull="true" uniqueOneToOne="uq_users_diet_id" references="dietary_restrictions.id" foreignKeyName="fk_users_diet_id"/>
+            <column name="last_activity_date" type="bigint" notnull="true"/>
+            <column name="dietary_restrictions_id" type="bigint" notnull="true" uniqueOneToOne="uq_users_dietary_restrictions_id" references="dietary_restrictions.id" foreignKeyName="fk_users_dietary_restrictions_id"/>
         </createTable>
     </changeSet>
 </migration>

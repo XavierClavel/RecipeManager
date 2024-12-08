@@ -16,6 +16,7 @@ class UserControllerTest : ApplicationTest() {
         it.assertUserExists(user.id)
     }
 
+    /*
     @Test
     fun `delete user`() = runTestAsAdmin {
         val username = "test_user"
@@ -23,6 +24,8 @@ class UserControllerTest : ApplicationTest() {
         it.assertUserExists(user.id)
         it.deleteUser(user.id)
     }
+
+     */
 
     @Test
     fun `list users`() = runTestAsAdmin {

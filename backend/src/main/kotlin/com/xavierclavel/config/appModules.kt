@@ -1,6 +1,7 @@
 package com.xavierclavel.config
 
 import com.xavierclavel.services.CookbookService
+import com.xavierclavel.services.DashboardService
 import com.xavierclavel.services.ExportService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.IngredientService
@@ -17,4 +18,5 @@ val appModules = module {
     single { ExportService() }
     single { LikeService() }
     single { CookbookService() }
+    single { DashboardService() }
 }

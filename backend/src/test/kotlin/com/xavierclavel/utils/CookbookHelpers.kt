@@ -11,6 +11,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
@@ -42,6 +43,16 @@ suspend fun HttpClient.getCookbook(id: Long): CookbookInfo {
         .apply {
             assertEquals(HttpStatusCode.OK, status)
             return Json.decodeFromString<CookbookInfo>(bodyAsText())
+        }
+}
+
+suspend fun HttpClient.listCookbooks(user: Long? = null): Set<CookbookInfo> {
+    this.get(COOKBOOK_URL) {
+        url.apply { if (user != null) parameter("user", user) }
+    }
+        .apply {
+            assertEquals(HttpStatusCode.OK, status)
+            return Json.decodeFromString<Set<CookbookInfo>>(bodyAsText())
         }
 }
 

@@ -20,7 +20,7 @@ class Cookbook (
 
     @Id
     @GeneratedValue
-    var id: Long = 1,
+    var id: Long = 0,
 
     var title: String = "",
 

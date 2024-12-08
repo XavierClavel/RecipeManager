@@ -35,20 +35,6 @@ class RecipeService: KoinComponent {
             .sort(sort)
             .findList()
             .map {it.toInfo()}
-        /*
-        QRecipe()
-            .fetch("likes")  // Forces LEFT JOIN
-            .select(QRecipe.Alias.id, QRecipe.alias().likesCount)
-            .select(QRecipe.Alias.id)
-            .filterByOwner(owner)
-            .filterByLikes(likedBy)
-            .filterByCookbook(cookbook)
-            .sort(sort)
-            .setPaging(paging)
-            .findList()
-            .map { it.toInfo() }
-
-         */
 
     fun findEntityById(recipeId: Long) : Recipe? =
         QRecipe().id.eq(recipeId).findOne()

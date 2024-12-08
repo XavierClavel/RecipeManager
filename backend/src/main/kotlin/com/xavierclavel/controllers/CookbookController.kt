@@ -7,6 +7,7 @@ import com.xavierclavel.utils.getIdQueryParam
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUserId
+import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.handleDeletion
 import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
@@ -28,6 +29,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     override fun Route.routes() {
         createCookbook()
         getCookbook()
+        listCookbooks()
         updateCookbook()
         deleteCookbook()
 
@@ -48,15 +50,16 @@ object CookbookController: Controller(COOKBOOK_URL) {
         call.respond(HttpStatusCode.Created, cookbook)
     }
 
-    /*
+
     private fun Route.listCookbooks() = get {
         val userId = getIdQueryParam("user")
         val recipeId = getIdQueryParam("recipe")
         val paging = getPaging()
-        val cookbook = cookbookService.getCookbook(id) ?: return@get call.respond(HttpStatusCode.NotFound)
+        val sort = getSort()
+        logger.info {userId}
+        val cookbook = cookbookService.listCookbooks(paging, sort, userId)
         call.respond(cookbook)
     }
-     */
 
     private fun Route.getCookbook() = get("/{id}") {
         val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)

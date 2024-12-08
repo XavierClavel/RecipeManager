@@ -10,10 +10,17 @@ import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
 import org.koin.core.component.KoinComponent
+import java.time.Instant
 
 class UserService: KoinComponent {
     fun countAll() =
         QUser().findCount()
+
+    //Defined as users who logged in in the last 30 days
+    fun countActiveUsers() =
+        QUser()
+            .where().lastActivityDate.gt(Instant.now().minusSeconds(60 * 60 * 24 * 30).epochSecond)
+            .findCount()
 
     fun findEntityById(userId: Long) : User? =
         QUser().id.eq(userId).findOne()
@@ -30,11 +37,10 @@ class UserService: KoinComponent {
     fun createUser(userDTO: UserDTO): UserInfo =
         User.from(userDTO).insertAndGet().toInfo()
 
-
     fun editUser(id: Long, userDTO: UserDTO): UserInfo? =
         QUser().id.eq(id).findOne()?.merge(userDTO)?.updateAndGet()?.toInfo()
 
-
+    fun registerUserActivity(id: Long) = findEntityById(id)?.registerNewActivity()
 
     fun deleteUserById(userId: Long) =
         QUser().id.eq(userId).delete()

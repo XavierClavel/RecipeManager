@@ -30,7 +30,6 @@ object ImageController: Controller(IMAGE_URL) {
             default("default.webp")
             modify { file, call ->
                 call.response.headers.append(HttpHeaders.ETag, file.lastModified().toString())
-                call.response.headers.append(HttpHeaders.CacheControl, "public, max-age=3600, must-revalidate")
             }
         }
 
@@ -39,7 +38,6 @@ object ImageController: Controller(IMAGE_URL) {
             default("default.webp")
             modify { file, call ->
                 call.response.headers.append(HttpHeaders.ETag, file.lastModified().toString())
-                call.response.headers.append(HttpHeaders.CacheControl, "public, max-age=3600, must-revalidate")
             }
         }
 

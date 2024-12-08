@@ -38,6 +38,7 @@ object AuthController: Controller(AUTH_URL) {
     private fun Route.login() = post("/login") {
         val username = call.principal<UserIdPrincipal>()?.name.toString()
         val user = userService.getUserByUsername(username)!!
+        userService.registerUserActivity(user.id)
         call.sessions.set(UserSession(username = username, role = user.role, id = user.id))
         call.respond(HttpStatusCode.OK)
     }

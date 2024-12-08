@@ -16,10 +16,12 @@ import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.deleteCookbook
 import main.com.xavierclavel.utils.deleteCookbookUser
 import main.com.xavierclavel.utils.deleteLike
+import main.com.xavierclavel.utils.getCookbook
 import main.com.xavierclavel.utils.getCookbookRecipes
 import main.com.xavierclavel.utils.getCookbookUsers
 import main.com.xavierclavel.utils.getLikes
 import main.com.xavierclavel.utils.getMe
+import main.com.xavierclavel.utils.listCookbooks
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -101,6 +103,55 @@ class CookbookControllerTest : ApplicationTest() {
 
         val recipes = client.getCookbookRecipes(cookbook.id)
         assertEquals(20, recipes.size)
+    }
+
+    @Test
+    fun `list user cookbooks`() = runTestAsAdmin {
+        val cookbook1 = it.createCookbook()
+        val cookbook2 = it.createCookbook()
+        val cookbook3 = it.createCookbook()
+        val cookbook4 = it.createCookbook()
+
+        val user1 = it.createUser()
+        val user2 = it.createUser()
+        val user3 = it.createUser()
+
+        it.addCookbookUser(cookbook1.id, user1.id, CookbookRole.READER)
+        it.addCookbookUser(cookbook2.id, user1.id, CookbookRole.READER)
+        it.addCookbookUser(cookbook2.id, user2.id, CookbookRole.READER)
+        it.addCookbookUser(cookbook3.id, user2.id, CookbookRole.READER)
+
+        val result1 = it.listCookbooks(user1.id).map { it.id }.toSet()
+        val result2 = it.listCookbooks(user2.id).map { it.id }.toSet()
+        val result3 = it.listCookbooks(user3.id).map { it.id }.toSet()
+
+        val expected1 = setOf(cookbook1.id, cookbook2.id)
+        val expected2 = setOf(cookbook2.id, cookbook3.id)
+        val expected3 = setOf<Long>()
+
+        assertEquals(expected1, result1)
+        assertEquals(expected2, result2)
+        assertEquals(expected3, result3)
+    }
+
+    @Test
+    fun `count cookbook users and recipes`() = runTestAsAdmin { client ->
+        val cookbook = client.createCookbook()
+        client.assertCookbookExists(cookbook.id)
+
+        repeat(2) {
+            val user = client.createUser()
+            client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+        }
+
+        repeat(2) {
+            val recipe = client.createRecipe()
+            client.addCookbookRecipe(cookbook.id, recipe.id)
+        }
+
+        val result = client.getCookbook(cookbook.id)
+        assertEquals(3, result.usersCount)
+        assertEquals(2, result.recipesCount)
     }
 
 }

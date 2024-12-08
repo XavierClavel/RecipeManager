@@ -36,6 +36,7 @@ class User (
     var bio: String = "",
 
     var joinDate: Long = Instant.now().epochSecond,
+    var lastActivityDate: Long = Instant.now().epochSecond,
 
     @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL], orphanRemoval = true)
     var recipes: Set<Recipe> = setOf(),
@@ -72,6 +73,11 @@ class User (
             )
         }
     }
+
+    fun registerNewActivity() =
+        this.apply {
+            lastActivityDate = Instant.now().epochSecond
+        }
 
     fun toInfo() =
         UserInfo(

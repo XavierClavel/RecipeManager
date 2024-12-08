@@ -28,7 +28,7 @@ object DatabaseManager {
         QLike(),
         QCookbook(),
         QCookbookUser(),
-        QCookbookRecipe()
+        QCookbookRecipe(),
     )
 
     private fun hikari(): HikariDataSource {

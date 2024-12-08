@@ -18,6 +18,7 @@ import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
 import common.dto.UserDTO
 import common.enums.CookbookRole
+import common.enums.Sort
 import common.infodto.UserInfo
 import common.enums.UserRole
 import common.infodto.CookbookInfo
@@ -25,6 +26,7 @@ import common.infodto.CookbookRecipeInfo
 import common.infodto.CookbookUserInfo
 import common.infodto.RecipeInfo
 import io.ebean.ExpressionList
+import io.ebean.FetchConfig
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -45,6 +47,15 @@ class CookbookService: KoinComponent {
         Cookbook.from(cookbookDTO).insertAndGet().toInfo()
 
     fun getCookbook(id: Long) = findEntityById(id)?.toInfo()
+
+    fun listCookbooks(paging: Paging, sort:Sort, user: Long?) : List<CookbookInfo> =
+        QCookbook()
+            .fetch("users", FetchConfig.ofLazy())
+            //.fetch(QCookbook.Alias.users.toString(), "count(*)", FetchConfig.ofLazy())
+            //.having().raw("count(users.user.id) >= 0")
+            .filterByUser(user)
+            .findList()
+            .map { it.toInfo() }
 
     fun getCookbookUsers(id: Long, paging: Paging): List<CookbookUserInfo>? =
         QCookbook()
@@ -104,30 +115,18 @@ class CookbookService: KoinComponent {
 
     fun removeUserFromCookbook(cookbookId: Long, userId: Long): Boolean? =
         QCookbookUser()
-            .apply { logger.info {cookbookId} }
-            .apply { logger.info { userId } }
             .user.id.eq(userId)
             .and()
             .cookbook.id.eq(cookbookId)
             .findOne()
             ?.delete()
 
-    private fun filterUserList(id: Long) =
-        QCookbookUser()
-            .user.id.eq(id)
-            .expressionList
-
-    private fun filterRecipeList(id: Long) =
-        QCookbookRecipe()
-            .recipe.id.eq(id)
-            .expressionList
-
 
     private fun QCookbook.filterByUser(userId: Long?) =
-        if (userId == null) this else this.users.filterMany(filterUserList(userId))
+        if (userId == null) this else this.where().users.user.id.eq(userId)
 
     private fun QCookbook.filterByRecipe(recipeId: Long?) =
-        if (recipeId == null) this else this.recipes.filterMany(filterRecipeList(recipeId))
+        if (recipeId == null) this else this.where().recipes.recipe.id.eq(recipeId)
 
 
 }
