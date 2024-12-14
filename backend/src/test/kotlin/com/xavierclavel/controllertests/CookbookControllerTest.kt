@@ -54,7 +54,7 @@ class CookbookControllerTest : ApplicationTest() {
     fun `add user to cookbook`() = runTestAsAdmin {
         val cookbook = it.createCookbook()
         it.assertCookbookExists(cookbook.id)
-        val user = userService.getUserByUsername("user1")!!
+        val user = it.createUser("user1")
         it.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
         val users = it.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)
@@ -79,7 +79,7 @@ class CookbookControllerTest : ApplicationTest() {
         val cookbook = it.createCookbook()
         it.assertCookbookExists(cookbook.id)
 
-        val user = userService.getUserByUsername("user1")!!
+        val user = it.createUser("user1")
         it.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
         val users = it.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)

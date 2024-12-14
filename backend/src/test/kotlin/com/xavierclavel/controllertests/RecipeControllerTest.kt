@@ -23,6 +23,7 @@ import main.com.xavierclavel.utils.assertRecipeExists
 import main.com.xavierclavel.utils.createIngredient
 import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
+import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.deleteRecipe
 import main.com.xavierclavel.utils.getRecipe
 import main.com.xavierclavel.utils.listRecipes
@@ -196,7 +197,7 @@ class RecipeControllerTest : ApplicationTest() {
     @Test
     fun `list recipes by owner`() = runTestAsAdmin {
         val admin = userService.getUserByUsername("admin")!!
-        val user = userService.getUserByUsername("user1")!!
+        val user = it.createUser()
         val result = it.listRecipes(admin.id)
         assertEquals(result.count(), 0)
         it.createRecipe(recipeDTO)
