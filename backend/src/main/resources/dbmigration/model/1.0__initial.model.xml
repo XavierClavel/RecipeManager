@@ -61,7 +61,6 @@
         </createTable>
         <createTable name="recipes" identityType="identity" pkName="pk_recipes">
             <column name="id" type="bigint" primaryKey="true"/>
-            <column name="local_id" type="bigint" notnull="true"/>
             <column name="title" type="varchar" notnull="true"/>
             <column name="description" type="varchar" notnull="true"/>
             <column name="creation_date" type="bigint" notnull="true"/>
@@ -83,6 +82,7 @@
             <column name="ingredient_id" type="bigint" references="ingredients.id" foreignKeyName="fk_recipe_ingredients_ingredient_id" foreignKeyIndex="ix_recipe_ingredients_ingredient_id"/>
             <column name="amount" type="float" notnull="true"/>
             <column name="unit" type="integer" notnull="true" checkConstraint="check ( unit in (0,1,2,3,4,5,6))" checkConstraintName="ck_recipe_ingredients_unit"/>
+            <uniqueConstraint name="uq_recipe_ingredients_recipe_id_ingredient_id" columnNames="recipe_id,ingredient_id" oneToOne="false" nullableColumns="recipe_id,ingredient_id"/>
         </createTable>
         <createTable name="users" pkName="pk_users">
             <column name="id" type="bigint" primaryKey="true"/>

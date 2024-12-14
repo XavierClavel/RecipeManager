@@ -30,8 +30,6 @@ class Recipe (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
-    var localId : Long = -1,
-
     var title: String = "",
 
     var description: String = "",
