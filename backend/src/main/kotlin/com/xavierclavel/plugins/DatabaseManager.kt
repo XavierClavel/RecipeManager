@@ -2,8 +2,12 @@ package com.xavierclavel.plugins
 
 import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.jointables.query.QCookbookUser
+import com.xavierclavel.models.jointables.query.QCustomIngredient
+import com.xavierclavel.models.jointables.query.QFollower
 import com.xavierclavel.models.jointables.query.QLike
+import com.xavierclavel.models.jointables.query.QRecipeIngredient
 import com.xavierclavel.models.query.QCookbook
+import com.xavierclavel.models.query.QDietaryRestrictions
 import com.xavierclavel.models.query.QIngredient
 import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.models.query.QUser
@@ -23,7 +27,10 @@ object DatabaseManager {
 
     fun getTables() = listOf(
         QRecipe(),
+        QRecipeIngredient(),
+        QCustomIngredient(),
         QUser(),
+        QFollower(),
         QIngredient(),
         QLike(),
         QCookbook(),

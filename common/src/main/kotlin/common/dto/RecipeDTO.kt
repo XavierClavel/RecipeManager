@@ -1,6 +1,7 @@
 package common.dto
 
 import common.enums.AmountUnit
+import common.infodto.CustomIngredientInfo
 import kotlinx.serialization.*
 
 @Serializable
@@ -13,7 +14,7 @@ data class RecipeDTO (
     val cookingTemperature: Int? = null,
 
     val ingredients: MutableList<RecipeIngredientDTO> = mutableListOf(),
-    val customIngredients: MutableList<RecipeCustomIngredientDTO> = mutableListOf(),
+    val customIngredients: MutableList<CustomIngredientDTO> = mutableListOf(),
     val steps: MutableList<String> = mutableListOf(),
 ) {
     @Serializable
@@ -24,11 +25,17 @@ data class RecipeDTO (
     )
 
     @Serializable
-    data class RecipeCustomIngredientDTO (
+    data class CustomIngredientDTO (
         val name: String,
         val unit: AmountUnit,
         val amount: Float,
-    )
+    ) {
+        fun toInfo() = CustomIngredientInfo(
+            name = name,
+            unit = unit,
+            amount = amount,
+        )
+    }
 }
 
 

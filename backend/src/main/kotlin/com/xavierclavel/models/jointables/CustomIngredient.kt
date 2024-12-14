@@ -1,9 +1,10 @@
 package com.xavierclavel.models.jointables
 
-import com.xavierclavel.models.Ingredient
 import com.xavierclavel.models.Recipe
-import com.xavierclavel.models.User
+import common.dto.RecipeDTO
 import common.enums.AmountUnit
+import common.infodto.CustomIngredientInfo
+import io.ebean.Model
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -22,8 +23,19 @@ class CustomIngredient (
     @ManyToOne
     var recipe: Recipe? =  null,
 
-    var ingredient: String = "",
+    var name: String = "",
     var amount: Float = -1f,
     var unit: AmountUnit = AmountUnit.NONE,
 
+): Model() {
+    fun mergeDTO(customIngredientDTO: RecipeDTO.CustomIngredientDTO) = this.apply {
+        this.amount = customIngredientDTO.amount
+        this.unit = customIngredientDTO.unit
+    }
+
+    fun toInfo() = CustomIngredientInfo(
+        name = name,
+        amount = amount,
+        unit = unit,
     )
+}

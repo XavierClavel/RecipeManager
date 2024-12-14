@@ -15,6 +15,7 @@ data class RecipeInfo (
     val cookingTemperature: Int? = null,
 
     val ingredients: List<RecipeIngredientInfo> = listOf(),
+    val customIngredients: List<CustomIngredientInfo> = listOf(),
     val steps: List<String> = listOf(),
     val tips: List<String> = listOf(),
 

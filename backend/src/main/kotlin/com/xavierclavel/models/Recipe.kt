@@ -85,6 +85,7 @@ class Recipe (
         description = description,
         steps = steps,
         ingredients = ingredients.map { it.toInfo() },
+        customIngredients = customIngredients.map {it.toInfo()},
         owner = this.owner!!.username,
         creationDate = this.creationDate,
         editionDate = this.modificationDate,

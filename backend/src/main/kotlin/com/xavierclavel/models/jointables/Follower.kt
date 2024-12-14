@@ -2,6 +2,7 @@ package com.xavierclavel.models.jointables
 
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
+import io.ebean.Model
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -26,4 +27,4 @@ class Follower (
     var pending: Boolean = true,
 
     var followedSince: LocalDateTime = LocalDateTime.now(),
-)
+): Model()
