@@ -53,10 +53,10 @@ class Recipe (
     @ElementCollection
     var steps: List<String> = listOf(),
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
     var ingredients: List<RecipeIngredient> = listOf(),
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], orphanRemoval = true)
     var customIngredients: List<CustomIngredient> = listOf(),
 
 
@@ -86,7 +86,7 @@ class Recipe (
         title = title,
         description = description,
         steps = steps,
-        ingredients = listOf(),
+        ingredients = ingredients.map { it.toInfo() },
         owner = this.owner!!.username,
         creationDate = this.creationDate,
         editionDate = this.modificationDate,

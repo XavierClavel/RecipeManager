@@ -61,8 +61,6 @@ abstract class ApplicationTest: KoinTest {
     fun runTest(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
         return testApplication(EmptyCoroutineContext, {
             userService.setupDefaultAdmin()
-            userService.createUser(UserDTO("user1"))
-            userService.createUser(UserDTO("user2"))
             install(ContentNegotiation) {
                 json()
             }

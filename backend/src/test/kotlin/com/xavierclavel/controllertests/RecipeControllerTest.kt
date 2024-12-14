@@ -4,7 +4,10 @@ import com.xavierclavel.ApplicationTest
 import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
+import common.dto.RecipeDTO.RecipeIngredientDTO
+import common.enums.AmountUnit
 import common.enums.Sort
+import common.infodto.RecipeIngredientInfo
 import common.utils.URL.RECIPE_URL
 import io.ktor.client.request.header
 import io.ktor.client.request.setBody
@@ -17,12 +20,14 @@ import kotlin.test.assertEquals
 import io.ktor.client.request.put
 import junit.framework.TestCase.assertTrue
 import main.com.xavierclavel.utils.assertRecipeExists
+import main.com.xavierclavel.utils.createIngredient
 import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.deleteRecipe
 import main.com.xavierclavel.utils.getRecipe
 import main.com.xavierclavel.utils.listRecipes
 import main.com.xavierclavel.utils.updateRecipe
+import kotlin.math.exp
 import kotlin.test.assertFalse
 
 class RecipeControllerTest : ApplicationTest() {
@@ -40,6 +45,111 @@ class RecipeControllerTest : ApplicationTest() {
     fun `create recipe`() = runTestAsAdmin {
         val response = it.createRecipe(recipeDTO)
         it.assertRecipeExists(response.id)
+    }
+
+    @Test
+    fun `create recipe with ingredients`() = runTestAsAdmin {
+        val ingredient1 = it.createIngredient()
+        val ingredient2 = it.createIngredient()
+
+        val recipeIngredient1 = RecipeDTO.RecipeIngredientDTO(
+            id = ingredient1.id,
+            unit = AmountUnit.GRAM,
+            amount = 1f,
+        )
+
+        val recipeIngredient2 = RecipeDTO.RecipeIngredientDTO(
+            id = ingredient2.id,
+            unit = AmountUnit.GRAM,
+            amount = 1f,
+        )
+        val recipeDto = RecipeDTO(
+            title = "My recipe",
+            ingredients = mutableListOf(recipeIngredient1, recipeIngredient2)
+        )
+        val recipe = it.createRecipe(recipeDto)
+        val response = it.getRecipe(recipe.id)
+        it.assertRecipeExists(response.id)
+        assertEquals(2, response.ingredients.size)
+    }
+
+    @Test
+    fun `update recipe with ingredients`() = runTestAsAdmin {
+        val ingredient1 = it.createIngredient()
+        val ingredient2 = it.createIngredient()
+        val ingredient3 = it.createIngredient()
+
+        val recipeIngredient1 = RecipeDTO.RecipeIngredientDTO(
+            id = ingredient1.id,
+            unit = AmountUnit.GRAM,
+            amount = 1f,
+        )
+
+        val recipeIngredient2 = RecipeDTO.RecipeIngredientDTO(
+            id = ingredient2.id,
+            unit = AmountUnit.GRAM,
+            amount = 1f,
+        )
+        val recipeIngredient2bis = RecipeDTO.RecipeIngredientDTO(
+            id = ingredient2.id,
+            unit = AmountUnit.UNIT,
+            amount = 2f,
+        )
+
+        val recipeIngredient3 = RecipeDTO.RecipeIngredientDTO(
+            id = ingredient3.id,
+            unit = AmountUnit.GRAM,
+            amount = 1f,
+        )
+
+        val expected = setOf(
+            RecipeIngredientInfo(
+                id = ingredient2.id,
+                name = "",
+                unit = AmountUnit.UNIT,
+                amount = 2f,
+            ),
+            RecipeIngredientInfo(
+                id = ingredient3.id,
+                name = "",
+                unit = AmountUnit.GRAM,
+                amount = 1f,
+            ),
+
+        )
+
+        val recipeDto = RecipeDTO(
+            title = "My recipe",
+            ingredients = mutableListOf(recipeIngredient1, recipeIngredient2)
+        )
+        val recipe = it.createRecipe(recipeDto)
+
+        val recipeDTO2 = RecipeDTO(
+            title = "My recipe",
+            ingredients = mutableListOf(recipeIngredient2bis, recipeIngredient3)
+        )
+
+        val response = it.updateRecipe(recipe.id, recipeDTO2)
+        it.assertRecipeExists(response.id)
+        assertEquals(2, response.ingredients.size)
+        assertEquals(expected, response.ingredients.toSet())
+    }
+
+    @Test
+    fun `create recipe with steps`() = runTestAsAdmin {
+        val steps = setOf(
+            "step1",
+            "step2",
+            )
+        val recipeDto = RecipeDTO(
+            title = "My recipe",
+            steps = steps.toMutableList()
+        )
+        val recipe = it.createRecipe(recipeDto)
+        val response = it.getRecipe(recipe.id)
+        it.assertRecipeExists(response.id)
+        assertEquals(2, response.steps.size)
+        assertEquals(steps, response.steps.toSet())
     }
 
     @Test

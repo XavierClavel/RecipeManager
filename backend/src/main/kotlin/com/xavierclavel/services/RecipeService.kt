@@ -2,11 +2,9 @@ package com.xavierclavel.services
 
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
-import com.xavierclavel.models.jointables.query.QLike
 import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
-import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.enums.Sort
 import common.infodto.RecipeInfo
@@ -15,7 +13,6 @@ import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 
 class RecipeService: KoinComponent {
-    val likeAlias = QLike.alias()
 
     fun countAll() =
         QRecipe().findCount()
@@ -46,6 +43,7 @@ class RecipeService: KoinComponent {
     fun deleteById(recipeId: Long) {
         QRecipe().id.eq(recipeId).delete()
     }
+
 
     fun getRecipeOwner(recipeId: Long) = findById(recipeId)?.owner
 

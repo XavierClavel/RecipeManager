@@ -14,6 +14,9 @@ class IngredientService: KoinComponent {
     fun countAll() =
         QIngredient().findCount()
 
+    fun findEntityById(ingredientId: Long) : Ingredient? =
+        QIngredient().id.eq(ingredientId).findOne()
+
     fun findById(ingredientId: Long) : IngredientInfo? =
         QIngredient().id.eq(ingredientId).findOne()?.toInfo()
 

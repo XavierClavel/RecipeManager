@@ -1,7 +1,6 @@
 package common.infodto
 
 import common.dto.RecipeDTO
-import common.dto.RecipeIngredientDTO
 import kotlinx.serialization.*
 
 @Serializable

@@ -22,6 +22,7 @@ export {
   toCreateCookbook,
   toListCookbooks,
   toMyCookbooks,
+  toViewCookbookRecipes,
 
   toHome,
   toUsers,
@@ -47,6 +48,7 @@ const toEditUser = (id) => router.push(`/user/edit/?id=${id}`)
 const toListIngredient = () => router.push(`/ingredients`)
 
 const toCreateCookbook = () => router.push(`/cookbook/edit`)
+const toViewCookbookRecipes = (id) => router.push(`/cookbook/recipes?cookbook=${id}`)
 const toListCookbooks = (id) => router.push(`/cookbook/list?user=${id}`)
 
 const toMyCookbooks = () => {

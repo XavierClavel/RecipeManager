@@ -1,6 +1,7 @@
 package main.com.xavierclavel.utils
 
 import common.dto.IngredientDTO
+import common.enums.IngredientType
 import common.infodto.IngredientInfo
 import common.utils.URL.INGREDIENT_URL
 import io.ktor.client.HttpClient
@@ -20,7 +21,9 @@ import kotlinx.serialization.json.Json
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-suspend fun HttpClient.createIngredient(ingredient: IngredientDTO) : IngredientInfo {
+val ingredientDTO = IngredientDTO(name = "", type = IngredientType.VEGETABLE, calories = 1)
+
+suspend fun HttpClient.createIngredient(ingredient: IngredientDTO = ingredientDTO) : IngredientInfo {
     this.post(INGREDIENT_URL){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)

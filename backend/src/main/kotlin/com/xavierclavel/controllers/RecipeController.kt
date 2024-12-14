@@ -1,6 +1,8 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.services.ImageService
+import com.xavierclavel.services.IngredientService
+import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
@@ -10,6 +12,7 @@ import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUsername
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.logger
+import common.dto.RecipeDTO
 import common.infodto.RecipeInfo
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
@@ -25,6 +28,7 @@ import org.koin.java.KoinJavaComponent.inject
 
 object RecipeController: Controller(RECIPE_URL) {
     val recipeService: RecipeService by inject(RecipeService::class.java)
+    val recipeIngredientService: RecipeIngredientService by inject(RecipeIngredientService::class.java)
     val userService: UserService by inject(UserService::class.java)
     val imageService: ImageService by inject(ImageService::class.java)
 
@@ -55,7 +59,11 @@ object RecipeController: Controller(RECIPE_URL) {
         try {
             val username = getSessionUsername() ?: return@post call.respond(HttpStatusCode.Unauthorized)
             val user = userService.findByUsername(username) ?: return@post call.respond(HttpStatusCode.Unauthorized)
-            call.respond(HttpStatusCode.Created, recipeService.createRecipe(call.receive(), user))
+            val recipeDto = call.receive<RecipeDTO>()
+            val recipe = recipeService.createRecipe(recipeDto, user)
+            recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
+            val recipeInfo = recipeService.findById(recipe.id) ?: return@post call.respond(HttpStatusCode.InternalServerError)
+            call.respond(HttpStatusCode.Created, recipeInfo)
         } catch (e: Exception) {
             logger.error {e.message}
         }
@@ -67,8 +75,9 @@ object RecipeController: Controller(RECIPE_URL) {
             val recipeId = getPathId() ?: return@put call.respond(HttpStatusCode.BadRequest)
             val recipe = recipeService.findById(recipeId) ?: return@put call.respond(HttpStatusCode.NotFound)
             if (!isAuthorizedToEditRecipe(recipe)) return@put call.respond(HttpStatusCode.Unauthorized)
-            val info =
-                recipeService.updateRecipe(recipeId, call.receive()) ?: return@put call.respond(HttpStatusCode.NotFound)
+            val recipeDto = call.receive<RecipeDTO>()
+            recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
+            val info = recipeService.updateRecipe(recipeId, recipeDto) ?: return@put call.respond(HttpStatusCode.NotFound)
             call.respond(HttpStatusCode.OK, info)
         } catch (e: Exception) {
             logger.error {e.message}
