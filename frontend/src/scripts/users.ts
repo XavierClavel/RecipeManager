@@ -6,6 +6,7 @@ export{
   updateUser,
   getUsers,
   deleteUser,
+  searchUsers,
 }
 
 async function getUser(id) {
@@ -23,4 +24,8 @@ async function getUsers() {
 
 async function deleteUser(id) {
   return await apiClient.delete(`${base_url}/user/${id}`)
+}
+
+async function searchUsers(query, page, size) {
+  return await apiClient.get(`/user?search=${query}&page=${page}&size=${size}`)
 }

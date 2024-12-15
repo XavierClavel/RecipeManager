@@ -2,6 +2,7 @@ package com.xavierclavel.services
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.models.User
+import com.xavierclavel.models.query.QIngredient
 import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
@@ -9,6 +10,8 @@ import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
+import common.infodto.IngredientInfo
+import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import java.time.Instant
 
@@ -73,6 +76,13 @@ class UserService: KoinComponent {
 
     fun isMailAvailable(mail: String): Boolean =
         findByMail(mail) == null
+
+    fun search(searchString: String, paging: Paging): List<UserInfo> =
+        QUser()
+            .username.like("%$searchString%")
+            .setPaging(paging)
+            .findList()
+            .map{it.toInfo()}
 
 
 }

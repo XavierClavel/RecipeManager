@@ -43,7 +43,7 @@
     ></v-img>
 
       <span class="d-flex flex-row">
-        <picto-info :value="recipe.yield" icon="mdi-silverware-fork-knife"></picto-info>
+        <picto-info :value="recipe.yield" icon="mdi-silverware-fork-knife" v-if="recipe.yield"></picto-info>
         <picto-info :value="recipe.conservationTime" icon="mdi-fridge" v-if="recipe.conservationTime"></picto-info>
         <picto-info :value="`${recipe.preparationTime} min`" icon="mdi-chef-hat" v-if="recipe.preparationTime"></picto-info>
         <picto-info :value="`${recipe.cookingTime} min`" icon="mdi-stove" v-if="recipe.cookingTime"></picto-info>
@@ -51,7 +51,7 @@
       </span>
 
 
-    <span class="d-flex align-center justify-center mb-2 my-5">
+    <span class="d-flex align-center justify-center mb-2 my-5 ga-10">
       <v-btn
         v-if="recipeLiked != null"
         :icon="recipeLiked ? 'mdi-heart' : 'mdi-heart-outline' "
@@ -62,6 +62,30 @@
         min-height="70px"
         min-width="70px"
         @click="onLikeButtonClick"
+        variant="outlined"
+      ></v-btn>
+
+      <v-btn
+        icon="mdi-bookmark-outline"
+        color="primary"
+        flat
+        rounded="circle"
+        class="mb-10 text-h6"
+        min-height="70px"
+        min-width="70px"
+        @click="onLikeButtonClick"
+        variant="outlined"
+      ></v-btn>
+
+      <v-btn
+        icon="mdi-share-variant"
+        color="primary"
+        flat
+        rounded="circle"
+        class="mb-10 text-h6"
+        min-height="70px"
+        min-width="70px"
+        @click="onShareButtonClick"
         variant="outlined"
       ></v-btn>
     </span>
@@ -173,6 +197,22 @@
         >Download</v-btn>
       </span>
 
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="2000"
+    >
+      Link successfully copied !
+      <template v-slot:actions>
+        <v-btn
+          color="primary"
+          variant="text"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
 
 
   </v-card>
@@ -186,7 +226,6 @@ import {ref} from "vue";
 import {base_url, toEditRecipe, toListRecipe, unitToReadable} from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
 import {addLike, isLiked, removeLike} from "@/scripts/likes";
-//import PictoInfo from "@/components/RecipeInfo.vue";
 
 // Get the route object
 const route = useRoute();
@@ -195,6 +234,7 @@ let displayError = ref<boolean>(false)
 const errorMessage = ref<string>("This recipe does not exist")
 const isOwner = ref<boolean>(false)
 const recipeLiked = ref<string>(null)
+const snackbar = ref(false)
 
 const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.webp`);
 
@@ -238,6 +278,11 @@ const onLikeButtonClick = () => {
     addLike(recipeId)
   }
   recipeLiked.value = !recipeLiked.value
+}
+
+const onShareButtonClick = () => {
+  navigator.clipboard.writeText(window.location.href);
+  snackbar.value = true
 }
 
 </script>

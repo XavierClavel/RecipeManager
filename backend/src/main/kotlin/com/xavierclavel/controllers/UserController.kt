@@ -3,6 +3,7 @@ package com.xavierclavel.controllers
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUserId
 import common.dto.UserDTO
@@ -39,7 +40,9 @@ object UserController: Controller(USER_URL) {
     }
 
     private fun Route.listUsers() = get {
-        call.respond(userService.listUsers())
+        val searchString = call.request.queryParameters["search"]
+            ?: return@get call.respond(userService.listUsers())
+        call.respond(userService.search(searchString, getPaging()))
     }
 
     private fun Route.createUser() = post {

@@ -20,7 +20,7 @@
         color="primary"
       ></v-textarea>
 
-       <editable-picture path="image/recipes" :id="recipeId" ref="editablePicture"></editable-picture>
+       <editable-picture path="image/recipes" :id="cookbookId" ref="editablePicture"></editable-picture>
 
       <!-- Ingredients -->
       <h2 class="my-3" >Users</h2>
@@ -84,7 +84,7 @@
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
-          v-if="recipeId != null"
+          v-if="cookbookId != null"
           prepend-icon="mdi-close-circle-outline"
           color="primary"
           flat
@@ -92,7 +92,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-          @click="toViewRecipe(recipeId)"
+          @click="toViewRecipe(cookbookId)"
         >Cancel</v-btn>
         <v-btn
           @click="submit"
@@ -115,26 +115,26 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRecipe} from "@/scripts/recipes";
-import {base_url, toViewRecipe} from "@/scripts/common";
+import {base_url, toViewCookbookRecipes, toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
+import {searchUsers} from "@/scripts/users";
+import {createCookbook, editCookbook} from "@/scripts/cookbooks";
 
 
 
 // Get the route object
 const route = useRoute();
-let recipeId = ref(route.query.id)
+let cookbookId = ref(route.query.id)
 const editablePicture = ref(null)
 
 
 const autocompleteList = ref([])
 
 const onIngredientAutocompleteChange = async (query, index) => {
-  const response = await searchIngredients(query, 0, 20);
-  autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: item.name }));
+  const response = await searchUsers(query, 0, 20);
+  autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: item.username }));
 }
-
-
 
 
 const cookbook = ref<object>({
@@ -159,23 +159,22 @@ async function submit() {
   const submitted = {}
   submitted["title"] = cookbook.value.title
   submitted["description"] = cookbook.value.description
-  submitted["steps"] = cookbook.value.steps
   console.log(submitted)
-  if (recipeId.value == null) {
-    const response = await createRecipe(submitted)
-    recipeId.value = response.data.id
+  if (cookbookId.value == null) {
+    const response = await createCookbook(submitted)
+    cookbookId.value = response.data.id
     await nextTick()
   } else {
-    await updateRecipe(recipeId.value, submitted)
+    await editCookbook(cookbookId.value, submitted)
   }
 
   await editablePicture.value.submitImage()
 
-  toViewRecipe(recipeId.value)
+  toViewCookbookRecipes(cookbookId.value)
 }
 
-if (recipeId.value != null) {
-  getRecipe(recipeId.value).then (
+if (cookbookId.value != null) {
+  getRecipe(cookbookId.value).then (
     function (response) {
       cookbook.value = response.data
       console.log(cookbook.value)

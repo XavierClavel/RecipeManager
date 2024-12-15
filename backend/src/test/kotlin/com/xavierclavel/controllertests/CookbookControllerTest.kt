@@ -1,27 +1,21 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
-import com.xavierclavel.utils.logger
 import common.enums.CookbookRole
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser
 import main.com.xavierclavel.utils.assertCookbookDoesNotExist
 import main.com.xavierclavel.utils.assertCookbookExists
-import main.com.xavierclavel.utils.assertLikeDoesNotExist
-import main.com.xavierclavel.utils.assertLikeExists
 import main.com.xavierclavel.utils.createCookbook
-import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.deleteCookbook
 import main.com.xavierclavel.utils.deleteCookbookUser
-import main.com.xavierclavel.utils.deleteLike
 import main.com.xavierclavel.utils.getCookbook
 import main.com.xavierclavel.utils.getCookbookRecipes
 import main.com.xavierclavel.utils.getCookbookUsers
-import main.com.xavierclavel.utils.getLikes
-import main.com.xavierclavel.utils.getMe
 import main.com.xavierclavel.utils.listCookbooks
+import main.com.xavierclavel.utils.listRecipes
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -152,6 +146,34 @@ class CookbookControllerTest : ApplicationTest() {
         val result = client.getCookbook(cookbook.id)
         assertEquals(3, result.usersCount)
         assertEquals(2, result.recipesCount)
+    }
+
+    @Test
+    fun `get cookbook recipes`() = runTestAsAdmin { client ->
+        val cookbook1 = client.createCookbook()
+        client.assertCookbookExists(cookbook1.id)
+
+        val cookbook2 = client.createCookbook()
+        client.assertCookbookExists(cookbook1.id)
+
+        val recipe1 = client.createRecipe()
+        val recipe2 = client.createRecipe()
+        val recipe3 = client.createRecipe()
+        val recipe4 = client.createRecipe()
+
+        client.addCookbookRecipe(cookbook1.id, recipe1.id)
+        client.addCookbookRecipe(cookbook1.id, recipe2.id)
+
+        client.addCookbookRecipe(cookbook2.id, recipe2.id)
+        client.addCookbookRecipe(cookbook2.id, recipe3.id)
+        client.addCookbookRecipe(cookbook2.id, recipe4.id)
+
+
+        val result1 = client.listRecipes(cookbook = cookbook1.id)
+        assertEquals(2, result1.size)
+
+        val result2 = client.listRecipes(cookbook = cookbook2.id)
+        assertEquals(3, result2.size)
     }
 
 }
