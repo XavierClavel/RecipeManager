@@ -41,11 +41,11 @@ class Recipe (
     var tips: List<String> = listOf(),
 
     //metadata
-    var yield: Int = 0,
-    var preparationTime: Int = 0,
-    var cookingTime: Int = 0,
-    var cookingTemperature: Int = 0,
-    var conservationTime: Int = 0,
+    var yield: Int? = null,
+    var preparationTime: Int? = null,
+    var cookingTime: Int? = null,
+    var cookingTemperature: Int? = null,
+    var conservationTime: Int? = null,
 
 
     @ElementCollection
@@ -73,6 +73,12 @@ class Recipe (
         this.description = recipeDTO.description
         this.steps = recipeDTO.steps
         this.modificationDate = Instant.now().epochSecond
+
+        this.yield = recipeDTO.yield
+        this.preparationTime = recipeDTO.preparationTime
+        this.cookingTime = recipeDTO.cookingTime
+        this.cookingTemperature = recipeDTO.cookingTemperature
+        this.conservationTime = recipeDTO.conservationTime
     }
 
     fun setOwner(user: User): Recipe = apply {
@@ -90,5 +96,11 @@ class Recipe (
         creationDate = this.creationDate,
         editionDate = this.modificationDate,
         likesCount = this.likes.size,
+
+        yield = this.yield,
+        preparationTime = this.preparationTime,
+        cookingTime = this.cookingTime,
+        cookingTemperature = this.cookingTemperature,
+        conservationTime = this.conservationTime,
     )
 }

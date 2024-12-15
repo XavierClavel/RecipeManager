@@ -52,7 +52,7 @@ class ExportService: KoinComponent {
         this.addTitle(recipe.title)
         this.addParagraph(recipe.description)
         this.addImage(recipe.id)
-        if (recipe.portions != null) this.addParagraph("Yield: ${recipe.portions}")
+        if (recipe.yield != null) this.addParagraph("Yield: ${recipe.yield}")
         if (recipe.preparationTime != null) this.addParagraph("Preparation time: ${recipe.preparationTime}")
         if (recipe.cookingTime != null) this.addParagraph("Cooking time: ${recipe.cookingTime}")
         this.addParagraphTitle("Steps")

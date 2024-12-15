@@ -9,10 +9,12 @@ data class RecipeInfo (
     val title: String,
     val owner: String,
     val description: String,
-    val portions: Int? = null,
+
+    val yield: Int? = null,
     val preparationTime: Int? = null,
     val cookingTime: Int? = null,
     val cookingTemperature: Int? = null,
+    val conservationTime: Int? = null,
 
     val ingredients: List<RecipeIngredientInfo> = listOf(),
     val customIngredients: List<CustomIngredientInfo> = listOf(),
@@ -28,7 +30,7 @@ data class RecipeInfo (
     fun compareToDTO(dto: RecipeDTO): Boolean {
         return title == dto.title &&
                 description == dto.description &&
-                portions == dto.portions &&
+                yield == dto.yield &&
                 preparationTime == dto.preparationTime &&
                 cookingTime == dto.preparationTime &&
                 cookingTemperature == dto.cookingTemperature &&

@@ -43,9 +43,10 @@
     ></v-img>
 
       <span class="d-flex flex-row">
-        <picto-info :value="recipe.servings" icon="mdi-silverware-fork-knife"></picto-info>
-        <picto-info :value="`${recipe.preparationTime} min`" icon="mdi-chef-hat" :v-if="recipe.preparationTime != null"></picto-info>
-        <picto-info :value="`${recipe.cookingTime} min`" icon="mdi-stove"></picto-info>
+        <picto-info :value="recipe.yield" icon="mdi-silverware-fork-knife"></picto-info>
+        <picto-info :value="recipe.conservationTime" icon="mdi-fridge" v-if="recipe.conservationTime"></picto-info>
+        <picto-info :value="`${recipe.preparationTime} min`" icon="mdi-chef-hat" v-if="recipe.preparationTime"></picto-info>
+        <picto-info :value="`${recipe.cookingTime} min`" icon="mdi-stove" v-if="recipe.cookingTime"></picto-info>
       </span>
 
     <span class="d-flex align-center justify-center mb-2 my-5">

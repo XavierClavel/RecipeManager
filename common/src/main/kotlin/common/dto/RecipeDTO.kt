@@ -8,10 +8,12 @@ import kotlinx.serialization.*
 data class RecipeDTO (
     val title: String,
     val description: String = "",
-    val portions: Int? = null,
+
+    val yield: Int? = null,
     val preparationTime: Int? = null,
     val cookingTime: Int? = null,
     val cookingTemperature: Int? = null,
+    val conservationTime: Int? = null,
 
     val ingredients: MutableList<RecipeIngredientDTO> = mutableListOf(),
     val customIngredients: MutableList<CustomIngredientDTO> = mutableListOf(),
@@ -20,15 +22,15 @@ data class RecipeDTO (
     @Serializable
     data class RecipeIngredientDTO (
         val id: Long,
-        val unit: AmountUnit,
-        val amount: Float?,
+        val unit: AmountUnit = AmountUnit.NONE,
+        val amount: Float? = null,
     )
 
     @Serializable
     data class CustomIngredientDTO (
         val name: String,
-        val unit: AmountUnit,
-        val amount: Float?,
+        val unit: AmountUnit = AmountUnit.NONE,
+        val amount: Float? = null,
     ) {
         fun toInfo() = CustomIngredientInfo(
             name = name,

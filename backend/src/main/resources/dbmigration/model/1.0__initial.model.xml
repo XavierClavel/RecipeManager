@@ -27,7 +27,7 @@
             <column name="id" type="bigint" primaryKey="true"/>
             <column name="recipe_id" type="bigint" references="recipes.id" foreignKeyName="fk_custom_ingredients_recipe_id" foreignKeyIndex="ix_custom_ingredients_recipe_id"/>
             <column name="name" type="varchar" notnull="true"/>
-            <column name="amount" type="float" notnull="true"/>
+            <column name="amount" type="float"/>
             <column name="unit" type="integer" notnull="true" checkConstraint="check ( unit in (0,1,2,3,4,5,6))" checkConstraintName="ck_custom_ingredients_unit"/>
         </createTable>
         <createTable name="dietary_restrictions" identityType="identity" pkName="pk_dietary_restrictions">
@@ -65,11 +65,11 @@
             <column name="description" type="varchar" notnull="true"/>
             <column name="creation_date" type="bigint" notnull="true"/>
             <column name="modification_date" type="bigint" notnull="true"/>
-            <column name="yield" type="integer" notnull="true"/>
-            <column name="preparation_time" type="integer" notnull="true"/>
-            <column name="cooking_time" type="integer" notnull="true"/>
-            <column name="cooking_temperature" type="integer" notnull="true"/>
-            <column name="conservation_time" type="integer" notnull="true"/>
+            <column name="yield" type="integer"/>
+            <column name="preparation_time" type="integer"/>
+            <column name="cooking_time" type="integer"/>
+            <column name="cooking_temperature" type="integer"/>
+            <column name="conservation_time" type="integer"/>
             <column name="owner_id" type="bigint" references="users.id" foreignKeyName="fk_recipes_owner_id" foreignKeyIndex="ix_recipes_owner_id"/>
         </createTable>
         <createTable name="recipes_steps" pkName="pk_recipes_steps">
@@ -80,7 +80,7 @@
             <column name="id" type="bigint" primaryKey="true"/>
             <column name="recipe_id" type="bigint" references="recipes.id" foreignKeyName="fk_recipe_ingredients_recipe_id" foreignKeyIndex="ix_recipe_ingredients_recipe_id"/>
             <column name="ingredient_id" type="bigint" references="ingredients.id" foreignKeyName="fk_recipe_ingredients_ingredient_id" foreignKeyIndex="ix_recipe_ingredients_ingredient_id"/>
-            <column name="amount" type="float" notnull="true"/>
+            <column name="amount" type="float"/>
             <column name="unit" type="integer" notnull="true" checkConstraint="check ( unit in (0,1,2,3,4,5,6))" checkConstraintName="ck_recipe_ingredients_unit"/>
             <uniqueConstraint name="uq_recipe_ingredients_recipe_id_ingredient_id" columnNames="recipe_id,ingredient_id" oneToOne="false" nullableColumns="recipe_id,ingredient_id"/>
         </createTable>

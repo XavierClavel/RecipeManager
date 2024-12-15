@@ -24,8 +24,17 @@
 
 
       <v-number-input
-        v-model="recipe.servings"
+        v-model="recipe.yield"
         label="Yield"
+        class="mx-auto px-3"
+        type="number"
+        color="primary"
+        min="1"
+      ></v-number-input>
+
+      <v-number-input
+        v-model="recipe.conservationTime"
+        label="Conservation time (days)"
         class="mx-auto px-3"
         type="number"
         color="primary"
@@ -380,6 +389,11 @@ if (recipeId.value != null) {
 
       }))
       recipe.value.customIngredients = response.data.customIngredients
+      recipe.value.yield = response.data.yield
+      recipe.value.conservationTime = response.data.conservationTime
+      recipe.value.preparationTime = response.data.preparationTime
+      recipe.value.cookingTime = response.data.cookingTime
+      recipe.value.cookingTemperature = response.data.cookingTemperature
       console.log(recipe.value)
     }).catch(function (error) {
     console.log(error);
