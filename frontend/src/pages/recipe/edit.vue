@@ -61,6 +61,16 @@
         :min="0"
       ></v-number-input>
 
+      <v-number-input
+        v-model="recipe.cookingTemperature"
+        label="Cooking temperature (°C)"
+        class="mx-auto px-3"
+        type="number"
+        color="primary"
+        :step="5"
+        :min="0"
+      ></v-number-input>
+
       <!-- Ingredients -->
       <h2 class="my-3" >Ingredients</h2>
       <draggable v-model="recipe.ingredients" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
@@ -169,7 +179,7 @@
               max-width="150px"
               color="primary"
               control-variant="stacked"
-              min="0"
+              min=0
             ></v-number-input>
 
             <div>
@@ -228,11 +238,15 @@
 
             <!-- Editable text field -->
             <v-text-field
+
               v-model="recipe.steps[index]"
               :label="`Step ${index + 1}`"
               outlined
               class="flex-grow-1"
               color="primary"
+              :id="`step_${index}`"
+              @keyup.enter="addStepAt(index)"
+              @keyup.delete="deleteStepAt(index)"
             ></v-text-field>
 
             <v-btn
@@ -240,6 +254,7 @@
               icon="mdi-delete"
               color="primary"
               class="rounded-lg ml-4 mb-5"
+              tabindex="-1"
             ></v-btn>
           </div>
         </template>
@@ -330,6 +345,23 @@ const addIngredient = () => {
   recipe.value.ingredients.push({});
 }
 
+async function deleteStepAt(index) {
+  console.log("called")
+  console.log(recipe.value.steps[index])
+  if (recipe.value.steps[index]) {
+    return
+  }
+  recipe.value.steps.splice(index, 1);
+  await nextTick()
+  document.getElementById(`step_${index-1}`).focus()
+}
+
+async function addStepAt(index) {
+  recipe.value.steps.splice(index+1, 0, "");
+  await nextTick()
+  document.getElementById(`step_${index + 1}`).focus()
+}
+
 const addCustomIngredient = () => {
   recipe.value.customIngredients.push({});
 }
@@ -385,8 +417,6 @@ if (recipeId.value != null) {
         },
         amount: item.amount,
         unit: item.unit
-
-
       }))
       recipe.value.customIngredients = response.data.customIngredients
       recipe.value.yield = response.data.yield

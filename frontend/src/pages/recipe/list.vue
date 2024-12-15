@@ -45,7 +45,7 @@
             color="primary"
           > mdi-chef-hat </v-icon>
           <v-card-text
-            class="mx-auto px-3  align-center text-h5"
+            class="mx-auto px-3 ml-n2  align-center text-h6"
           > {{ recipe.preparationTime }} min </v-card-text>
         </span>
 
@@ -55,7 +55,7 @@
             color="primary"
           > mdi-stove </v-icon>
           <v-card-text
-            class="mx-auto px-3  align-center text-h5"
+            class="mx-auto px-3  align-center ml-n2 text-h6"
           > {{ recipe.cookingTime }} min </v-card-text>
         </span>
       </span>

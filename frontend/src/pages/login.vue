@@ -28,6 +28,7 @@
         counter
         @click:append="show1 = !show1"
         class="mx-3"
+        @keyup.enter="submit"
       ></v-text-field>
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
