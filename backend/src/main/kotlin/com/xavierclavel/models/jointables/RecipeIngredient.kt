@@ -39,9 +39,14 @@ class RecipeIngredient (
     }
 
     fun toInfo() = RecipeIngredientInfo(
-        id = id,
+        id = ingredient!!.id,
         name = ingredient!!.name,
         amount = amount,
         unit = unit,
     )
+
+    fun compareTo(recipeIngredientDTO: RecipeDTO.RecipeIngredientDTO) =
+        this.ingredient!!.id == recipeIngredientDTO.id &&
+        Math.abs(this.amount - recipeIngredientDTO.amount) < 0.0001 &&
+        this.unit == recipeIngredientDTO.unit
 }

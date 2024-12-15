@@ -31,6 +31,7 @@ val recipeDTO = RecipeDTO(
 )
 
 suspend fun HttpClient.createRecipe(recipe: RecipeDTO = recipeDTO) : RecipeInfo {
+    logger.info { "create" }
     this.post(RECIPE_URL){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -66,6 +67,7 @@ suspend fun HttpClient.listRecipes(owner: Long?, sort: Sort? = null): List<Recip
 }
 
 suspend fun HttpClient.updateRecipe(recipeId: Long, recipe: RecipeDTO): RecipeInfo {
+    logger.info {"update"}
     this.put("$RECIPE_URL/$recipeId"){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)

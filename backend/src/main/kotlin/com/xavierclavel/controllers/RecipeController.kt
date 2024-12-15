@@ -84,7 +84,7 @@ object RecipeController: Controller(RECIPE_URL) {
             val info = recipeService.updateRecipe(recipeId, recipeDto) ?: return@put call.respond(HttpStatusCode.NotFound)
             call.respond(HttpStatusCode.OK, info)
         } catch (e: Exception) {
-            logger.error {e.message}
+            logger.error {e}
         }
     }
 

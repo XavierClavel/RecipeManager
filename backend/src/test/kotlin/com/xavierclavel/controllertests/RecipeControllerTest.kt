@@ -1,6 +1,7 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
+import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
 import common.enums.AmountUnit
@@ -74,6 +75,9 @@ class RecipeControllerTest : ApplicationTest() {
 
     @Test
     fun `update recipe ingredients`() = runTestAsAdmin {
+        val a = it.listRecipes(null)
+        logger.info {a}
+
         val ingredient1 = it.createIngredient()
         val ingredient2 = it.createIngredient()
         val ingredient3 = it.createIngredient()

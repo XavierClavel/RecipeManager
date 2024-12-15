@@ -53,7 +53,7 @@ class User (
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     var cookbooks: Set<CookbookUser> = setOf(),
 
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     var dietaryRestrictions: DietaryRestrictions = DietaryRestrictions(),
 
 

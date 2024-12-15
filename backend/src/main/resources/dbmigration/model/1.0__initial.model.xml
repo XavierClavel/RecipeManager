@@ -30,7 +30,7 @@
             <column name="amount" type="float" notnull="true"/>
             <column name="unit" type="integer" notnull="true" checkConstraint="check ( unit in (0,1,2,3,4,5,6))" checkConstraintName="ck_custom_ingredients_unit"/>
         </createTable>
-        <createTable name="dietary_restrictions" pkName="pk_dietary_restrictions">
+        <createTable name="dietary_restrictions" identityType="identity" pkName="pk_dietary_restrictions">
             <column name="id" type="bigint" primaryKey="true"/>
             <column name="is_meat_ok" type="boolean" defaultValue="false" notnull="true"/>
             <column name="is_fish_ok" type="boolean" defaultValue="false" notnull="true"/>

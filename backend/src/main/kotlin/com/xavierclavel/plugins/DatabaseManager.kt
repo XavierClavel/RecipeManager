@@ -36,6 +36,7 @@ object DatabaseManager {
         QCookbook(),
         QCookbookUser(),
         QCookbookRecipe(),
+        QDietaryRestrictions(),
     )
 
     private fun hikari(): HikariDataSource {
