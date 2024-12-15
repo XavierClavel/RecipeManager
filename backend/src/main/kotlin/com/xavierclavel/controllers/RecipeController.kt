@@ -58,7 +58,6 @@ object RecipeController: Controller(RECIPE_URL) {
     }
 
     private fun Route.createRecipe() = post {
-        logger.info { "create "}
         try {
             val username = getSessionUsername() ?: return@post call.respond(HttpStatusCode.Unauthorized)
             val user = userService.findByUsername(username) ?: return@post call.respond(HttpStatusCode.Unauthorized)
@@ -75,7 +74,6 @@ object RecipeController: Controller(RECIPE_URL) {
     }
 
     private fun Route.updateRecipe() = put("/{id}") {
-        logger.info { "update "}
         try {
             val recipeId = getPathId() ?: return@put call.respond(HttpStatusCode.BadRequest)
             val recipe = recipeService.findById(recipeId) ?: return@put call.respond(HttpStatusCode.NotFound)

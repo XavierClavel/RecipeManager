@@ -63,7 +63,6 @@ class User (
         fun from(userDTO: UserDTO): User {
             val passwordHash = BCrypt.withDefaults().hashToString(12, userDTO.password.toCharArray())
             val mailHash = BCrypt.withDefaults().hashToString(12, userDTO.mail.toCharArray())
-            logger.info {mailHash}
 
             return User(
                 username = userDTO.username,

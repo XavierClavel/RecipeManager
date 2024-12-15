@@ -65,7 +65,7 @@
             >mdi-drag</v-icon>
 
             <v-autocomplete
-              v-model="recipe.ingredients[index].id"
+              v-model="recipe.ingredients[index].ingredient"
               :label="`Ingredient ${index + 1}`"
               class="flex-grow-1"
               color="primary"
@@ -75,6 +75,7 @@
               item-value="id"
               @update:search="(query) => onIngredientAutocompleteChange(query, index)"
               :key="index"
+              return-object
             ></v-autocomplete>
 
             <v-select
@@ -82,10 +83,12 @@
               label="Unit"
               outlined
               class="flex-grow-1 mx-2"
-              :items="['unit','g','lb','teaspoon', 'sugarspoon', 'cup']"
+              :items="units"
               variant="outlined"
               max-width="200px"
               color="primary"
+              item-title="unit"
+              return-object
             ></v-select>
 
             <v-number-input
@@ -97,7 +100,9 @@
               max-width="150px"
               color="primary"
               control-variant="stacked"
-              min="0"
+              min=0
+              item-title="amount"
+              return-object
             ></v-number-input>
 
             <div>
@@ -140,7 +145,7 @@
               label="Unit"
               outlined
               class="flex-grow-1 mx-2"
-              :items="['unit','g','lb','teaspoon', 'sugarspoon', 'cup']"
+              :items="units"
               variant="outlined"
               max-width="200px"
               color="primary"
@@ -284,6 +289,7 @@ import EditablePicture from "@/components/EditablePicture.vue";
 const route = useRoute();
 let recipeId = ref(route.query.id)
 const editablePicture = ref(null)
+const units = ref(['UNIT','GRAM','lb','teaspoon', 'sugarspoon', 'cup'])
 
 
 const autocompleteList = ref([])
@@ -333,10 +339,12 @@ const removeCustomIngredient = (index) => {
 }
 
 async function submit() {
-  const submitted = {}
-  submitted["title"] = recipe.value.title
-  submitted["description"] = recipe.value.description
-  submitted["steps"] = recipe.value.steps
+  console.log(recipe.value)
+  const submitted = JSON.parse(JSON.stringify(recipe.value))
+  submitted.ingredients = recipe.value.ingredients.map(item => ({
+    id: item.ingredient.id,
+    amount: item.amount,
+    unit: item.unit }))
   console.log(submitted)
   if (recipeId.value == null) {
     const response = await createRecipe(submitted)
@@ -354,7 +362,20 @@ async function submit() {
 if (recipeId.value != null) {
   getRecipe(recipeId.value).then (
     function (response) {
-      recipe.value = response.data
+      recipe.value.title = response.data.title
+      recipe.value.description = response.data.description
+      recipe.value.steps = response.data.steps
+      recipe.value.ingredients = response.data.ingredients.map(item => ({
+        ingredient: {
+          id: item.id,
+          name: item.name
+        },
+        amount: item.amount,
+        unit: item.unit
+
+
+      }))
+      recipe.value.customIngredients = response.data.customIngredients
       console.log(recipe.value)
     }).catch(function (error) {
     console.log(error);

@@ -31,7 +31,6 @@ fun Application.configureAuthentication() {
         basic("auth-basic") {
             realm = "Access to the '/' path"
             validate { credentials ->
-                logger.info {credentials}
                 val hashedPassword = userService.findByUsername(credentials.name)?.passwordHash
                 if (hashedPassword != null && BCrypt.verifyer().verify(credentials.password.toCharArray(), hashedPassword).verified) {
                     logger.info {"login accepted"}

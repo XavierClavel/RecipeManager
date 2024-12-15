@@ -33,7 +33,7 @@ create table custom_ingredients (
   recipe_id                     bigint,
   amount                        float not null,
   unit                          integer not null,
-  ingredient                    varchar(255) not null,
+  name                          varchar(255) not null,
   constraint ck_custom_ingredients_unit check ( unit in (0,1,2,3,4,5,6)),
   constraint pk_custom_ingredients primary key (id)
 );
