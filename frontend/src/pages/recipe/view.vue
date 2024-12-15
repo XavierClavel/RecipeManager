@@ -65,17 +65,32 @@
         variant="outlined"
       ></v-btn>
 
-      <v-btn
-        icon="mdi-bookmark-outline"
-        color="primary"
-        flat
-        rounded="circle"
-        class="mb-10 text-h6"
-        min-height="70px"
-        min-width="70px"
-        @click="onLikeButtonClick"
-        variant="outlined"
-      ></v-btn>
+      <v-menu class="mt-n16">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            color="primary"
+            icon="mdi-bookmark-outline"
+            height="70px"
+            width="70px"
+            rounded="circle"
+            v-bind="props"
+            class="mt-n10 text-h6"
+            variant="outlined"
+          ></v-btn>
+        </template>
+          <v-list-item prepend-icon="mdi-plus" rounded="xl" link title="New cookbook" @click="toMyProfile" class="primary"></v-list-item>
+        <v-list v-for="cookbook in userCookbooks">
+          <v-list-item
+            prepend-icon="mdi-check-circle"
+            rounded="xl"
+            link
+            :title="`${cookbook.title}`"
+            @click="addRecipeToCookbook(cookbook.id, recipeId)"
+            density="compact"
+            max-height="20px"
+          ></v-list-item>
+        </v-list>
+      </v-menu>
 
       <v-btn
         icon="mdi-share-variant"
@@ -223,9 +238,10 @@
 import { useRoute } from 'vue-router';
 import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
-import {base_url, toEditRecipe, toListRecipe, unitToReadable} from "@/scripts/common";
+import {base_url, logout, toEditRecipe, toHome, toListRecipe, toMyProfile, unitToReadable} from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
 import {addLike, isLiked, removeLike} from "@/scripts/likes";
+import {addRecipeToCookbook, listCookbooks} from "@/scripts/cookbooks";
 
 // Get the route object
 const route = useRoute();
@@ -235,6 +251,8 @@ const errorMessage = ref<string>("This recipe does not exist")
 const isOwner = ref<boolean>(false)
 const recipeLiked = ref<string>(null)
 const snackbar = ref(false)
+
+const userCookbooks = ref([])
 
 const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.webp`);
 
@@ -261,6 +279,14 @@ getRecipe(recipeId).then (
 isLiked(recipeId).then (
   function (response) {
     recipeLiked.value = response
+    console.log(response)
+  }
+)
+
+const authStore = useAuthStore()
+listCookbooks(`?user=${authStore.id}`).then(
+  function (response) {
+    userCookbooks.value = response.data
     console.log(response)
   }
 )
