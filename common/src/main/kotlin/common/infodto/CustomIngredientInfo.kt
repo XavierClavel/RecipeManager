@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CustomIngredientInfo(
     val name: String,
-    val amount: Float,
+    val amount: Float?,
     val unit: AmountUnit,
 ) {
     companion object {

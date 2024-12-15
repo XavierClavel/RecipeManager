@@ -24,10 +24,10 @@ class CustomIngredient (
     var recipe: Recipe? =  null,
 
     var name: String = "",
-    var amount: Float = -1f,
+    var amount: Float? = null,
     var unit: AmountUnit = AmountUnit.NONE,
 
-): Model() {
+    ): Model() {
     fun mergeDTO(customIngredientDTO: RecipeDTO.CustomIngredientDTO) = this.apply {
         this.amount = customIngredientDTO.amount
         this.unit = customIngredientDTO.unit

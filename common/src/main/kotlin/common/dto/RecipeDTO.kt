@@ -21,14 +21,14 @@ data class RecipeDTO (
     data class RecipeIngredientDTO (
         val id: Long,
         val unit: AmountUnit,
-        val amount: Float,
+        val amount: Float?,
     )
 
     @Serializable
     data class CustomIngredientDTO (
         val name: String,
         val unit: AmountUnit,
-        val amount: Float,
+        val amount: Float?,
     ) {
         fun toInfo() = CustomIngredientInfo(
             name = name,

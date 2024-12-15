@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 data class RecipeIngredientInfo(
     val id: Long,
     val name: String,
-    val amount: Float,
+    val amount: Float?,
     val unit: AmountUnit,
 )

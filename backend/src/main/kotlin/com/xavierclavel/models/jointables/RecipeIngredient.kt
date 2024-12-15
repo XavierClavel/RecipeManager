@@ -2,7 +2,6 @@ package com.xavierclavel.models.jointables
 
 import com.xavierclavel.models.Ingredient
 import com.xavierclavel.models.Recipe
-import com.xavierclavel.models.User
 import common.dto.RecipeDTO
 import common.enums.AmountUnit
 import common.infodto.RecipeIngredientInfo
@@ -29,10 +28,10 @@ class RecipeIngredient (
     @ManyToOne
     var ingredient: Ingredient? = null,
 
-    var amount: Float = -1f,
+    var amount: Float? = null,
     var unit: AmountUnit = AmountUnit.NONE,
 
-): Model() {
+    ): Model() {
     fun mergeDTO(recipeIngredientDTO: RecipeDTO.RecipeIngredientDTO) = this.apply {
         this.amount = recipeIngredientDTO.amount
         this.unit = recipeIngredientDTO.unit
@@ -45,8 +44,14 @@ class RecipeIngredient (
         unit = unit,
     )
 
-    fun compareTo(recipeIngredientDTO: RecipeDTO.RecipeIngredientDTO) =
-        this.ingredient!!.id == recipeIngredientDTO.id &&
-        Math.abs(this.amount - recipeIngredientDTO.amount) < 0.0001 &&
-        this.unit == recipeIngredientDTO.unit
+    fun compareTo(dto: RecipeDTO.RecipeIngredientDTO): Boolean {
+        if (this.amount == null && dto.amount != null) return false
+        if (this.amount != null && dto.amount == null) return false
+        if (this.amount != null && dto.amount != null && Math.abs(this.amount!! - dto.amount!!) > 0.0001) return false
+
+        return this.ingredient!!.id == dto.id &&
+            this.unit == dto.unit
+    }
+
+
 }

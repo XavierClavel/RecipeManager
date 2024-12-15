@@ -65,13 +65,51 @@
 
       <h2 class="my-3" >Ingredients</h2>
 
-      <span v-for="(ingredient, index) in recipe.ingredients">
-            <v-card-text
-              outlined
-              class="flex-grow-1"
-              color="primary"
-            > {{ ingredient.amount }} {{ ingredient.name }} </v-card-text>
-      </span>
+    <div v-for="(ingredient, index) in recipe.ingredients" :key="index">
+      <div class="d-flex align-center">
+        <v-icon>mdi-circle-small</v-icon>
+        <span
+          class="p-0 mr-2 text-start text-h5 text-primary"
+          style="width: auto; min-width: 0;"
+        >
+          {{ ingredient.amount }}
+        </span>
+        <span
+          class="p-0 mr-2 text-start text-h5 text-primary"
+          style="width: auto; min-width: 0;"
+        >
+          {{ unitToReadable(ingredient.unit) }}
+        </span>
+        <span
+          class="p-0 text-start"
+        >
+          {{ ingredient.name }}
+        </span>
+      </div>
+    </div>
+
+    <div v-for="(ingredient, index) in recipe.customIngredients" :key="index">
+      <div class="d-flex align-center">
+        <v-icon>mdi-circle-small</v-icon>
+        <span
+          class="p-0 mr-2 text-start text-h5 text-primary"
+          style="width: auto; min-width: 0;"
+        >
+          {{ ingredient.amount }}
+        </span>
+        <span
+          class="p-0 mr-2 text-start text-h5 text-primary"
+          style="width: auto; min-width: 0;"
+        >
+          {{ unitToReadable(ingredient.unit) }}
+        </span>
+        <span
+          class="p-0 text-start"
+        >
+          {{ ingredient.name }}
+        </span>
+      </div>
+    </div>
 
 
       <h2 class="my-3" >Steps</h2>
@@ -132,7 +170,7 @@
 import { useRoute } from 'vue-router';
 import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
-import {base_url, toEditRecipe, toListRecipe} from "@/scripts/common";
+import {base_url, toEditRecipe, toListRecipe, unitToReadable} from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
 import {addLike, isLiked, removeLike} from "@/scripts/likes";
 //import PictoInfo from "@/components/RecipeInfo.vue";

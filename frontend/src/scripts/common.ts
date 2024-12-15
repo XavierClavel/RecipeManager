@@ -35,6 +35,8 @@ export {
   deleteImage,
 
   noLoginRedirect,
+
+  unitToReadable,
 }
 
 const toCreateRecipe = () => router.push(`/recipe/edit`)
@@ -141,4 +143,13 @@ async function uploadImage(id, file, path) {
 
 async function deleteImage(id, path) {
   return await apiClient.delete(`/${path}/${id}`)
+}
+
+const unitToReadable = (unit) => {
+  switch (unit) {
+    case "UNIT":
+      return ""
+    case "GRAM":
+      return "g"
+  }
 }
