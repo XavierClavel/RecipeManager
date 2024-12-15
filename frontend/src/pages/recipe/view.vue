@@ -44,7 +44,7 @@
 
       <span class="d-flex flex-row">
         <picto-info :value="recipe.servings" icon="mdi-silverware-fork-knife"></picto-info>
-        <picto-info :value="`${recipe.preparationTime} min`" icon="mdi-chef-hat"></picto-info>
+        <picto-info :value="`${recipe.preparationTime} min`" icon="mdi-chef-hat" :v-if="recipe.preparationTime != null"></picto-info>
         <picto-info :value="`${recipe.cookingTime} min`" icon="mdi-stove"></picto-info>
       </span>
 
@@ -92,7 +92,7 @@
       <div class="d-flex align-center">
         <v-icon>mdi-circle-small</v-icon>
         <span
-          class="p-0 mr-2 text-start text-h5 text-primary"
+          class="p-0 text-start text-h5 text-primary"
           style="width: auto; min-width: 0;"
         >
           {{ ingredient.amount }}
@@ -111,18 +111,28 @@
       </div>
     </div>
 
+      <v-container v-if="recipe.steps.length > 0">
 
       <h2 class="my-3" >Steps</h2>
 
       <span v-for="(step, index) in recipe.steps">
-            <!-- Editable text field -->
-            <v-card-text
-              :label="`Step ${index + 1}`"
-              outlined
-              class="flex-grow-1"
-              color="primary"
-            >{{index + 1}} - {{step}}</v-card-text>
+        <div class="d-flex align-center">
+          <span
+            class="p-0 mr-2 text-h5 text-primary"
+            style="width: auto; min-width: 50px;"
+          >
+            {{index + 1}} -
+          </span>
+          <span
+            class="p-0 text-h7"
+            style="width: auto; min-width: 0;"
+          >
+            {{step}}
+          </span>
+        </div>
       </span>
+
+      </v-container>
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" v-if="isOwner" >
         <v-btn

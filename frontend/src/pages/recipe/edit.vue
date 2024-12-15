@@ -341,10 +341,14 @@ const removeCustomIngredient = (index) => {
 async function submit() {
   console.log(recipe.value)
   const submitted = JSON.parse(JSON.stringify(recipe.value))
-  submitted.ingredients = recipe.value.ingredients.map(item => ({
+  submitted.ingredients = recipe.value.ingredients
+    .filter((it) => it.ingredient )
+    .map(item => ({
     id: item.ingredient.id,
     amount: item.amount,
     unit: item.unit }))
+  submitted.customIngredients = submitted.customIngredients.filter((it) => "name" in it)
+  submitted.steps = submitted.steps.filter((it) => it)
   console.log(submitted)
   if (recipeId.value == null) {
     const response = await createRecipe(submitted)
