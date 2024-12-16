@@ -7,6 +7,7 @@ object URL {
     const val LIKE_URL = "v1/like"
     const val DASHBOARD_URL = "v1/dashboard"
     const val COOKBOOK_URL = "v1/cookbook"
+    const val FOLLOW_URL = "v1/follow"
     const val AUTH_URL = "v1/auth"
     const val IMAGE_URL = "v1/image"
     const val EXPORT_URL = "v1/export"

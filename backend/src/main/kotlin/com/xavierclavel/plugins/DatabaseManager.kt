@@ -3,7 +3,7 @@ package com.xavierclavel.plugins
 import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.jointables.query.QCookbookUser
 import com.xavierclavel.models.jointables.query.QCustomIngredient
-import com.xavierclavel.models.jointables.query.QFollower
+import com.xavierclavel.models.jointables.query.QFollow
 import com.xavierclavel.models.jointables.query.QLike
 import com.xavierclavel.models.jointables.query.QRecipeIngredient
 import com.xavierclavel.models.query.QCookbook
@@ -30,7 +30,7 @@ object DatabaseManager {
         QRecipeIngredient(),
         QCustomIngredient(),
         QUser(),
-        QFollower(),
+        QFollow(),
         QIngredient(),
         QLike(),
         QCookbook(),

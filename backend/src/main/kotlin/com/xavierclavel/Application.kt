@@ -5,13 +5,14 @@ import com.xavierclavel.controllers.AuthController
 import com.xavierclavel.controllers.CookbookController
 import com.xavierclavel.controllers.DashboardController
 import com.xavierclavel.controllers.ExportController
+import com.xavierclavel.controllers.FollowController
 import com.xavierclavel.controllers.HealthController
 import com.xavierclavel.controllers.IngredientController
 import com.xavierclavel.controllers.RecipeController
 import com.xavierclavel.controllers.ImageController
 import com.xavierclavel.controllers.LikeController
 import com.xavierclavel.controllers.UserController
-import com.xavierclavel.utils.use
+import com.xavierclavel.utils.serve
 import com.xavierclavel.plugins.*
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.logger
@@ -59,15 +60,16 @@ fun Application.module() {
 //Controllers declaration
 fun Application.serveRoutes() = routing {
     authenticate("auth-session") {
-        use(HealthController)
-        use(UserController)
-        use(RecipeController)
-        use(IngredientController)
-        use(ImageController)
-        use(ExportController)
-        use(LikeController)
-        use(CookbookController)
-        use(DashboardController)
+        serve(HealthController)
+        serve(UserController)
+        serve(RecipeController)
+        serve(IngredientController)
+        serve(ImageController)
+        serve(ExportController)
+        serve(LikeController)
+        serve(CookbookController)
+        serve(DashboardController)
+        serve(FollowController)
     }
-    use(AuthController)
+    serve(AuthController)
 }

@@ -4,6 +4,7 @@ import com.xavierclavel.services.CookbookService
 import com.xavierclavel.services.CustomIngredientService
 import com.xavierclavel.services.DashboardService
 import com.xavierclavel.services.ExportService
+import com.xavierclavel.services.FollowService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.IngredientService
 import com.xavierclavel.services.LikeService
@@ -23,4 +24,5 @@ val appModules = module {
     single { DashboardService() }
     single { RecipeIngredientService() }
     single { CustomIngredientService() }
+    single { FollowService() }
 }

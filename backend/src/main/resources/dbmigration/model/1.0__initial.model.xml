@@ -40,12 +40,12 @@
             <column name="is_gluten_ok" type="boolean" defaultValue="false" notnull="true"/>
             <column name="is_sugar_ok" type="boolean" defaultValue="false" notnull="true"/>
         </createTable>
-        <createTable name="followers" identityType="identity" pkName="pk_followers">
+        <createTable name="follows" identityType="identity" pkName="pk_follows">
             <column name="id" type="bigint" primaryKey="true"/>
-            <column name="follower_id" type="bigint" references="users.id" foreignKeyName="fk_followers_follower_id" foreignKeyIndex="ix_followers_follower_id"/>
-            <column name="user_id" type="bigint" references="users.id" foreignKeyName="fk_followers_user_id" foreignKeyIndex="ix_followers_user_id"/>
+            <column name="follower_id" type="bigint" references="users.id" foreignKeyName="fk_follows_follower_id" foreignKeyIndex="ix_follows_follower_id"/>
+            <column name="user_id" type="bigint" references="users.id" foreignKeyName="fk_follows_user_id" foreignKeyIndex="ix_follows_user_id"/>
             <column name="pending" type="boolean" defaultValue="false" notnull="true"/>
-            <column name="followed_since" type="localdatetime" notnull="true"/>
+            <column name="followed_since" type="bigint" notnull="true"/>
         </createTable>
         <createTable name="ingredients" identityType="identity" pkName="pk_ingredients">
             <column name="id" type="bigint" primaryKey="true"/>
@@ -82,7 +82,6 @@
             <column name="ingredient_id" type="bigint" references="ingredients.id" foreignKeyName="fk_recipe_ingredients_ingredient_id" foreignKeyIndex="ix_recipe_ingredients_ingredient_id"/>
             <column name="amount" type="float"/>
             <column name="unit" type="integer" notnull="true" checkConstraint="check ( unit in (0,1,2,3,4,5,6))" checkConstraintName="ck_recipe_ingredients_unit"/>
-            <uniqueConstraint name="uq_recipe_ingredients_recipe_id_ingredient_id" columnNames="recipe_id,ingredient_id" oneToOne="false" nullableColumns="recipe_id,ingredient_id"/>
         </createTable>
         <createTable name="users" pkName="pk_users">
             <column name="id" type="bigint" primaryKey="true"/>

@@ -15,7 +15,7 @@ import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 
 @Entity
-@Table(name = "recipe_ingredients", uniqueConstraints = [UniqueConstraint(columnNames = ["recipe_id", "ingredient_id"])])
+@Table(name = "recipe_ingredients")
 class RecipeIngredient (
 
     @Id

@@ -1,7 +1,7 @@
 package com.xavierclavel.models.jointables
 
-import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
+import common.infodto.FollowInfo
 import io.ebean.Model
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -9,11 +9,13 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
+import java.time.Instant
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "followers")
-class Follower (
+@Table(name = "follows")
+class Follow (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
@@ -26,5 +28,11 @@ class Follower (
 
     var pending: Boolean = true,
 
-    var followedSince: LocalDateTime = LocalDateTime.now(),
-): Model()
+    var followedSince: Long = Instant.now().epochSecond,
+): Model() {
+    fun toInfo() = FollowInfo(
+        user = this.user!!.toOverview(),
+        follower = this.follower!!.toOverview(),
+        followedSince = this.followedSince
+    )
+}

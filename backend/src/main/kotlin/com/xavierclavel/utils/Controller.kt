@@ -22,7 +22,7 @@ abstract class Controller(val base: String = "") {
     infix fun Route.serve(controller: Controller) = controller.serve(this)
 }
 
-fun Route.use(vararg controller: Controller) {
+fun Route.serve(vararg controller: Controller) {
     controller.forEach {it.serve(this) }
 }
 

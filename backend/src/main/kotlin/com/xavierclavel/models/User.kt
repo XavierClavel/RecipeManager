@@ -2,17 +2,16 @@ package com.xavierclavel.models
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.models.jointables.CookbookUser
-import com.xavierclavel.models.jointables.Follower
+import com.xavierclavel.models.jointables.Follow
 import com.xavierclavel.models.jointables.Like
-import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
+import common.overviewdto.UserOverview
 import io.ebean.Model
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.ManyToMany
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
@@ -45,10 +44,10 @@ class User (
     var likes : Set<Like> = setOf(),
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var follows: Set<Follower> = setOf(),
+    var follows: Set<Follow> = setOf(),
 
     @OneToMany(mappedBy = "follower", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var followedBy: Set<Follower> = setOf(),
+    var followedBy: Set<Follow> = setOf(),
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     var cookbooks: Set<CookbookUser> = setOf(),
@@ -89,6 +88,11 @@ class User (
             likesCount = this.likes.size,
             cookbooksCount = this.cookbooks.size,
         )
+
+    fun toOverview() = UserOverview(
+        id = this.id,
+        username = this.username,
+    )
 
     fun merge(userDTO: UserDTO) = this.apply {
         username = userDTO.username

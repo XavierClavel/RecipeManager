@@ -49,6 +49,13 @@ abstract class ApplicationTest: KoinTest {
     }
 
     @KtorDsl
+    suspend fun ApplicationTestBuilder.runAsAdmin(client: HttpClient, block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
+        runAs("admin", "Passw0rd", client) {
+            block(it)
+        }
+    }
+
+    @KtorDsl
     suspend fun ApplicationTestBuilder.runAs(username: String, password: String = "Passw0rd", client: HttpClient, block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
         client.post("/v1/auth/login") {
             basicAuth(username = username, password = password)
