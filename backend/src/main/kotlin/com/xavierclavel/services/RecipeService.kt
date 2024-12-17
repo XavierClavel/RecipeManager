@@ -24,10 +24,9 @@ class RecipeService: KoinComponent {
     fun findList(paging: Paging, sort: Sort, owner: Long?, likedBy: Long?, cookbook: Long?) : List<RecipeInfo> =
         QRecipe()
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
-            .fetch(QRecipe.Alias.cookbooks.toString(), "count(*)", FetchConfig.ofLazy())
             .having().raw("count(likes.id) >= 0") // Include recipes with no likes
-            .filterByOwner(owner)
             .filterByLikes(likedBy)
+            .filterByOwner(owner)
             .filterByCookbook(cookbook)
             .setPaging(paging)
             .sort(sort)
@@ -69,13 +68,16 @@ class RecipeService: KoinComponent {
 
 
     private fun QRecipe.filterByOwner(userId: Long?) =
-        if (userId == null) this else this.owner.id.eq(userId)
+        if (userId == null) this
+        else this.where().owner.id.eq(userId)
 
     private fun QRecipe.filterByLikes(userId: Long?) =
-        if (userId == null) this else this.likes.user.id.eq(userId)
+        if (userId == null) this
+        else this.where().likes.user.id.eq(userId)
 
     private fun QRecipe.filterByCookbook(cookbookId: Long?) =
-        if (cookbookId == null) this else this.cookbooks.cookbook.id.eq(cookbookId)
+        if (cookbookId == null) this
+        else this.where().cookbooks.cookbook.id.eq(cookbookId)
 
     private fun QRecipe.sort(sort: Sort) =
         when (sort) {

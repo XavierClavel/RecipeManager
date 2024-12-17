@@ -68,11 +68,15 @@ class LikeControllerTest : ApplicationTest() {
         val result = it.getUser(user.id)
         assertEquals(0, result.likesCount)
 
-        it.createLike(result.id)
+        it.createLike(recipeInfo.id)
         val result2 = it.getUser(user.id)
         assertEquals(1, result2.likesCount)
 
         val result3 = it.getUser(user2.id)
         assertEquals(0, result3.likesCount)
+
+        it.deleteLike(recipeInfo.id)
+        val result4 = it.getUser(user.id)
+        assertEquals(0, result4.likesCount)
     }
 }
