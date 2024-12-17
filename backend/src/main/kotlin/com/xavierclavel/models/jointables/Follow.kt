@@ -30,9 +30,13 @@ class Follow (
 
     var followedSince: Long = Instant.now().epochSecond,
 ): Model() {
-    fun toInfo() = FollowInfo(
+    fun toFollowersInfo() = FollowInfo(
+        user = this.follower!!.toOverview(),
+        followedSince = this.followedSince,
+    )
+
+    fun toFollowsInfo() = FollowInfo(
         user = this.user!!.toOverview(),
-        follower = this.follower!!.toOverview(),
-        followedSince = this.followedSince
+        followedSince = this.followedSince,
     )
 }

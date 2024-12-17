@@ -6,6 +6,7 @@ import main.com.xavierclavel.utils.assertLikeDoesNotExist
 import main.com.xavierclavel.utils.assertLikeExists
 import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
+import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.deleteLike
 import main.com.xavierclavel.utils.getLikes
 import main.com.xavierclavel.utils.getMe
@@ -56,5 +57,22 @@ class LikeControllerTest : ApplicationTest() {
         it.createLike(result.id)
         val result2 = it.getRecipe(recipeInfo.id)
         assertEquals(1, result2.likesCount)
+    }
+
+    @Test
+    fun `count likes per user`() = runTestAsAdmin {
+        val recipeInfo = it.createRecipe()
+        val user = userService.getUserByUsername("admin")!!
+        val user2 = it.createUser()
+
+        val result = it.getUser(user.id)
+        assertEquals(0, result.likesCount)
+
+        it.createLike(result.id)
+        val result2 = it.getUser(user.id)
+        assertEquals(1, result2.likesCount)
+
+        val result3 = it.getUser(user2.id)
+        assertEquals(0, result3.likesCount)
     }
 }

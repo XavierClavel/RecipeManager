@@ -43,11 +43,11 @@ class User (
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     var likes : Set<Like> = setOf(),
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "follower", cascade = [CascadeType.ALL], orphanRemoval = true)
     var follows: Set<Follow> = setOf(),
 
-    @OneToMany(mappedBy = "follower", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var followedBy: Set<Follow> = setOf(),
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var followers: Set<Follow> = setOf(),
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     var cookbooks: Set<CookbookUser> = setOf(),
@@ -87,6 +87,8 @@ class User (
             recipesCount = this.recipes.size,
             likesCount = this.likes.size,
             cookbooksCount = this.cookbooks.size,
+            followersCount = this.followers.size,
+            followsCount = this.follows.size,
         )
 
     fun toOverview() = UserOverview(

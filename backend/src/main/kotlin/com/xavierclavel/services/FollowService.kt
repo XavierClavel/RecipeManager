@@ -34,7 +34,7 @@ class FollowService: KoinComponent {
         Follow(
             user = userService.findEntityById(userId),
             follower = userService.findEntityById(followerId),
-        ).insertAndGet().toInfo()
+        ).insertAndGet().toFollowsInfo()
 
     fun deleteFollow(userId: Long, followerId: Long) =
         findEntityByIds(userId, followerId)?.delete()
@@ -44,13 +44,13 @@ class FollowService: KoinComponent {
             .where().user.id.eq(userId)
             .setPaging(paging)
             .findList()
-            .map { it.toInfo() }
+            .map { it.toFollowersInfo() }
 
     fun getFollows(followerId: Long, paging: Paging) =
         QFollow()
             .where().follower.id.eq(followerId)
             .setPaging(paging)
             .findList()
-            .map { it.toInfo() }
+            .map { it.toFollowsInfo() }
 
 }

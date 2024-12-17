@@ -14,6 +14,8 @@ data class UserInfo(
     val recipesCount: Int,
     val likesCount: Int,
     val cookbooksCount: Int,
+    val followersCount: Int,
+    val followsCount: Int,
 ) {
     fun toOverview() = UserOverview(
         id = this.id,

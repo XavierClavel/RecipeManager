@@ -7,6 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FollowInfo(
     val user: UserOverview,
-    val follower: UserOverview,
     val followedSince: Long,
 )
