@@ -78,7 +78,15 @@
             variant="outlined"
           ></v-btn>
         </template>
-          <v-list-item prepend-icon="mdi-plus" rounded="xl" link title="New cookbook" @click="toCreateCookbookAddRecipe(recipeId)" class="primary"></v-list-item>
+
+          <v-list-item
+            prepend-icon="mdi-plus"
+            rounded="xl"
+            link
+            title="New cookbook"
+            @click="toCreateCookbookAddRecipe(recipeId)"
+            class="primary"
+          ></v-list-item>
         <v-list v-for="cookbook in userCookbooks">
           <v-list-item
             prepend-icon="mdi-check-circle"
@@ -86,8 +94,6 @@
             link
             :title="`${cookbook.title}`"
             @click="addRecipeToCookbook(cookbook.id, recipeId)"
-            density="compact"
-            max-height="20px"
           ></v-list-item>
         </v-list>
       </v-menu>

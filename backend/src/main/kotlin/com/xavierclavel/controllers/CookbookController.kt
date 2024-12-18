@@ -40,6 +40,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
         addCookbookRecipe()
         getCookbookRecipes()
         deleteCookbookRecipe()
+        getRecipeStatusInUserCookbooks()
     }
 
     private fun Route.createCookbook() = post {
@@ -57,6 +58,13 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val paging = getPaging()
         val sort = getSort()
         val cookbook = cookbookService.listCookbooks(paging, sort, userId)
+        call.respond(cookbook)
+    }
+
+    private fun Route.getRecipeStatusInUserCookbooks() = get("/recipeStatus") {
+        val userId = getIdQueryParam("user") ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val recipeId = getIdQueryParam("recipe") ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val cookbook = cookbookService.getRecipeStatusInUserCookbooks(userId, recipeId)
         call.respond(cookbook)
     }
 

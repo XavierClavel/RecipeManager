@@ -70,15 +70,15 @@ class RecipeService: KoinComponent {
 
     private fun QRecipe.filterByOwner(userId: Long?) =
         if (userId == null) this
-        else this.where().owner.id.eq(userId)
+        else this.owner.id.eq(userId)
 
     private fun QRecipe.filterByLikes(userId: Long?) =
         if (userId == null) this
-        else this.where().likes.user.id.eq(userId)
+        else this.likes.user.id.eq(userId)
 
     private fun QRecipe.filterByCookbook(cookbookId: Long?) =
         if (cookbookId == null) this
-        else this.where().cookbooks.cookbook.id.eq(cookbookId)
+        else this.cookbooks.cookbook.id.eq(cookbookId)
 
     private fun QRecipe.sort(sort: Sort) =
         when (sort) {

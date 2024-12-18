@@ -14,6 +14,7 @@ import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.Extensions.page
+import com.xavierclavel.utils.log
 import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
 import common.dto.UserDTO
@@ -25,6 +26,7 @@ import common.infodto.CookbookInfo
 import common.infodto.CookbookRecipeInfo
 import common.infodto.CookbookUserInfo
 import common.infodto.RecipeInfo
+import common.overviewdto.CookbookRecipeOverview
 import io.ebean.ExpressionList
 import io.ebean.FetchConfig
 import io.ebean.Paging
@@ -56,6 +58,37 @@ class CookbookService: KoinComponent {
             .filterByUser(user)
             .findList()
             .map { it.toInfo() }
+
+    fun getRecipeStatusInUserCookbooks(user: Long, recipe: Long) : List<CookbookRecipeOverview> {
+        val hasRecipe = QCookbook()
+            .fetch("users", FetchConfig.ofLazy())
+            .fetch("recipes", FetchConfig.ofLazy())
+            .filterByRecipe(recipe)
+            .and()
+            .filterByUser(user)
+            .orderBy().title.desc()
+            .findList()
+            .map { it.toRecipeOverview(true) }
+
+
+
+        val hasNotRecipe = QCookbook()
+            .fetch("users", FetchConfig.ofLazy())
+            .fetch("recipes", FetchConfig.ofLazy())
+            .filterNotByRecipe(recipe)
+            .and()
+            .filterByUser(user)
+            .orderBy().title.desc()
+            .findList()
+            .map { it.toRecipeOverview(false) }
+
+        logger.info {"Has recipe: $hasRecipe"}
+        logger.info {"Has no recipe: $hasNotRecipe"}
+
+        return hasNotRecipe + hasRecipe
+    }
+
+
 
     fun getCookbookUsers(id: Long, paging: Paging): List<CookbookUserInfo>? =
         QCookbook()
@@ -127,6 +160,9 @@ class CookbookService: KoinComponent {
 
     private fun QCookbook.filterByRecipe(recipeId: Long?) =
         if (recipeId == null) this else this.where().recipes.recipe.id.eq(recipeId)
+
+    private fun QCookbook.filterNotByRecipe(recipeId: Long?) =
+        if (recipeId == null) this else this.where().recipes.recipe.id.notEqualTo(recipeId)
 
 
 }

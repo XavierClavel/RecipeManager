@@ -17,5 +17,5 @@ object Extensions {
 }
 
 @OptIn(ExperimentalContracts::class)
-fun <T> T.log(msg: () -> kotlin.Any?): T =
+fun <T> T.log(msg: T.() -> kotlin.Any?): T =
     this.apply { logger.info { msg() } }

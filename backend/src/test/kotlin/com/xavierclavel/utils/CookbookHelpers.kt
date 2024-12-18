@@ -6,6 +6,7 @@ import common.enums.CookbookRole
 import common.infodto.CookbookInfo
 import common.infodto.CookbookRecipeInfo
 import common.infodto.CookbookUserInfo
+import common.overviewdto.CookbookRecipeOverview
 import common.utils.URL.COOKBOOK_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
@@ -120,4 +121,14 @@ suspend fun HttpClient.deleteCookbookRecipe(cookbookId: Long, recipeId: Long) {
         .apply {
             assertEquals(HttpStatusCode.OK, status)
         }
+}
+
+suspend fun HttpClient.getRecipeUserCookbooks(userId: Long, recipeId: Long) : Set<CookbookRecipeOverview> {
+    this.get("$COOKBOOK_URL/recipeStatus") {
+        parameter("user", userId)
+        parameter("recipe", recipeId)
+    }.apply {
+        assertEquals(HttpStatusCode.OK, status)
+        return Json.decodeFromString<Set<CookbookRecipeOverview>>(bodyAsText())
+    }
 }

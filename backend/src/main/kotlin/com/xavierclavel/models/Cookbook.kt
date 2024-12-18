@@ -4,6 +4,8 @@ import com.xavierclavel.models.jointables.CookbookRecipe
 import com.xavierclavel.models.jointables.CookbookUser
 import common.dto.CookbookDTO
 import common.infodto.CookbookInfo
+import common.overviewdto.CookbookOverview
+import common.overviewdto.CookbookRecipeOverview
 import io.ebean.Model
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
@@ -54,6 +56,17 @@ class Cookbook (
         description = this.description,
         recipesCount = this.recipes.size,
         usersCount = this.users.size,
+    )
+
+    fun toOverview() = CookbookOverview(
+        id = this.id,
+        title = this.title,
+    )
+
+    fun toRecipeOverview(present: Boolean) = CookbookRecipeOverview(
+        id = this.id,
+        title = this.title,
+        hasRecipe = present,
     )
 
 }

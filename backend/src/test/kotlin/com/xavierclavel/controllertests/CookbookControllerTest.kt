@@ -1,6 +1,7 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
+import com.xavierclavel.utils.logger
 import common.enums.CookbookRole
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser
@@ -10,10 +11,12 @@ import main.com.xavierclavel.utils.createCookbook
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.deleteCookbook
+import main.com.xavierclavel.utils.deleteCookbookRecipe
 import main.com.xavierclavel.utils.deleteCookbookUser
 import main.com.xavierclavel.utils.getCookbook
 import main.com.xavierclavel.utils.getCookbookRecipes
 import main.com.xavierclavel.utils.getCookbookUsers
+import main.com.xavierclavel.utils.getRecipeUserCookbooks
 import main.com.xavierclavel.utils.listCookbooks
 import main.com.xavierclavel.utils.listRecipes
 import org.junit.Test
@@ -174,6 +177,49 @@ class CookbookControllerTest : ApplicationTest() {
 
         val result2 = client.listRecipes(cookbook = cookbook2.id)
         assertEquals(3, result2.size)
+    }
+
+    @Test
+    fun `list recipe user cookbooks`() = runTestAsAdmin { client ->
+        val user = userService.getUserByUsername("admin")!!
+
+        val cookbook1 = client.createCookbook()
+        val cookbook2 = client.createCookbook()
+        val cookbook3 = client.createCookbook()
+        val cookbook4 = client.createCookbook()
+
+        val recipe1 = client.createRecipe()
+        val recipe2 = client.createRecipe()
+        val recipe3 = client.createRecipe()
+        val recipe4 = client.createRecipe()
+
+        client.addCookbookRecipe(cookbook1.id, recipe1.id)
+        client.addCookbookRecipe(cookbook2.id, recipe1.id)
+        val result1 = client.getRecipeUserCookbooks(user.id, recipe1.id)
+        assertEquals(4, result1.size)
+        assertEquals(0, result1.filter { it.hasRecipe }.size)
+
+        client.addCookbookRecipe(cookbook2.id, recipe1.id)
+        val result2 = client.getRecipeUserCookbooks(user.id, recipe1.id)
+        logger.info {result2}
+        assertEquals(4, result2.size)
+        assertEquals(1, result2.filter { it.hasRecipe }.size)
+
+        client.addCookbookRecipe(cookbook1.id, recipe1.id)
+        val result3 = client.getRecipeUserCookbooks(user.id, recipe1.id)
+        logger.info {result3}
+        assertEquals(4, result3.size)
+        assertEquals(2, result3.filter { it.hasRecipe }.size)
+
+        client.addCookbookRecipe(cookbook3.id, recipe2.id)
+        val result4 = client.getRecipeUserCookbooks(user.id, recipe2.id)
+        assertEquals(4, result4.size)
+        assertEquals(1, result4.filter { it.hasRecipe }.size)
+
+        client.deleteCookbookRecipe(cookbook1.id, recipe1.id)
+        val result5 = client.getRecipeUserCookbooks(user.id, recipe1.id)
+        assertEquals(4, result5.size)
+        assertEquals(1, result5.filter { it.hasRecipe }.size)
     }
 
 }
