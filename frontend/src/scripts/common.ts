@@ -10,6 +10,7 @@ export {
   signup,
 
   toCreateRecipe,
+  toCreateCookbookAddRecipe,
   toEditRecipe,
   toViewRecipe,
   toListRecipe,
@@ -50,6 +51,7 @@ const toEditUser = (id) => router.push(`/user/edit/?id=${id}`)
 const toListIngredient = () => router.push(`/ingredients`)
 
 const toCreateCookbook = () => router.push(`/cookbook/edit`)
+const toCreateCookbookAddRecipe = (id) => router.push(`/cookbook/edit?addRecipe=${id}`)
 const toViewCookbookRecipes = (id) => router.push(`/cookbook/recipes?cookbook=${id}`)
 const toListCookbooks = (id) => router.push(`/cookbook/list?user=${id}`)
 

@@ -3,6 +3,7 @@ package com.xavierclavel.controllers
 import com.xavierclavel.services.FollowService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUserId
@@ -24,6 +25,8 @@ object FollowController: Controller(FOLLOW_URL) {
         unfollow()
         getFollowers()
         getFollows()
+        isFollowingUser()
+        isFollowedByUser()
     }
 
     private fun Route.follow() = post("/{id}") {
@@ -56,6 +59,18 @@ object FollowController: Controller(FOLLOW_URL) {
         val user = userService.getUser(userId) ?: return@get call.respond(HttpStatusCode.NotFound)
         val paging = getPaging()
         call.respond(followService.getFollows(userId, paging))
+    }
+
+    private fun Route.isFollowedByUser() = get("/{id}/followedBy/{targetId}") {
+        val userId = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val targetId = getIdPathVariable("targetId") ?: return@get call.respond(HttpStatusCode.BadRequest)
+        call.respond(followService.isFollowing(userId, targetId))
+    }
+
+    private fun Route.isFollowingUser() = get("/{id}/follows/{targetId}") {
+        val userId = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val targetId = getIdPathVariable("targetId") ?: return@get call.respond(HttpStatusCode.BadRequest)
+        call.respond(followService.isFollowing(targetId, userId))
     }
 
 

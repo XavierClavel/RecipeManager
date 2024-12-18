@@ -119,13 +119,14 @@ import {base_url, toViewCookbookRecipes, toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {searchUsers} from "@/scripts/users";
-import {createCookbook, editCookbook} from "@/scripts/cookbooks";
+import {addRecipeToCookbook, createCookbook, editCookbook} from "@/scripts/cookbooks";
 
 
 
 // Get the route object
 const route = useRoute();
 let cookbookId = ref(route.query.id)
+let addRecipeId = route.query.addRecipe
 const editablePicture = ref(null)
 
 
@@ -163,6 +164,9 @@ async function submit() {
   if (cookbookId.value == null) {
     const response = await createCookbook(submitted)
     cookbookId.value = response.data.id
+    if (addRecipeId != null) {
+      await addRecipeToCookbook(cookbookId.value, addRecipeId)
+    }
     await nextTick()
   } else {
     await editCookbook(cookbookId.value, submitted)

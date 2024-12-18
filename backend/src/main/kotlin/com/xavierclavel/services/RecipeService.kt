@@ -24,9 +24,10 @@ class RecipeService: KoinComponent {
     fun findList(paging: Paging, sort: Sort, owner: Long?, likedBy: Long?, cookbook: Long?) : List<RecipeInfo> =
         QRecipe()
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
+            .fetch(QRecipe.Alias.cookbooks.toString(), "count(*)", FetchConfig.ofLazy())
             .having().raw("count(likes.id) >= 0") // Include recipes with no likes
-            .filterByLikes(likedBy)
             .filterByOwner(owner)
+            .filterByLikes(likedBy)
             .filterByCookbook(cookbook)
             .setPaging(paging)
             .sort(sort)

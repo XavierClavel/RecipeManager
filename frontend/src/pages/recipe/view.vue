@@ -78,7 +78,7 @@
             variant="outlined"
           ></v-btn>
         </template>
-          <v-list-item prepend-icon="mdi-plus" rounded="xl" link title="New cookbook" @click="toMyProfile" class="primary"></v-list-item>
+          <v-list-item prepend-icon="mdi-plus" rounded="xl" link title="New cookbook" @click="toCreateCookbookAddRecipe(recipeId)" class="primary"></v-list-item>
         <v-list v-for="cookbook in userCookbooks">
           <v-list-item
             prepend-icon="mdi-check-circle"
@@ -238,7 +238,16 @@
 import { useRoute } from 'vue-router';
 import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
-import {base_url, logout, toEditRecipe, toHome, toListRecipe, toMyProfile, unitToReadable} from "@/scripts/common";
+import {
+  base_url,
+  logout,
+  toCreateCookbookAddRecipe,
+  toEditRecipe,
+  toHome,
+  toListRecipe,
+  toMyProfile,
+  unitToReadable
+} from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
 import {addLike, isLiked, removeLike} from "@/scripts/likes";
 import {addRecipeToCookbook, listCookbooks} from "@/scripts/cookbooks";

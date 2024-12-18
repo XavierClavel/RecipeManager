@@ -31,12 +31,23 @@
         <span class="d-flex flex-row">
           <interactible-picto-info :value="user.recipesCount" icon="mdi-notebook" :action="redirectRecipesOwned"></interactible-picto-info>
           <interactible-picto-info :value="user.likesCount" icon="mdi-heart" :action="redirectRecipesLiked"></interactible-picto-info>
-          <interactible-picto-info :value="-1" icon="mdi-account-heart"></interactible-picto-info>
-          <interactible-picto-info :value="-1" icon="mdi-account-multiple"></interactible-picto-info>
+          <interactible-picto-info :value="user.followsCount" icon="mdi-account-heart"></interactible-picto-info>
+          <interactible-picto-info :value="user.followersCount" icon="mdi-account-multiple"></interactible-picto-info>
         </span>
       </v-container>
 
     </v-container>
+
+    <v-btn
+      v-if="followsUser != null"
+      prepend-icon="mdi-plus-box-outline"
+      color="primary"
+      rounded="lg"
+      flat
+      class="ml-8"
+      @click="followUnfollow"
+    >{{ followsUser ? "Unfollow" : "Follow" }}</v-btn>
+
 
     <v-card-text
       class="mx-auto px-3"
@@ -68,6 +79,8 @@ import {ref} from "vue";
 import {base_url, toEditRecipe, toEditUser, toListRecipe} from "@/scripts/common";
 import {getUser} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
+import {follow, isFollowingUser, unfollow} from "@/scripts/follows";
+import {useAuthStore} from "@/stores/auth";
 
 // Get the route object
 const route = useRoute();
@@ -78,6 +91,7 @@ const isOwner = true
 
 const user = ref<object>({})
 const imageUrl = computed(() => `${base_url}/image/users/${userId}.webp`);
+const followsUser = ref(null)
 
 const redirectRecipesOwned = () => {
   toListRecipe(`?owner=${userId}`)
@@ -87,23 +101,32 @@ const redirectRecipesLiked = () => {
   toListRecipe(`?likedBy=${userId}`)
 }
 
-
-getUser(userId).then (
-  function (response) {
-    console.log(response)
-    user.value = response.data
-  }).catch(function (error) {
-    displayError.value = true
-  console.log(error);
-    console.log(displayError)
-}).finally(function () {
-  // always executed
-});
-
-
-const remove = (id) => {
-  deleteRecipe(id)
-  toListRecipe()
+const followUnfollow = () => {
+  if (followsUser) unfollow(userId)
+  else follow(userId)
+  followsUser.value = !followsUser.value
+  updateUser()
 }
 
+
+const updateUser = () => {
+  getUser(userId).then (
+    function (response) {
+      console.log(response)
+      user.value = response.data
+    }).catch(function (error) {
+    displayError.value = true
+    console.log(error);
+    console.log(displayError)
+  }).finally(function () {
+    // always executed
+  });
+}
+
+updateUser()
+
+const authStore = useAuthStore()
+if (authStore.id == userId) {
+  followsUser.value = isFollowingUser(userId)
+}
 </script>
