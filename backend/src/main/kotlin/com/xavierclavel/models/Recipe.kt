@@ -61,7 +61,7 @@ class Recipe (
     @ManyToOne
     var owner: User? = null,
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
     var cookbooks: MutableList<CookbookRecipe> = mutableListOf(),
 
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)

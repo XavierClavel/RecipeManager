@@ -24,15 +24,14 @@ class RecipeService: KoinComponent {
     fun findList(paging: Paging, sort: Sort, owner: Long?, likedBy: Long?, cookbook: Long?) : List<RecipeInfo> =
         QRecipe()
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
-            .fetch(QRecipe.Alias.cookbooks.toString(), "count(*)", FetchConfig.ofLazy())
-            .having().raw("count(likes.id) >= 0") // Include recipes with no likes
-            .filterByOwner(owner)
+            .having().raw("count(likes.id) >= 0") // Ensure recipes with no likes are included
             .filterByLikes(likedBy)
+            .filterByOwner(owner)
             .filterByCookbook(cookbook)
             .setPaging(paging)
             .sort(sort)
             .findList()
-            .map {it.toInfo()}
+            .map { it.toInfo() }
 
     fun findEntityById(recipeId: Long) : Recipe? =
         QRecipe().id.eq(recipeId).findOne()
@@ -70,15 +69,17 @@ class RecipeService: KoinComponent {
 
     private fun QRecipe.filterByOwner(userId: Long?) =
         if (userId == null) this
-        else this.owner.id.eq(userId)
+        else this.where().owner.id.eq(userId)
 
     private fun QRecipe.filterByLikes(userId: Long?) =
         if (userId == null) this
-        else this.likes.user.id.eq(userId)
+        else this.where().likes.user.id.eq(userId)
 
     private fun QRecipe.filterByCookbook(cookbookId: Long?) =
         if (cookbookId == null) this
-        else this.cookbooks.cookbook.id.eq(cookbookId)
+        else this
+            .where().raw("EXISTS (SELECT 1 FROM cookbook_recipes cr WHERE cr.recipe_id = t0.id AND cr.cookbook_id = ?)", cookbookId)
+            //.where().cookbooks.cookbook.id.eq(cookbookId)
 
     private fun QRecipe.sort(sort: Sort) =
         when (sort) {
