@@ -197,15 +197,15 @@ class CookbookControllerTest : ApplicationTest() {
         client.addCookbookRecipe(cookbook2.id, recipe1.id)
         val result1 = client.getRecipeUserCookbooks(user.id, recipe1.id)
         assertEquals(4, result1.size)
-        assertEquals(0, result1.filter { it.hasRecipe }.size)
+        assertEquals(2, result1.filter { it.hasRecipe }.size)
 
-        client.addCookbookRecipe(cookbook2.id, recipe1.id)
+        client.deleteCookbookRecipe(cookbook2.id, recipe1.id)
         val result2 = client.getRecipeUserCookbooks(user.id, recipe1.id)
         logger.info {result2}
         assertEquals(4, result2.size)
         assertEquals(1, result2.filter { it.hasRecipe }.size)
 
-        client.addCookbookRecipe(cookbook1.id, recipe1.id)
+        client.addCookbookRecipe(cookbook3.id, recipe1.id)
         val result3 = client.getRecipeUserCookbooks(user.id, recipe1.id)
         logger.info {result3}
         assertEquals(4, result3.size)

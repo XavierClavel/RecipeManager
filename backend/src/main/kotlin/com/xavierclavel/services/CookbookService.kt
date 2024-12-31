@@ -60,32 +60,18 @@ class CookbookService: KoinComponent {
             .map { it.toInfo() }
 
     fun getRecipeStatusInUserCookbooks(user: Long, recipe: Long) : List<CookbookRecipeOverview> {
-        val hasRecipe = QCookbook()
+        val cookbooks = QCookbook()
             .fetch("users", FetchConfig.ofLazy())
             .fetch("recipes", FetchConfig.ofLazy())
-            .filterByRecipe(recipe)
-            .and()
             .filterByUser(user)
             .orderBy().title.desc()
             .findList()
-            .map { it.toRecipeOverview(true) }
 
+        val partition = cookbooks.partition { it.recipes.any { it.recipe.id == recipe } }
+        val cookbooksContainingRecipe = partition.first.map { it.toRecipeOverview(true) }
+        val cookbooksMissingRecipe = partition.second.map { it.toRecipeOverview(false) }
 
-
-        val hasNotRecipe = QCookbook()
-            .fetch("users", FetchConfig.ofLazy())
-            .fetch("recipes", FetchConfig.ofLazy())
-            .filterNotByRecipe(recipe)
-            .and()
-            .filterByUser(user)
-            .orderBy().title.desc()
-            .findList()
-            .map { it.toRecipeOverview(false) }
-
-        logger.info {"Has recipe: $hasRecipe"}
-        logger.info {"Has no recipe: $hasNotRecipe"}
-
-        return hasNotRecipe + hasRecipe
+        return (cookbooksContainingRecipe + cookbooksMissingRecipe).sortedBy { it.title }
     }
 
 
@@ -162,7 +148,9 @@ class CookbookService: KoinComponent {
         if (recipeId == null) this else this.where().recipes.recipe.id.eq(recipeId)
 
     private fun QCookbook.filterNotByRecipe(recipeId: Long?) =
-        if (recipeId == null) this else this.where().recipes.recipe.id.notEqualTo(recipeId)
+        if (recipeId == null) this else this.where().fetch("recipes", FetchConfig.ofLazy())
+            .where().raw("recipes.recipe.recipe_id IS NULL OR recipes.recipe.recipe_id <> ?", recipeId)
+
 
 
 }

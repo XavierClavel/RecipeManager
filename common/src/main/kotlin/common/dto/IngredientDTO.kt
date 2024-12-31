@@ -7,7 +7,12 @@ import kotlinx.serialization.Serializable
 data class IngredientDTO(
     val name: String,
     val type: IngredientType,
+
     val calories: Int,
-    //val weightPerUnit: Float,
-    //val containsSugar: Boolean,
+    val glucids: Float = 0f,
+    val cholesterol: Float = 0f,
+    val lipids: Float = 0f,
+    val fibers: Float = 0f,
+    val proteins: Float = 0f,
+    val sodium: Float = 0f,
 )

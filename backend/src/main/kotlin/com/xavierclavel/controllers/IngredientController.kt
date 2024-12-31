@@ -5,6 +5,7 @@ import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getPaging
 import common.dto.IngredientDTO
+import common.infodto.IngredientInfo
 import common.utils.URL.INGREDIENT_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -21,6 +22,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
 
     override fun Route.routes() {
         createIngredient()
+        createIngredientsBatch()
         getIngredient()
         updateIngredient()
         searchIngredients()
@@ -31,6 +33,14 @@ object IngredientController: Controller(INGREDIENT_URL) {
     private fun Route.createIngredient() = post {
         val ingredientDTO = call.receive<IngredientDTO>()
         call.respond(HttpStatusCode.Created, ingredientService.createIngredient(ingredientDTO))
+    }
+
+    private fun Route.createIngredientsBatch() = post("/batch") {
+        val ingredientsDTO = call.receive<List<IngredientDTO>>()
+        for (ingredient in ingredientsDTO) {
+            ingredientService.createIngredient(ingredient)
+        }
+        call.respond(HttpStatusCode.Created)
     }
 
     private fun Route.updateIngredient() = put("/{id}") {
