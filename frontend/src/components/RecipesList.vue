@@ -51,7 +51,7 @@ listRecipes(window.location.search).then(
           > mdi-silverware-fork-knife </v-icon>
           <v-card-text
             class="mx-auto px-3  align-center text-h5"
-          > {{ recipe.servings }} </v-card-text>
+          > {{ recipe.yield }} </v-card-text>
         </span>
 
         <span class="d-flex row align-center justify-center mx-auto">
@@ -64,7 +64,7 @@ listRecipes(window.location.search).then(
           > {{ recipe.preparationTime }} min </v-card-text>
         </span>
 
-        <span class="d-flex row align-center justify-center mx-auto">
+        <span class="d-flex row align-center justify-center mx-auto" v-if="recipe.cookingTime">
           <v-icon
             class="mx-auto px-3 text-h4"
             color="primary"

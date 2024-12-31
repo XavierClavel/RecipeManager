@@ -71,7 +71,7 @@
         <template v-slot:activator="{ props }">
           <v-btn
             color="primary"
-            icon="mdi-bookmark-outline"
+            :icon="userCookbooks.some((it) => it.hasRecipe) ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
             height="70px"
             width="70px"
             rounded="circle"
@@ -81,16 +81,19 @@
           ></v-btn>
         </template>
 
-        <v-list-item
-          prepend-icon="mdi-plus"
-          rounded="xl"
-          link
-          title="New cookbook"
-          @click="toCreateCookbookAddRecipe(recipeId)"
-          class="primary"
-        ></v-list-item>
-        <v-list v-for="cookbook in userCookbooks" :key="cookbook.id">
+        <v-card>
+          <v-list density="compact">
           <v-list-item
+            prepend-icon="mdi-plus"
+            rounded="xl"
+            link
+            title="New cookbook"
+            @click="toCreateCookbookAddRecipe(recipeId)"
+          ></v-list-item>
+          <v-list-item
+            v-for="cookbook in userCookbooks"
+            :key="cookbook.id"
+            density="compact"
             :prepend-icon="cookbook.hasRecipe ? 'mdi-check-circle' : 'mdi-plus-circle-outline'"
             rounded="xl"
             link
@@ -98,6 +101,9 @@
             @click="onSelectCookbook(cookbook)"
           ></v-list-item>
         </v-list>
+        </v-card>
+
+
       </v-menu>
 
       <v-btn
@@ -184,7 +190,7 @@
 
       </v-container>
 
-      <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" v-if="isOwner" >
+      <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
           @click="remove(recipeId)"
           prepend-icon="mdi-delete"
@@ -193,7 +199,8 @@
           rounded
           class="mb-10 text-h6"
           min-height="70px"
-          min-width="300px"
+          min-width="200px"
+          v-if="isOwner"
         >Delete</v-btn>
         <v-btn
           prepend-icon="mdi-pencil"
@@ -202,12 +209,10 @@
           rounded
           class="mb-10 text-h6"
           min-height="70px"
-          min-width="300px"
+          min-width="200px"
           @click="toEditRecipe(recipeId)"
+          v-if="isOwner"
         >Edit</v-btn>
-      </span>
-
-    <span class="d-flex align-center justify-center mb-2 ga-16">
         <v-btn
           prepend-icon="mdi-tray-arrow-down"
           color="primary"
@@ -215,7 +220,7 @@
           rounded
           class="mb-10 text-h6"
           min-height="70px"
-          min-width="300px"
+          min-width="200px"
           @click="downloadRecipe(recipeId)"
         >Download</v-btn>
       </span>
@@ -227,7 +232,7 @@
       Link successfully copied !
       <template v-slot:actions>
         <v-btn
-          color="primary"
+          color="surface"
           variant="text"
           @click="snackbar = false"
         >
