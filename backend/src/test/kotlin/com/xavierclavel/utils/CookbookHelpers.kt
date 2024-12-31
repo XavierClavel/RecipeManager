@@ -109,19 +109,13 @@ suspend fun HttpClient.deleteCookbookUser(cookbookId: Long, userId: Long) {
         }
 }
 
-suspend fun HttpClient.addCookbookRecipe(cookbookId: Long, recipeId: Long) {
+suspend fun HttpClient.addCookbookRecipe(cookbookId: Long, recipeId: Long) =
     this.post("$COOKBOOK_URL/$cookbookId/recipe/$recipeId")
-        .apply {
-            assertEquals(HttpStatusCode.OK, status)
-        }
-}
 
-suspend fun HttpClient.deleteCookbookRecipe(cookbookId: Long, recipeId: Long) {
+
+suspend fun HttpClient.deleteCookbookRecipe(cookbookId: Long, recipeId: Long) =
     this.delete("$COOKBOOK_URL/$cookbookId/recipe/$recipeId")
-        .apply {
-            assertEquals(HttpStatusCode.OK, status)
-        }
-}
+
 
 suspend fun HttpClient.getRecipeUserCookbooks(userId: Long, recipeId: Long) : Set<CookbookRecipeOverview> {
     this.get("$COOKBOOK_URL/recipeStatus") {

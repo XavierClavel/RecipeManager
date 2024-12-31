@@ -3,6 +3,7 @@ package main.com.xavierclavel.controllertests
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
 import common.enums.CookbookRole
+import io.ktor.http.HttpStatusCode
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser
 import main.com.xavierclavel.utils.assertCookbookDoesNotExist
@@ -19,6 +20,7 @@ import main.com.xavierclavel.utils.getCookbookUsers
 import main.com.xavierclavel.utils.getRecipeUserCookbooks
 import main.com.xavierclavel.utils.listCookbooks
 import main.com.xavierclavel.utils.listRecipes
+import org.apache.http.HttpStatus
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -220,6 +222,40 @@ class CookbookControllerTest : ApplicationTest() {
         val result5 = client.getRecipeUserCookbooks(user.id, recipe1.id)
         assertEquals(4, result5.size)
         assertEquals(1, result5.filter { it.hasRecipe }.size)
+    }
+
+    @Test
+    fun `adding recipes to cookbook already present returns HTTP Bad Request`() = runTestAsAdmin { client ->
+        val user = userService.getUserByUsername("admin")!!
+        val cookbook = client.createCookbook()
+        val recipe = client.createRecipe()
+
+        client.addCookbookRecipe(cookbook.id, recipe.id).apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+
+        client.addCookbookRecipe(cookbook.id, recipe.id).apply {
+            assertEquals(HttpStatusCode.BadRequest, status)
+        }
+    }
+
+    @Test
+    fun `removing recipes from cookbook that are not present returns HTTP Bad Request`() = runTestAsAdmin { client ->
+        val user = userService.getUserByUsername("admin")!!
+        val cookbook = client.createCookbook()
+        val recipe = client.createRecipe()
+
+        client.addCookbookRecipe(cookbook.id, recipe.id).apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+
+        client.deleteCookbookRecipe(cookbook.id, recipe.id).apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+
+        client.deleteCookbookRecipe(cookbook.id, recipe.id).apply {
+            assertEquals(HttpStatusCode.BadRequest, status)
+        }
     }
 
 }
