@@ -119,6 +119,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val cookbookId = getPathId() ?: return@post call.respond(HttpStatusCode.BadRequest)
         val recipeId = getIdPathVariable("recipe") ?: return@post call.respond(HttpStatusCode.BadRequest)
         val userId = getSessionUserId() ?: return@post call.respond(HttpStatusCode.Unauthorized)
+        if (cookbookService.doesCookbookHaveRecipe(cookbookId, recipeId)) return@post call.respond(HttpStatusCode.BadRequest)
         cookbookService.addRecipeToCookbook(cookbookId, recipeId, userId)
         call.respond(HttpStatusCode.OK)
     }
@@ -126,6 +127,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.deleteCookbookRecipe() = delete("/{id}/recipe/{recipe}") {
         val cookbookId = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
         val recipeId = getIdPathVariable("recipe") ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        if (!cookbookService.doesCookbookHaveRecipe(cookbookId, recipeId)) return@delete call.respond(HttpStatusCode.BadRequest)
         handleDeletion(cookbookService.removeRecipeFromCookbook(cookbookId, recipeId))
     }
 

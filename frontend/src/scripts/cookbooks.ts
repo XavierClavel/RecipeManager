@@ -3,6 +3,7 @@ import apiClient from '@/plugins/axios.js';
 
 export {
   listCookbooks,
+  getStatusInCookbooks,
   createCookbook,
   editCookbook,
 
@@ -12,6 +13,10 @@ export {
 
 async function listCookbooks(search) {
   return await apiClient.get(`/cookbook${search}`)
+}
+
+async function getStatusInCookbooks(user, recipe) {
+  return await apiClient.get(`/cookbook/recipeStatus?user=${user}&recipe=${recipe}`)
 }
 
 async function createCookbook(dto) {

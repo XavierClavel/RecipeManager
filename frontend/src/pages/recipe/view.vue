@@ -65,7 +65,9 @@
         variant="outlined"
       ></v-btn>
 
-      <v-menu class="mt-n16">
+      <v-menu class="mt-n16"
+        :close-on-content-click="false"
+      >
         <template v-slot:activator="{ props }">
           <v-btn
             color="primary"
@@ -79,21 +81,21 @@
           ></v-btn>
         </template>
 
+        <v-list-item
+          prepend-icon="mdi-plus"
+          rounded="xl"
+          link
+          title="New cookbook"
+          @click="toCreateCookbookAddRecipe(recipeId)"
+          class="primary"
+        ></v-list-item>
+        <v-list v-for="cookbook in userCookbooks" :key="cookbook.id">
           <v-list-item
-            prepend-icon="mdi-plus"
+            :prepend-icon="cookbook.hasRecipe ? 'mdi-check-circle' : 'mdi-plus-circle-outline'"
             rounded="xl"
             link
-            title="New cookbook"
-            @click="toCreateCookbookAddRecipe(recipeId)"
-            class="primary"
-          ></v-list-item>
-        <v-list v-for="cookbook in userCookbooks">
-          <v-list-item
-            prepend-icon="mdi-check-circle"
-            rounded="xl"
-            link
-            :title="`${cookbook.title}`"
-            @click="addRecipeToCookbook(cookbook.id, recipeId)"
+            :title="cookbook.title"
+            @click="onSelectCookbook(cookbook)"
           ></v-list-item>
         </v-list>
       </v-menu>
@@ -246,17 +248,14 @@ import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {
   base_url,
-  logout,
   toCreateCookbookAddRecipe,
   toEditRecipe,
-  toHome,
   toListRecipe,
-  toMyProfile,
   unitToReadable
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
 import {addLike, isLiked, removeLike} from "@/scripts/likes";
-import {addRecipeToCookbook, listCookbooks} from "@/scripts/cookbooks";
+import {addRecipeToCookbook, getStatusInCookbooks, listCookbooks, removeRecipeFromCookbook} from "@/scripts/cookbooks";
 
 // Get the route object
 const route = useRoute();
@@ -270,6 +269,8 @@ const snackbar = ref(false)
 const userCookbooks = ref([])
 
 const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.webp`);
+const authStore = useAuthStore()
+const userId = authStore.id
 
 const recipe = ref<object>({
   steps: [''],
@@ -298,14 +299,18 @@ isLiked(recipeId).then (
   }
 )
 
-const authStore = useAuthStore()
-listCookbooks(`?user=${authStore.id}`).then(
-  function (response) {
-    userCookbooks.value = response.data
-    console.log(response)
-  }
-)
 
+const updateCookbook = () => {
+  getStatusInCookbooks(userId, recipeId).then(
+    function (response) {
+      userCookbooks.value = [...response.data]
+      console.log(response.data)
+      console.log(userCookbooks.value)
+    }
+  )
+}
+
+updateCookbook()
 
 const remove = (id) => {
   deleteRecipe(id)
@@ -324,6 +329,20 @@ const onLikeButtonClick = () => {
 const onShareButtonClick = () => {
   navigator.clipboard.writeText(window.location.href);
   snackbar.value = true
+}
+
+const onSelectCookbook = (cookbook) => {
+  if (cookbook.hasRecipe) {
+    removeRecipeFromCookbook(cookbook.id, recipeId).then(
+      function(response) {
+      updateCookbook()
+    })
+  } else {
+    addRecipeToCookbook(cookbook.id, recipeId).then(
+      function(response) {
+        updateCookbook()
+      })
+  }
 }
 
 </script>

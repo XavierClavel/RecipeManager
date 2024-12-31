@@ -50,8 +50,14 @@
         <createTable name="ingredients" identityType="identity" pkName="pk_ingredients">
             <column name="id" type="bigint" primaryKey="true"/>
             <column name="name" type="varchar" notnull="true"/>
-            <column name="type" type="integer" notnull="true" checkConstraint="check ( type in (0,1,2,3,4,5,6,7,8,9,10))" checkConstraintName="ck_ingredients_type"/>
+            <column name="type" type="integer" notnull="true" checkConstraint="check ( type in (0,1,2,3,4,5,6,7,8,9,10,11,12))" checkConstraintName="ck_ingredients_type"/>
             <column name="calories" type="integer" notnull="true"/>
+            <column name="glucids" type="float" notnull="true"/>
+            <column name="cholesterol" type="float" notnull="true"/>
+            <column name="lipids" type="float" notnull="true"/>
+            <column name="fibers" type="float" notnull="true"/>
+            <column name="proteins" type="float" notnull="true"/>
+            <column name="sodium" type="float" notnull="true"/>
         </createTable>
         <createTable name="likes" identityType="identity" pkName="pk_likes">
             <column name="id" type="bigint" primaryKey="true"/>

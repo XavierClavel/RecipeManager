@@ -92,6 +92,12 @@ class CookbookService: KoinComponent {
             ?.map { it.toInfo() }
             ?.page(paging)
 
+    fun doesCookbookHaveRecipe(cookbookId: Long, recipeId: Long): Boolean =
+        QCookbook()
+            .id.eq(cookbookId)
+            .filterByRecipe(recipeId)
+            .exists()
+
     fun updateCookbook(id: Long, cookbookDTO: CookbookDTO) =
         findEntityById(id)
             ?.merge(cookbookDTO)
@@ -146,11 +152,4 @@ class CookbookService: KoinComponent {
 
     private fun QCookbook.filterByRecipe(recipeId: Long?) =
         if (recipeId == null) this else this.where().recipes.recipe.id.eq(recipeId)
-
-    private fun QCookbook.filterNotByRecipe(recipeId: Long?) =
-        if (recipeId == null) this else this.where().fetch("recipes", FetchConfig.ofLazy())
-            .where().raw("recipes.recipe.recipe_id IS NULL OR recipes.recipe.recipe_id <> ?", recipeId)
-
-
-
 }
