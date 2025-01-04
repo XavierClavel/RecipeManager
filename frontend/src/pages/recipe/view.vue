@@ -90,6 +90,7 @@
             title="New cookbook"
             @click="toCreateCookbookAddRecipe(recipeId)"
           ></v-list-item>
+          <v-divider></v-divider>
           <v-list-item
             v-for="cookbook in userCookbooks"
             :key="cookbook.id"

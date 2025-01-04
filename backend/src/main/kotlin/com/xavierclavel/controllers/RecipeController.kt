@@ -54,6 +54,7 @@ object RecipeController: Controller(RECIPE_URL) {
         val owner = getIdPathVariable("owner")
         val likedBy = getIdPathVariable("likedBy")
         val cookbook = getIdPathVariable("cookbook")
+        val cookbookUser = getIdPathVariable("cookbookUser")
         call.respond(recipeService.findList(paging, sort, owner, likedBy, cookbook))
     }
 

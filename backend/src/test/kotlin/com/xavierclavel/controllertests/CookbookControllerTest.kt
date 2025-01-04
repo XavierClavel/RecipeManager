@@ -226,7 +226,6 @@ class CookbookControllerTest : ApplicationTest() {
 
     @Test
     fun `adding recipes to cookbook already present returns HTTP Bad Request`() = runTestAsAdmin { client ->
-        val user = userService.getUserByUsername("admin")!!
         val cookbook = client.createCookbook()
         val recipe = client.createRecipe()
 
@@ -241,7 +240,6 @@ class CookbookControllerTest : ApplicationTest() {
 
     @Test
     fun `removing recipes from cookbook that are not present returns HTTP Bad Request`() = runTestAsAdmin { client ->
-        val user = userService.getUserByUsername("admin")!!
         val cookbook = client.createCookbook()
         val recipe = client.createRecipe()
 

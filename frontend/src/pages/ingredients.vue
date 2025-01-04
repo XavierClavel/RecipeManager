@@ -39,6 +39,51 @@
               :min="0"
               :step="10"
             ></v-number-input>
+            <v-number-input
+              v-model="selectedIngredient.glucids"
+              label="Glucids"
+              class="mx-auto px-3"
+              type="number"
+              color="primary"
+              :min="0"
+              :step="1"
+            ></v-number-input>
+            <v-number-input
+              v-model="selectedIngredient.lipids"
+              label="Lipids"
+              class="mx-auto px-3"
+              type="number"
+              color="primary"
+              :min="0"
+              :step="1"
+            ></v-number-input>
+            <v-number-input
+              v-model="selectedIngredient.fibers"
+              label="Fibers"
+              class="mx-auto px-3"
+              type="number"
+              color="primary"
+              :min="0"
+              :step="1"
+            ></v-number-input>
+            <v-number-input
+              v-model="selectedIngredient.cholesterol"
+              label="Cholesterol"
+              class="mx-auto px-3"
+              type="number"
+              color="primary"
+              :min="0"
+              :step="1"
+            ></v-number-input>
+            <v-number-input
+              v-model="selectedIngredient.sodium"
+              label="Sodium"
+              class="mx-auto px-3"
+              type="number"
+              color="primary"
+              :min="0"
+              :step="1"
+            ></v-number-input>
             <span class="d-flex flex-row align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
           icon="mdi-close-circle-outline"

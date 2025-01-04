@@ -24,7 +24,6 @@
         </v-list-item>
         <v-list-item prepend-icon="mdi-home" rounded="xl" link title="Home" @click="toHome"></v-list-item>
         <v-list-item prepend-icon="mdi-dots-grid" rounded="xl" link title="Recipes" @click="toListRecipe('')"></v-list-item>
-        <v-list-item prepend-icon="mdi-heart-outline" rounded="xl" link title="Likes" @click="toHome"></v-list-item>
         <v-list-item prepend-icon="mdi-food-apple-outline" rounded="xl" link title="Ingredients" @click="toListIngredient"></v-list-item>
         <v-list-item prepend-icon="mdi-notebook-outline" rounded="xl" link title="Cookbooks" @click="toMyCookbooks"></v-list-item>
         <v-list-item prepend-icon="mdi-security" rounded="xl" link title="Admin" @click="toUsers"></v-list-item>

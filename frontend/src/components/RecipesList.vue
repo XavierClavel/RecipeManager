@@ -4,6 +4,7 @@ import {listRecipes} from "@/scripts/recipes";
 
 
 const recipes = ref<object[]>([])
+
 listRecipes(window.location.search).then(
   function (response) {
     console.log(response)

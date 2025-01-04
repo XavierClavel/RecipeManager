@@ -20,6 +20,13 @@
         color="primary"
       ></v-textarea>
 
+      <v-select>
+        v-model="recipe.dishType"
+        label="Dish Type"
+        class="mx-auto px-3 primary"
+        color="primary"
+      </v-select>
+
        <editable-picture path="image/recipes" :id="recipeId" ref="editablePicture"></editable-picture>
 
 

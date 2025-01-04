@@ -115,7 +115,7 @@ async function whoami() {
     authStore.login({ username: 'test_user' });
     }
   ).catch (function (error) {
-    console.log("logged out")
+    console.log(error)
     const authStore = useAuthStore();
     authStore.logout()
     toLogin()
