@@ -25,9 +25,7 @@ class RecipeService: KoinComponent {
         QRecipe()
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
             .having().raw("count(likes.id) >= 0") // Ensure recipes with no likes are included
-            .filterByLikes(likedBy)
-            .filterByOwner(owner)
-            .filterByCookbook(cookbook)
+            .filter(owner = owner, likedBy = likedBy, cookbook = cookbook)
             .setPaging(paging)
             .sort(sort)
             .findList()
@@ -65,6 +63,14 @@ class RecipeService: KoinComponent {
 
     private fun queryByOwner(username: String) =
         QRecipe().owner.username.eq(username)
+
+    private fun QRecipe.filter(owner: Long?, likedBy: Long?, cookbook: Long?) =
+        if (owner == null && likedBy == null && cookbook == null) this
+        else this.or()
+            .filterByLikes(likedBy)
+            .filterByOwner(owner)
+            .filterByCookbook(cookbook)
+            .endOr()
 
 
     private fun QRecipe.filterByOwner(userId: Long?) =

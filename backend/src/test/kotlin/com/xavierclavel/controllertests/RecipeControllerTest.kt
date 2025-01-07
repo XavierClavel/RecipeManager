@@ -380,4 +380,34 @@ class RecipeControllerTest : ApplicationTest() {
             assertEquals(1, response3.size)
         }
     }
+
+    @Test
+    fun `filter recipes by liked and owned`() = runTest {
+        var user: UserInfo? = null
+        var adminUser: UserInfo? = null
+        var recipeOwned: RecipeInfo? = null
+        var recipeLiked: RecipeInfo? = null
+        runAsAdmin {
+            user = client.createUser()
+            adminUser = client.getMe()
+            recipeOwned = client.createRecipe()
+        }
+        runAs(user!!.username) {
+            recipeLiked = client.createRecipe()
+        }
+        runAsAdmin {
+            client.createLike(recipeLiked!!.id)
+/*
+            val response1 = client.listRecipes(owner = adminUser!!.id)
+            assertEquals(1, response1.size)
+
+            val response2 = client.listRecipes(likedBy = adminUser.id)
+            assertEquals(1, response2.size)
+
+
+ */
+            val response3 = client.listRecipes(owner = adminUser!!.id, likedBy = adminUser.id)
+            assertEquals(2, response3.size)
+        }
+    }
 }
