@@ -56,8 +56,6 @@
 
 <script setup lang="ts">
 
-import {createRecipe, deleteRecipeImage, updateRecipe, uploadRecipeImage} from "@/scripts/recipes";
-
 const props = defineProps({
   id: {
     type: [Number],

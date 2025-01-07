@@ -4,7 +4,7 @@
       v-model="chosenSource"
       column
       multiple
-      @update:modelValue="onUpdateSource"
+      @update:modelValue="updateUrl"
     >
       <v-chip
         v-for="s in source"
@@ -18,6 +18,7 @@
       v-model="chosenDishType"
       column
       multiple
+      @update:modelValue="updateUrl"
     >
       <v-chip
         v-for="dish in dishTypes"
@@ -29,13 +30,12 @@
 
 
   </v-container>
-  <recipes-list :query="recipeQueries" ref="recipesList"></recipes-list>
+  <recipes-list :query="recipeQueries"></recipes-list>
 </template>
 
 <script lang="ts" setup>
 import RecipesList from "@/components/RecipesList.vue";
 import {useAuthStore} from "@/stores/auth";
-import { useRouter, useRoute } from 'vue-router';
 
 const dishTypes = ["Entree","Main Dish","Desert"]
 const source = ["My recipes", "Likes", "Cookbooks", "Follows"]
@@ -43,16 +43,10 @@ const source = ["My recipes", "Likes", "Cookbooks", "Follows"]
 const chosenDishType = ref([0, 1, 2])
 const chosenSource = ref([0,1])
 
-const recipesList = ref(null)
-
 const authStore = useAuthStore()
 
 const recipeQueries = ref("")
 import router from "@/router";
-
-const onUpdateSource = () => {
-  updateUrl()
-}
 
 const updateUrl = () => {
   const route = router.currentRoute
@@ -61,17 +55,14 @@ const updateUrl = () => {
     query: Object.fromEntries(
       Object.entries({
         ...route.query,
-        owner: chosenSource.value.includes(0) ? authStore.username : undefined,
-        likedBy: chosenSource.value.includes(1) ? authStore.username : undefined,
-        userCookbooks: chosenSource.value.includes(2) ? authStore.username : undefined,
-        follows: chosenSource.value.includes(3) ? authStore.username : undefined,
+        owner: chosenSource.value.includes(0) ? authStore.id : undefined,
+        likedBy: chosenSource.value.includes(1) ? authStore.id : undefined,
+        userCookbooks: chosenSource.value.includes(2) ? authStore.id : undefined,
+        follows: chosenSource.value.includes(3) ? authStore.id : undefined,
         dishTypes: chosenDishType.value.length > 0 ? chosenDishType.value.join(",") : undefined
       }).filter(([_, value]) => value !== undefined) // Remove undefined values
     ),
   })
 }
-
-updateUrl()
-
 
 </script>

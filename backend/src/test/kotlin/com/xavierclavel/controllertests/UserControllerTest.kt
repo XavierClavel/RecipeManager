@@ -12,8 +12,8 @@ class UserControllerTest : ApplicationTest() {
     @Test
     fun `create user`() = runTestAsAdmin {
         val username = "test_user"
-        val user = it.createUser(username = username)
-        it.assertUserExists(user.id)
+        val user = client.createUser(username = username)
+        client.assertUserExists(user.id)
     }
 
     /*
@@ -30,8 +30,8 @@ class UserControllerTest : ApplicationTest() {
     @Test
     fun `list users`() = runTestAsAdmin {
         val usernames = setOf("test_user1", "test_user2")
-        usernames.forEach { username -> it.createUser(username = username) }
-        val response = it.listUsers().map { it.username }.toSet()
+        usernames.forEach { username -> client.createUser(username = username) }
+        val response = client.listUsers().map { it.username }.toSet()
         for (username in usernames) {
             assertTrue { response.contains(username) }
         }

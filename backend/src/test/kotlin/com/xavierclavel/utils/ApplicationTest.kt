@@ -10,6 +10,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.application.Application
+import io.ktor.server.application.Plugin
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.testing.*
 import io.ktor.utils.io.KtorDsl
@@ -40,33 +42,34 @@ abstract class ApplicationTest: KoinTest {
 
 
     @KtorDsl
-    fun runTestAsAdmin(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
+    fun runTestAsAdmin(block: suspend TestBuilderWrapper.() -> Unit) {
         runTest {
-            runAs("admin", "Passw0rd", it) {
-                block(it)
+            runAs("admin", "Passw0rd") {
+                block()
             }
         }
     }
 
     @KtorDsl
-    suspend fun ApplicationTestBuilder.runAsAdmin(client: HttpClient, block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
-        runAs("admin", "Passw0rd", client) {
-            block(it)
+    suspend fun TestBuilderWrapper.runAsAdmin(block: suspend TestBuilderWrapper.() -> Unit) {
+        runAs("admin", "Passw0rd") {
+            this.block()
         }
     }
 
+
     @KtorDsl
-    suspend fun ApplicationTestBuilder.runAs(username: String, password: String = "Passw0rd", client: HttpClient, block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
+    suspend fun TestBuilderWrapper.runAs(username: String, password: String = "Passw0rd", block: suspend TestBuilderWrapper.() -> Unit) {
         client.post("/v1/auth/login") {
             basicAuth(username = username, password = password)
         }
-        block(client)
+        this.block()
         client.post("/v1/auth/logout")
     }
 
     @KtorDsl
-    fun runTest(block: suspend ApplicationTestBuilder.(HttpClient) -> Unit) {
-        return testApplication(EmptyCoroutineContext, {
+    fun runTest(block: suspend TestBuilderWrapper.() -> Unit) {
+        return testApplication(EmptyCoroutineContext) {
             userService.setupDefaultAdmin()
             install(ContentNegotiation) {
                 json()
@@ -75,18 +78,12 @@ abstract class ApplicationTest: KoinTest {
                 configureAuthentication()
                 serveRoutes()
             }
-            val client = createClient {
-                install(HttpCookies) // this is for logging in
-                install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
-                    json(Json {
-                        prettyPrint = true
-                        isLenient = true
-                    })
-                }
-            }
-            block(client)
-        })
+
+            val wrapper = TestBuilderWrapper(this)
+            wrapper.block() // Use the wrapper in the block
+        }
     }
+
 
 }
 
@@ -122,4 +119,25 @@ class CleanDbRule : TestRule {
             }
         }
     }
+}
+
+class TestBuilderWrapper(private val builder: ApplicationTestBuilder) {
+    val client: HttpClient by lazy {
+        builder.client.config {
+            install(HttpCookies)
+            install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                })
+            }
+        }
+    }
+
+    // Delegate install with proper types
+    fun <P : Any, B : Any, F : Any> install(plugin: Plugin<Application, B, F>, configure: B.() -> Unit = {}) {
+        builder.install(plugin, configure)
+    }
+
+    fun application(block: Application.() -> Unit) = builder.application(block)
 }

@@ -4,10 +4,13 @@ import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
+import common.dto.UserDTO
 import common.enums.AmountUnit
 import common.enums.Sort
 import common.infodto.CustomIngredientInfo
+import common.infodto.RecipeInfo
 import common.infodto.RecipeIngredientInfo
+import common.infodto.UserInfo
 import common.utils.URL.RECIPE_URL
 import io.ktor.client.request.header
 import io.ktor.client.request.setBody
@@ -43,14 +46,14 @@ class RecipeControllerTest : ApplicationTest() {
 
     @Test
     fun `create recipe`() = runTestAsAdmin {
-        val response = it.createRecipe(recipeDTO)
-        it.assertRecipeExists(response.id)
+        val response = client.createRecipe(recipeDTO)
+        client.assertRecipeExists(response.id)
     }
 
     @Test
     fun `create recipe with ingredients`() = runTestAsAdmin {
-        val ingredient1 = it.createIngredient()
-        val ingredient2 = it.createIngredient()
+        val ingredient1 = client.createIngredient()
+        val ingredient2 = client.createIngredient()
 
         val recipeIngredient1 = RecipeDTO.RecipeIngredientDTO(
             id = ingredient1.id,
@@ -67,20 +70,20 @@ class RecipeControllerTest : ApplicationTest() {
             title = "My recipe",
             ingredients = mutableListOf(recipeIngredient1, recipeIngredient2)
         )
-        val recipe = it.createRecipe(recipeDto)
-        val response = it.getRecipe(recipe.id)
-        it.assertRecipeExists(response.id)
+        val recipe = client.createRecipe(recipeDto)
+        val response = client.getRecipe(recipe.id)
+        client.assertRecipeExists(response.id)
         assertEquals(2, response.ingredients.size)
     }
 
     @Test
     fun `update recipe ingredients`() = runTestAsAdmin {
-        val a = it.listRecipes(null)
+        val a = client.listRecipes(null)
         logger.info {a}
 
-        val ingredient1 = it.createIngredient()
-        val ingredient2 = it.createIngredient()
-        val ingredient3 = it.createIngredient()
+        val ingredient1 = client.createIngredient()
+        val ingredient2 = client.createIngredient()
+        val ingredient3 = client.createIngredient()
 
         val recipeIngredient1 = RecipeDTO.RecipeIngredientDTO(
             id = ingredient1.id,
@@ -125,15 +128,15 @@ class RecipeControllerTest : ApplicationTest() {
             title = "My recipe",
             ingredients = mutableListOf(recipeIngredient1, recipeIngredient2)
         )
-        val recipe = it.createRecipe(recipeDto)
+        val recipe = client.createRecipe(recipeDto)
 
         val recipeDTO2 = RecipeDTO(
             title = "My recipe",
             ingredients = mutableListOf(recipeIngredient2bis, recipeIngredient3)
         )
 
-        val response = it.updateRecipe(recipe.id, recipeDTO2)
-        it.assertRecipeExists(response.id)
+        val response = client.updateRecipe(recipe.id, recipeDTO2)
+        client.assertRecipeExists(response.id)
         assertEquals(2, response.ingredients.size)
         assertEquals(expected, response.ingredients.toSet())
     }
@@ -155,9 +158,9 @@ class RecipeControllerTest : ApplicationTest() {
             title = "My recipe",
             customIngredients = mutableListOf(customIngredient1, customIngredient2)
         )
-        val recipe = it.createRecipe(recipeDto)
-        val response = it.getRecipe(recipe.id)
-        it.assertRecipeExists(response.id)
+        val recipe = client.createRecipe(recipeDto)
+        val response = client.getRecipe(recipe.id)
+        client.assertRecipeExists(response.id)
         assertEquals(2, response.customIngredients.size)
     }
 
@@ -205,12 +208,12 @@ class RecipeControllerTest : ApplicationTest() {
             customIngredient3.toInfo(),
         )
 
-        val recipe = it.createRecipe(recipeDto1)
-        val response = it.getRecipe(recipe.id)
+        val recipe = client.createRecipe(recipeDto1)
+        val response = client.getRecipe(recipe.id)
         assertEquals(expected1, response.customIngredients.toSet())
 
-        it.updateRecipe(recipe.id, recipeDto2)
-        val response2 = it.getRecipe(recipe.id)
+        client.updateRecipe(recipe.id, recipeDto2)
+        val response2 = client.getRecipe(recipe.id)
         assertEquals(expected2, response2.customIngredients.toSet())
     }
 
@@ -224,8 +227,8 @@ class RecipeControllerTest : ApplicationTest() {
             title = "My recipe",
             steps = steps.toMutableList()
         )
-        val response = it.createRecipe(recipeDto)
-        it.assertRecipeExists(response.id)
+        val response = client.createRecipe(recipeDto)
+        client.assertRecipeExists(response.id)
         assertEquals(2, response.steps.size)
         assertEquals(steps, response.steps.toSet())
     }
@@ -251,10 +254,10 @@ class RecipeControllerTest : ApplicationTest() {
             steps = steps2.toMutableList()
         )
 
-        val response = it.createRecipe(recipeDto)
+        val response = client.createRecipe(recipeDto)
         assertEquals(steps1, response.steps.toSet())
 
-        val response2 = it.updateRecipe(response.id, recipeDto2)
+        val response2 = client.updateRecipe(response.id, recipeDto2)
         assertEquals(steps2, response2.steps.toSet())
     }
 
@@ -262,14 +265,14 @@ class RecipeControllerTest : ApplicationTest() {
 
     @Test
     fun `get recipe`() = runTestAsAdmin {
-        val recipeInfo = it.createRecipe(recipeDTO)
-        val result = it.getRecipe(recipeInfo.id)
+        val recipeInfo = client.createRecipe(recipeDTO)
+        val result = client.getRecipe(recipeInfo.id)
         assertTrue(result.compareToDTO(recipeDTO))
     }
 
     @Test
     fun `update recipe`() = runTestAsAdmin {
-        val response = it.createRecipe(recipeDTO)
+        val response = client.createRecipe(recipeDTO)
         val recipeDTO2 = RecipeDTO(
             title = "My better recipe",
             description = "My new description",
@@ -278,14 +281,14 @@ class RecipeControllerTest : ApplicationTest() {
                 "cool",
             )
         )
-        it.updateRecipe(response.id, recipeDTO2)
-        assertFalse(it.getRecipe(response.id).compareToDTO(recipeDTO))
-        assertTrue(it.getRecipe(response.id).compareToDTO(recipeDTO2))
+        client.updateRecipe(response.id, recipeDTO2)
+        assertFalse(client.getRecipe(response.id).compareToDTO(recipeDTO))
+        assertTrue(client.getRecipe(response.id).compareToDTO(recipeDTO2))
     }
 
     @Test
     fun `updating unexisting recipe returns Unauthorized`() = runTestAsAdmin {
-        it.put("$RECIPE_URL/-1"){
+        client.put("$RECIPE_URL/-1"){
             contentType(ContentType.Application.Json)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             setBody(recipeDTO)
@@ -296,61 +299,76 @@ class RecipeControllerTest : ApplicationTest() {
 
     @Test
     fun `delete recipe`() = runTestAsAdmin {
-        val recipeInfo = it.createRecipe(recipeDTO)
-        it.assertRecipeExists(recipeInfo.id)
-        it.deleteRecipe(recipeInfo.id)
+        val recipeInfo = client.createRecipe(recipeDTO)
+        client.assertRecipeExists(recipeInfo.id)
+        client.deleteRecipe(recipeInfo.id)
     }
 
     @Test
     fun `list recipes by owner`() = runTestAsAdmin {
         val admin = userService.getUserByUsername("admin")!!
-        val user = it.createUser()
-        val result = it.listRecipes(admin.id)
+        val user = client.createUser()
+        val result = client.listRecipes(admin.id)
         assertEquals(result.count(), 0)
-        it.createRecipe(recipeDTO)
-        val result2 = it.listRecipes(admin.id)
+        client.createRecipe(recipeDTO)
+        val result2 = client.listRecipes(admin.id)
         assertEquals(result2.count(), 1)
-        val result3 = it.listRecipes(user.id)
+        val result3 = client.listRecipes(user.id)
         assertEquals(result3.count(), 0)
     }
 
     @Test
     fun `list recipes`() = runTestAsAdmin {
-        val result = it.listRecipes(null)
+        val result = client.listRecipes(null)
         assertEquals(0, result.count())
-        it.createRecipe(recipeDTO)
-        val result2 = it.listRecipes(null)
+        client.createRecipe(recipeDTO)
+        val result2 = client.listRecipes(null)
         assertEquals(1, result2.count())
     }
 
     @Test
     fun `sort recipes by likes`() = runTestAsAdmin {
-        val recipe1 = it.createRecipe()
-        val recipe2 = it.createRecipe()
-        it.createLike(recipe1.id)
+        val recipe1 = client.createRecipe()
+        val recipe2 = client.createRecipe()
+        client.createLike(recipe1.id)
 
-        val result1 = it.listRecipes(null, Sort.LIKES_DESCENDING)
+        val result1 = client.listRecipes(null, Sort.LIKES_DESCENDING)
         assertEquals(2, result1.count())
         assertEquals(recipe1.id, result1[0].id)
 
-        val result2 = it.listRecipes(null, Sort.LIKES_ASCENDING)
+        val result2 = client.listRecipes(null, Sort.LIKES_ASCENDING)
         assertEquals(2, result2.count())
         assertEquals(recipe2.id, result2[0].id)
     }
 
     @Test
     fun `sort recipes by date`() = runTestAsAdmin {
-        val recipe1 = it.createRecipe()
-        val recipe2 = it.createRecipe()
-        val recipe3 = it.createRecipe()
+        val recipe1 = client.createRecipe()
+        val recipe2 = client.createRecipe()
+        val recipe3 = client.createRecipe()
 
         val dateOrderAscending = setOf(recipe1.id, recipe2.id, recipe3.id)
         val dateOrderDescending = setOf(recipe3.id, recipe2.id, recipe1.id)
 
-        val result1 = it.listRecipes(null, Sort.DATE_DESCENDING)
+        val result1 = client.listRecipes(null, Sort.DATE_DESCENDING)
         assertEquals(dateOrderDescending, result1.map {it.id}.toSet())
 
-        val result2 = it.listRecipes(null, Sort.DATE_ASCENDING)
+        val result2 = client.listRecipes(null, Sort.DATE_ASCENDING)
         assertEquals(dateOrderAscending, result2.map {it.id}.toSet())
+    }
+
+    @Test
+    fun `filter recipes by liked`() = runTest {
+        var user: UserInfo? = null
+        var recipe: RecipeInfo? = null
+        runAsAdmin {
+            user = client.createUser()
+        }
+        runAs(user!!.username) {
+            recipe = client.createRecipe()
+        }
+        runAsAdmin {
+
+        }
     }
 }

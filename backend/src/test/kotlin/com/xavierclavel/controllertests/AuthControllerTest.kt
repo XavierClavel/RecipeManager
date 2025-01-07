@@ -17,7 +17,7 @@ class AuthControllerTest : ApplicationTest() {
     @Test
     fun `signup`() = runTest {
         val userDTO = UserDTO("test_user", "test_user@example.com", "123456")
-        it.post("$AUTH_URL/signup") {
+        client.post("$AUTH_URL/signup") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             setBody(userDTO)

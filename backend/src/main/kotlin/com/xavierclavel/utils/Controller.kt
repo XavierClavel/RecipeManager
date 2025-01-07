@@ -44,6 +44,7 @@ fun RoutingContext.getSessionUserId(): Long? =
 fun RoutingContext.getPathId(): Long? = getIdPathVariable("id")
 
 fun RoutingContext.getIdPathVariable(value: String): Long? = call.parameters[value]?.toLongOrNull()
+fun RoutingContext.getPathVariable(value: String): String? = call.parameters[value]
 
 fun RoutingContext.getIdQueryParam(value: String): Long? = call.queryParameters[value]?.toLongOrNull()
 

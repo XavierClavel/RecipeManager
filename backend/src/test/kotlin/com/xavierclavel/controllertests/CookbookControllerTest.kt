@@ -28,40 +28,40 @@ import kotlin.test.assertTrue
 class CookbookControllerTest : ApplicationTest() {
     @Test
     fun `create cookbook`() = runTestAsAdmin {
-        val cookbook = it.createCookbook()
-        it.assertCookbookExists(cookbook.id)
+        val cookbook = client.createCookbook()
+        client.assertCookbookExists(cookbook.id)
     }
 
     @Test
     fun `creating cookbook grants admin access to it`() = runTestAsAdmin {
-        val cookbook = it.createCookbook()
-        it.assertCookbookExists(cookbook.id)
-        val users = it.getCookbookUsers(cookbook.id)
+        val cookbook = client.createCookbook()
+        client.assertCookbookExists(cookbook.id)
+        val users = client.getCookbookUsers(cookbook.id)
         assertEquals(1, users.size)
         assertEquals(CookbookRole.OWNER, users.first().role)
     }
 
     @Test
     fun `delete cookbook`() = runTestAsAdmin {
-        val cookbook = it.createCookbook()
-        it.assertCookbookExists(cookbook.id)
-        it.deleteCookbook(cookbook.id)
-        it.assertCookbookDoesNotExist(cookbook.id)
+        val cookbook = client.createCookbook()
+        client.assertCookbookExists(cookbook.id)
+        client.deleteCookbook(cookbook.id)
+        client.assertCookbookDoesNotExist(cookbook.id)
     }
 
     @Test
     fun `add user to cookbook`() = runTestAsAdmin {
-        val cookbook = it.createCookbook()
-        it.assertCookbookExists(cookbook.id)
-        val user = it.createUser("user1")
-        it.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
-        val users = it.getCookbookUsers(cookbook.id)
+        val cookbook = client.createCookbook()
+        client.assertCookbookExists(cookbook.id)
+        val user = client.createUser("user1")
+        client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+        val users = client.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)
         assertTrue(users.any { it.username == "user1" })
     }
 
     @Test
-    fun `add multiple users to cookbook`() = runTestAsAdmin { client ->
+    fun `add multiple users to cookbook`() = runTestAsAdmin {
         val cookbook = client.createCookbook()
         client.assertCookbookExists(cookbook.id)
 
@@ -75,23 +75,23 @@ class CookbookControllerTest : ApplicationTest() {
 
     @Test
     fun `delete cookbook user`() = runTestAsAdmin {
-        val cookbook = it.createCookbook()
-        it.assertCookbookExists(cookbook.id)
+        val cookbook = client.createCookbook()
+        client.assertCookbookExists(cookbook.id)
 
-        val user = it.createUser("user1")
-        it.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
-        val users = it.getCookbookUsers(cookbook.id)
+        val user = client.createUser("user1")
+        client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+        val users = client.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)
         assertTrue(users.any { it.username == "user1" })
 
-        it.deleteCookbookUser(cookbook.id, user.id)
-        val users2 = it.getCookbookUsers(cookbook.id)
+        client.deleteCookbookUser(cookbook.id, user.id)
+        val users2 = client.getCookbookUsers(cookbook.id)
         assertEquals(1, users2.size)
         assertTrue(users2.none { it.username == "user1" })
     }
 
     @Test
-    fun `add recipes to cookbook`() = runTestAsAdmin { client ->
+    fun `add recipes to cookbook`() = runTestAsAdmin {
         val cookbook = client.createCookbook()
         client.assertCookbookExists(cookbook.id)
 
@@ -106,23 +106,23 @@ class CookbookControllerTest : ApplicationTest() {
 
     @Test
     fun `list user cookbooks`() = runTestAsAdmin {
-        val cookbook1 = it.createCookbook()
-        val cookbook2 = it.createCookbook()
-        val cookbook3 = it.createCookbook()
-        val cookbook4 = it.createCookbook()
+        val cookbook1 = client.createCookbook()
+        val cookbook2 = client.createCookbook()
+        val cookbook3 = client.createCookbook()
+        val cookbook4 = client.createCookbook()
 
-        val user1 = it.createUser()
-        val user2 = it.createUser()
-        val user3 = it.createUser()
+        val user1 = client.createUser()
+        val user2 = client.createUser()
+        val user3 = client.createUser()
 
-        it.addCookbookUser(cookbook1.id, user1.id, CookbookRole.READER)
-        it.addCookbookUser(cookbook2.id, user1.id, CookbookRole.READER)
-        it.addCookbookUser(cookbook2.id, user2.id, CookbookRole.READER)
-        it.addCookbookUser(cookbook3.id, user2.id, CookbookRole.READER)
+        client.addCookbookUser(cookbook1.id, user1.id, CookbookRole.READER)
+        client.addCookbookUser(cookbook2.id, user1.id, CookbookRole.READER)
+        client.addCookbookUser(cookbook2.id, user2.id, CookbookRole.READER)
+        client.addCookbookUser(cookbook3.id, user2.id, CookbookRole.READER)
 
-        val result1 = it.listCookbooks(user1.id).map { it.id }.toSet()
-        val result2 = it.listCookbooks(user2.id).map { it.id }.toSet()
-        val result3 = it.listCookbooks(user3.id).map { it.id }.toSet()
+        val result1 = client.listCookbooks(user1.id).map { it.id }.toSet()
+        val result2 = client.listCookbooks(user2.id).map { it.id }.toSet()
+        val result3 = client.listCookbooks(user3.id).map { it.id }.toSet()
 
         val expected1 = setOf(cookbook1.id, cookbook2.id)
         val expected2 = setOf(cookbook2.id, cookbook3.id)
@@ -134,7 +134,7 @@ class CookbookControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `count cookbook users and recipes`() = runTestAsAdmin { client ->
+    fun `count cookbook users and recipes`() = runTestAsAdmin {
         val cookbook = client.createCookbook()
         client.assertCookbookExists(cookbook.id)
 
@@ -154,7 +154,7 @@ class CookbookControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `get cookbook recipes`() = runTestAsAdmin { client ->
+    fun `get cookbook recipes`() = runTestAsAdmin {
         val cookbook1 = client.createCookbook()
         client.assertCookbookExists(cookbook1.id)
 
@@ -182,7 +182,7 @@ class CookbookControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `list recipe user cookbooks`() = runTestAsAdmin { client ->
+    fun `list recipe user cookbooks`() = runTestAsAdmin {
         val user = userService.getUserByUsername("admin")!!
 
         val cookbook1 = client.createCookbook()
@@ -225,7 +225,7 @@ class CookbookControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `adding recipes to cookbook already present returns HTTP Bad Request`() = runTestAsAdmin { client ->
+    fun `adding recipes to cookbook already present returns HTTP Bad Request`() = runTestAsAdmin {
         val cookbook = client.createCookbook()
         val recipe = client.createRecipe()
 
@@ -239,7 +239,7 @@ class CookbookControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `removing recipes from cookbook that are not present returns HTTP Bad Request`() = runTestAsAdmin { client ->
+    fun `removing recipes from cookbook that are not present returns HTTP Bad Request`() = runTestAsAdmin {
         val cookbook = client.createCookbook()
         val recipe = client.createRecipe()
 

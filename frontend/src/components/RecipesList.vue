@@ -1,16 +1,31 @@
 <script setup lang="ts">
 import {base_url, toViewRecipe} from "@/scripts/common";
 import {listRecipes} from "@/scripts/recipes";
+import {useRoute} from "vue-router";
 
 
 const recipes = ref<object[]>([])
 
-listRecipes(window.location.search).then(
-  function (response) {
-    console.log(response)
-    recipes.value = response.data
-  }
-)
+console.log("list recipes")
+
+const updateGrid = () => {
+  listRecipes(window.location.search).then(
+    function (response) {
+      console.log(response)
+      recipes.value = response.data
+    }
+  )
+}
+
+updateGrid()
+
+
+const router = useRouter()
+
+router.afterEach((to, from) => {
+  updateGrid()
+})
+
 
 </script>
 
@@ -18,8 +33,6 @@ listRecipes(window.location.search).then(
   <v-layout class="rounded rounded-md d-flex flex-wrap  justify-space-evenly mt-6">
     <span v-for="recipe in recipes" class="justify-start ">
       <v-btn
-        :color="color"
-        :variant="variant"
         class="ma-4"
         rounded="lg"
         min-height="300px"

@@ -30,8 +30,8 @@ class IngredientControllerTest : ApplicationTest() {
             type = IngredientType.CHEESE,
             calories = 10,
         )
-        val response = it.createIngredient(ingredientDTO)
-        it.assertIngredientExists(response.id)
+        val response = client.createIngredient(ingredientDTO)
+        client.assertIngredientExists(response.id)
     }
 
     @Test
@@ -41,8 +41,8 @@ class IngredientControllerTest : ApplicationTest() {
             type = IngredientType.CHEESE,
             calories = 10,
         )
-        val ingredientInfo = it.createIngredient(ingredientDTO)
-        val result = it.getIngredient(ingredientInfo.id)
+        val ingredientInfo = client.createIngredient(ingredientDTO)
+        val result = client.getIngredient(ingredientInfo.id)
         assertTrue(result.compareToDTO(ingredientDTO))
     }
 
@@ -53,15 +53,15 @@ class IngredientControllerTest : ApplicationTest() {
             type = IngredientType.CHEESE,
             calories = 10,
         )
-        val response = it.createIngredient(ingredientDTO)
+        val response = client.createIngredient(ingredientDTO)
         val ingredientDTO2 = IngredientDTO(
             name = "My better ingredient",
             type = IngredientType.VEGETABLE,
             calories = 10,
         )
-        it.updateIngredient(response.id, ingredientDTO2)
-        assertFalse(it.getIngredient(response.id).compareToDTO(ingredientDTO))
-        assertTrue(it.getIngredient(response.id).compareToDTO(ingredientDTO2))
+        client.updateIngredient(response.id, ingredientDTO2)
+        assertFalse(client.getIngredient(response.id).compareToDTO(ingredientDTO))
+        assertTrue(client.getIngredient(response.id).compareToDTO(ingredientDTO2))
     }
 
     @Test
@@ -71,7 +71,7 @@ class IngredientControllerTest : ApplicationTest() {
             type = IngredientType.CHEESE,
             calories = 10,
         )
-        it.put("$INGREDIENT_URL/-1"){
+        client.put("$INGREDIENT_URL/-1"){
             contentType(ContentType.Application.Json)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             setBody(ingredientDTO)
@@ -87,9 +87,9 @@ class IngredientControllerTest : ApplicationTest() {
             type = IngredientType.CHEESE,
             calories = 10,
         )
-        val ingredientInfo = it.createIngredient(ingredientDTO)
-        it.assertIngredientExists(ingredientInfo.id)
-        it.deleteIngredient(ingredientInfo.id)
-        it.assertIngredientDoesNotExist(ingredientInfo.id)
+        val ingredientInfo = client.createIngredient(ingredientDTO)
+        client.assertIngredientExists(ingredientInfo.id)
+        client.deleteIngredient(ingredientInfo.id)
+        client.assertIngredientDoesNotExist(ingredientInfo.id)
     }
 }

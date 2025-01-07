@@ -18,24 +18,24 @@ class FollowControllerTest : ApplicationTest() {
     fun `follow user`() = runTest {
         var user: UserInfo? = null
         val usersToFollow = mutableListOf<UserInfo>()
-        runAsAdmin(it) { client ->
-            user = it.createUser("myUser")
+        runAsAdmin {
+            user = client.createUser("myUser")
             repeat(2) {
                 usersToFollow.add(client.createUser())
             }
-            val follows1 = it.getFollows(user.id)
+            val follows1 = client.getFollows(user.id)
             logger.info {"done"}
             assertEquals(setOf<UserOverview>(), follows1.map {it.user}.toSet())
         }
         user!!
 
-        runAs(user.username, "password", it) {
-            it.follow(usersToFollow[0].id)
-            val follows1 = it.getFollows(user.id)
+        runAs(user.username, "password") {
+            client.follow(usersToFollow[0].id)
+            val follows1 = client.getFollows(user.id)
             assertEquals(setOf(usersToFollow[0].toOverview()), follows1.map {it.user}.toSet())
 
-            it.follow(usersToFollow[1].id)
-            val follows2 = it.getFollows(user.id)
+            client.follow(usersToFollow[1].id)
+            val follows2 = client.getFollows(user.id)
             assertEquals(usersToFollow.map { it.toOverview() }.toSet(), follows2.map {it.user}.toSet())
         }
     }
@@ -44,29 +44,29 @@ class FollowControllerTest : ApplicationTest() {
     fun `unfollow user`() = runTest {
         var user: UserInfo? = null
         val usersToFollow = mutableListOf<UserInfo>()
-        runAsAdmin(it) { client ->
-            user = it.createUser("myUser")
+        runAsAdmin {
+            user = client.createUser("myUser")
             repeat(2) {
                 usersToFollow.add(client.createUser())
             }
-            val follows1 = it.getFollows(user.id)
+            val follows1 = client.getFollows(user.id)
             logger.info {"done"}
             assertEquals(setOf<UserOverview>(), follows1.map {it.user}.toSet())
         }
         user!!
 
 
-        runAs(user.username, "password", it) {
-            it.follow(usersToFollow[0].id)
-            val follows1 = it.getFollows(user.id)
+        runAs(user.username, "password") {
+            client.follow(usersToFollow[0].id)
+            val follows1 = client.getFollows(user.id)
             assertEquals(setOf(usersToFollow[0].toOverview()), follows1.map {it.user}.toSet())
 
-            it.follow(usersToFollow[1].id)
-            val follows2 = it.getFollows(user.id)
+            client.follow(usersToFollow[1].id)
+            val follows2 = client.getFollows(user.id)
             assertEquals(usersToFollow.map { it.toOverview() }.toSet(), follows2.map {it.user}.toSet())
 
-            it.unfollow(usersToFollow[0].id)
-            val follows3 = it.getFollows(user.id)
+            client.unfollow(usersToFollow[0].id)
+            val follows3 = client.getFollows(user.id)
             assertEquals(setOf(usersToFollow[1].toOverview()), follows3.map {it.user}.toSet())
         }
     }
@@ -76,12 +76,12 @@ class FollowControllerTest : ApplicationTest() {
         var user: UserInfo? = null
         var follower1: UserInfo? = null
         var follower2: UserInfo? = null
-        runAsAdmin(it) { client ->
-            user = it.createUser("myUser")
-            follower1 = it.createUser("follower1")
-            follower2 = it.createUser("follower2")
+        runAsAdmin {
+            user = client.createUser("myUser")
+            follower1 = client.createUser("follower1")
+            follower2 = client.createUser("follower2")
 
-            val follows1 = it.getFollows(user.id)
+            val follows1 = client.getFollows(user.id)
             assertEquals(setOf<UserOverview>(), follows1.map {it.user}.toSet())
         }
         user!!
@@ -89,21 +89,21 @@ class FollowControllerTest : ApplicationTest() {
         follower2!!
 
 
-        runAs(follower1.username, "password", it) {
-            it.follow(user.id)
-            val followers = it.getFollowers(user.id)
+        runAs(follower1.username, "password") {
+            client.follow(user.id)
+            val followers = client.getFollowers(user.id)
             assertEquals(setOf(follower1.toOverview()), followers.map {it.user}.toSet())
         }
 
-        runAs(follower2.username, "password", it) {
-            it.follow(user.id)
-            val followers = it.getFollowers(user.id)
+        runAs(follower2.username, "password") {
+            client.follow(user.id)
+            val followers = client.getFollowers(user.id)
             assertEquals(setOf(follower1.toOverview(), follower2.toOverview()), followers.map {it.user}.toSet())
         }
 
-        runAs(follower1.username, "password", it) {
-            it.unfollow(user.id)
-            val followers = it.getFollowers(user.id)
+        runAs(follower1.username, "password") {
+            client.unfollow(user.id)
+            val followers = client.getFollowers(user.id)
             assertEquals(setOf(follower2.toOverview()), followers.map {it.user}.toSet())
         }
 
@@ -114,12 +114,12 @@ class FollowControllerTest : ApplicationTest() {
         var user: UserInfo? = null
         var follower1: UserInfo? = null
         var follower2: UserInfo? = null
-        runAsAdmin(it) { client ->
-            user = it.createUser("myUser")
-            follower1 = it.createUser("follower1")
-            follower2 = it.createUser("follower2")
+        runAsAdmin {
+            user = client.createUser("myUser")
+            follower1 = client.createUser("follower1")
+            follower2 = client.createUser("follower2")
 
-            val userInfo = it.getUser(user.id)
+            val userInfo = client.getUser(user.id)
             assertEquals(0, userInfo.followersCount)
         }
         user!!
@@ -127,22 +127,22 @@ class FollowControllerTest : ApplicationTest() {
         follower2!!
 
 
-        runAs(follower1.username, "password", it) {
-            it.follow(user.id)
-            val userInfo = it.getUser(user.id)
+        runAs(follower1.username, "password") {
+            client.follow(user.id)
+            val userInfo = client.getUser(user.id)
             logger.info { userInfo }
             assertEquals(1, userInfo.followersCount)
         }
 
-        runAs(follower2.username, "password", it) {
-            it.follow(user.id)
-            val userInfo = it.getUser(user.id)
+        runAs(follower2.username, "password") {
+            client.follow(user.id)
+            val userInfo = client.getUser(user.id)
             assertEquals(2, userInfo.followersCount)
         }
 
-        runAs(follower1.username, "password", it) {
-            it.unfollow(user.id)
-            val userInfo = it.getUser(user.id)
+        runAs(follower1.username, "password") {
+            client.unfollow(user.id)
+            val userInfo = client.getUser(user.id)
             assertEquals(1, userInfo.followersCount)
         }
     }

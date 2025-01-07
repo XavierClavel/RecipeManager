@@ -18,65 +18,65 @@ import kotlin.test.assertEquals
 class LikeControllerTest : ApplicationTest() {
     @Test
     fun `create like`() = runTestAsAdmin {
-        val userId = it.getMe().id
-        val recipe = it.createRecipe()
-        it.createLike(recipe.id)
-        it.assertLikeExists(userId, recipe.id)
+        val userId = client.getMe().id
+        val recipe = client.createRecipe()
+        client.createLike(recipe.id)
+        client.assertLikeExists(userId, recipe.id)
     }
 
     @Test
     fun `delete like`() = runTestAsAdmin {
-        val userId = it.getMe().id
-        val recipe = it.createRecipe()
-        it.createLike(recipe.id)
-        it.assertLikeExists(userId, recipe.id)
+        val userId = client.getMe().id
+        val recipe = client.createRecipe()
+        client.createLike(recipe.id)
+        client.assertLikeExists(userId, recipe.id)
         logger.info { "create ok"}
-        it.deleteLike(recipe.id)
+        client.deleteLike(recipe.id)
         logger.info { "delete ok"}
-        it.assertLikeDoesNotExist(userId, recipe.id)
+        client.assertLikeDoesNotExist(userId, recipe.id)
         logger.info { "final check"}
     }
 
     @Test
     fun `list likes by user`() = runTestAsAdmin {
-        val userId = it.getMe().id
-        val recipe1 = it.createRecipe()
-        val recipe2 = it.createRecipe()
+        val userId = client.getMe().id
+        val recipe1 = client.createRecipe()
+        val recipe2 = client.createRecipe()
 
-        it.createLike(recipe1.id)
-        it.createLike(recipe2.id)
-        val result = it.getLikes(userId, null)
+        client.createLike(recipe1.id)
+        client.createLike(recipe2.id)
+        val result = client.getLikes(userId, null)
         assertEquals(2, result.size)
     }
 
     @Test
     fun `count likes per recipe`() = runTestAsAdmin {
-        val recipeInfo = it.createRecipe()
-        val result = it.getRecipe(recipeInfo.id)
+        val recipeInfo = client.createRecipe()
+        val result = client.getRecipe(recipeInfo.id)
         assertEquals(0, result.likesCount)
-        it.createLike(result.id)
-        val result2 = it.getRecipe(recipeInfo.id)
+        client.createLike(result.id)
+        val result2 = client.getRecipe(recipeInfo.id)
         assertEquals(1, result2.likesCount)
     }
 
     @Test
     fun `count likes per user`() = runTestAsAdmin {
-        val recipeInfo = it.createRecipe()
+        val recipeInfo = client.createRecipe()
         val user = userService.getUserByUsername("admin")!!
-        val user2 = it.createUser()
+        val user2 = client.createUser()
 
-        val result = it.getUser(user.id)
+        val result = client.getUser(user.id)
         assertEquals(0, result.likesCount)
 
-        it.createLike(recipeInfo.id)
-        val result2 = it.getUser(user.id)
+        client.createLike(recipeInfo.id)
+        val result2 = client.getUser(user.id)
         assertEquals(1, result2.likesCount)
 
-        val result3 = it.getUser(user2.id)
+        val result3 = client.getUser(user2.id)
         assertEquals(0, result3.likesCount)
 
-        it.deleteLike(recipeInfo.id)
-        val result4 = it.getUser(user.id)
+        client.deleteLike(recipeInfo.id)
+        val result4 = client.getUser(user.id)
         assertEquals(0, result4.likesCount)
     }
 }

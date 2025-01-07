@@ -3,7 +3,6 @@
 
     <v-navigation-drawer
       v-model="drawer"
-      color="#surface"
       floating
       v-if="showSidebar"
     >

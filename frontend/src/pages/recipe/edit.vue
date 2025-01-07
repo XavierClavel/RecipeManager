@@ -36,7 +36,7 @@
         class="mx-auto px-3"
         type="number"
         color="primary"
-        min="1"
+        :min=1
       ></v-number-input>
 
       <v-number-input
@@ -45,7 +45,7 @@
         class="mx-auto px-3"
         type="number"
         color="primary"
-        min="1"
+        :min=1
       ></v-number-input>
 
       <v-number-input
@@ -55,7 +55,7 @@
         type="number"
         color="primary"
         :step="5"
-        :min="0"
+        :min=0
       ></v-number-input>
 
       <v-number-input
@@ -65,7 +65,7 @@
         type="number"
         color="primary"
         :step="5"
-        :min="0"
+        :min=0
       ></v-number-input>
 
       <v-number-input
@@ -75,7 +75,7 @@
         type="number"
         color="primary"
         :step="5"
-        :min="0"
+        :min=0
       ></v-number-input>
 
       <!-- Ingredients -->
@@ -147,7 +147,7 @@
 
       <!-- Custom ingredients -->
       <h2 class="my-3" v-if="recipe.customIngredients && recipe.customIngredients.length > 0">Custom ingredients</h2>
-      <draggable v-model="recipe.customIngredients" tag="div2" ghost-class="ghost" item-key="index" handle=".drag-handle">
+      <draggable v-model="recipe.customIngredients" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
@@ -310,7 +310,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRecipe} from "@/scripts/recipes";
-import {base_url, toViewRecipe} from "@/scripts/common";
+import {toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
 
@@ -321,7 +321,6 @@ const route = useRoute();
 let recipeId = ref(route.query.id)
 const editablePicture = ref(null)
 const units = ref(['UNIT','GRAM','lb','teaspoon', 'sugarspoon', 'cup'])
-
 
 const autocompleteList = ref([])
 
@@ -405,7 +404,6 @@ async function submit() {
   } else {
     await updateRecipe(recipeId.value, submitted)
   }
-
   await editablePicture.value.submitImage()
 
   toViewRecipe(recipeId.value)
