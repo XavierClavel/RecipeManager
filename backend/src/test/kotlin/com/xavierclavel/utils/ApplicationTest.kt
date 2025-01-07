@@ -59,7 +59,7 @@ abstract class ApplicationTest: KoinTest {
 
 
     @KtorDsl
-    suspend fun TestBuilderWrapper.runAs(username: String, password: String = "Passw0rd", block: suspend TestBuilderWrapper.() -> Unit) {
+    suspend fun TestBuilderWrapper.runAs(username: String, password: String = "password", block: suspend TestBuilderWrapper.() -> Unit) {
         client.post("/v1/auth/login") {
             basicAuth(username = username, password = password)
         }

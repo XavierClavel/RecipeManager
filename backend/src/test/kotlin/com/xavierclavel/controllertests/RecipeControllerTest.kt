@@ -4,10 +4,8 @@ import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
-import common.dto.UserDTO
 import common.enums.AmountUnit
 import common.enums.Sort
-import common.infodto.CustomIngredientInfo
 import common.infodto.RecipeInfo
 import common.infodto.RecipeIngredientInfo
 import common.infodto.UserInfo
@@ -28,6 +26,7 @@ import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.deleteRecipe
+import main.com.xavierclavel.utils.getMe
 import main.com.xavierclavel.utils.getRecipe
 import main.com.xavierclavel.utils.listRecipes
 import main.com.xavierclavel.utils.updateRecipe
@@ -360,15 +359,25 @@ class RecipeControllerTest : ApplicationTest() {
     @Test
     fun `filter recipes by liked`() = runTest {
         var user: UserInfo? = null
+        var adminUser: UserInfo? = null
         var recipe: RecipeInfo? = null
         runAsAdmin {
             user = client.createUser()
+            adminUser = client.getMe()
         }
         runAs(user!!.username) {
             recipe = client.createRecipe()
         }
         runAsAdmin {
+            val response1 = client.listRecipes(owner = user.id)
+            assertEquals(1, response1.size)
 
+            val response2 = client.listRecipes(likedBy = adminUser!!.id)
+            assertEquals(0, response2.size)
+
+            client.createLike(recipe!!.id)
+            val response3 = client.listRecipes(likedBy = adminUser.id)
+            assertEquals(1, response3.size)
         }
     }
 }
