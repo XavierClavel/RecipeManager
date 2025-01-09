@@ -57,7 +57,7 @@ const updateUrl = () => {
         ...route.query,
         owner: chosenSource.value.includes(0) ? authStore.id : undefined,
         likedBy: chosenSource.value.includes(1) ? authStore.id : undefined,
-        userCookbooks: chosenSource.value.includes(2) ? authStore.id : undefined,
+        cookbookUser: chosenSource.value.includes(2) ? authStore.id : undefined,
         follows: chosenSource.value.includes(3) ? authStore.id : undefined,
         dishTypes: chosenDishType.value.length > 0 ? chosenDishType.value.join(",") : undefined
       }).filter(([_, value]) => value !== undefined) // Remove undefined values

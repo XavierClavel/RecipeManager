@@ -7,6 +7,7 @@ import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUserId
 import common.dto.UserDTO
+import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.USER_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -64,7 +65,7 @@ object UserController: Controller(USER_URL) {
         val id = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
         val user = userService.getUser(id) ?: return@delete call.respond(HttpStatusCode.NotFound)
         userService.deleteUserById(user.id)
-        imageService.deleteUserImage(user.id)
+        imageService.deleteImage(USERS_IMG_PATH, user.id)
         call.respond(HttpStatusCode.OK)
     }
 

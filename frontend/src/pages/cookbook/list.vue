@@ -17,7 +17,7 @@
             width="300px"
             class="mt-n3"
             rounded="t-lg"
-            :src="`${base_url}/image/recipes/${cookbook.id}.webp`"
+            :src="`${base_url}/image/cookbooks/${cookbook.id}.webp`"
             cover
           ></v-img>
           <v-card-item>

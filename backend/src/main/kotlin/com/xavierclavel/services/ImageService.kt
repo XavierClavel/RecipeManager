@@ -23,21 +23,13 @@ import kotlin.io.path.exists
 class ImageService: KoinComponent {
 
 
-    suspend fun saveRecipeImage(id: Long, multipartData: MultiPartData) =
-        saveImage(getRecipeImagePath(id), multipartData)
+    suspend fun saveImage(path: String, id: Long, multiPartData: MultiPartData) =
+        saveImage("$path/$id.webp", multiPartData)
 
-    suspend fun saveUserImage(id: Long, multipartData: MultiPartData) =
-        saveImage(getUserImagePath(id), multipartData)
-
-    fun deleteRecipeImage(id: Long) = deleteImage(getRecipeImagePath(id))
-
-    fun deleteUserImage(id: Long) = deleteImage(getUserImagePath(id))
+    fun deleteImage(path: String, id: Long) = deleteImage("$path/$id.webp")
 
     private fun deleteImage(path:String) = Path(path).deleteIfExists()
 
-    fun getRecipeImagePath(id: Long) = "$RECIPES_IMG_PATH/${id}.webp"
-
-    private fun getUserImagePath(id:Long) = "$USERS_IMG_PATH/${id}.webp"
 
 
 
@@ -82,7 +74,7 @@ class ImageService: KoinComponent {
      */
     fun getRecipeImageAsJpegBytes(id: Long): ByteArray {
         // Specify the path to the WebP file
-        val webpPath = getRecipeImagePath(id)
+        val webpPath = "$RECIPES_IMG_PATH/$id.webp"
 
         // Read the WebP image from the filesystem
         val webpBytes = Files.readAllBytes(Paths.get(webpPath))

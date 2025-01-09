@@ -20,7 +20,7 @@
         color="primary"
       ></v-textarea>
 
-       <editable-picture path="image/recipes" :id="cookbookId" ref="editablePicture"></editable-picture>
+       <editable-picture path="image/cookbooks" :id="cookbookId" ref="editablePicture"></editable-picture>
 
       <!-- Ingredients -->
       <h2 class="my-3" >Users</h2>

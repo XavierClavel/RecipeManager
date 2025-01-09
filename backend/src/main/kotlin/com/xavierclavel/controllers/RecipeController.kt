@@ -15,6 +15,7 @@ import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.infodto.RecipeInfo
+import common.utils.Filepath.RECIPES_IMG_PATH
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -61,7 +62,7 @@ object RecipeController: Controller(RECIPE_URL) {
         logger.info {"likedBy : $likedBy"}
         logger.info {"cookbook : $cookbook"}
         logger.info {"cookbookUser : $cookbookUser"}
-        call.respond(recipeService.findList(paging, sort, owner, likedBy, cookbook))
+        call.respond(recipeService.findList(paging, sort, owner, likedBy, cookbook, cookbookUser))
     }
 
     private fun Route.createRecipe() = post {
@@ -100,7 +101,7 @@ object RecipeController: Controller(RECIPE_URL) {
         val recipe = recipeService.findById(recipeId) ?: return@delete call.respond(HttpStatusCode.NotFound)
         if (!isAuthorizedToEditRecipe(recipe)) return@delete call.respond(HttpStatusCode.Unauthorized)
         recipeService.deleteRecipe(recipeId)
-        imageService.deleteRecipeImage(recipeId)
+        imageService.deleteImage(RECIPES_IMG_PATH, recipeId)
         call.respond(HttpStatusCode.OK)
     }
 
