@@ -79,7 +79,9 @@ class RecipeService: KoinComponent {
 
     private fun QRecipe.filterByLikes(userId: Long?) =
         if (userId == null) this
-        else this.where().likes.user.id.eq(userId)
+        else this//.likes.user.id.eq(userId)
+            .where().raw("EXISTS (SELECT 1 FROM likes l WHERE l.recipe_id = t0.id AND l.user_id = ?)", userId)
+
 
     private fun QRecipe.filterByCookbook(cookbookId: Long?) =
         if (cookbookId == null) this

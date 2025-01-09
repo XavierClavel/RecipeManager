@@ -382,6 +382,26 @@ class RecipeControllerTest : ApplicationTest() {
     }
 
     @Test
+    fun `filter recipes by  self liked`() = runTest {
+        var adminUser: UserInfo? = null
+        var recipe: RecipeInfo? = null
+        runAsAdmin {
+            adminUser = client.getMe()
+            recipe = client.createRecipe()
+
+            val response1 = client.listRecipes(owner = adminUser.id)
+            assertEquals(1, response1.size)
+
+            val response2 = client.listRecipes(likedBy = adminUser.id)
+            assertEquals(0, response2.size)
+
+            client.createLike(recipe.id)
+            val response3 = client.listRecipes(likedBy = adminUser.id)
+            assertEquals(1, response3.size)
+        }
+    }
+
+    @Test
     fun `filter recipes by liked and owned`() = runTest {
         var user: UserInfo? = null
         var adminUser: UserInfo? = null
@@ -397,15 +417,13 @@ class RecipeControllerTest : ApplicationTest() {
         }
         runAsAdmin {
             client.createLike(recipeLiked!!.id)
-/*
+
             val response1 = client.listRecipes(owner = adminUser!!.id)
             assertEquals(1, response1.size)
 
             val response2 = client.listRecipes(likedBy = adminUser.id)
             assertEquals(1, response2.size)
 
-
- */
             val response3 = client.listRecipes(owner = adminUser!!.id, likedBy = adminUser.id)
             assertEquals(2, response3.size)
         }
