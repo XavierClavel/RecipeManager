@@ -6,6 +6,7 @@ import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
 import common.enums.AmountUnit
 import common.enums.CookbookRole
+import common.enums.DishClass
 import common.enums.Sort
 import common.infodto.RecipeInfo
 import common.infodto.RecipeIngredientInfo
@@ -37,15 +38,6 @@ import main.com.xavierclavel.utils.updateRecipe
 import kotlin.test.assertFalse
 
 class RecipeFiltersTest : ApplicationTest() {
-
-    val recipeDTO = RecipeDTO(
-        title = "My recipe",
-        description = "My description",
-        steps = mutableListOf(
-            "cut",
-            "cook"
-        )
-    )
 
     @Test
     fun `filter recipes by liked`() = runTest {
@@ -150,29 +142,33 @@ class RecipeFiltersTest : ApplicationTest() {
 
     @Test
     fun `filter recipes by dish class`() = runTest {
-        var user: UserInfo? = null
         var adminUser: UserInfo? = null
-        var recipeOwned: RecipeInfo? = null
-        var recipeLiked: RecipeInfo? = null
+        val recipeDTO1 = RecipeDTO(title = "", dishClass = DishClass.ENTREE)
+        val recipeDTO2 = RecipeDTO(title = "", dishClass = DishClass.MAIN_DISH)
+        val recipeDTO3 = RecipeDTO(title = "", dishClass = DishClass.DESERT)
         runAsAdmin {
-            user = client.createUser()
             adminUser = client.getMe()
-            recipeOwned = client.createRecipe()
-        }
-        runAs(user!!.username) {
-            recipeLiked = client.createRecipe()
-        }
-        runAsAdmin {
-            client.createLike(recipeLiked!!.id)
 
-            val response1 = client.listRecipes(owner = adminUser!!.id)
-            assertEquals(1, response1.size)
+            val recipe1 = client.createRecipe(recipeDTO1)
+            val recipe2 = client.createRecipe(recipeDTO2)
+            val recipe3 = client.createRecipe(recipeDTO3)
 
-            val response2 = client.listRecipes(likedBy = adminUser.id)
-            assertEquals(1, response2.size)
+            val response1 = client.listRecipes(dishClasses = setOf(DishClass.ENTREE))
+            assertEquals(setOf(recipe1), response1.toSet())
 
-            val response3 = client.listRecipes(owner = adminUser!!.id, likedBy = adminUser.id)
-            assertEquals(2, response3.size)
+            val response2 = client.listRecipes(dishClasses = setOf(DishClass.MAIN_DISH))
+            assertEquals(setOf(recipe2), response2.toSet())
+
+            val response3 = client.listRecipes(dishClasses = setOf(DishClass.DESERT))
+            assertEquals(setOf(recipe3), response3.toSet())
+
+            val response4 = client.listRecipes(dishClasses = setOf(DishClass.ENTREE, DishClass.MAIN_DISH))
+            assertEquals(setOf(recipe1, recipe2), response4.toSet())
+
+            val response5 = client.listRecipes(dishClasses = setOf(DishClass.ENTREE, DishClass.MAIN_DISH, DishClass.DESERT))
+            assertEquals(setOf(recipe1, recipe2, recipe3), response5.toSet())
+
+
         }
     }
 }

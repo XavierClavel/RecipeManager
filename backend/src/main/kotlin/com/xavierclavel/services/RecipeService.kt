@@ -6,7 +6,7 @@ import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.log
-import com.xavierclavel.utils.logger
+import common.RecipeFilter
 import common.dto.RecipeDTO
 import common.enums.DishClass
 import common.enums.Sort
@@ -27,22 +27,12 @@ class RecipeService: KoinComponent {
     fun findList(
         paging: Paging,
         sort: Sort,
-        owner: Long?,
-        likedBy: Long?,
-        cookbook: Long?,
-        cookbookUser: Long?,
-        dishClasses: Set<DishClass>
+        recipeFilter: RecipeFilter,
     ) : List<RecipeInfo> =
         QRecipe()
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
             .having().raw("count(likes.id) >= 0") // Ensure recipes with no likes are included
-            .filter(
-                owner = owner,
-                likedBy = likedBy,
-                cookbook = cookbook,
-                cookbookUser = cookbookUser,
-                dishClasses = dishClasses,
-            )
+            .filter(recipeFilter)
             .setPaging(paging)
             .sort(sort)
             .findList()
@@ -81,25 +71,24 @@ class RecipeService: KoinComponent {
     private fun queryByOwner(username: String) =
         QRecipe().owner.username.eq(username)
 
-    private fun QRecipe.filter(
-        owner: Long?,
-        likedBy: Long?,
-        cookbook: Long?,
-        cookbookUser: Long?,
-        dishClasses: Set<DishClass>,
-    ) =
-        if (owner == null && likedBy == null && cookbook == null && cookbookUser == null && dishClasses.isEmpty()) this
+    private fun QRecipe.filter(recipeFilter: RecipeFilter) =
+        if (!recipeFilter.hasFilters()) this
         else this.or()
-            .filterByLikes(likedBy)
-            .filterByOwner(owner)
-            .filterByCookbook(cookbook)
-            .filterByUserCookbooks(cookbookUser)
+            .filterByLikes(recipeFilter.likedBy)
+            .filterByOwner(recipeFilter.owner)
+            .filterByCookbook(recipeFilter.cookbook)
+            .filterByUserCookbooks(recipeFilter.cookbookUser)
+            .filterByDishClass(recipeFilter.dishClasses)
             .endOr()
 
 
     private fun QRecipe.filterByOwner(userId: Long?) =
         if (userId == null) this
         else this.where().owner.id.eq(userId)
+
+    private fun QRecipe.filterByDishClass(dishClasses: Set<DishClass>) =
+        if (dishClasses.isEmpty()) this
+        else this.where().dishClass.`in`(dishClasses)
 
     private fun QRecipe.filterByLikes(userId: Long?) =
         if (userId == null) this

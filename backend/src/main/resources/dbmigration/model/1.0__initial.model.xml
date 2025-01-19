@@ -69,6 +69,7 @@
             <column name="id" type="bigint" primaryKey="true"/>
             <column name="title" type="varchar" notnull="true"/>
             <column name="description" type="varchar" notnull="true"/>
+            <column name="dish_class" type="integer" notnull="true" checkConstraint="check ( dish_class in (0,1,2,3))" checkConstraintName="ck_recipes_dish_class"/>
             <column name="creation_date" type="bigint" notnull="true"/>
             <column name="modification_date" type="bigint" notnull="true"/>
             <column name="yield" type="integer"/>

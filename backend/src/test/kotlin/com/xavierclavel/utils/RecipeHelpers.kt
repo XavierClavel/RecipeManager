@@ -2,6 +2,7 @@ package main.com.xavierclavel.utils
 
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
+import common.enums.DishClass
 import common.enums.Sort
 import common.infodto.RecipeInfo
 import common.utils.URL.RECIPE_URL
@@ -59,6 +60,7 @@ suspend fun HttpClient.listRecipes(
     cookbook: Long? = null,
     likedBy: Long? = null,
     cookbookUser: Long? = null,
+    dishClasses: Set<DishClass> = setOf(),
 ): List<RecipeInfo> {
     this.get(RECIPE_URL) {
         url {
@@ -67,6 +69,7 @@ suspend fun HttpClient.listRecipes(
             likedBy?.let { parameters.append("likedBy", it.toString()) }
             sort?.let { parameters.append("sort", it.toString()) }
             cookbookUser?.let { parameters.append("cookbookUser", it.toString()) }
+            dishClasses.takeIf { it.isNotEmpty() }?.let { parameters.append("dishClasses", it.joinToString(",")) }
         }
     }.apply {
         assertEquals(HttpStatusCode.OK, status)

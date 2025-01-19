@@ -2,7 +2,6 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.services.CustomIngredientService
 import com.xavierclavel.services.ImageService
-import com.xavierclavel.services.IngredientService
 import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
@@ -13,6 +12,7 @@ import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUsername
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.logger
+import common.RecipeFilter
 import common.dto.RecipeDTO
 import common.enums.DishClass
 import common.infodto.RecipeInfo
@@ -53,25 +53,20 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.listRecipes() = get {
         val paging = getPaging()
         val sort = getSort()
-        val owner = getIdPathVariable("owner")
-        val likedBy = getIdPathVariable("likedBy")
-        val cookbook = getIdPathVariable("cookbook")
-        val cookbookUser = getIdPathVariable("cookbookUser")
-        val dishClasses = call.parameters["dishClass"]?.split(",")?.map { DishClass.valueOf(it.trim()) }?.toSet() ?: setOf()
+        val recipeFilter = RecipeFilter(
+            owner = getIdPathVariable("owner"),
+            likedBy = getIdPathVariable("likedBy"),
+            cookbook = getIdPathVariable("cookbook"),
+            cookbookUser = getIdPathVariable("cookbookUser"),
+            dishClasses = call.parameters["dishClasses"]?.split(",")?.map { DishClass.valueOf(it.trim()) }?.toSet() ?: setOf()
+        )
         logger.info {"paging : $paging"}
         logger.info {"sort : $sort"}
-        logger.info {"owner : $owner"}
-        logger.info {"likedBy : $likedBy"}
-        logger.info {"cookbook : $cookbook"}
-        logger.info {"cookbookUser : $cookbookUser"}
+        logger.info {"filter : $recipeFilter"}
         val result = recipeService.findList(
             paging = paging,
             sort = sort,
-            owner = owner,
-            likedBy = likedBy,
-            cookbook = cookbook,
-            cookbookUser = cookbookUser,
-            dishClasses = dishClasses
+            recipeFilter = recipeFilter,
         )
         call.respond(result)
     }
