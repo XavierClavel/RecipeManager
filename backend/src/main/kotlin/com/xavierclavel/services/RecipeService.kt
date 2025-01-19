@@ -2,6 +2,7 @@ package com.xavierclavel.services
 
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
+import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
@@ -73,13 +74,20 @@ class RecipeService: KoinComponent {
 
     private fun QRecipe.filter(recipeFilter: RecipeFilter) =
         if (!recipeFilter.hasFilters()) this
-        else this.or()
-            .filterByLikes(recipeFilter.likedBy)
-            .filterByOwner(recipeFilter.owner)
-            .filterByCookbook(recipeFilter.cookbook)
-            .filterByUserCookbooks(recipeFilter.cookbookUser)
-            .filterByDishClass(recipeFilter.dishClasses)
-            .endOr()
+        else this
+            .and()
+            .apply {
+                if (recipeFilter.hasAdditiveFilters()) {
+                    this.or()
+                        .filterByLikes(recipeFilter.likedBy)
+                        .filterByOwner(recipeFilter.owner)
+                        .filterByCookbook(recipeFilter.cookbook)
+                        .filterByUserCookbooks(recipeFilter.cookbookUser)
+                        .endOr()
+                }
+            }
+                .filterByDishClass(recipeFilter.dishClasses)
+            .endAnd()
 
 
     private fun QRecipe.filterByOwner(userId: Long?) =
@@ -99,11 +107,11 @@ class RecipeService: KoinComponent {
     private fun QRecipe.filterByCookbook(cookbookId: Long?) =
         if (cookbookId == null) this
         else this
-            .where().raw("EXISTS (SELECT 1 FROM cookbook_recipes cr WHERE ${QRecipe.Alias.id} = t0.id AND cr.cookbook_id = ?)", cookbookId)
+            .where().raw("EXISTS (SELECT 1 FROM cookbook_recipes cr WHERE cr.recipe_id = t0.id AND cr.cookbook_id = ?)", cookbookId)
             //.where().cookbooks.cookbook.id.eq(cookbookId)
 
     private fun QRecipe.filterByUserCookbooks(userId: Long?) =
-        if (userId == null) this.log { QRecipe.Alias.id }
+        if (userId == null) this
         else this//.where().cookbooks.cookbook.users.id.`in`(userId)
             .raw("""EXISTS(
                         SELECT 1

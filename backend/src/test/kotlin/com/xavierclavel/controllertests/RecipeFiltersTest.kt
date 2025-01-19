@@ -171,4 +171,31 @@ class RecipeFiltersTest : ApplicationTest() {
 
         }
     }
+
+    @Test
+    fun `filter recipes by likes and dish class`() = runTest {
+        var adminUser: UserInfo? = null
+        val recipeDTO1 = RecipeDTO(title = "", dishClass = DishClass.MAIN_DISH)
+        val recipeDTO2 = RecipeDTO(title = "", dishClass = DishClass.MAIN_DISH)
+        val recipeDTO3 = RecipeDTO(title = "", dishClass = DishClass.DESERT)
+        runAsAdmin {
+            adminUser = client.getMe()
+
+            val recipe1 = client.createRecipe(recipeDTO1)
+            val recipe2 = client.createRecipe(recipeDTO2)
+            val recipe3 = client.createRecipe(recipeDTO3)
+
+            client.createLike(recipe1.id)
+
+            val recipe1Updated = client.getRecipe(recipe1.id)
+
+
+            val response1 = client.listRecipes(dishClasses = setOf(DishClass.MAIN_DISH))
+            assertEquals(setOf(recipe1Updated, recipe2), response1.toSet())
+
+            val response2 = client.listRecipes(likedBy = adminUser.id, dishClasses = setOf(DishClass.MAIN_DISH))
+            assertEquals(setOf(recipe1Updated), response2.toSet())
+
+        }
+    }
 }

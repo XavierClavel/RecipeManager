@@ -38,13 +38,13 @@
           group
           mandatory
         >
-          <v-btn value="left"> Entree </v-btn>
+          <v-btn value="ENTREE"> Entree </v-btn>
 
-          <v-btn value="center"> Main dish </v-btn>
+          <v-btn value="MAIN_DISH"> Main dish </v-btn>
 
-          <v-btn value="right"> Desert </v-btn>
+          <v-btn value="DESERT"> Desert </v-btn>
 
-          <v-btn value="justify"> Other </v-btn>
+          <v-btn value="OTHER"> Other </v-btn>
         </v-btn-toggle>
       </v-col>
 

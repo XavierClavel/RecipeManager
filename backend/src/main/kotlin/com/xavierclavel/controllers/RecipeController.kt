@@ -54,11 +54,11 @@ object RecipeController: Controller(RECIPE_URL) {
         val paging = getPaging()
         val sort = getSort()
         val recipeFilter = RecipeFilter(
-            owner = getIdPathVariable("owner"),
-            likedBy = getIdPathVariable("likedBy"),
-            cookbook = getIdPathVariable("cookbook"),
-            cookbookUser = getIdPathVariable("cookbookUser"),
-            dishClasses = call.parameters["dishClasses"]?.split(",")?.map { DishClass.valueOf(it.trim()) }?.toSet() ?: setOf()
+            owner = getIdPathVariable(RecipeFilter::owner.name),
+            likedBy = getIdPathVariable(RecipeFilter::likedBy.name),
+            cookbook = getIdPathVariable(RecipeFilter::cookbook.name),
+            cookbookUser = getIdPathVariable(RecipeFilter::cookbookUser.name),
+            dishClasses = call.parameters[RecipeFilter::dishClasses.name]?.split(",")?.map { DishClass.valueOf(it.trim()) }?.toSet() ?: setOf()
         )
         logger.info {"paging : $paging"}
         logger.info {"sort : $sort"}
