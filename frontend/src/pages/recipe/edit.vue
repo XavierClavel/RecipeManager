@@ -20,12 +20,33 @@
         color="primary"
       ></v-textarea>
 
-      <v-select>
-        v-model="recipe.dishType"
+      <v-select
+        v-model="recipe.dishClass"
         label="Dish Type"
         class="mx-auto px-3 primary"
         color="primary"
+        :items="['ENTREE', 'MAIN_DISH', 'DESERT', 'OTHER']">
       </v-select>
+
+      <v-col class="py-2" cols="12">
+        <p>Text Options</p>
+
+        <v-btn-toggle
+          v-model="recipe.dishClass"
+          color="primary"
+          rounded="xl"
+          group
+          mandatory
+        >
+          <v-btn value="left"> Entree </v-btn>
+
+          <v-btn value="center"> Main dish </v-btn>
+
+          <v-btn value="right"> Desert </v-btn>
+
+          <v-btn value="justify"> Other </v-btn>
+        </v-btn-toggle>
+      </v-col>
 
        <editable-picture path="image/recipes" :id="recipeId" ref="editablePicture"></editable-picture>
 

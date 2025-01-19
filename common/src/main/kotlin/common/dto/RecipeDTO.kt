@@ -1,6 +1,7 @@
 package common.dto
 
 import common.enums.AmountUnit
+import common.enums.DishClass
 import common.infodto.CustomIngredientInfo
 import kotlinx.serialization.*
 
@@ -8,6 +9,7 @@ import kotlinx.serialization.*
 data class RecipeDTO (
     val title: String,
     val description: String = "",
+    val dishClass: DishClass = DishClass.MAIN_DISH,
 
     val yield: Int? = null,
     val preparationTime: Int? = null,

@@ -14,6 +14,7 @@ import com.xavierclavel.utils.getSessionUsername
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
+import common.enums.DishClass
 import common.infodto.RecipeInfo
 import common.utils.Filepath.RECIPES_IMG_PATH
 import common.utils.URL.RECIPE_URL
@@ -56,13 +57,23 @@ object RecipeController: Controller(RECIPE_URL) {
         val likedBy = getIdPathVariable("likedBy")
         val cookbook = getIdPathVariable("cookbook")
         val cookbookUser = getIdPathVariable("cookbookUser")
+        val dishClasses = call.parameters["dishClass"]?.split(",")?.map { DishClass.valueOf(it.trim()) }?.toSet() ?: setOf()
         logger.info {"paging : $paging"}
         logger.info {"sort : $sort"}
         logger.info {"owner : $owner"}
         logger.info {"likedBy : $likedBy"}
         logger.info {"cookbook : $cookbook"}
         logger.info {"cookbookUser : $cookbookUser"}
-        call.respond(recipeService.findList(paging, sort, owner, likedBy, cookbook, cookbookUser))
+        val result = recipeService.findList(
+            paging = paging,
+            sort = sort,
+            owner = owner,
+            likedBy = likedBy,
+            cookbook = cookbook,
+            cookbookUser = cookbookUser,
+            dishClasses = dishClasses
+        )
+        call.respond(result)
     }
 
     private fun Route.createRecipe() = post {

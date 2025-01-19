@@ -6,6 +6,7 @@ import com.xavierclavel.models.jointables.RecipeIngredient
 import com.xavierclavel.models.jointables.CustomIngredient
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
+import common.enums.DishClass
 import common.infodto.RecipeInfo
 import jakarta.persistence.CascadeType
 import jakarta.persistence.ElementCollection
@@ -33,6 +34,8 @@ class Recipe (
     var title: String = "",
 
     var description: String = "",
+
+    var dishClass: DishClass = DishClass.MAIN_DISH,
 
     var creationDate: Long = Instant.now().epochSecond,
 
@@ -71,6 +74,8 @@ class Recipe (
     fun mergeDTO(recipeDTO: RecipeDTO) : Recipe = apply {
         this.title = recipeDTO.title
         this.description = recipeDTO.description
+        this.dishClass = recipeDTO.dishClass
+
         this.steps = recipeDTO.steps
         this.modificationDate = Instant.now().epochSecond
 
@@ -89,6 +94,7 @@ class Recipe (
         id = this.id,
         title = title,
         description = description,
+        dishClass = dishClass,
         steps = steps,
         ingredients = ingredients.map { it.toInfo() },
         customIngredients = customIngredients.map {it.toInfo()},

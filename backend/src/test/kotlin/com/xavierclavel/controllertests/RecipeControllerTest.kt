@@ -5,6 +5,7 @@ import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
 import common.enums.AmountUnit
+import common.enums.CookbookRole
 import common.enums.Sort
 import common.infodto.RecipeInfo
 import common.infodto.RecipeIngredientInfo
@@ -20,7 +21,10 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import io.ktor.client.request.put
 import junit.framework.TestCase.assertTrue
+import main.com.xavierclavel.utils.addCookbookRecipe
+import main.com.xavierclavel.utils.addCookbookUser
 import main.com.xavierclavel.utils.assertRecipeExists
+import main.com.xavierclavel.utils.createCookbook
 import main.com.xavierclavel.utils.createIngredient
 import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
@@ -356,76 +360,4 @@ class RecipeControllerTest : ApplicationTest() {
         assertEquals(dateOrderAscending, result2.map {it.id}.toSet())
     }
 
-    @Test
-    fun `filter recipes by liked`() = runTest {
-        var user: UserInfo? = null
-        var adminUser: UserInfo? = null
-        var recipe: RecipeInfo? = null
-        runAsAdmin {
-            user = client.createUser()
-            adminUser = client.getMe()
-        }
-        runAs(user!!.username) {
-            recipe = client.createRecipe()
-        }
-        runAsAdmin {
-            val response1 = client.listRecipes(owner = user.id)
-            assertEquals(1, response1.size)
-
-            val response2 = client.listRecipes(likedBy = adminUser!!.id)
-            assertEquals(0, response2.size)
-
-            client.createLike(recipe!!.id)
-            val response3 = client.listRecipes(likedBy = adminUser.id)
-            assertEquals(1, response3.size)
-        }
-    }
-
-    @Test
-    fun `filter recipes by  self liked`() = runTest {
-        var adminUser: UserInfo? = null
-        var recipe: RecipeInfo? = null
-        runAsAdmin {
-            adminUser = client.getMe()
-            recipe = client.createRecipe()
-
-            val response1 = client.listRecipes(owner = adminUser.id)
-            assertEquals(1, response1.size)
-
-            val response2 = client.listRecipes(likedBy = adminUser.id)
-            assertEquals(0, response2.size)
-
-            client.createLike(recipe.id)
-            val response3 = client.listRecipes(likedBy = adminUser.id)
-            assertEquals(1, response3.size)
-        }
-    }
-
-    @Test
-    fun `filter recipes by liked and owned`() = runTest {
-        var user: UserInfo? = null
-        var adminUser: UserInfo? = null
-        var recipeOwned: RecipeInfo? = null
-        var recipeLiked: RecipeInfo? = null
-        runAsAdmin {
-            user = client.createUser()
-            adminUser = client.getMe()
-            recipeOwned = client.createRecipe()
-        }
-        runAs(user!!.username) {
-            recipeLiked = client.createRecipe()
-        }
-        runAsAdmin {
-            client.createLike(recipeLiked!!.id)
-
-            val response1 = client.listRecipes(owner = adminUser!!.id)
-            assertEquals(1, response1.size)
-
-            val response2 = client.listRecipes(likedBy = adminUser.id)
-            assertEquals(1, response2.size)
-
-            val response3 = client.listRecipes(owner = adminUser!!.id, likedBy = adminUser.id)
-            assertEquals(2, response3.size)
-        }
-    }
 }

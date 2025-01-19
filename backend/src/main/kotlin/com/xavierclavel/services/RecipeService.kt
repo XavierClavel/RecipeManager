@@ -8,6 +8,7 @@ import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.log
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
+import common.enums.DishClass
 import common.enums.Sort
 import common.infodto.RecipeInfo
 import io.ebean.FetchConfig
@@ -23,11 +24,25 @@ class RecipeService: KoinComponent {
         queryByOwner(username).findCount()
 
 
-    fun findList(paging: Paging, sort: Sort, owner: Long?, likedBy: Long?, cookbook: Long?, cookbookUser: Long?) : List<RecipeInfo> =
+    fun findList(
+        paging: Paging,
+        sort: Sort,
+        owner: Long?,
+        likedBy: Long?,
+        cookbook: Long?,
+        cookbookUser: Long?,
+        dishClasses: Set<DishClass>
+    ) : List<RecipeInfo> =
         QRecipe()
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
             .having().raw("count(likes.id) >= 0") // Ensure recipes with no likes are included
-            .filter(owner = owner, likedBy = likedBy, cookbook = cookbook, cookbookUser = cookbookUser)
+            .filter(
+                owner = owner,
+                likedBy = likedBy,
+                cookbook = cookbook,
+                cookbookUser = cookbookUser,
+                dishClasses = dishClasses,
+            )
             .setPaging(paging)
             .sort(sort)
             .findList()
@@ -66,8 +81,14 @@ class RecipeService: KoinComponent {
     private fun queryByOwner(username: String) =
         QRecipe().owner.username.eq(username)
 
-    private fun QRecipe.filter(owner: Long?, likedBy: Long?, cookbook: Long?, cookbookUser: Long?) =
-        if (owner == null && likedBy == null && cookbook == null) this
+    private fun QRecipe.filter(
+        owner: Long?,
+        likedBy: Long?,
+        cookbook: Long?,
+        cookbookUser: Long?,
+        dishClasses: Set<DishClass>,
+    ) =
+        if (owner == null && likedBy == null && cookbook == null && cookbookUser == null && dishClasses.isEmpty()) this
         else this.or()
             .filterByLikes(likedBy)
             .filterByOwner(owner)
@@ -94,12 +115,17 @@ class RecipeService: KoinComponent {
 
     private fun QRecipe.filterByUserCookbooks(userId: Long?) =
         if (userId == null) this.log { QRecipe.Alias.id }
-        else this
-            .where().raw("EXISTS (SELECT 1 " +
-                    "FROM cookbook_recipes cr " +
-                    "JOIN cookbooks c ON cr.cookbook_id = c.id " +
-                    "JOIN cookbook_users cu ON cu.cookbook_id = c.id " +
-                    "WHERE cr.recipe_id = ${QRecipe.Alias.id} AND cu.user_id = ?)", userId)
+        else this//.where().cookbooks.cookbook.users.id.`in`(userId)
+            .raw("""EXISTS(
+                        SELECT 1
+                        FROM cookbook_recipes cr
+                        JOIN cookbooks c ON cr.cookbook_id = c.id
+                        JOIN cookbook_users cu ON cu.cookbook_id = c.id
+                        WHERE cr.recipe_id = t0.id
+                        AND cu.user_id = ?
+                    )""".trimIndent(), userId)
+
+
 
     private fun QRecipe.sort(sort: Sort) =
         when (sort) {

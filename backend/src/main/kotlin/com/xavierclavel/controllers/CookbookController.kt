@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.UserController.imageService
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getIdPathVariable
@@ -12,6 +13,8 @@ import com.xavierclavel.utils.handleDeletion
 import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
 import common.enums.CookbookRole
+import common.utils.Filepath.COOKBOOKS_IMG_PATH
+import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.COOKBOOK_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -97,6 +100,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
     private fun Route.deleteCookbook() = delete("/{id}") {
         val id = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        imageService.deleteImage(COOKBOOKS_IMG_PATH, id)
         handleDeletion(cookbookService.deleteCookbook(id))
     }
 

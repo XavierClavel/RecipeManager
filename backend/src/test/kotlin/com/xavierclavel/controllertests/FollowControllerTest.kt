@@ -1,4 +1,4 @@
-package main.com.xavierclavel.controllertests.com.xavierclavel.controllertests
+package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
