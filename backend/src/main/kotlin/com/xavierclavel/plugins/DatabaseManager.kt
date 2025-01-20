@@ -53,7 +53,7 @@ object DatabaseManager {
                 })
             }catch (e:Exception) {
                 logger.error { e.message }
-                logger.error { "Failed to connect to database, retrying in 5 seconds" }
+                logger.error { "Failed to connect to database at ${hikari().jdbcUrl}, retrying in 5 seconds" }
                 runBlocking { (delay(5000)) }
             }
         }

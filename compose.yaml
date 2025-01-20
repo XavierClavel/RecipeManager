@@ -1,0 +1,66 @@
+services:
+  backend:
+    image: cooknco/backend
+    build:
+      context: backend
+    volumes:
+      - pictures:/img
+      - logs:/var/log/cooknco
+    ports:
+      - "8080:8080"
+    networks:
+      - back-tier
+      - front-tier
+    healthcheck:
+      test: curl --fail http://localhost:8080/v1/health
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    image: cooknco/frontend
+    build:
+      context: frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - front-tier
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  database:
+    image: postgres:17.2
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changeit
+    ports:
+      - "5432:5432"
+    networks:
+      - back-tier
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 1s
+
+volumes:
+  pictures: {}
+  logs: {}
+  postgres: {}
+
+networks:
+  front-tier: {}
+  back-tier: {}

@@ -20,16 +20,7 @@
         color="primary"
       ></v-textarea>
 
-      <v-select
-        v-model="recipe.dishClass"
-        label="Dish Type"
-        class="mx-auto px-3 primary"
-        color="primary"
-        :items="['ENTREE', 'MAIN_DISH', 'DESERT', 'OTHER']">
-      </v-select>
-
       <v-col class="py-2" cols="12">
-        <p>Text Options</p>
 
         <v-btn-toggle
           v-model="recipe.dishClass"
@@ -356,6 +347,7 @@ const onIngredientAutocompleteChange = async (query, index) => {
 const recipe = ref<object>({
   description: "",
   steps: [''],
+  dishClass: "MAIN_DISH",
   ingredients: [],
   customIngredients: [],
 })
@@ -435,6 +427,7 @@ if (recipeId.value != null) {
     function (response) {
       recipe.value.title = response.data.title
       recipe.value.description = response.data.description
+      recipe.value.dishClass = response.data.dishClass
       recipe.value.steps = response.data.steps
       recipe.value.ingredients = response.data.ingredients.map(item => ({
         ingredient: {
