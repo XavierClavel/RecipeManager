@@ -7,6 +7,7 @@ import com.xavierclavel.models.jointables.Like
 import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
+import common.enums.Visibility
 import common.overviewdto.UserOverview
 import io.ebean.Model
 import jakarta.persistence.CascadeType
@@ -33,6 +34,10 @@ class User (
     var role: UserRole = UserRole.USER,
 
     var bio: String = "",
+
+    //Privacy
+    var accountVisibility : Visibility = Visibility.PUBLIC,
+    var autoAcceptFollowRequestss : Boolean = false,
 
     var joinDate: Long = Instant.now().epochSecond,
     var lastActivityDate: Long = Instant.now().epochSecond,

@@ -28,6 +28,9 @@
         <v-card-title
           class="mx-auto px-3 text-primary text-h3"
         >{{ user.username }}</v-card-title>
+        <v-card-text
+          class="mx-auto px-3"
+        > {{user.bio}} </v-card-text>
         <span class="d-flex flex-row">
           <interactible-picto-info :value="user.recipesCount" icon="mdi-notebook" :action="redirectRecipesOwned"></interactible-picto-info>
           <interactible-picto-info :value="user.likesCount" icon="mdi-heart" :action="redirectRecipesLiked"></interactible-picto-info>
@@ -47,11 +50,6 @@
       class="ml-8"
       @click="followUnfollow"
     >{{ followsUser ? "Unfollow" : "Follow" }}</v-btn>
-
-
-    <v-card-text
-      class="mx-auto px-3"
-    > {{user.bio}} </v-card-text>
 
     <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" v-if="isOwner" >
 

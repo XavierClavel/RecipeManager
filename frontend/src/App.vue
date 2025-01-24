@@ -7,7 +7,7 @@
       v-if="showSidebar"
     >
       <v-list>
-        <v-list-item title="Recipe Manager"></v-list-item>
+        <v-list-item title="Cook&Co"></v-list-item>
         <v-list-item class="d-flex justify-center">
           <v-btn
             prepend-icon="mdi-pencil"
@@ -57,7 +57,7 @@
           </v-list>
         </v-menu>
       </template>
-      <v-app-bar-title>Recipe Manager</v-app-bar-title>
+      <v-app-bar-title>Cook&Co</v-app-bar-title>
       <div class="d-flex flex-grow-1 justify-center align-center position-absolute"
            style ="
         left: 50%;

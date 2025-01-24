@@ -2,7 +2,9 @@
 FROM gradle:latest AS cache
 RUN mkdir -p /home/gradle/cache_home
 ENV GRADLE_USER_HOME /home/gradle/cache_home
-COPY build.gradle.* gradle.properties /home/gradle/app/
+COPY build.gradle.* gradle.properties settings.gradle.* /home/gradle/app/
+COPY backend /home/gradle/app/backend
+COPY common /home/gradle/app/common
 WORKDIR /home/gradle/app
 RUN gradle clean build -i --stacktrace
 

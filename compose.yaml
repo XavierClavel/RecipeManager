@@ -2,7 +2,7 @@ services:
   backend:
     image: cooknco/backend
     build:
-      context: backend
+      context: .
     volumes:
       - pictures:/img
       - logs:/var/log/cooknco

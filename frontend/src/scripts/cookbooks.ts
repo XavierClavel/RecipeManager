@@ -2,6 +2,7 @@ import {base_url} from "@/scripts/common";
 import apiClient from '@/plugins/axios.js';
 
 export {
+  getCookbook,
   listCookbooks,
   getStatusInCookbooks,
   createCookbook,
@@ -9,6 +10,10 @@ export {
 
   addRecipeToCookbook,
   removeRecipeFromCookbook,
+}
+
+async function getCookbook(id) {
+  return await apiClient.get(`/cookbook/${id}`)
 }
 
 async function listCookbooks(search) {
