@@ -10,6 +10,7 @@ data class RecipeInfo (
     val title: String,
     val dishClass: DishClass,
     val owner: String,
+    val ownerId: Long,
     val description: String,
 
     val yield: Int? = null,

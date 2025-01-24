@@ -5,11 +5,12 @@
       column
       multiple
       @update:modelValue="updateUrl"
+      color="surface"
+      variant="flat"
     >
       <v-chip
         v-for="s in source"
         :text="s"
-        variant="outlined"
         filter
       ></v-chip>
     </v-chip-group>
@@ -19,11 +20,12 @@
       column
       multiple
       @update:modelValue="updateUrl"
+      color="surface"
+      variant="flat"
     >
       <v-chip
         v-for="dish in dishTypes"
         :text="dish"
-        variant="outlined"
         filter
       ></v-chip>
     </v-chip-group>
@@ -67,3 +69,9 @@ const updateUrl = () => {
 }
 
 </script>
+
+<style>
+.input-group--disabled.checkbox .input-group__input {
+  color: #000 !important;
+}
+</style>

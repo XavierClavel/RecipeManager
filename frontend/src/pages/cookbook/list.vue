@@ -33,7 +33,7 @@
                 <v-icon
                   class="mx-auto px-3 text-h4"
                   color="primary"
-                > mdi-silverware-fork-knife </v-icon>
+                > {{ICON_RECIPE_YIELD}} </v-icon>
                 <v-card-text
                   class="mx-auto px-3  align-center text-h5"
                 > {{ cookbook.recipesCount }} </v-card-text>
@@ -43,7 +43,7 @@
                 <v-icon
                   class="mx-auto px-3 text-h4"
                   color="primary"
-                > mdi-account-multiple </v-icon>
+                > {{ICON_COOKBOOK_USERS}} </v-icon>
                 <v-card-text
                   class="mx-auto px-3  align-center text-h5"
                 > {{ cookbook.usersCount }} </v-card-text>
@@ -73,6 +73,7 @@
 <script lang="ts" setup>
 import {listRecipes} from "@/scripts/recipes";
 import {base_url, toCreateCookbook, toCreateRecipe, toViewCookbookRecipes, toViewRecipe} from "@/scripts/common";
+import {ICON_COOKBOOK_USERS, ICON_RECIPE_YIELD} from "@/scripts/icons";
 import {useRoute} from "vue-router";
 import {listCookbooks} from "@/scripts/cookbooks";
 

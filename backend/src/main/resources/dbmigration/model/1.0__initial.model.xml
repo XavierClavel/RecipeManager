@@ -97,6 +97,8 @@
             <column name="mail_hash" type="varchar" notnull="true"/>
             <column name="role" type="integer" notnull="true" checkConstraint="check ( role in (0,1))" checkConstraintName="ck_users_role"/>
             <column name="bio" type="varchar" notnull="true"/>
+            <column name="account_visibility" type="integer" notnull="true" checkConstraint="check ( account_visibility in (0,1,2))" checkConstraintName="ck_users_account_visibility"/>
+            <column name="auto_accept_follow_requestss" type="boolean" defaultValue="false" notnull="true"/>
             <column name="join_date" type="bigint" notnull="true"/>
             <column name="last_activity_date" type="bigint" notnull="true"/>
             <column name="dietary_restrictions_id" type="bigint" notnull="true" uniqueOneToOne="uq_users_dietary_restrictions_id" references="dietary_restrictions.id" foreignKeyName="fk_users_dietary_restrictions_id"/>

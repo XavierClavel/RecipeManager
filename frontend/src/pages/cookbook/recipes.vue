@@ -8,7 +8,7 @@
       <v-img
         color="surface-variant"
         :src="imageUrl"
-        rounded="xl"
+        rounded="lg"
         height="200px"
         width="200px"
         cover

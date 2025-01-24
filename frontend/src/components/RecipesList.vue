@@ -2,6 +2,7 @@
 import {base_url, toViewRecipe} from "@/scripts/common";
 import {listRecipes} from "@/scripts/recipes";
 import {useRoute} from "vue-router";
+import {ICON_RECIPE_YIELD} from "../scripts/icons";
 
 
 const recipes = ref<object[]>([])
@@ -62,7 +63,7 @@ router.afterEach((to, from) => {
           <v-icon
             class="mx-auto px-3 text-h4"
             color="primary"
-          > mdi-silverware-fork-knife </v-icon>
+          > {{ICON_RECIPE_YIELD}} </v-icon>
           <v-card-text
             class="mx-auto px-3  align-center text-h5"
           > {{ recipe.yield }} </v-card-text>

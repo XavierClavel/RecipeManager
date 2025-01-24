@@ -32,10 +32,10 @@
           class="mx-auto px-3"
         > {{user.bio}} </v-card-text>
         <span class="d-flex flex-row">
-          <interactible-picto-info :value="user.recipesCount" icon="mdi-notebook" :action="redirectRecipesOwned"></interactible-picto-info>
-          <interactible-picto-info :value="user.likesCount" icon="mdi-heart" :action="redirectRecipesLiked"></interactible-picto-info>
-          <interactible-picto-info :value="user.followsCount" icon="mdi-account-heart"></interactible-picto-info>
-          <interactible-picto-info :value="user.followersCount" icon="mdi-account-multiple"></interactible-picto-info>
+          <interactible-picto-info :value="user.recipesCount" :icon="`${ICON_USER_RECIPES}`" :action="redirectRecipesOwned"></interactible-picto-info>
+          <interactible-picto-info :value="user.likesCount" :icon="`${ICON_USER_LIKES}`" :action="redirectRecipesLiked"></interactible-picto-info>
+          <interactible-picto-info :value="user.followsCount" :icon="`${ICON_USER_FOLLOWS}`"></interactible-picto-info>
+          <interactible-picto-info :value="user.followersCount" :icon="`${ICON_USER_FOLLOWERS}`"></interactible-picto-info>
         </span>
       </v-container>
 
@@ -79,6 +79,7 @@ import {getUser} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {follow, isFollowingUser, unfollow} from "@/scripts/follows";
 import {useAuthStore} from "@/stores/auth";
+import {ICON_USER_FOLLOWERS, ICON_USER_FOLLOWS, ICON_USER_LIKES, ICON_USER_RECIPES} from "@/scripts/icons";
 
 // Get the route object
 const route = useRoute();

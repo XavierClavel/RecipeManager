@@ -23,6 +23,15 @@
       class="mx-auto px-3"
     > {{recipe.description}} </v-card-text>
 
+    <span class="mx-auto px-3">Owner :</span>
+
+    <v-chip v-bind="props" link pill @click="toViewUser(recipe.ownerId)">
+      <v-avatar start>
+        <v-img :src="ownerPictureUrl"></v-img>
+      </v-avatar>
+      {{ recipe.owner }}
+    </v-chip>
+
     <v-card-text
       class="mx-auto px-3"
     > Created on : {{new Date(recipe.creationDate * 1000).toLocaleDateString()}} </v-card-text>
@@ -256,7 +265,7 @@ import {
   base_url,
   toCreateCookbookAddRecipe,
   toEditRecipe,
-  toListRecipe,
+  toListRecipe, toViewUser,
   unitToReadable
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
@@ -275,6 +284,7 @@ const snackbar = ref(false)
 const userCookbooks = ref([])
 
 const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.webp`);
+const ownerPictureUrl = computed(() => `${base_url}/image/users/${recipe.value.ownerId}.webp`);
 const authStore = useAuthStore()
 const userId = authStore.id
 

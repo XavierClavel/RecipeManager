@@ -20,6 +20,31 @@
         color="primary"
       ></v-textarea>
 
+
+      <v-select
+        v-model="cookbook.visibility"
+        label="Visibility"
+        outlined
+        class="flex-grow-1 mx-2"
+        :items="['PRIVATE','PROTECTED','PUBLIC']"
+        variant="outlined"
+        max-width="200px"
+        color="primary"
+      >
+
+      </v-select>
+
+      <v-icon
+      >
+        <v-tooltip
+          activator="parent"
+          location="end"
+        >Tooltip</v-tooltip>
+        mdi-information
+      </v-icon>
+
+
+
        <editable-picture path="image/cookbooks" :id="cookbookId" ref="editablePicture"></editable-picture>
 
       <!-- Ingredients -->

@@ -1,6 +1,6 @@
 <template>
   <v-card
-  class="mx-auto rounded-xl pa-5 ma-auto my-5"
+  class="mx-auto rounded-xl pa-5 ma-5"
   max-width="1000px"
   >
 
@@ -53,28 +53,38 @@
         class="mx-3"
       ></v-text-field>
 
-      <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
-        <v-btn
-          prepend-icon="mdi-close-circle-outline"
-          color="primary"
-          flat
-          rounded
-          class="mb-10 text-h6"
-          min-height="70px"
-          min-width="300px"
-          @click="toLogin"
-        >Log in</v-btn>
-        <v-btn
-          @click="submit"
-          prepend-icon="mdi-send"
-          color="primary"
-          flat
-          rounded
-          class="mb-10 text-h6"
-          min-height="70px"
-          min-width="300px"
-        >Sign up</v-btn>
-      </span>
+      <v-container>
+        <v-row
+          class="d-flex align-center justify-center mb-2 mt-16 gx-16"
+          dense
+          justify="center"
+          align="center"
+        >
+          <v-col cols="12" sm="auto" justify-center>
+
+            <v-btn
+              prepend-icon="mdi-close-circle-outline"
+              color="primary"
+              flat
+              rounded
+              class="mb-10 text-h6"
+              min-height="70px"
+              min-width="300px"
+              @click="toLogin"
+            >Log in</v-btn>
+            <v-btn
+              @click="submit"
+              prepend-icon="mdi-send"
+              color="primary"
+              flat
+              rounded
+              class="mb-10 text-h6"
+              min-height="70px"
+              min-width="300px"
+            >Sign up</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
 
 
 
