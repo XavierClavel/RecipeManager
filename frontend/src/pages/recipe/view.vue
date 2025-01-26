@@ -149,7 +149,7 @@
       >
         <template v-slot:prepend>
           <v-avatar color="surface">
-            <v-icon color="white">mdi-carrot</v-icon>
+            <v-icon color="white">{{getIngredientIcon(ingredient.type)}}</v-icon>
           </v-avatar>
         </template>
 
@@ -283,6 +283,7 @@ import {
 import {useAuthStore} from "@/stores/auth";
 import {addLike, isLiked, removeLike} from "@/scripts/likes";
 import {addRecipeToCookbook, getStatusInCookbooks, listCookbooks, removeRecipeFromCookbook} from "@/scripts/cookbooks";
+import {getIngredientIcon} from "../../scripts/icons";
 
 // Get the route object
 const route = useRoute();

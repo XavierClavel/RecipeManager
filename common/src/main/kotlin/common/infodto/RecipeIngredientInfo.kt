@@ -1,6 +1,7 @@
 package common.infodto
 
 import common.enums.AmountUnit
+import common.enums.IngredientType
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,4 +11,5 @@ data class RecipeIngredientInfo(
     val amount: Float?,
     val unit: AmountUnit,
     val complement : String?,
+    val type: IngredientType,
 )

@@ -42,6 +42,7 @@ class RecipeIngredient (
     fun toInfo() = RecipeIngredientInfo(
         id = ingredient!!.id,
         name = ingredient!!.name,
+        type = ingredient!!.type,
         amount = amount,
         unit = unit,
         complement = complement,
