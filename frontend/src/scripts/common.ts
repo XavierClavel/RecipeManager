@@ -155,5 +155,9 @@ const unitToReadable = (unit) => {
       return ""
     case "GRAM":
       return "g"
+    case "NONE":
+      return ""
+    case null:
+      return ""
   }
 }

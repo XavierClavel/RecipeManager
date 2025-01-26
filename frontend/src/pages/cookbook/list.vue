@@ -29,25 +29,8 @@
             </div>
 
             <span class="d-flex flex-row">
-              <span class="d-flex row align-center justify-center mx-auto">
-                <v-icon
-                  class="mx-auto px-3 text-h4"
-                  color="primary"
-                > {{ICON_RECIPE_YIELD}} </v-icon>
-                <v-card-text
-                  class="mx-auto px-3  align-center text-h5"
-                > {{ cookbook.recipesCount }} </v-card-text>
-              </span>
-
-              <span class="d-flex row align-center justify-center mx-auto">
-                <v-icon
-                  class="mx-auto px-3 text-h4"
-                  color="primary"
-                > {{ICON_COOKBOOK_USERS}} </v-icon>
-                <v-card-text
-                  class="mx-auto px-3  align-center text-h5"
-                > {{ cookbook.usersCount }} </v-card-text>
-              </span>
+              <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="cookbook.recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>
+              <picto-info :icon="`${ICON_COOKBOOK_USERS}`" :value="cookbook.usersCount" icon-size="text-h4" value-size="text-h5"></picto-info>
             </span>
           </v-card-item>
         </span>
@@ -73,7 +56,7 @@
 <script lang="ts" setup>
 import {listRecipes} from "@/scripts/recipes";
 import {base_url, toCreateCookbook, toCreateRecipe, toViewCookbookRecipes, toViewRecipe} from "@/scripts/common";
-import {ICON_COOKBOOK_USERS, ICON_RECIPE_YIELD} from "@/scripts/icons";
+import {ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS, ICON_RECIPE_YIELD} from "@/scripts/icons";
 import {useRoute} from "vue-router";
 import {listCookbooks} from "@/scripts/cookbooks";
 

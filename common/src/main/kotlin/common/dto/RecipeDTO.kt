@@ -26,6 +26,7 @@ data class RecipeDTO (
         val id: Long,
         val unit: AmountUnit = AmountUnit.NONE,
         val amount: Float? = null,
+        val complement: String? = null,
     )
 
     @Serializable

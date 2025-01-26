@@ -110,6 +110,7 @@ create table recipe_ingredients (
   ingredient_id                 bigint,
   amount                        float,
   unit                          integer not null,
+  complement                    varchar(255),
   constraint ck_recipe_ingredients_unit check ( unit in (0,1,2,3,4,5,6)),
   constraint pk_recipe_ingredients primary key (id)
 );

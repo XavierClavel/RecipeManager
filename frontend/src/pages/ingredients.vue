@@ -97,7 +97,7 @@
         ></v-btn>
         <v-btn
           v-if="selectedIngredient.id != undefined"
-          icon="mdi-delete"
+          :icon="`${ICON_DELETE}`"
           color="primary"
           flat
           rounded="lg"
@@ -178,6 +178,7 @@
 <script lang="ts" setup>
 import {createIngredient, deleteIngredient, getCount, searchIngredients, updateIngredient} from "@/scripts/ingredients";
 import { useTheme } from 'vuetify'
+import {ICON_DELETE} from "@/scripts/icons";
 
 const theme = useTheme()
 

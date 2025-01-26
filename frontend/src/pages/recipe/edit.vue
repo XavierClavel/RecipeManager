@@ -143,6 +143,12 @@
               return-object
             ></v-number-input>
 
+            <v-text-field
+              v-model="recipe.ingredients[index].complement"
+              class="flex-grow-1 mx-2"
+              label="Complement"
+            ></v-text-field>
+
             <div>
               <v-btn
                 @click="removeIngredient(index)"

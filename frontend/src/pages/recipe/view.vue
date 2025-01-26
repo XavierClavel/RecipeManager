@@ -23,15 +23,21 @@
       class="mx-auto px-3"
     > {{recipe.description}} </v-card-text>
 
-    <span class="mx-auto px-3">Owner :</span>
+    <v-container class="mb-5 mx-n3">
+      <span class="mx-auto px-3">Owner :</span>
 
-    <v-chip v-bind="props" link pill @click="toViewUser(recipe.ownerId)">
-      <v-avatar start>
-        <v-img :src="ownerPictureUrl"></v-img>
-      </v-avatar>
-      {{ recipe.owner }}
-    </v-chip>
+      <v-chip v-bind="props" link pill @click="toViewUser(recipe.ownerId)" class="">
+        <v-avatar start>
+          <v-img :src="ownerPictureUrl"></v-img>
+        </v-avatar>
+        {{ recipe.owner }}
+      </v-chip>
 
+    </v-container>
+
+
+
+<!--
     <v-card-text
       class="mx-auto px-3"
     > Created on : {{new Date(recipe.creationDate * 1000).toLocaleDateString()}} </v-card-text>
@@ -39,6 +45,7 @@
     <v-card-text
       class="mx-auto px-3"
     > Last edited on : {{new Date(recipe.editionDate * 1000).toLocaleDateString()}} </v-card-text>
+-->
 
     <v-img
       color="surface-variant"
@@ -129,74 +136,79 @@
       ></v-btn>
     </span>
 
+    <v-container>
+
       <h2 class="my-3" >Ingredients</h2>
 
-    <div v-for="(ingredient, index) in recipe.ingredients" :key="index">
-      <div class="d-flex align-center">
-        <v-icon>mdi-circle-small</v-icon>
-        <span
-          class="p-0 mr-2 text-start text-h5 text-primary"
-          style="width: auto; min-width: 0;"
-        >
-          {{ ingredient.amount }}
-        </span>
-        <span
-          class="p-0 mr-2 text-start text-h5 text-primary"
-          style="width: auto; min-width: 0;"
-        >
-          {{ unitToReadable(ingredient.unit) }}
-        </span>
-        <span
-          class="p-0 text-start"
-        >
-          {{ ingredient.name }}
-        </span>
-      </div>
-    </div>
+    <v-list v-for="(ingredient, index) in recipe.ingredients">
+      <v-card color="background" rounded="lg">
+      <v-list-item
+        :key="index"
+        :subtitle="`${ingredient.amount ? ingredient.amount : ''}${unitToReadable(ingredient.unit)}`"
+        :title="ingredient.name"
+      >
+        <template v-slot:prepend>
+          <v-avatar color="surface">
+            <v-icon color="white">mdi-carrot</v-icon>
+          </v-avatar>
+        </template>
 
-    <div v-for="(ingredient, index) in recipe.customIngredients" :key="index">
-      <div class="d-flex align-center">
-        <v-icon>mdi-circle-small</v-icon>
-        <span
-          class="p-0 text-start text-h5 text-primary"
-          style="width: auto; min-width: 0;"
+        <template v-slot:append>
+          <v-btn
+            color="surface"
+            icon="mdi-information"
+            variant="text"
+          ></v-btn>
+        </template>
+
+      </v-list-item>
+      </v-card>
+    </v-list>
+
+    <v-list v-for="(ingredient, index) in recipe.customIngredients">
+      <v-card color="background" rounded="lg">
+        <v-list-item
+          :key="index"
+          :subtitle="`${ingredient.amount ? ingredient.amount : ''}${unitToReadable(ingredient.unit)}`"
+          :title="ingredient.name"
         >
-          {{ ingredient.amount }}
-        </span>
-        <span
-          class="p-0 mr-2 text-start text-h5 text-primary"
-          style="width: auto; min-width: 0;"
-        >
-          {{ unitToReadable(ingredient.unit) }}
-        </span>
-        <span
-          class="p-0 text-start"
-        >
-          {{ ingredient.name }}
-        </span>
-      </div>
-    </div>
+          <template v-slot:prepend>
+            <v-avatar color="surface">
+              <v-icon color="white">mdi-carrot</v-icon>
+            </v-avatar>
+          </template>
+
+          <template v-slot:append>
+            <v-btn
+              color="surface"
+              icon="mdi-information"
+              variant="text"
+            ></v-btn>
+          </template>
+
+        </v-list-item>
+      </v-card>
+    </v-list>
+
+    </v-container>
 
       <v-container v-if="recipe.steps.length > 0">
 
       <h2 class="my-3" >Steps</h2>
 
-      <span v-for="(step, index) in recipe.steps">
-        <div class="d-flex align-center">
-          <span
-            class="p-0 mr-2 text-h5 text-primary"
-            style="width: auto; min-width: 50px;"
-          >
-            {{index + 1}} -
-          </span>
-          <span
-            class="p-0 text-h7"
-            style="width: auto; min-width: 0;"
-          >
-            {{step}}
-          </span>
-        </div>
-      </span>
+        <v-list v-for="(step, index) in recipe.steps">
+          <v-card color="background" rounded="lg">
+            <v-list-item>
+              <v-card-text class="text-wrap">{{step}}</v-card-text>
+              <template v-slot:prepend>
+                <v-avatar color="surface">
+                  {{index + 1}}
+                </v-avatar>
+              </template>
+
+            </v-list-item>
+          </v-card>
+        </v-list>
 
       </v-container>
 

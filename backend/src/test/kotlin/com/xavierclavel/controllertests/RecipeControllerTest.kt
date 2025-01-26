@@ -117,12 +117,14 @@ class RecipeControllerTest : ApplicationTest() {
                 name = "",
                 unit = AmountUnit.UNIT,
                 amount = 2f,
+                complement = null
             ),
             RecipeIngredientInfo(
                 id = ingredient3.id,
                 name = "",
                 unit = AmountUnit.GRAM,
                 amount = 1f,
+                complement = null
             ),
 
         )

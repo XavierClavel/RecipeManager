@@ -8,17 +8,27 @@ defineProps({
     type: String,
     required: true,
   },
+  iconSize: {
+    type: String,
+    required: false,
+    default: "text-h3"
+  },
+  valueSize: {
+    type: String,
+    required: false,
+    default: "text-h4"
+  },
 })
 </script>
 
 <template>
   <span class="d-flex row align-center justify-center mx-auto">
     <v-icon
-      class="mx-auto px-3 text-h3"
+      :class="`mx-auto px-3 ${iconSize}`"
       color="primary"
     > {{ icon }} </v-icon>
     <v-card-text
-      class="mx-auto px-3  align-center text-h4"
+      :class="`mx-auto px-3  align-center ${valueSize}`"
     > {{ value }} </v-card-text>
   </span>
 </template>

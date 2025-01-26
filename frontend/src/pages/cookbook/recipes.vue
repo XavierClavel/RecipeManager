@@ -22,6 +22,14 @@
         <v-card-text>
           {{cookbook.description}}
         </v-card-text>
+        <v-row class="d-flex flex-row mx-4">
+          <v-col class="d-inline-flex" cols="auto">
+            <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="cookbook.recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>
+          </v-col>
+          <v-col class="d-inline-flex" cols="auto">
+            <picto-info :icon="`${ICON_COOKBOOK_USERS}`" :value="cookbook.usersCount" icon-size="text-h4" value-size="text-h5"></picto-info>
+          </v-col>
+        </v-row>
         <v-row class="px-3">
           <v-btn
           icon="mdi-cog"
@@ -42,6 +50,7 @@ import {ref} from "vue";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {base_url, toEditCookbook, toEditUser} from "@/scripts/common";
 import {getCookbook} from "@/scripts/cookbooks";
+import {ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS} from "@/scripts/icons";
 
 const route = useRoute();
 let cookbookId = ref(route.query.cookbook)
@@ -51,6 +60,8 @@ const cookbook = ref<object>({
   title: "",
   description: "",
   users: [],
+  recipesCount: null,
+  usersCount: null,
 })
 
 
@@ -59,6 +70,8 @@ if (cookbookId.value != null) {
     function (response) {
       cookbook.value.title = response.data.title
       cookbook.value.description = response.data.description
+      cookbook.value.recipesCount = response.data.recipesCount
+      cookbook.value.usersCount = response.data.usersCount
       console.log(response.data)
     }).catch(function (error) {
     console.log(error);

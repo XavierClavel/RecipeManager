@@ -30,11 +30,13 @@ class RecipeIngredient (
 
     var amount: Float? = null,
     var unit: AmountUnit = AmountUnit.NONE,
+    var complement: String? = null,
 
     ): Model() {
     fun mergeDTO(recipeIngredientDTO: RecipeDTO.RecipeIngredientDTO) = this.apply {
         this.amount = recipeIngredientDTO.amount
         this.unit = recipeIngredientDTO.unit
+        this.complement = recipeIngredientDTO.complement
     }
 
     fun toInfo() = RecipeIngredientInfo(
@@ -42,12 +44,15 @@ class RecipeIngredient (
         name = ingredient!!.name,
         amount = amount,
         unit = unit,
+        complement = complement,
     )
 
     fun compareTo(dto: RecipeDTO.RecipeIngredientDTO): Boolean {
         if (this.amount == null && dto.amount != null) return false
         if (this.amount != null && dto.amount == null) return false
         if (this.amount != null && dto.amount != null && Math.abs(this.amount!! - dto.amount!!) > 0.0001) return false
+        if (this.unit != dto.unit) return false
+        if (this.complement != dto.complement) return false
 
         return this.ingredient!!.id == dto.id &&
             this.unit == dto.unit

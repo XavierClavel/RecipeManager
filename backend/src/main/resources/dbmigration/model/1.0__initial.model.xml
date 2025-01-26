@@ -89,6 +89,7 @@
             <column name="ingredient_id" type="bigint" references="ingredients.id" foreignKeyName="fk_recipe_ingredients_ingredient_id" foreignKeyIndex="ix_recipe_ingredients_ingredient_id"/>
             <column name="amount" type="float"/>
             <column name="unit" type="integer" notnull="true" checkConstraint="check ( unit in (0,1,2,3,4,5,6))" checkConstraintName="ck_recipe_ingredients_unit"/>
+            <column name="complement" type="varchar"/>
         </createTable>
         <createTable name="users" pkName="pk_users">
             <column name="id" type="bigint" primaryKey="true"/>

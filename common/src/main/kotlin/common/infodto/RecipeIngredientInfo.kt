@@ -9,4 +9,5 @@ data class RecipeIngredientInfo(
     val name: String,
     val amount: Float?,
     val unit: AmountUnit,
+    val complement : String?,
 )
