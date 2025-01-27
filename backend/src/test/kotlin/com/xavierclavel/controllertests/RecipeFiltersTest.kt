@@ -2,6 +2,7 @@ package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
+import common.dto.IngredientDTO
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
 import common.enums.AmountUnit
@@ -197,5 +198,32 @@ class RecipeFiltersTest : ApplicationTest() {
             assertEquals(setOf(recipe1Updated), response2.toSet())
 
         }
+    }
+
+    @Test
+    fun `filter recipes by ingredient`() = runTestAsAdmin {
+        val adminUser = client.getMe()
+        val ingredientDTO1 = IngredientDTO("")
+        val ingredientDTO2 = IngredientDTO("")
+
+        val ingredient1 = client.createIngredient(ingredientDTO1)
+        val ingredient2 = client.createIngredient(ingredientDTO2)
+
+        val recipeIngredient1 = RecipeIngredientDTO(ingredient1.id)
+        val recipeIngredient2 = RecipeIngredientDTO(ingredient2.id)
+
+        val recipeDTO1 = RecipeDTO(title = "", ingredients = mutableListOf(recipeIngredient1))
+        val recipeDTO2 = RecipeDTO(title = "", ingredients = mutableListOf(recipeIngredient2))
+        val recipeDTO3 = RecipeDTO(title = "", ingredients = mutableListOf(recipeIngredient1, recipeIngredient2))
+
+        val recipe1 = client.createRecipe(recipeDTO1)
+        val recipe2 = client.createRecipe(recipeDTO2)
+        val recipe3 = client.createRecipe(recipeDTO3)
+
+        val response1 = client.listRecipes(ingredient = ingredient1.id)
+        assertEquals(setOf(recipe1, recipe3), response1.toSet())
+
+        val response2 = client.listRecipes(ingredient = ingredient2.id)
+        assertEquals(setOf(recipe2, recipe3), response2.toSet())
     }
 }

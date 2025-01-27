@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class IngredientDTO(
     val name: String,
-    val type: IngredientType,
+    val type: IngredientType = IngredientType.OTHER,
 
-    val calories: Int,
+    val calories: Int = 0,
     val glucids: Float = 0f,
     val cholesterol: Float = 0f,
     val lipids: Float = 0f,

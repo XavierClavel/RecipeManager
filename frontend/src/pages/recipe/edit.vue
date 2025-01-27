@@ -11,6 +11,7 @@
         label="Title"
         class="mx-auto px-3"
         color="primary"
+        :rules="[rules.max100]"
       ></v-text-field>
 
       <v-textarea
@@ -18,6 +19,7 @@
         label="Description"
         class="mx-auto px-3"
         color="primary"
+        :rules="[rules.max]"
       ></v-textarea>
 
       <v-col class="py-2" cols="12">
@@ -182,6 +184,7 @@
               color="primary"
               item-color="primary"
               :key="index"
+              :rules="[rules.max50]"
             ></v-text-field>
 
             <v-select
@@ -270,6 +273,7 @@
               class="flex-grow-1"
               color="primary"
               :id="`step_${index}`"
+              :rules="[rules.max]"
               @keyup.enter="addStepAt(index)"
               @keyup.delete="deleteStepAt(index)"
             ></v-text-field>
@@ -347,6 +351,13 @@ const onIngredientAutocompleteChange = async (query, index) => {
   autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: item.name }));
 }
 
+const rules = {
+  required: value => !!value || 'Required.',
+  max: v => v.length <= 200 || 'Max 200 characters',
+  max100: v => v.length <= 100 || 'Max 100 characters',
+  max50: v => v.length <= 50 || 'Max 50 characters',
+}
+
 
 
 
@@ -412,7 +423,8 @@ async function submit() {
     .map(item => ({
     id: item.ingredient.id,
     amount: item.amount,
-    unit: item.unit }))
+    unit: item.unit,
+    complement: item.complement}))
   submitted.customIngredients = submitted.customIngredients.filter((it) => "name" in it)
   submitted.steps = submitted.steps.filter((it) => it)
   console.log(submitted)

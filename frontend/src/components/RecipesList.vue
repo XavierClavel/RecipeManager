@@ -6,6 +6,7 @@ import {ICON_RECIPE_YIELD} from "../scripts/icons";
 
 
 const recipes = ref<object[]>([])
+const noRecipes = ref(false)
 
 console.log("list recipes")
 
@@ -14,6 +15,7 @@ const updateGrid = () => {
     function (response) {
       console.log(response)
       recipes.value = response.data
+      noRecipes.value = recipes.value.length == 0
     }
   )
 }
@@ -97,6 +99,17 @@ router.afterEach((to, from) => {
 
 
   </v-layout>
+
+  <v-card
+    class="rounded-xl pa-5 ma-5 d-flex flex-row"
+    v-if="noRecipes"
+  >
+    <v-icon color="primary" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
+    <v-card-title prepend-icon="mdi-alert" class="text-primary text-h4">
+      No recipes to display
+    </v-card-title>
+  </v-card>
+
 </template>
 
 <style scoped>

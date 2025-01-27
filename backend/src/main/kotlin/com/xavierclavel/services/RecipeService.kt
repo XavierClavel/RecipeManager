@@ -86,7 +86,8 @@ class RecipeService: KoinComponent {
                         .endOr()
                 }
             }
-                .filterByDishClass(recipeFilter.dishClasses)
+            .filterByDishClass(recipeFilter.dishClasses)
+            .filterByIngredient(recipeFilter.ingredient)
             .endAnd()
 
 
@@ -107,20 +108,36 @@ class RecipeService: KoinComponent {
     private fun QRecipe.filterByCookbook(cookbookId: Long?) =
         if (cookbookId == null) this
         else this
-            .where().raw("EXISTS (SELECT 1 FROM cookbook_recipes cr WHERE cr.recipe_id = t0.id AND cr.cookbook_id = ?)", cookbookId)
+            .where().raw("""
+                EXISTS (
+                    SELECT 1 FROM cookbook_recipes cr 
+                    WHERE cr.recipe_id = t0.id 
+                    AND cr.cookbook_id = ?
+                )""".trimIndent(), cookbookId)
             //.where().cookbooks.cookbook.id.eq(cookbookId)
 
     private fun QRecipe.filterByUserCookbooks(userId: Long?) =
         if (userId == null) this
-        else this//.where().cookbooks.cookbook.users.id.`in`(userId)
-            .raw("""EXISTS(
-                        SELECT 1
-                        FROM cookbook_recipes cr
-                        JOIN cookbooks c ON cr.cookbook_id = c.id
-                        JOIN cookbook_users cu ON cu.cookbook_id = c.id
-                        WHERE cr.recipe_id = t0.id
-                        AND cu.user_id = ?
-                    )""".trimIndent(), userId)
+        else this.raw("""
+            EXISTS(
+                SELECT 1
+                FROM cookbook_recipes cr
+                JOIN cookbooks c ON cr.cookbook_id = c.id
+                JOIN cookbook_users cu ON cu.cookbook_id = c.id
+                WHERE cr.recipe_id = t0.id
+                AND cu.user_id = ?
+            )""".trimIndent(), userId)
+
+    private fun QRecipe.filterByIngredient(ingredientId: Long?) =
+        if (ingredientId == null) this
+        else this.raw("""
+            EXISTS(
+                SELECT 1
+                FROM recipe_ingredients ri
+                JOIN ingredients i ON ri.ingredient_id = i.id
+                WHERE ri.recipe_id = t0.id
+                AND i.id = ?
+        )""".trimIndent(), ingredientId)
 
 
 

@@ -24,8 +24,6 @@
     > {{recipe.description}} </v-card-text>
 
     <v-container class="mb-5 mx-n3">
-      <span class="mx-auto px-3">Owner :</span>
-
       <v-chip v-bind="props" link pill @click="toViewUser(recipe.ownerId)" class="">
         <v-avatar start>
           <v-img :src="ownerPictureUrl"></v-img>
@@ -145,7 +143,7 @@
       <v-list-item
         :key="index"
         :subtitle="`${ingredient.amount ? ingredient.amount : ''}${unitToReadable(ingredient.unit)}`"
-        :title="ingredient.name"
+        :title="`${ingredient.name} ${ingredient.complement ? '(' + ingredient.complement + ')' : ''}`"
       >
         <template v-slot:prepend>
           <v-avatar color="surface">

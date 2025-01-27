@@ -58,6 +58,7 @@ object RecipeController: Controller(RECIPE_URL) {
             likedBy = getIdPathVariable(RecipeFilter::likedBy.name),
             cookbook = getIdPathVariable(RecipeFilter::cookbook.name),
             cookbookUser = getIdPathVariable(RecipeFilter::cookbookUser.name),
+            ingredient = getIdPathVariable(RecipeFilter::ingredient.name),
             dishClasses = call.parameters[RecipeFilter::dishClasses.name]?.split(",")?.map { DishClass.valueOf(it.trim()) }?.toSet() ?: setOf()
         )
         logger.info {"paging : $paging"}

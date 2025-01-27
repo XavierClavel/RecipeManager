@@ -6,7 +6,9 @@ import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
 import common.enums.AmountUnit
 import common.enums.CookbookRole
+import common.enums.IngredientType
 import common.enums.Sort
+import common.infodto.IngredientInfo
 import common.infodto.RecipeInfo
 import common.infodto.RecipeIngredientInfo
 import common.infodto.UserInfo
@@ -117,14 +119,16 @@ class RecipeControllerTest : ApplicationTest() {
                 name = "",
                 unit = AmountUnit.UNIT,
                 amount = 2f,
-                complement = null
+                complement = null,
+                type = IngredientType.OTHER,
             ),
             RecipeIngredientInfo(
                 id = ingredient3.id,
                 name = "",
                 unit = AmountUnit.GRAM,
                 amount = 1f,
-                complement = null
+                complement = null,
+                type = IngredientType.OTHER
             ),
 
         )
