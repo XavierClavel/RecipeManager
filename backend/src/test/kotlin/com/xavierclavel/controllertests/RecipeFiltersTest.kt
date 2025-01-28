@@ -1,42 +1,25 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
-import com.xavierclavel.utils.logger
 import common.dto.IngredientDTO
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
-import common.enums.AmountUnit
 import common.enums.CookbookRole
 import common.enums.DishClass
-import common.enums.Sort
 import common.infodto.RecipeInfo
-import common.infodto.RecipeIngredientInfo
 import common.infodto.UserInfo
-import common.utils.URL.RECIPE_URL
-import io.ktor.client.request.header
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
 import org.junit.Test
 import kotlin.test.assertEquals
-import io.ktor.client.request.put
-import junit.framework.TestCase.assertTrue
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser
-import main.com.xavierclavel.utils.assertRecipeExists
 import main.com.xavierclavel.utils.createCookbook
 import main.com.xavierclavel.utils.createIngredient
 import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.createUser
-import main.com.xavierclavel.utils.deleteRecipe
 import main.com.xavierclavel.utils.getMe
 import main.com.xavierclavel.utils.getRecipe
 import main.com.xavierclavel.utils.listRecipes
-import main.com.xavierclavel.utils.updateRecipe
-import kotlin.test.assertFalse
 
 class RecipeFiltersTest : ApplicationTest() {
 
@@ -202,7 +185,6 @@ class RecipeFiltersTest : ApplicationTest() {
 
     @Test
     fun `filter recipes by ingredient`() = runTestAsAdmin {
-        val adminUser = client.getMe()
         val ingredientDTO1 = IngredientDTO("")
         val ingredientDTO2 = IngredientDTO("")
 
@@ -228,5 +210,20 @@ class RecipeFiltersTest : ApplicationTest() {
 
         val response3 = client.listRecipes(ingredient = setOf(ingredient1.id, ingredient2.id))
         assertEquals(setOf(recipe3), response3.toSet())
+    }
+
+    @Test
+    fun `filter recipes by title`() = runTestAsAdmin {
+        val recipeDTO1 = RecipeDTO(title = "Tarte aux champignons")
+        val recipeDTO2 = RecipeDTO(title = "Tarte aux pommes")
+
+        val recipe1 = client.createRecipe(recipeDTO1)
+        val recipe2 = client.createRecipe(recipeDTO2)
+
+        val response1 = client.listRecipes(search = "champignons")
+        assertEquals(setOf(recipe1), response1.toSet())
+
+        val response2 = client.listRecipes(search = "tarte")
+        assertEquals(setOf(recipe1,recipe2), response2.toSet())
     }
 }

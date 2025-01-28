@@ -2,11 +2,9 @@ package com.xavierclavel.services
 
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
-import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
-import com.xavierclavel.utils.log
 import common.RecipeFilter
 import common.dto.RecipeDTO
 import common.enums.DishClass
@@ -88,6 +86,7 @@ class RecipeService: KoinComponent {
             }
             .filterByDishClass(recipeFilter.dishClasses)
             .filterByIngredient(recipeFilter.ingredient)
+            .filterBySearch(recipeFilter.search)
             .endAnd()
 
 
@@ -140,6 +139,10 @@ class RecipeService: KoinComponent {
                 GROUP BY ri.recipe_id
                 HAVING COUNT(DISTINCT i.id) = ?
         )""".trimIndent(), ingredientsId, ingredientsId.size)
+
+    private fun QRecipe.filterBySearch(search: String?) =
+        if (search.isNullOrEmpty()) this
+        else this.title.ilike("%$search%")
 
 
 

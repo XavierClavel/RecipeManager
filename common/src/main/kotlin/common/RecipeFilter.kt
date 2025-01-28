@@ -7,13 +7,15 @@ data class RecipeFilter(
     val likedBy: Long? = null,
     val cookbook: Long? = null,
     val cookbookUser: Long? = null,
+    val search: String? = null,
     val ingredient: Set<Long> = setOf(),
     val dishClasses: Set<DishClass> = setOf(),
 ) {
     fun hasFilters(): Boolean =
         hasAdditiveFilters() ||
         dishClasses.isNotEmpty() ||
-        ingredient.isNotEmpty()
+        ingredient.isNotEmpty() ||
+        !search.isNullOrBlank()
 
     fun hasAdditiveFilters(): Boolean =
         owner != null ||
