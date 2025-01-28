@@ -220,10 +220,13 @@ class RecipeFiltersTest : ApplicationTest() {
         val recipe2 = client.createRecipe(recipeDTO2)
         val recipe3 = client.createRecipe(recipeDTO3)
 
-        val response1 = client.listRecipes(ingredient = ingredient1.id)
+        val response1 = client.listRecipes(ingredient = setOf(ingredient1.id))
         assertEquals(setOf(recipe1, recipe3), response1.toSet())
 
-        val response2 = client.listRecipes(ingredient = ingredient2.id)
+        val response2 = client.listRecipes(ingredient = setOf(ingredient2.id))
         assertEquals(setOf(recipe2, recipe3), response2.toSet())
+
+        val response3 = client.listRecipes(ingredient = setOf(ingredient1.id, ingredient2.id))
+        assertEquals(setOf(recipe3), response3.toSet())
     }
 }

@@ -46,6 +46,8 @@ fun RoutingContext.getPathId(): Long? = getIdPathVariable("id")
 fun RoutingContext.getIdPathVariable(value: String): Long? = call.parameters[value]?.toLongOrNull()
 fun RoutingContext.getPathVariable(value: String): String? = call.parameters[value]
 
+fun RoutingContext.getIdPathVariableSet(value: String): Set<Long> = call.parameters[value]?.split(",")?.map { it.toLong() }?.toSet() ?: setOf()
+
 fun RoutingContext.getIdQueryParam(value: String): Long? = call.queryParameters[value]?.toLongOrNull()
 
 suspend fun RoutingContext.handleDeletion(deleted: Boolean?) {

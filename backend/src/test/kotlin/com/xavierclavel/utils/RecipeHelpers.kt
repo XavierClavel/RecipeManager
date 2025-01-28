@@ -60,7 +60,7 @@ suspend fun HttpClient.listRecipes(
     cookbook: Long? = null,
     likedBy: Long? = null,
     cookbookUser: Long? = null,
-    ingredient: Long? = null,
+    ingredient: Set<Long> = setOf(),
     dishClasses: Set<DishClass> = setOf(),
 ): List<RecipeInfo> {
     this.get(RECIPE_URL) {
@@ -70,7 +70,7 @@ suspend fun HttpClient.listRecipes(
             likedBy?.let { parameters.append("likedBy", it.toString()) }
             sort?.let { parameters.append("sort", it.toString()) }
             cookbookUser?.let { parameters.append("cookbookUser", it.toString()) }
-            ingredient?.let { parameters.append("ingredient", it.toString())}
+            ingredient.takeIf { it.isNotEmpty() }?.let { parameters.append("ingredient", it.joinToString(","))}
             dishClasses.takeIf { it.isNotEmpty() }?.let { parameters.append("dishClasses", it.joinToString(",")) }
         }
     }.apply {

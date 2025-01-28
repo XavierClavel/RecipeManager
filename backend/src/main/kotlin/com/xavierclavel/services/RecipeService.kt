@@ -128,16 +128,18 @@ class RecipeService: KoinComponent {
                 AND cu.user_id = ?
             )""".trimIndent(), userId)
 
-    private fun QRecipe.filterByIngredient(ingredientId: Long?) =
-        if (ingredientId == null) this
+    private fun QRecipe.filterByIngredient(ingredientsId: Set<Long>) =
+        if (ingredientsId.isEmpty()) this
         else this.raw("""
             EXISTS(
                 SELECT 1
                 FROM recipe_ingredients ri
                 JOIN ingredients i ON ri.ingredient_id = i.id
                 WHERE ri.recipe_id = t0.id
-                AND i.id = ?
-        )""".trimIndent(), ingredientId)
+                AND i.id IN (?${if (ingredientsId.size >= 2) ingredientsId.size - 1 else ""})
+                GROUP BY ri.recipe_id
+                HAVING COUNT(DISTINCT i.id) = ?
+        )""".trimIndent(), ingredientsId, ingredientsId.size)
 
 
 

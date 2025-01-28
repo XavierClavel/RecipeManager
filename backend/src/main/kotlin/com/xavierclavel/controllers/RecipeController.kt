@@ -7,6 +7,7 @@ import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getIdPathVariable
+import com.xavierclavel.utils.getIdPathVariableSet
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSessionUsername
@@ -58,7 +59,7 @@ object RecipeController: Controller(RECIPE_URL) {
             likedBy = getIdPathVariable(RecipeFilter::likedBy.name),
             cookbook = getIdPathVariable(RecipeFilter::cookbook.name),
             cookbookUser = getIdPathVariable(RecipeFilter::cookbookUser.name),
-            ingredient = getIdPathVariable(RecipeFilter::ingredient.name),
+            ingredient = getIdPathVariableSet(RecipeFilter::ingredient.name),
             dishClasses = call.parameters[RecipeFilter::dishClasses.name]?.split(",")?.map { DishClass.valueOf(it.trim()) }?.toSet() ?: setOf()
         )
         logger.info {"paging : $paging"}
