@@ -156,6 +156,7 @@
             color="surface"
             icon="mdi-information"
             variant="text"
+            @click="toViewIngredient(ingredient.id)"
           ></v-btn>
         </template>
 
@@ -176,13 +177,6 @@
             </v-avatar>
           </template>
 
-          <template v-slot:append>
-            <v-btn
-              color="surface"
-              icon="mdi-information"
-              variant="text"
-            ></v-btn>
-          </template>
 
         </v-list-item>
       </v-card>
@@ -275,7 +269,7 @@ import {
   base_url,
   toCreateCookbookAddRecipe,
   toEditRecipe,
-  toListRecipe, toViewUser,
+  toListRecipe, toViewIngredient, toViewUser,
   unitToReadable
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";

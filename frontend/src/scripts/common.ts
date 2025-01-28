@@ -18,6 +18,7 @@ export {
   toViewUser,
   toEditUser,
 
+  toViewIngredient,
   toListIngredient,
 
   toCreateCookbook,
@@ -50,6 +51,7 @@ const toViewUser = (id) => router.push(`/user/view/?id=${id}`)
 const toEditUser = (id) => router.push(`/user/edit/?id=${id}`)
 
 const toListIngredient = () => router.push(`/ingredients`)
+const toViewIngredient = (id) => router.push(`/ingredient/view?ingredient=${id}`)
 
 const toCreateCookbook = () => router.push(`/cookbook/edit`)
 const toEditCookbook = (id) => router.push(`/cookbook/edit?cookbook=${id}`)
