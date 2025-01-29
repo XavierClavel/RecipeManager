@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {base_url, toViewRecipe} from "@/scripts/common";
+import {getRecipeIconUrl, toViewRecipe} from "@/scripts/common";
 import {ICON_RECIPE_YIELD} from "../scripts/icons";
 
 defineProps({
@@ -25,7 +25,7 @@ defineProps({
           width="300px"
           class="mt-n3"
           rounded="t-lg"
-          :src="`${base_url}/image/recipes/${recipe.id}.webp`"
+          :src="getRecipeIconUrl(recipe.id)"
           cover
         ></v-img>
       <v-card-item>

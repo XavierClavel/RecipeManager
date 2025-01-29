@@ -42,6 +42,8 @@ export {
   unitToReadable,
 
   getUserIconUrl,
+  getCookbookIconUrl,
+  getRecipeIconUrl,
 }
 
 
@@ -81,6 +83,8 @@ const noLoginRedirect = ['/login', '/logout', '/signup']
 
 const base_url = "http://localhost:8080/v1"
 const getUserIconUrl = (id) => `${base_url}/image/users/${id}.webp`
+const getCookbookIconUrl = (id) => `${base_url}/image/cookbooks/${id}.webp`
+const getRecipeIconUrl = (id) => `${base_url}/image/recipes/${id}.webp`
 
 async function login(user) {
   const result = await apiClient.post(`${base_url}/auth/login`, {}, {

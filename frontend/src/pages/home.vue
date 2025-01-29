@@ -6,12 +6,16 @@
             :key="date"
             size="large"
             side="end"
+            fill-dot
+            dot-color="surface"
           >
           <template v-slot:icon>
-            <v-avatar :image="getUserIconUrl(userId)"></v-avatar>
+            <v-avatar color="primary">
+              {{timelineRecipe.length}}
+            </v-avatar>
           </template>
           <template v-slot:opposite>
-            <v-card color="surface">
+            <v-card color="surface" rounded="xl">
               <v-card-text>{{date}}</v-card-text>
             </v-card>
           </template>
