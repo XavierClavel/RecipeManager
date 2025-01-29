@@ -149,8 +149,8 @@ class RecipeService: KoinComponent {
     private fun QRecipe.sort(sort: Sort) =
         when (sort) {
             Sort.NONE -> this
-            Sort.NAME_ASCENDING -> this.orderBy().title.asc()
-            Sort.NAME_DESCENDING -> this.orderBy().title.desc()
+            Sort.NAME_ASCENDING -> this.orderBy().title.desc()
+            Sort.NAME_DESCENDING -> this.orderBy().title.asc()
             Sort.LIKES_ASCENDING -> this.orderBy("count(likes.id) asc")
             Sort.LIKES_DESCENDING -> this.orderBy("count(likes.id) desc")
             Sort.DATE_ASCENDING -> this.orderBy().creationDate.asc()

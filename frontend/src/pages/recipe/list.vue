@@ -1,55 +1,81 @@
 <template>
     <v-card
     class="ma-5 py-2 px-4"
-    rounded="lg"
+    rounded="xl"
     >
-    <v-chip-group
-      v-model="chosenSource"
-      column
-      multiple
-      @update:modelValue="updateUrl"
-      color="surface"
-      variant="flat"
-    >
-      <v-chip
-        v-for="s in source"
-        :text="s"
-        filter
-      ></v-chip>
-    </v-chip-group>
 
-    <v-chip-group
-      v-model="chosenDishType"
-      column
-      multiple
-      @update:modelValue="updateUrl"
-      color="surface"
-      variant="flat"
-    >
-      <v-chip
-        v-for="dish in dishTypes"
-        :text="dish"
-        filter
-      ></v-chip>
-    </v-chip-group>
+    <v-row class="d-flex justify-space-between align-start">
+      <!-- Left Section: Filters & Input -->
+      <v-col class="d-flex flex-column">
+        <v-chip-group
+          v-model="selectedSource"
+          column
+          multiple
+          @update:modelValue="updateUrl"
+          color="surface"
+          variant="flat"
+        >
+          <v-chip
+            v-for="s in source"
+            :text="s"
+            filter
+          ></v-chip>
+        </v-chip-group>
 
-      <v-combobox
-        v-model="selectedIngredients"
-        class="flex-grow-1"
-        color="primary"
-        :items="autocompleteList"
-        item-color="primary"
-        item-title="name"
-        item-value="id"
-        @update:search="(query) => onIngredientAutocompleteChange(query)"
-        :key="index"
-        return-object
-        multiple
-        chips
-        closable-chips
-        clearable
-        @update:modelValue="updateUrl"
-      ></v-combobox>
+        <v-chip-group
+          v-model="selectedDishType"
+          column
+          multiple
+          @update:modelValue="updateUrl"
+          color="surface"
+          variant="flat"
+        >
+          <v-chip
+            v-for="dish in dishTypes"
+            :text="dish"
+            filter
+          ></v-chip>
+        </v-chip-group>
+
+          <v-combobox
+            v-model="selectedIngredients"
+            class="flex-grow-1"
+            color="primary"
+            :items="autocompleteList"
+            item-color="primary"
+            item-title="name"
+            item-value="id"
+            @update:search="(query) => onIngredientAutocompleteChange(query)"
+            :key="index"
+            return-object
+            multiple
+            chips
+            closable-chips
+            clearable
+            @update:modelValue="updateUrl"
+            label="Ingredients"
+          ></v-combobox>
+
+        </v-col>
+
+        <!-- Right Section: Sorting Chips -->
+        <v-col class="d-flex flex-column align-end align-self-center" cols="auto">
+          <v-chip
+            v-for="option in sortOptions"
+            :key="option.value"
+            :color="getChipColor(option.value)"
+            :variant="'elevated'"
+            @click="toggleSort(option.value)"
+            :prepend-icon="option.icon"
+            class="ma-1"
+          >
+          {{ option.label }}
+            <v-icon v-if="selectedSort === option.value">
+              {{ sortOrder === 'desc' ? 'mdi-arrow-down' : 'mdi-arrow-up' }}
+            </v-icon>
+          </v-chip>
+        </v-col>
+      </v-row>
     </v-card>
   <recipes-list :query="recipeQueries"></recipes-list>
 </template>
@@ -63,8 +89,8 @@ const dishClasses = ["ENTREE", "MAIN_DISH", "DESERT", "OTHER"]
 const source = ["My recipes", "Likes", "Cookbooks", "Follows"]
 const autocompleteList = ref([])
 
-const chosenDishType = ref([0, 1, 2])
-const chosenSource = ref([0,1])
+const selectedDishType = ref([0, 1, 2])
+const selectedSource = ref([0,1])
 const selectedIngredients = ref([])
 
 const authStore = useAuthStore()
@@ -73,25 +99,56 @@ const recipeQueries = ref("")
 import router from "@/router";
 import {searchIngredients} from "@/scripts/ingredients";
 
+const sortOptions = ref([
+  { label: "Alphabetical", value: "NAME", icon:"mdi-format-letter-case" },
+  { label: "Likes", value: "LIKES", icon:"mdi-heart" },
+  { label: "Date", value: "DATE", icon:"mdi-clock" },
+]);
+
+const selectedSort = ref(null); // Stores the selected sort field
+const sortOrder = ref("desc"); // Default order is descending
+
+const toggleSort = (field) => {
+  if (selectedSort.value === field) {
+    if (sortOrder.value === "desc") {
+      sortOrder.value = "asc"; // Toggle to ascending
+    } else {
+      selectedSort.value = null; // Unselect the chip
+    }
+  } else {
+    selectedSort.value = field;
+    sortOrder.value = "desc"; // Default to descending when newly selected
+  }
+  updateUrl()
+};
+
+const getChipColor = (field) => {
+  if (selectedSort.value === field) {
+    return sortOrder.value === "desc" ? "primary" : "primary";
+  }
+  return "background"; // Default color when unselected
+};
+
 const onIngredientAutocompleteChange = async (query) => {
   const response = await searchIngredients(query, 0, 20);
   autocompleteList.value = response.data.map(item => ({ id: item.id, name: item.name }));
 }
 
 const updateUrl = () => {
-  console.log(selectedIngredients)
   const route = router.currentRoute
+  const selectedSortOrder = sortOrder.value == "asc" ? "_ASCENDING" : "_DESCENDING"
   router.push({
     path: route.path, // Keep the current path
     query: Object.fromEntries(
       Object.entries({
         ...route.query,
-        owner: chosenSource.value.includes(0) ? authStore.id : undefined,
-        likedBy: chosenSource.value.includes(1) ? authStore.id : undefined,
-        cookbookUser: chosenSource.value.includes(2) ? authStore.id : undefined,
-        follows: chosenSource.value.includes(3) ? authStore.id : undefined,
-        dishClasses: chosenDishType.value.length > 0 ? chosenDishType.value.map(it => dishClasses[it]).join(",") : undefined,
-        ingredient: selectedIngredients.value.length > 0 ? selectedIngredients.value.map(it => it.id).join(",") : undefined
+        owner: selectedSource.value.includes(0) ? authStore.id : undefined,
+        likedBy: selectedSource.value.includes(1) ? authStore.id : undefined,
+        cookbookUser: selectedSource.value.includes(2) ? authStore.id : undefined,
+        follows: selectedSource.value.includes(3) ? authStore.id : undefined,
+        dishClasses: selectedDishType.value.length > 0 ? selectedDishType.value.map(it => dishClasses[it]).join(",") : undefined,
+        ingredient: selectedIngredients.value.length > 0 ? selectedIngredients.value.map(it => it.id).join(",") : undefined,
+        sort: selectedSort.value != null ? selectedSort.value + selectedSortOrder  : undefined
       }).filter(([_, value]) => value !== undefined) // Remove undefined values
     ),
   })
