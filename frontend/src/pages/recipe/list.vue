@@ -54,6 +54,7 @@
             clearable
             @update:modelValue="updateUrl"
             label="Ingredients"
+            max-width="500px"
           ></v-combobox>
 
         </v-col>

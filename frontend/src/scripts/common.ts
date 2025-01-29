@@ -40,7 +40,10 @@ export {
   noLoginRedirect,
 
   unitToReadable,
+
+  getUserIconUrl,
 }
+
 
 const toCreateRecipe = () => router.push(`/recipe/edit`)
 const toEditRecipe = (id) => router.push(`/recipe/edit/?id=${id}`)
@@ -77,6 +80,7 @@ const toMyProfile = () => {
 const noLoginRedirect = ['/login', '/logout', '/signup']
 
 const base_url = "http://localhost:8080/v1"
+const getUserIconUrl = (id) => `${base_url}/image/users/${id}.webp`
 
 async function login(user) {
   const result = await apiClient.post(`${base_url}/auth/login`, {}, {
