@@ -116,7 +116,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun RoutingContext.isAuthorizedToEditRecipe(recipe: RecipeInfo): Boolean {
         val currentUser = getSessionUsername() ?: return false
-        return recipe.owner == currentUser
+        return recipe.owner.username == currentUser
     }
 
 

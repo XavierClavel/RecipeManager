@@ -99,8 +99,7 @@ class Recipe (
         ingredients = ingredients.map { it.toInfo() },
         customIngredients = customIngredients.map {it.toInfo()},
 
-        owner = this.owner!!.username,
-        ownerId = this.owner!!.id,
+        owner = this.owner!!.toOverview(),
         creationDate = this.creationDate,
         editionDate = this.modificationDate,
         likesCount = this.likes.size,

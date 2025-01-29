@@ -41,7 +41,13 @@
         </v-btn-toggle>
       </v-col>
 
-       <editable-picture path="image/recipes" :id="recipeId" ref="editablePicture"></editable-picture>
+       <editable-picture
+         path="image/recipes"
+         :id="recipeId"
+         ref="editablePicture"
+         width="800px"
+         height="600px"
+       ></editable-picture>
 
 
       <v-number-input

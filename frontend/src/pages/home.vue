@@ -19,7 +19,10 @@
               <v-card-text>{{date}}</v-card-text>
             </v-card>
           </template>
-          <recipe :recipe="recipe" v-for="recipe in timelineRecipe"></recipe>
+            <v-row>
+              <recipe :recipe="recipe" v-for="recipe in timelineRecipe"></recipe>
+            </v-row>
+
           </v-timeline-item>
         </v-timeline>
   </v-layout>

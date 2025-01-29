@@ -20,9 +20,9 @@
 </template>
 
 <script lang="ts" setup>
-import {listRecipes} from "@/scripts/recipes";
-import {base_url, toCreateCookbook, toCreateRecipe, toViewCookbookRecipes, toViewRecipe} from "@/scripts/common";
-import {ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS, ICON_RECIPE_YIELD} from "@/scripts/icons";
+import {
+  toCreateCookbook,
+} from "@/scripts/common";
 import {useRoute} from "vue-router";
 import {listCookbooks} from "@/scripts/cookbooks";
 import Cookbook from "@/components/Cookbook.vue";

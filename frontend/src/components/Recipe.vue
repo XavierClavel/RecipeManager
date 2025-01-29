@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import {getRecipeIconUrl, toViewRecipe} from "@/scripts/common";
-import {ICON_RECIPE_YIELD} from "../scripts/icons";
+import {getRecipeIconUrl, getUserIconUrl, toViewRecipe, toViewUser} from "@/scripts/common";
 
 defineProps({
   recipe: {
@@ -11,66 +10,24 @@ defineProps({
 </script>
 
 <template>
-      <v-btn
-        class="ma-4"
+      <v-card
+        class="ma-4 pa-0"
         rounded="lg"
-        min-height="300px"
-        width="300px"
+        width="250px"
         @click="toViewRecipe(recipe.id)"
       >
-        <span class="flex-column">
-        <v-img
-          color="surface-variant"
-          height="169px"
-          width="300px"
-          class="mt-n3"
-          rounded="t-lg"
-          :src="getRecipeIconUrl(recipe.id)"
-          cover
-        ></v-img>
-      <v-card-item>
-        <div>
-          <div class="text-h6 mb-1 text-primary">
-            {{recipe.title}}
-          </div>
-          <div class="text-caption"></div>
-        </div>
+          <v-img
+            color="surface-variant"
+            height="187px"
+            class="mt-n2"
+            rounded="t-lg"
+            :src="getRecipeIconUrl(recipe.id)"
+            cover
+          ></v-img>
+        <v-card-title class="text-primary justify-end">{{recipe.title}}</v-card-title>
+        <user-info :user="recipe.owner" class="mt-n4"></user-info>
 
-        <span class="d-flex flex-row">
-        <span class="d-flex row align-center justify-center mx-auto">
-          <v-icon
-            class="mx-auto px-3 text-h4"
-            color="primary"
-          > {{ICON_RECIPE_YIELD}} </v-icon>
-          <v-card-text
-            class="mx-auto px-3  align-center text-h5"
-          > {{ recipe.yield }} </v-card-text>
-        </span>
-
-        <span class="d-flex row align-center justify-center mx-auto">
-          <v-icon
-            class="mx-auto px-3 text-h4"
-            color="primary"
-          > mdi-chef-hat </v-icon>
-          <v-card-text
-            class="mx-auto px-3 ml-n2  align-center text-h6"
-          > {{ recipe.preparationTime }} min </v-card-text>
-        </span>
-
-        <span class="d-flex row align-center justify-center mx-auto" v-if="recipe.cookingTime">
-          <v-icon
-            class="mx-auto px-3 text-h4"
-            color="primary"
-          > mdi-stove </v-icon>
-          <v-card-text
-            class="mx-auto px-3  align-center ml-n2 text-h6"
-          > {{ recipe.cookingTime }} min </v-card-text>
-        </span>
-      </span>
-      </v-card-item>
-          </span>
-
-    </v-btn>
+    </v-card>
 
 </template>
 

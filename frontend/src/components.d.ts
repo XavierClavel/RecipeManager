@@ -16,9 +16,11 @@ declare module 'vue' {
     InteractiblePictoInfo: typeof import('./components/InteractiblePictoInfo.vue')['default']
     PictoInfo: typeof import('./components/PictoInfo.vue')['default']
     Recipe: typeof import('./components/Recipe.vue')['default']
+    RecipeFilter: typeof import('./components/RecipeFilter.vue')['default']
     RecipeList: typeof import('./components/RecipeList.vue')['default']
     RecipesList: typeof import('./components/RecipesList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UserInfo: typeof import('./components/UserInfo.vue')['default']
   }
 }

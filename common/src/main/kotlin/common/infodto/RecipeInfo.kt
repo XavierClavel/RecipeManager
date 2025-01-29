@@ -2,6 +2,7 @@ package common.infodto
 
 import common.dto.RecipeDTO
 import common.enums.DishClass
+import common.overviewdto.UserOverview
 import kotlinx.serialization.*
 
 @Serializable
@@ -9,8 +10,7 @@ data class RecipeInfo (
     val id: Long,
     val title: String,
     val dishClass: DishClass,
-    val owner: String,
-    val ownerId: Long,
+    val owner: UserOverview,
     val description: String,
 
     val yield: Int? = null,

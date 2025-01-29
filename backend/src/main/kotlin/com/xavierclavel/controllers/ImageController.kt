@@ -101,7 +101,7 @@ object ImageController: Controller(IMAGE_URL) {
 
     private fun RoutingContext.isAuthorizedToEditRecipe(recipeId: Long) : Boolean {
         val currentUser = getSessionUsername() ?: return false
-        return  recipeService.getRecipeOwner(recipeId) != currentUser
+        return  recipeService.getRecipeOwner(recipeId)?.username != currentUser
     }
 
 

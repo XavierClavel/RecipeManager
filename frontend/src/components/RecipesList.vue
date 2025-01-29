@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import {base_url, toViewRecipe} from "@/scripts/common";
 import {listRecipes} from "@/scripts/recipes";
 import {useRoute} from "vue-router";
-import {ICON_RECIPE_YIELD} from "../scripts/icons";
 
 
 const recipes = ref<object[]>([])
@@ -26,6 +24,7 @@ updateGrid()
 const router = useRouter()
 
 router.afterEach((to, from) => {
+  console.log("router update")
   updateGrid()
 })
 
@@ -33,14 +32,9 @@ router.afterEach((to, from) => {
 </script>
 
 <template>
-  <v-layout class="rounded rounded-md d-flex flex-wrap  justify-space-evenly mt-6">
-    <span v-for="recipe in recipes" class="justify-start ">
-      <recipe :recipe="recipe"></recipe>
-    </span>
-
-
-  </v-layout>
-
+  <v-row class="ma-8">
+        <recipe :recipe="recipe" v-for="recipe in recipes"></recipe>
+  </v-row>
   <v-card
     class="rounded-xl pa-5 ma-5 d-flex flex-row"
     v-if="noRecipes"

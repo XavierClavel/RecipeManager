@@ -1,6 +1,6 @@
 <template>
   <v-card
-  class="mx-auto rounded-xl pa-5 ma-5"
+  class="rounded-xl pa-5 ma-5"
   max-width="1000px"
   >
 
@@ -85,9 +85,6 @@
           </v-col>
         </v-row>
       </v-container>
-
-
-
 
     </form>
   </v-card>

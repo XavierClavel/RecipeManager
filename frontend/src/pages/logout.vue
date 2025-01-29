@@ -1,6 +1,6 @@
 <template>
   <v-card
-  class="mx-auto rounded-xl pa-5 ma-auto my-5"
+  class="rounded-xl pa-5 ma-5"
   max-width="1000px"
   >
 
@@ -13,31 +13,37 @@
         You have successfully logged out.
       </v-card-text>
 
-      <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
-        <v-btn
-          prepend-icon="mdi-account-plus"
-          color="primary"
-          flat
-          rounded
-          class="mb-10 text-h6"
-          min-height="70px"
-          min-width="300px"
-          @click="toSignup"
-        >Sign up</v-btn>
-        <v-btn
-          @click="toLogin"
-          prepend-icon="mdi-send"
-          color="primary"
-          flat
-          rounded
-          class="mb-10 text-h6"
-          min-height="70px"
-          min-width="300px"
-        >Log in</v-btn>
-      </span>
-
-
-
+      <v-container>
+        <v-row
+          class="d-flex align-center justify-center mb-2 mt-16 gx-16"
+          dense
+        >
+          <v-col cols="12" sm="auto">
+            <v-btn
+              prepend-icon="mdi-account-plus"
+              color="primary"
+              flat
+              rounded
+              class="mb-10 text-h6"
+              min-height="70px"
+              min-width="300px"
+              @click="toSignup"
+            >Sign up</v-btn>
+          </v-col>
+          <v-col cols="12" sm="auto">
+            <v-btn
+              @click="toLogin"
+              prepend-icon="mdi-send"
+              color="primary"
+              flat
+              rounded
+              class="mb-10 text-h6"
+              min-height="70px"
+              min-width="300px"
+            >Log in</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
 
     </form>
   </v-card>

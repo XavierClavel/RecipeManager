@@ -9,12 +9,12 @@
 
   <v-img :src="imageUrl"
          @load="handleImageLoad"
-         @error="handleImageError"
+         @error="handleImageError"0
          cover
          color="surface-variant"
          :height="height"
          :width="width"
-         class="preview-image my-6"
+         class="preview-image my-6 mx-auto"
          :rounded="rounded"
          fill-height
          fluid

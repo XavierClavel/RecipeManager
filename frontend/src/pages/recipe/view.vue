@@ -23,15 +23,7 @@
       class="mx-auto px-3"
     > {{recipe.description}} </v-card-text>
 
-    <v-container class="mb-5 mx-n3">
-      <v-chip v-bind="props" link pill @click="toViewUser(recipe.ownerId)" class="">
-        <v-avatar start>
-          <v-img :src="ownerPictureUrl"></v-img>
-        </v-avatar>
-        {{ recipe.owner }}
-      </v-chip>
-
-    </v-container>
+    <user-info :user="recipe.owner" class="mt-n8 mb-4"></user-info>
 
 
 
@@ -47,9 +39,9 @@
 
     <v-img
       color="surface-variant"
-      height="562px"
-      width="1000px"
-      class="mt-n3"
+      height="600px"
+      width="800px"
+      class="mt-n3 mx-auto"
       rounded="lg"
       :src="imageUrl"
 
