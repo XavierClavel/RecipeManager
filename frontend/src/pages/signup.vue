@@ -19,7 +19,7 @@
       ></v-text-field>
 
       <v-text-field
-        v-model="user.email"
+        v-model="user.mail"
         prepend-icon="mdi-email-outline"
         label="Email address"
         class="mx-auto px-3"
@@ -113,7 +113,7 @@ const rules = {
 
 const user = ref<object>({
   username: '',
-  email: '',
+  mail: '',
   password: '',
 })
 

@@ -1,6 +1,7 @@
 package com.xavierclavel.plugins
 
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.xavierclavel.exceptions.AuthenticationException
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.logger
@@ -31,7 +32,9 @@ fun Application.configureAuthentication() {
         basic("auth-basic") {
             realm = "Access to the '/' path"
             validate { credentials ->
-                val hashedPassword = userService.findByUsername(credentials.name)?.passwordHash
+                val user = userService.findByUsername(credentials.name) ?: throw AuthenticationException("User not found")
+                if (!user.isVerified) throw AuthenticationException("User not verified")
+                val hashedPassword = user?.passwordHash
                 if (hashedPassword != null && BCrypt.verifyer().verify(credentials.password.toCharArray(), hashedPassword).verified) {
                     logger.info {"login accepted"}
                     UserIdPrincipal(credentials.name)

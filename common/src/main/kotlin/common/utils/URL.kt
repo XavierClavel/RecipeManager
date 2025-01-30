@@ -1,6 +1,7 @@
 package common.utils
 
 object URL {
+    const val BASE_URL = "http://localhost:8080"
     const val USER_URL = "v1/user"
     const val INGREDIENT_URL = "v1/ingredient"
     const val RECIPE_URL = "v1/recipe"
@@ -11,4 +12,5 @@ object URL {
     const val AUTH_URL = "v1/auth"
     const val IMAGE_URL = "v1/image"
     const val EXPORT_URL = "v1/export"
+    const val TEST_URL = "v1/test"
 }

@@ -1,8 +1,10 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.UserController.mailService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
+import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.utils.URL.AUTH_URL
 import io.ktor.http.HttpStatusCode
@@ -19,6 +21,7 @@ import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import org.koin.java.KoinJavaComponent.inject
+import java.util.UUID
 
 object AuthController: Controller(AUTH_URL) {
     val userService: UserService by inject(UserService::class.java)
@@ -56,10 +59,15 @@ object AuthController: Controller(AUTH_URL) {
     }
 
     private fun Route.signup() = post("/signup") {
+        logger.info {"here"}
         val userDTO = call.receive(UserDTO::class)
-        if (!userService.isUsernameAvailable(userDTO.username)) return@post call.respond(HttpStatusCode.Conflict)
-        if (!userService.isMailAvailable(userDTO.mail)) return@post call.respond(HttpStatusCode.BadRequest)
-        userService.createUser(userDTO)
+        logger.info {userDTO}
+        UserController.userService.findByUsername(userDTO.username) ?: return@post call.respond(HttpStatusCode.BadRequest, "Username is already used")
+        UserController.userService.findByMail(userDTO.mail) ?: return@post call.respond(HttpStatusCode.BadRequest, "Mail is already used")
+
+        val token = UUID.randomUUID().toString()
+        val userCreated = UserController.userService.createUser(userDTO, token)
+        mailService.sendVerificationEmail(userCreated.mail, token)
         call.respond(HttpStatusCode.Created)
     }
 

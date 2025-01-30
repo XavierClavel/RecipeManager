@@ -11,17 +11,24 @@ import com.xavierclavel.controllers.IngredientController
 import com.xavierclavel.controllers.RecipeController
 import com.xavierclavel.controllers.ImageController
 import com.xavierclavel.controllers.LikeController
+import com.xavierclavel.controllers.TestController
 import com.xavierclavel.controllers.UserController
+import com.xavierclavel.exceptions.AuthenticationException
+import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.utils.serve
 import com.xavierclavel.plugins.*
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.logger
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.plugins.statuspages.StatusPages
+import io.ktor.server.plugins.statuspages.exception
+import io.ktor.server.response.respond
 import io.ktor.server.routing.routing
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.ktor.ext.inject
@@ -50,6 +57,14 @@ fun Application.module() {
         allowCredentials = true
 
     }
+    install(StatusPages) {
+        exception<AuthenticationException> {call, cause ->
+            call.respond(HttpStatusCode.Unauthorized, cause.message ?: "Unknown error")
+        }
+        exception<NotFoundException> { call, cause ->
+            call.respond(HttpStatusCode.NotFound, cause.message ?: "Unknown error")
+        }
+    }
     configureAuthentication()
     serveRoutes()
 
@@ -70,6 +85,7 @@ fun Application.serveRoutes() = routing {
         serve(CookbookController)
         serve(DashboardController)
         serve(FollowController)
+        serve(TestController)
     }
     serve(AuthController)
 }

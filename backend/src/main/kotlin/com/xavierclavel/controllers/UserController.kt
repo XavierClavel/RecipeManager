@@ -1,6 +1,7 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.services.ImageService
+import com.xavierclavel.services.MailService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPaging
@@ -19,15 +20,18 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import org.koin.java.KoinJavaComponent.inject
+import java.util.UUID
 
 object UserController: Controller(USER_URL) {
     val userService : UserService by inject(UserService::class.java)
     val imageService: ImageService by inject(ImageService::class.java)
+    val mailService: MailService by inject(MailService::class.java)
 
     const val UNAUTHORIZED_TO_EDIT_OTHER_USER = "You are not authorized to edit another user."
 
     override fun Route.routes() {
         createUser()
+        verifyUser()
         editUser()
         getUser()
         listUsers()
@@ -48,8 +52,19 @@ object UserController: Controller(USER_URL) {
 
     private fun Route.createUser() = post {
         val userDTO = call.receive<UserDTO>()
+
+        userService.findByUsername(userDTO.username) ?: return@post call.respond(HttpStatusCode.BadRequest, "Username is already used")
+        userService.findByMail(userDTO.mail) ?: return@post call.respond(HttpStatusCode.BadRequest, "Mail is already used")
+
+        val token = UUID.randomUUID().toString()
         val userCreated = userService.createUser(userDTO)
+        mailService.sendVerificationEmail(userCreated.mail, token)
+
         call.respond(HttpStatusCode.Created, userCreated)
+    }
+
+    private fun Route.verifyUser() = post {
+
     }
 
     private fun Route.editUser() = put("/{id}") {

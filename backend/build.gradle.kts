@@ -26,6 +26,7 @@ application {
 }
 
 dependencies {
+    val ktorVersion = "3.0.3"
     val ebeanVersion = "15.8.0"
     val koinVersion = "4.0.0"
     val itextVersion = "8.0.5"
@@ -35,19 +36,23 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
     //Server -> Ktor
-    implementation("io.ktor:ktor-server-core-jvm")
-    implementation("io.ktor:ktor-server-webjars-jvm")
-    implementation("io.ktor:ktor-server-cors")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm")
-    implementation("io.ktor:ktor-client-content-negotiation")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
-    implementation("io.ktor:ktor-server-netty-jvm")
-    implementation("io.ktor:ktor-server-sessions")
-    implementation("io.ktor:ktor-server-auth")
+    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-webjars-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-cors:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-sessions:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
 
     implementation("org.webjars:jquery:3.2.1")
     implementation("io.github.smiley4:ktor-swagger-ui:4.0.0")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+
+    //Secrets
+    implementation("io.github.cdimascio:dotenv-kotlin:6.5.0")
 
     //Dependency injection -> Koin
     implementation("io.insert-koin:koin-ktor:$koinVersion")
@@ -77,6 +82,8 @@ dependencies {
     implementation("com.itextpdf:itext-core:$itextVersion")
     implementation("com.itextpdf:bouncy-castle-adapter:$itextVersion")
 
+    //Mail
+    implementation("org.eclipse.angus:jakarta.mail:2.0.3")
 
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")

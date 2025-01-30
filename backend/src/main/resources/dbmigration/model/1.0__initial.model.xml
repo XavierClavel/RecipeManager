@@ -93,11 +93,13 @@
         </createTable>
         <createTable name="users" pkName="pk_users">
             <column name="id" type="bigint" primaryKey="true"/>
-            <column name="username" type="varchar" notnull="true"/>
-            <column name="password_hash" type="varchar" notnull="true"/>
-            <column name="mail_hash" type="varchar" notnull="true"/>
+            <column name="username" type="varchar" notnull="true" unique="uq_users_username"/>
+            <column name="mail" type="varchar" notnull="true" unique="uq_users_mail"/>
             <column name="role" type="integer" notnull="true" checkConstraint="check ( role in (0,1))" checkConstraintName="ck_users_role"/>
+            <column name="password_hash" type="varchar" notnull="true"/>
             <column name="bio" type="varchar" notnull="true"/>
+            <column name="verification_token" type="varchar" notnull="true"/>
+            <column name="is_verified" type="boolean" defaultValue="false" notnull="true"/>
             <column name="account_visibility" type="integer" notnull="true" checkConstraint="check ( account_visibility in (0,1,2))" checkConstraintName="ck_users_account_visibility"/>
             <column name="auto_accept_follow_requestss" type="boolean" defaultValue="false" notnull="true"/>
             <column name="join_date" type="bigint" notnull="true"/>

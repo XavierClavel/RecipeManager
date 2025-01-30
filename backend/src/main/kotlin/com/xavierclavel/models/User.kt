@@ -11,12 +11,14 @@ import common.enums.Visibility
 import common.overviewdto.UserOverview
 import io.ebean.Model
 import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import java.time.Instant
+import java.util.UUID
 
 @Entity
 @Table(name = "users")
@@ -25,15 +27,21 @@ class User (
     @Id
     var id: Long = 0,
 
+    @Column(unique = true)
     var username: String = "",
 
-    var passwordHash: String = "",
-
-    val mailHash: String = "",
+    @Column(unique = true)
+    val mail: String = "",
 
     var role: UserRole = UserRole.USER,
 
+    var passwordHash: String = "",
+
     var bio: String = "",
+
+    //Validation
+    var verificationToken: String = "",
+    var isVerified: Boolean = false,
 
     //Privacy
     var accountVisibility : Visibility = Visibility.PUBLIC,
@@ -64,15 +72,14 @@ class User (
     ): Model() {
 
     companion object {
-        fun from(userDTO: UserDTO): User {
+        fun from(userDTO: UserDTO, token: String): User {
             val passwordHash = BCrypt.withDefaults().hashToString(12, userDTO.password.toCharArray())
-            val mailHash = BCrypt.withDefaults().hashToString(12, userDTO.mail.toCharArray())
-
             return User(
                 username = userDTO.username,
-                passwordHash = passwordHash,
-                mailHash = mailHash,
+                mail = userDTO.mail,
                 role = userDTO.role,
+                passwordHash = passwordHash,
+                verificationToken = token,
             )
         }
     }
@@ -104,5 +111,9 @@ class User (
     fun merge(userDTO: UserDTO) = this.apply {
         username = userDTO.username
         bio = userDTO.bio
+    }
+
+    fun validate() = this.apply {
+        isVerified = true
     }
 }

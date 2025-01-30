@@ -12,6 +12,7 @@ import common.infodto.UserInfo
 import common.enums.UserRole
 import common.infodto.IngredientInfo
 import io.ebean.Paging
+import io.ktor.server.plugins.NotFoundException
 import org.koin.core.component.KoinComponent
 import java.time.Instant
 
@@ -32,13 +33,11 @@ class UserService: KoinComponent {
         QUser().username.eq(username).findOne()
 
     fun findByMail(mail: String) : User? {
-        val mailHash = BCrypt.withDefaults().hashToString(12,mail.toCharArray())
-        logger.info {mailHash}
-        return QUser().mailHash.eq(mailHash).findOne()
+        return QUser().mail.eq(mail).findOne()
     }
 
-    fun createUser(userDTO: UserDTO): UserInfo =
-        User.from(userDTO).insertAndGet().toInfo()
+    fun createUser(userDTO: UserDTO, token: String = ""): User =
+        User.from(userDTO, token).insertAndGet()
 
     fun editUser(id: Long, userDTO: UserDTO): UserInfo? =
         QUser().id.eq(id).findOne()?.merge(userDTO)?.updateAndGet()?.toInfo()
@@ -64,12 +63,22 @@ class UserService: KoinComponent {
     //TODO :parameterize password
     fun setupDefaultAdmin() {
         if (findByUsername("admin") != null) return
-        createUser(UserDTO(
+        val user = createUser(UserDTO(
             username = "admin",
             password = "Passw0rd",
             role = UserRole.ADMIN,
         ))
+        validateUser(user.id)
     }
+
+    fun verifyUser(token:String): UserInfo {
+        val user = QUser().verificationToken.eq(token).findOne() ?: throw NotFoundException("Invalid verification token")
+        return user.validate().toInfo()
+    }
+
+    fun validateUser(id: Long) =
+        findEntityById(id)?.validate()?.updateAndGet()
+
 
     fun isUsernameAvailable(username: String): Boolean =
         findByUsername(username) == null
