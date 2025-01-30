@@ -4,8 +4,7 @@
       <cookbook :cookbook="cookbook"></cookbook>
     </span>
     <v-btn
-      :color="color"
-      :variant="variant"
+      color="surface"
       class="ma-4 text-h1 text-primary"
       rounded="lg"
       min-height="300px"

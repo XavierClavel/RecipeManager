@@ -4,7 +4,6 @@
   max-width="1000px"
   >
 
-
     <form @submit.prevent="submit" class="mx-auto">
       <v-text-field
         v-model="cookbook.title"
@@ -30,12 +29,9 @@
         variant="outlined"
         max-width="200px"
         color="primary"
-      >
+      ></v-select>
 
-      </v-select>
-
-      <v-icon
-      >
+      <v-icon>
         <v-tooltip
           activator="parent"
           location="end"
@@ -45,7 +41,13 @@
 
 
 
-       <editable-picture path="image/cookbooks" :id="cookbookId" ref="editablePicture"></editable-picture>
+       <editable-picture
+         path="image/cookbooks"
+         :id="cookbookId"
+         ref="editablePicture"
+         width="600px"
+         height="600px"
+       ></editable-picture>
 
       <!-- Ingredients -->
       <h2 class="my-3" >Users</h2>
@@ -117,7 +119,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-          @click="toViewRecipe(cookbookId)"
+          @click="toViewCookbookRecipes(cookbookId)"
         >Cancel</v-btn>
         <v-btn
           @click="submit"

@@ -136,7 +136,6 @@ const updateUrl = () => {
           item-title="name"
           item-value="id"
           @update:search="(query) => onIngredientAutocompleteChange(query)"
-          :key="index"
           return-object
           multiple
           chips

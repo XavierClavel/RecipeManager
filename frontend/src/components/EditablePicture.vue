@@ -9,7 +9,7 @@
 
   <v-img :src="imageUrl"
          @load="handleImageLoad"
-         @error="handleImageError"0
+         @error="handleImageError"
          cover
          color="surface-variant"
          :height="height"

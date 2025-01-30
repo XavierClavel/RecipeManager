@@ -47,36 +47,42 @@ export {
 }
 
 
-const toCreateRecipe = () => router.push(`/recipe/edit`)
-const toEditRecipe = (id) => router.push(`/recipe/edit/?id=${id}`)
-const toViewRecipe = (id) => router.push(`/recipe/view/?id=${id}`)
-const toListRecipe = (search) => router.push(`/recipe/list${search}`)
+const toCreateRecipe = () => navigateTo(`/recipe/edit`)
+const toEditRecipe = (id) => navigateTo(`/recipe/edit/?id=${id}`)
+const toViewRecipe = (id) => navigateTo(`/recipe/view/?id=${id}`)
+const toListRecipe = (search) => navigateTo(`/recipe/list${search}`)
 
-const toViewUser = (id) => router.push(`/user/view/?id=${id}`)
-const toEditUser = (id) => router.push(`/user/edit/?id=${id}`)
+const toViewUser = (id) => navigateTo(`/user/view/?id=${id}`)
+const toEditUser = (id) => navigateTo(`/user/edit/?id=${id}`)
 
-const toListIngredient = () => router.push(`/ingredients`)
-const toViewIngredient = (id) => router.push(`/ingredient/view?ingredient=${id}`)
+const toListIngredient = () => navigateTo(`/ingredients`)
+const toViewIngredient = (id) => navigateTo(`/ingredient/view?ingredient=${id}`)
 
-const toCreateCookbook = () => router.push(`/cookbook/edit`)
-const toEditCookbook = (id) => router.push(`/cookbook/edit?cookbook=${id}`)
-const toCreateCookbookAddRecipe = (id) => router.push(`/cookbook/edit?addRecipe=${id}`)
-const toViewCookbookRecipes = (id) => router.push(`/cookbook/recipes?cookbook=${id}`)
-const toListCookbooks = (id) => router.push(`/cookbook/list?user=${id}`)
+const toCreateCookbook = () => navigateTo(`/cookbook/edit`)
+const toEditCookbook = (id) => navigateTo(`/cookbook/edit?cookbook=${id}`)
+const toCreateCookbookAddRecipe = (id) => navigateTo(`/cookbook/edit?addRecipe=${id}`)
+const toViewCookbookRecipes = (id) => navigateTo(`/cookbook/recipes?cookbook=${id}`)
+const toListCookbooks = (id) => navigateTo(`/cookbook/list?user=${id}`)
 
 const toMyCookbooks = () => {
   const authStore = useAuthStore();
   toListCookbooks(authStore.id)
 }
 
-const toHome = () => router.push('/home')
-const toUsers = () => router.push('/users')
-const toLogin = () => router.push('/login')
-const toSignup = () => router.push('/signup')
+const toHome = () => navigateTo('/home')
+const toUsers = () => navigateTo('/users')
+const toLogin = () => navigateTo('/login')
+const toSignup = () => navigateTo('/signup')
 
 const toMyProfile = () => {
   const authStore = useAuthStore();
-  router.push(`/user/view?id=${authStore.id}`)
+  navigateTo(`/user/view?id=${authStore.id}`)
+}
+
+function navigateTo(path) {
+  nextTick(() => {
+    router.push(path)
+  })
 }
 
 const noLoginRedirect = ['/login', '/logout', '/signup']
@@ -95,7 +101,7 @@ async function login(user) {
     withCredentials: true
   })
   if (result.status == 200) {
-    router.push(`/home`)
+    navigateTo(`/home`)
     const authStore = useAuthStore();
     authStore.login()
   }
@@ -105,7 +111,7 @@ async function login(user) {
 async function signup(user) {
   const result = await apiClient.post(`/auth/signup`, user)
   if (result.status == 200) {
-    router.push(`/login`)
+    navigateTo(`/login`)
   }
   return result
 }
@@ -115,7 +121,7 @@ async function logout() {
     withCredentials: true
   })
   if (result.status == 200) {
-    router.push(`/logout`)
+    navigateTo(`/logout`)
     const authStore = useAuthStore();
     authStore.logout()
   }

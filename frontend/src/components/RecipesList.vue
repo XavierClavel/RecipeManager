@@ -5,13 +5,13 @@ import {useRoute} from "vue-router";
 
 const recipes = ref<object[]>([])
 const noRecipes = ref(false)
-
-console.log("list recipes")
+const router = useRouter()
+const routesToCheck = ["/recipe/list", "/ingredient/view", "/cookbook/recipes"]
 
 const updateGrid = () => {
   listRecipes(window.location.search).then(
     function (response) {
-      console.log(response)
+      console.log(`recipes from ${router.currentRoute.value.name}`, response)
       recipes.value = response.data
       noRecipes.value = recipes.value.length == 0
     }
@@ -21,11 +21,18 @@ const updateGrid = () => {
 updateGrid()
 
 
-const router = useRouter()
 
-router.afterEach((to, from) => {
-  console.log("router update")
+const removeAfterEach = router.afterEach((to, from) => {
+  if (!routesToCheck.includes(router.currentRoute.value.name)) {
+    return
+  }
   updateGrid()
+})
+
+// Cleanup when the component is unmounted
+onUnmounted(() => {
+  console.log("unmouting")
+  removeAfterEach() // Remove the navigation guard
 })
 
 

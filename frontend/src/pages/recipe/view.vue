@@ -43,7 +43,7 @@
       width="800px"
       class="mt-n3 mx-auto"
       rounded="lg"
-      :src="imageUrl"
+      :src="getRecipeIconUrl(recipe.id)"
 
       cover
     ></v-img>
@@ -258,7 +258,7 @@ import { useRoute } from 'vue-router';
 import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {
-  base_url,
+  base_url, getRecipeIconUrl,
   toCreateCookbookAddRecipe,
   toEditRecipe,
   toListRecipe, toViewIngredient, toViewUser,
@@ -279,24 +279,22 @@ const recipeLiked = ref<string>(null)
 const snackbar = ref(false)
 
 const userCookbooks = ref([])
-
-const imageUrl = computed(() => `${base_url}/image/recipes/${recipeId}.webp`);
-const ownerPictureUrl = computed(() => `${base_url}/image/users/${recipe.value.ownerId}.webp`);
 const authStore = useAuthStore()
 const userId = authStore.id
 
 const recipe = ref<object>({
   steps: [''],
   ingredients: [],
+  owner: {}
 })
 
 getRecipe(recipeId).then (
   function (response) {
     recipe.value = response.data
-    console.log(recipe.value)
+    console.log("Recipe", recipe.value)
     const authStore = useAuthStore()
     isOwner.value = response.data.owner == authStore.username
-    console.log(response.data.owner)
+    console.log("Recipe owner", recipe.value.owner)
   }).catch(function (error) {
     displayError.value = true
   console.log(error);
@@ -317,8 +315,7 @@ const updateCookbook = () => {
   getStatusInCookbooks(userId, recipeId).then(
     function (response) {
       userCookbooks.value = [...response.data]
-      console.log(response.data)
-      console.log(userCookbooks.value)
+      console.log("status in cookbooks",response.data)
     }
   )
 }

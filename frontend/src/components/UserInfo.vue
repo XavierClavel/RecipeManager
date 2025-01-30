@@ -11,7 +11,7 @@ defineProps({
 
 <template>
     <v-container>
-      <v-chip v-bind="props" link pill @click="toViewUser(user.id)" class="">
+      <v-chip link pill @click="toViewUser(user.id)" class="">
         <v-avatar start>
           <v-img :src="getUserIconUrl(user.id)"></v-img>
         </v-avatar>

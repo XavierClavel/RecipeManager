@@ -12,8 +12,6 @@ defineProps({
 
 <template>
   <v-card
-    :color="color"
-    :variant="variant"
     class="ma-4"
     rounded="lg"
     width="250px"

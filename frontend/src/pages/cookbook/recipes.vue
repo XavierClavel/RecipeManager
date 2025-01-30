@@ -2,7 +2,6 @@
 
   <v-card
     class="rounded-xl pa-5 ma-5"
-    v-if="!displayError"
   >
     <v-container class="d-flex flex-row">
       <v-img
