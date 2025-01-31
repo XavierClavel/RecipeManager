@@ -42,7 +42,7 @@
     </v-container>
 
     <v-btn
-      v-if="followsUser != null"
+      v-if="userId != currentUserId"
       prepend-icon="mdi-plus-box-outline"
       color="primary"
       rounded="lg"
@@ -51,7 +51,7 @@
       @click="followUnfollow"
     >{{ followsUser ? "Unfollow" : "Follow" }}</v-btn>
 
-    <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" v-if="isOwner" >
+    <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" v-if="userId == currentUserId" >
 
       <v-btn
         prepend-icon="mdi-pencil"
@@ -64,6 +64,7 @@
         @click="toEditUser(userId)"
       >Edit</v-btn>
     </span>
+    <error :error="errorMessage"></error>
 
 
   </v-card>
@@ -72,9 +73,8 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import {deleteRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
-import {base_url, toEditRecipe, toEditUser, toListRecipe} from "@/scripts/common";
+import {base_url, toEditUser, toListRecipe} from "@/scripts/common";
 import {getUser} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {follow, isFollowingUser, unfollow} from "@/scripts/follows";
@@ -84,13 +84,21 @@ import {ICON_USER_FOLLOWERS, ICON_USER_FOLLOWS, ICON_USER_LIKES, ICON_USER_RECIP
 // Get the route object
 const route = useRoute();
 const userId = route.query.id
-let displayError = ref<boolean>(false)
-const errorMessage = ref<string>("This user does not exist")
-const isOwner = true
+const errorMessage = ref(null)
+const authStore = useAuthStore();
+const currentUserId = authStore.id
 
 const user = ref<object>({})
 const imageUrl = computed(() => `${base_url}/image/users/${userId}.webp`);
 const followsUser = ref(null)
+
+isFollowingUser(userId).then (
+  function (response) {
+    console.log(response)
+    followsUser.value = response.data
+  }).catch(function (error) {
+    errorMessage.value = error.response.data
+})
 
 const redirectRecipesOwned = () => {
   toListRecipe(`?owner=${userId}`)
@@ -101,8 +109,16 @@ const redirectRecipesLiked = () => {
 }
 
 const followUnfollow = () => {
-  if (followsUser) unfollow(userId)
-  else follow(userId)
+  if (followsUser.value) {
+    unfollow(userId).catch(function (error) {
+      errorMessage.value = error.response.data
+    })
+  }
+  else {
+    follow(userId).catch(function (error) {
+      errorMessage.value = error.response.data
+    })
+  }
   followsUser.value = !followsUser.value
   updateUser()
 }
@@ -114,18 +130,9 @@ const updateUser = () => {
       console.log(response)
       user.value = response.data
     }).catch(function (error) {
-    displayError.value = true
-    console.log(error);
-    console.log(displayError)
-  }).finally(function () {
-    // always executed
+    errorMessage.value = error.response.data
   });
 }
 
 updateUser()
-
-const authStore = useAuthStore()
-if (authStore.id == userId) {
-  followsUser.value = isFollowingUser(userId)
-}
 </script>

@@ -57,13 +57,7 @@ import {login, toLogin, toSignup} from '@/scripts/common'
 
 // Get the route object
 const route = useRoute();
-const show1 = ref<boolean>(false)
 
-const rules = {
-    required: value => !!value || 'Required.',
-    min: v => v.length >= 8 || 'Min 8 characters',
-    passwordMatch: () => user.value.password == password2.value || `Passwords do not match`,
-  }
 
 const user = ref<object>({
   username: '',
@@ -76,7 +70,6 @@ const submit = () => {
   console.log(user.password)
   console.log(user)
   login(user.value)
-  //createRecipe(recipe)
 }
 
 

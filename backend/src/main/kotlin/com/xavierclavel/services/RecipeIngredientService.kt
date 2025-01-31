@@ -1,12 +1,12 @@
 package com.xavierclavel.services
 
-import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.jointables.RecipeIngredient
 import com.xavierclavel.models.jointables.query.QRecipeIngredient
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.log
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
+import io.ktor.server.plugins.NotFoundException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

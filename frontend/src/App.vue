@@ -108,7 +108,6 @@ import {
   toListIngredient,
   toListRecipe, toMyCookbooks, toMyProfile,
   toUsers,
-  whoami
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
 

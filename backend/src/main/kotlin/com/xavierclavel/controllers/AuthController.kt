@@ -61,7 +61,7 @@ object AuthController: Controller(AUTH_URL) {
 
     private fun Route.whoami() = get("/me") {
         val userSession = call.sessions.get<UserSession>()
-        if (userSession == null) return@get call.respond(HttpStatusCode.Unauthorized)
+        if (userSession == null) return@get call.respond(HttpStatusCode.Unauthorized, "Session expired")
         val userInfo = userService.getUserByUsername(userSession.username)!!
         call.respond(userInfo)
     }

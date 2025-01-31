@@ -13,9 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {login, toSignup} from '@/scripts/common'
 
 // Get the route object
 const route = useRoute();

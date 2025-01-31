@@ -1,7 +1,6 @@
 package com.xavierclavel.services
 
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.Cookbook
 import com.xavierclavel.models.User
 import com.xavierclavel.models.jointables.CookbookRecipe
@@ -30,6 +29,7 @@ import common.overviewdto.CookbookRecipeOverview
 import io.ebean.ExpressionList
 import io.ebean.FetchConfig
 import io.ebean.Paging
+import io.ktor.server.plugins.NotFoundException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

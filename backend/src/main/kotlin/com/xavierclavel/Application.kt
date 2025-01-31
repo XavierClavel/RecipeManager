@@ -14,7 +14,6 @@ import com.xavierclavel.controllers.LikeController
 import com.xavierclavel.controllers.TestController
 import com.xavierclavel.controllers.UserController
 import com.xavierclavel.exceptions.AuthenticationException
-import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.utils.serve
 import com.xavierclavel.plugins.*
 import com.xavierclavel.services.UserService
@@ -26,6 +25,7 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.BadRequestException
+import io.ktor.server.plugins.NotFoundException
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.plugins.statuspages.exception

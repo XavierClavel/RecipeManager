@@ -1,10 +1,9 @@
 <template>
+  <v-container class="mx-auto" align="center">
   <v-card
   class="rounded-xl pa-5 ma-5"
   max-width="1000px"
   >
-
-
     <form @submit.prevent="submit" class="mx-auto">
       <v-card-title class="text-primary text-h3">
         Signup
@@ -67,9 +66,9 @@
               color="primary"
               flat
               rounded
-              class="mb-10 text-h6"
+              class="mb-10 text-h6 mx-4"
               min-height="70px"
-              min-width="300px"
+              min-width="200px"
               @click="toLogin"
             >Log in</v-btn>
             <v-btn
@@ -78,9 +77,9 @@
               color="primary"
               flat
               rounded
-              class="mb-10 text-h6"
+              class="mb-10 text-h6 mx-4"
               min-height="70px"
-              min-width="300px"
+              min-width="200px"
             >Sign up</v-btn>
           </v-col>
         </v-row>
@@ -88,6 +87,7 @@
 
     </form>
   </v-card>
+  </v-container>
 
 </template>
 
