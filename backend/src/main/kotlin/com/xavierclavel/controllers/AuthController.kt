@@ -70,8 +70,8 @@ object AuthController: Controller(AUTH_URL) {
         logger.info {"here"}
         val userDTO = call.receive(UserDTO::class)
         logger.info {userDTO}
-        if (UserController.userService.findByUsername(userDTO.username) != null) return@post call.respond(HttpStatusCode.BadRequest, "Username is already used")
-        if (UserController.userService.findByMail(userDTO.mail) != null) return@post call.respond(HttpStatusCode.BadRequest, "Mail is already used")
+        if (UserController.userService.existsByUsername(userDTO.username)) return@post call.respond(HttpStatusCode.BadRequest, "Username is already used")
+        if (UserController.userService.existsByMail(userDTO.mail)) return@post call.respond(HttpStatusCode.BadRequest, "Mail is already used")
 
         val token = UUID.randomUUID().toString()
         val userCreated = UserController.userService.createUser(userDTO, token)

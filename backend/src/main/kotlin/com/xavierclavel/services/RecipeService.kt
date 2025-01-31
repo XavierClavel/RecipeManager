@@ -78,7 +78,7 @@ class RecipeService: KoinComponent {
                 if (recipeFilter.hasAdditiveFilters()) {
                     this.or()
                         .filterByLikes(recipeFilter.likedBy)
-                        .filterByOwner(recipeFilter.owner)
+                        .filterByOwner(recipeFilter.user)
                         .filterByCookbook(recipeFilter.cookbook)
                         .filterByUserCookbooks(recipeFilter.cookbookUser)
                         .endOr()

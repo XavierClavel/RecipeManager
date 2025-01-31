@@ -55,7 +55,7 @@ suspend fun HttpClient.getRecipe(recipeId: Long): RecipeInfo {
 }
 
 suspend fun HttpClient.listRecipes(
-    owner: Long? = null,
+    user: Long? = null,
     sort: Sort? = null,
     cookbook: Long? = null,
     likedBy: Long? = null,
@@ -66,7 +66,7 @@ suspend fun HttpClient.listRecipes(
 ): List<RecipeInfo> {
     this.get(RECIPE_URL) {
         url {
-            owner?.let { parameters.append("owner", it.toString()) }
+            user?.let { parameters.append("user", it.toString()) }
             cookbook?.let {parameters.append("cookbook", it.toString())}
             likedBy?.let { parameters.append("likedBy", it.toString()) }
             sort?.let { parameters.append("sort", it.toString()) }

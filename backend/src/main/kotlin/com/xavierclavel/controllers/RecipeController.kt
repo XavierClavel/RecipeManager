@@ -55,7 +55,7 @@ object RecipeController: Controller(RECIPE_URL) {
         val paging = getPaging()
         val sort = getSort()
         val recipeFilter = RecipeFilter(
-            owner = getIdPathVariable(RecipeFilter::owner.name),
+            user = getIdPathVariable(RecipeFilter::user.name),
             likedBy = getIdPathVariable(RecipeFilter::likedBy.name),
             cookbook = getIdPathVariable(RecipeFilter::cookbook.name),
             cookbookUser = getIdPathVariable(RecipeFilter::cookbookUser.name),

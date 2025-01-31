@@ -53,8 +53,12 @@ const toEditRecipe = (id) => navigateTo(`/recipe/edit/?id=${id}`)
 const toViewRecipe = (id) => navigateTo(`/recipe/view/?id=${id}`)
 const toListRecipe = (search) => navigateTo(`/recipe/list${search}`)
 
-const toViewUser = (id) => navigateTo(`/user/view/?id=${id}`)
-const toEditUser = (id) => navigateTo(`/user/edit/?id=${id}`)
+const toViewUser = (id) => navigateTo(`/user/view/?user=${id}`)
+const toMyProfile = () => {
+  const authStore = useAuthStore();
+  navigateTo(`/user/view?user=${authStore.id}`)
+}
+const toEditUser = (id) => navigateTo(`/user/edit/?user=${id}`)
 
 const toListIngredient = () => navigateTo(`/ingredients`)
 const toViewIngredient = (id) => navigateTo(`/ingredient/view?ingredient=${id}`)
@@ -74,11 +78,6 @@ const toHome = () => navigateTo('/home')
 const toUsers = () => navigateTo('/users')
 const toLogin = () => navigateTo('/login')
 const toSignup = () => navigateTo('/signup')
-
-const toMyProfile = () => {
-  const authStore = useAuthStore();
-  navigateTo(`/user/view?id=${authStore.id}`)
-}
 
 function navigateTo(path) {
   nextTick(() => {

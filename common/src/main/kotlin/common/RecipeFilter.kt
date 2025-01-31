@@ -3,7 +3,7 @@ package common
 import common.enums.DishClass
 
 data class RecipeFilter(
-    val owner: Long? = null,
+    val user: Long? = null,
     val likedBy: Long? = null,
     val cookbook: Long? = null,
     val cookbookUser: Long? = null,
@@ -18,7 +18,7 @@ data class RecipeFilter(
         !search.isNullOrBlank()
 
     fun hasAdditiveFilters(): Boolean =
-        owner != null ||
+        user != null ||
         likedBy != null ||
         cookbook != null ||
         cookbookUser != null

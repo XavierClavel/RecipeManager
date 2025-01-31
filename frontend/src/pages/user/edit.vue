@@ -74,30 +74,19 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import {
-  createRecipe,
-  deleteRecipe,
-  deleteRecipeImage,
-  getRecipe,
-  updateRecipe,
-  uploadRecipeImage
-} from "@/scripts/recipes";
 import {ref} from "vue";
-import {toEditRecipe, toListRecipe, toViewRecipe, toViewUser} from "@/scripts/common";
-import {getUser, getUserRecipesCount, updateUser} from "@/scripts/users";
-import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
+import {toViewUser} from "@/scripts/common";
+import {getUser, updateUser} from "@/scripts/users";
 import EditablePicture from "@/components/EditablePicture.vue";
 
 // Get the route object
 const route = useRoute();
-const userId = route.query.id
+const userId = route.query.user
 let displayError = ref<Boolean>(false)
 const errorMessage = ref<String>("This user does not exist")
-const isOwner = true
 const editablePicture = ref(null)
 
 const user = ref<object>({})
-const recipesOwned = ref<number>(0)
 
 getUser(userId).then (
   function (response) {
@@ -107,9 +96,7 @@ getUser(userId).then (
     displayError.value = true
   console.log(error);
     console.log(displayError)
-}).finally(function () {
-  // always executed
-});
+})
 
 async function submit() {
   const submitted = {}

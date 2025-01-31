@@ -76,7 +76,7 @@ const updateUrl = () => {
     query: Object.fromEntries(
       Object.entries({
         ...route.query,
-        owner: selectedSource.value.includes(0) ? authStore.id : undefined,
+        user: selectedSource.value.includes(0) ? authStore.id : undefined,
         likedBy: selectedSource.value.includes(1) ? authStore.id : undefined,
         cookbookUser: selectedSource.value.includes(2) ? authStore.id : undefined,
         follows: selectedSource.value.includes(3) ? authStore.id : undefined,

@@ -69,6 +69,8 @@
 
   </v-card>
 
+  <recipes-list></recipes-list>
+
 </template>
 
 <script lang="ts" setup>
@@ -80,10 +82,11 @@ import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {follow, isFollowingUser, unfollow} from "@/scripts/follows";
 import {useAuthStore} from "@/stores/auth";
 import {ICON_USER_FOLLOWERS, ICON_USER_FOLLOWS, ICON_USER_LIKES, ICON_USER_RECIPES} from "@/scripts/icons";
+import RecipesList from "@/components/RecipesList.vue";
 
 // Get the route object
 const route = useRoute();
-const userId = route.query.id
+const userId = route.query.user
 const errorMessage = ref(null)
 const authStore = useAuthStore();
 const currentUserId = authStore.id
