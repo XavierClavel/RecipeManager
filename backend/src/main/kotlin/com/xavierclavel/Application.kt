@@ -25,6 +25,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.plugins.statuspages.exception
@@ -63,6 +64,9 @@ fun Application.module() {
         }
         exception<NotFoundException> { call, cause ->
             call.respond(HttpStatusCode.NotFound, cause.message ?: "Unknown error")
+        }
+        exception<BadRequestException> {call, cause ->
+            call.respond(HttpStatusCode.BadRequest, cause.message ?: "Unknown error")
         }
     }
     configureAuthentication()

@@ -34,8 +34,7 @@ fun Application.configureAuthentication() {
             validate { credentials ->
                 val user = userService.findByUsername(credentials.name) ?: throw AuthenticationException("User not found")
                 if (!user.isVerified) throw AuthenticationException("User not verified")
-                val hashedPassword = user?.passwordHash
-                if (hashedPassword != null && BCrypt.verifyer().verify(credentials.password.toCharArray(), hashedPassword).verified) {
+                if (BCrypt.verifyer().verify(credentials.password.toCharArray(), user.passwordHash).verified) {
                     logger.info {"login accepted"}
                     UserIdPrincipal(credentials.name)
                 } else {

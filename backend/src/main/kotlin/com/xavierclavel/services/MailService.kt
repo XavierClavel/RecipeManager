@@ -1,7 +1,9 @@
 package com.xavierclavel.services
 
+import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.utils.URL.BASE_URL
+import common.utils.URL.FRONTEND_URL
 import common.utils.URL.USER_URL
 import org.koin.core.component.KoinComponent
 import jakarta.mail.*
@@ -22,7 +24,7 @@ class MailService: KoinComponent {
     }
 
     fun sendVerificationEmail(mail: String, token: String) {
-        val link = "$BASE_URL/$USER_URL/verify?token=$token"
+        val link = "$FRONTEND_URL/user/verify?token=$token"
         val body = """
             Hello ! 
             
@@ -32,7 +34,12 @@ class MailService: KoinComponent {
             Have a great day, 
             Xavier
         """.trimIndent()
-        sendEmail(mail, MAIL_TITLE_VERIFICATION, body)
+        try {
+            sendEmail(mail, MAIL_TITLE_VERIFICATION, body)
+        } catch (e: Exception) {
+            logger.error{"Token: $token"}
+        }
+
     }
 
 

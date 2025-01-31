@@ -11,6 +11,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.principal
+import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -34,6 +35,7 @@ object AuthController: Controller(AUTH_URL) {
             whoami()
         }
         logout()
+        verifyUser()
         signup()
         resetPassword()
     }
@@ -51,6 +53,12 @@ object AuthController: Controller(AUTH_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
+    private fun Route.verifyUser() = post("/verify") {
+        val token = call.queryParameters["token"] ?: throw BadRequestException("Token is missing")
+        userService.verifyUser(token)
+        call.respond(HttpStatusCode.OK)
+    }
+
     private fun Route.whoami() = get("/me") {
         val userSession = call.sessions.get<UserSession>()
         if (userSession == null) return@get call.respond(HttpStatusCode.Unauthorized)
@@ -62,8 +70,8 @@ object AuthController: Controller(AUTH_URL) {
         logger.info {"here"}
         val userDTO = call.receive(UserDTO::class)
         logger.info {userDTO}
-        UserController.userService.findByUsername(userDTO.username) ?: return@post call.respond(HttpStatusCode.BadRequest, "Username is already used")
-        UserController.userService.findByMail(userDTO.mail) ?: return@post call.respond(HttpStatusCode.BadRequest, "Mail is already used")
+        if (UserController.userService.findByUsername(userDTO.username) != null) return@post call.respond(HttpStatusCode.BadRequest, "Username is already used")
+        if (UserController.userService.findByMail(userDTO.mail) != null) return@post call.respond(HttpStatusCode.BadRequest, "Mail is already used")
 
         val token = UUID.randomUUID().toString()
         val userCreated = UserController.userService.createUser(userDTO, token)

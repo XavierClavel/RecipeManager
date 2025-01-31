@@ -11,6 +11,7 @@ import common.dto.UserDTO
 import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.USER_URL
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -31,7 +32,6 @@ object UserController: Controller(USER_URL) {
 
     override fun Route.routes() {
         createUser()
-        verifyUser()
         editUser()
         getUser()
         listUsers()
@@ -61,10 +61,6 @@ object UserController: Controller(USER_URL) {
         mailService.sendVerificationEmail(userCreated.mail, token)
 
         call.respond(HttpStatusCode.Created, userCreated)
-    }
-
-    private fun Route.verifyUser() = post {
-
     }
 
     private fun Route.editUser() = put("/{id}") {

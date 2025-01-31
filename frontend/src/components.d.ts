@@ -10,6 +10,7 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     Cookbook: typeof import('./components/Cookbook.vue')['default']
     EditablePicture: typeof import('./components/EditablePicture.vue')['default']
+    Error: typeof import('./components/Error.vue')['default']
     FileUpload: typeof import('./components/FileUpload.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Interactible: typeof import('./components/Interactible.vue')['default']

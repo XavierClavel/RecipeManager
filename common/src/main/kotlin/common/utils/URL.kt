@@ -2,6 +2,7 @@ package common.utils
 
 object URL {
     const val BASE_URL = "http://localhost:8080"
+    const val FRONTEND_URL = "http://localhost:3000"
     const val USER_URL = "v1/user"
     const val INGREDIENT_URL = "v1/ingredient"
     const val RECIPE_URL = "v1/recipe"

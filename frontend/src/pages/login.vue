@@ -9,6 +9,7 @@
       <v-card-title class="text-primary text-h3">
         Login
       </v-card-title>
+      <error :error="errorMessage"></error>
       <v-text-field
         v-model="user.username"
         prepend-icon="mdi-account"
@@ -83,6 +84,7 @@ import {login, toSignup} from '@/scripts/common'
 // Get the route object
 const route = useRoute();
 const show1 = ref<boolean>(false)
+const errorMessage = ref(null)
 
 const rules = {
     required: value => !!value || 'Required.',
@@ -98,9 +100,11 @@ const user = ref<object>({
 
 
 const submit = () => {
-  console.log(user.password)
-  console.log(user)
-  login(user.value)
+  errorMessage.value = null
+  login(user.value).catch(function (error) {
+    errorMessage.value = error.response.data
+    console.log(error);
+  })
   //createRecipe(recipe)
 }
 

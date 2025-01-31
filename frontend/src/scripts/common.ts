@@ -8,6 +8,7 @@ export {
   login,
   logout,
   signup,
+  verifyEmail,
 
   toCreateRecipe,
   toCreateCookbookAddRecipe,
@@ -85,7 +86,7 @@ function navigateTo(path) {
   })
 }
 
-const noLoginRedirect = ['/login', '/logout', '/signup']
+const noLoginRedirect = ['/login', '/logout', '/signup', '/user/verify']
 
 const base_url = "http://localhost:8080/v1"
 const getUserIconUrl = (id) => `${base_url}/image/users/${id}.webp`
@@ -114,6 +115,10 @@ async function signup(user) {
     navigateTo(`/login`)
   }
   return result
+}
+
+async function verifyEmail(token) {
+  return await apiClient.post(`/auth/verify?token=${token}`)
 }
 
 async function logout() {

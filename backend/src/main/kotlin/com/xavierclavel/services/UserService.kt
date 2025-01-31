@@ -73,7 +73,7 @@ class UserService: KoinComponent {
 
     fun verifyUser(token:String): UserInfo {
         val user = QUser().verificationToken.eq(token).findOne() ?: throw NotFoundException("Invalid verification token")
-        return user.validate().toInfo()
+        return user.validate().updateAndGet().toInfo()
     }
 
     fun validateUser(id: Long) =
