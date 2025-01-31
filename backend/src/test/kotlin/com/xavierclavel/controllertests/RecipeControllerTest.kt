@@ -13,6 +13,7 @@ import common.infodto.RecipeInfo
 import common.infodto.RecipeIngredientInfo
 import common.infodto.UserInfo
 import common.utils.URL.RECIPE_URL
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -83,8 +84,7 @@ class RecipeControllerTest : ApplicationTest() {
 
     @Test
     fun `update recipe ingredients`() = runTestAsAdmin {
-        val a = client.listRecipes(null)
-        logger.info {a}
+        val user = client.getMe()
 
         val ingredient1 = client.createIngredient()
         val ingredient2 = client.createIngredient()
@@ -120,7 +120,7 @@ class RecipeControllerTest : ApplicationTest() {
                 unit = AmountUnit.UNIT,
                 amount = 2f,
                 complement = null,
-                type = IngredientType.OTHER,
+                type = IngredientType.VEGETABLE,
             ),
             RecipeIngredientInfo(
                 id = ingredient3.id,
@@ -128,7 +128,7 @@ class RecipeControllerTest : ApplicationTest() {
                 unit = AmountUnit.GRAM,
                 amount = 1f,
                 complement = null,
-                type = IngredientType.OTHER
+                type = IngredientType.VEGETABLE
             ),
 
         )
@@ -328,30 +328,35 @@ class RecipeControllerTest : ApplicationTest() {
 
     @Test
     fun `list recipes`() = runTestAsAdmin {
-        val result = client.listRecipes(null)
+        val user = client.getMe()
+        val result = client.listRecipes(user = user.id)
         assertEquals(0, result.count())
         client.createRecipe(recipeDTO)
-        val result2 = client.listRecipes(null)
+        val result2 = client.listRecipes(user = user.id)
         assertEquals(1, result2.count())
     }
 
     @Test
     fun `sort recipes by likes`() = runTestAsAdmin {
+        val user = client.getMe()
+
         val recipe1 = client.createRecipe()
         val recipe2 = client.createRecipe()
         client.createLike(recipe1.id)
 
-        val result1 = client.listRecipes(null, Sort.LIKES_DESCENDING)
+        val result1 = client.listRecipes(user = user.id, Sort.LIKES_DESCENDING)
         assertEquals(2, result1.count())
         assertEquals(recipe1.id, result1[0].id)
 
-        val result2 = client.listRecipes(null, Sort.LIKES_ASCENDING)
+        val result2 = client.listRecipes(user = user.id, Sort.LIKES_ASCENDING)
         assertEquals(2, result2.count())
         assertEquals(recipe2.id, result2[0].id)
     }
 
     @Test
     fun `sort recipes by date`() = runTestAsAdmin {
+        val user = client.getMe()
+
         val recipe1 = client.createRecipe()
         val recipe2 = client.createRecipe()
         val recipe3 = client.createRecipe()
@@ -359,10 +364,10 @@ class RecipeControllerTest : ApplicationTest() {
         val dateOrderAscending = setOf(recipe1.id, recipe2.id, recipe3.id)
         val dateOrderDescending = setOf(recipe3.id, recipe2.id, recipe1.id)
 
-        val result1 = client.listRecipes(null, Sort.DATE_DESCENDING)
+        val result1 = client.listRecipes(user=user.id, Sort.DATE_DESCENDING)
         assertEquals(dateOrderDescending, result1.map {it.id}.toSet())
 
-        val result2 = client.listRecipes(null, Sort.DATE_ASCENDING)
+        val result2 = client.listRecipes(user=user.id, Sort.DATE_ASCENDING)
         assertEquals(dateOrderAscending, result2.map {it.id}.toSet())
     }
 

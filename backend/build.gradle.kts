@@ -85,6 +85,9 @@ dependencies {
     //Mail
     implementation("org.eclipse.angus:jakarta.mail:2.0.3")
 
+    //Mocking
+    testImplementation("io.mockk:mockk:1.13.16")
+
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

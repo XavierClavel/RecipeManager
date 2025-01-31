@@ -32,7 +32,6 @@
 
 import {listRecipes} from "@/scripts/recipes";
 import {useAuthStore} from "@/stores/auth";
-import {getUserIconUrl} from "@/scripts/common";
 
 const recipes = ref([])
 const timelineRecipes = ref()

@@ -76,13 +76,13 @@ object AuthController: Controller(AUTH_URL) {
         val token = UUID.randomUUID().toString()
         val userCreated = UserController.userService.createUser(userDTO, token)
         mailService.sendVerificationEmail(userCreated.mail, token)
-        call.respond(HttpStatusCode.Created)
+        call.respond(HttpStatusCode.Created, userCreated.toInfo())
     }
 
     //TODO: send mail to user with verification code to send through another endpoint to chose a new password
     private fun Route.resetPassword() = get("/reset-password/{mail}") {
         val mail = call.parameters["mail"] ?: return@get call.respond(HttpStatusCode.BadRequest)
-        val user = userService.findByMail(mail)?.toInfo() ?: return@get call.respond(HttpStatusCode.NotFound)
+        val user = userService.findByMail(mail).toInfo()
         call.respond(user)
     }
 

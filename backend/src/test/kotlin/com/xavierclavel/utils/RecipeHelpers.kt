@@ -59,6 +59,7 @@ suspend fun HttpClient.listRecipes(
     sort: Sort? = null,
     cookbook: Long? = null,
     likedBy: Long? = null,
+    followedBy: Long? = null,
     cookbookUser: Long? = null,
     search: String? = null,
     ingredient: Set<Long> = setOf(),
@@ -69,6 +70,7 @@ suspend fun HttpClient.listRecipes(
             user?.let { parameters.append("user", it.toString()) }
             cookbook?.let {parameters.append("cookbook", it.toString())}
             likedBy?.let { parameters.append("likedBy", it.toString()) }
+            followedBy?.let { parameters.append("followedBy", it.toString()) }
             sort?.let { parameters.append("sort", it.toString()) }
             cookbookUser?.let { parameters.append("cookbookUser", it.toString()) }
             search?.let { parameters.append("search", it.toString()) }

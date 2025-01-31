@@ -3,6 +3,17 @@ package com.xavierclavel
 import com.xavierclavel.config.appModules
 import com.xavierclavel.plugins.DatabaseManager
 import com.xavierclavel.plugins.configureAuthentication
+import com.xavierclavel.services.CookbookService
+import com.xavierclavel.services.CustomIngredientService
+import com.xavierclavel.services.DashboardService
+import com.xavierclavel.services.ExportService
+import com.xavierclavel.services.FollowService
+import com.xavierclavel.services.ImageService
+import com.xavierclavel.services.IngredientService
+import com.xavierclavel.services.LikeService
+import com.xavierclavel.services.MailService
+import com.xavierclavel.services.RecipeIngredientService
+import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.logger
 import common.dto.UserDTO
@@ -15,6 +26,8 @@ import io.ktor.server.application.Plugin
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.testing.*
 import io.ktor.utils.io.KtorDsl
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.Rule
@@ -25,6 +38,7 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import kotlin.coroutines.EmptyCoroutineContext
@@ -93,8 +107,26 @@ class KoinTestRule : TestRule {
         return object : Statement() {
 
             override fun evaluate() {
+                val mockMailService = mockk<MailService>()
+                every {mockMailService.sendVerificationEmail(any(),any())} answers {}
+                every {mockMailService.sendPasswordResetEmail(any(),any())} answers {}
 
-                startKoin { modules(appModules) }
+                val testModules = module {
+                    single { RecipeService() }
+                    single { UserService() }
+                    single { IngredientService() }
+                    single { ImageService() }
+                    single { ExportService() }
+                    single { LikeService() }
+                    single { CookbookService() }
+                    single { DashboardService() }
+                    single { RecipeIngredientService() }
+                    single { CustomIngredientService() }
+                    single { FollowService() }
+                    single { mockMailService }
+                }
+
+                startKoin { modules(testModules) }
 
                 try {
                     base.evaluate()

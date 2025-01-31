@@ -1,5 +1,6 @@
 package main.com.xavierclavel.utils
 
+import com.xavierclavel.services.UserService
 import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.utils.URL.AUTH_URL
@@ -16,16 +17,24 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
+import org.koin.java.KoinJavaComponent.inject
+import org.koin.test.inject
+import java.util.UUID
+import kotlin.getValue
 import kotlin.test.assertEquals
 
-suspend fun HttpClient.createUser(username: String = "user"): UserInfo  {
-    this.post(USER_URL){
+val userService: UserService by inject(UserService::class.java)
+
+suspend fun HttpClient.createUser(username: String = UUID.randomUUID().toString()): UserInfo  {
+    this.post("$AUTH_URL/signup"){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
-        setBody(UserDTO(username))
+        setBody(UserDTO(username = username, mail = UUID.randomUUID().toString()))
     }.apply {
         assertEquals(HttpStatusCode.Created, status)
-        return Json.decodeFromString<UserInfo>(bodyAsText())
+        val user = Json.decodeFromString<UserInfo>(bodyAsText())
+        userService.validateUser(user.id)
+        return user
     }
     //val response = this.getUser(username)
     //assertEquals(username, response.username)
