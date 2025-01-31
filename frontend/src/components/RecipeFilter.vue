@@ -79,7 +79,7 @@ const updateUrl = () => {
         user: selectedSource.value.includes(0) ? authStore.id : undefined,
         likedBy: selectedSource.value.includes(1) ? authStore.id : undefined,
         cookbookUser: selectedSource.value.includes(2) ? authStore.id : undefined,
-        follows: selectedSource.value.includes(3) ? authStore.id : undefined,
+        followedBy: selectedSource.value.includes(3) ? authStore.id : undefined,
         dishClasses: selectedDishType.value.length > 0 ? selectedDishType.value.map(it => dishClasses[it]).join(",") : undefined,
         ingredient: selectedIngredients.value.length > 0 ? selectedIngredients.value.map(it => it.id).join(",") : undefined,
         sort: selectedSort.value != null ? selectedSort.value + selectedSortOrder  : undefined

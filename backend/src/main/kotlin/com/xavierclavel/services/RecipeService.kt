@@ -81,6 +81,7 @@ class RecipeService: KoinComponent {
                         .filterByOwner(recipeFilter.user)
                         .filterByCookbook(recipeFilter.cookbook)
                         .filterByUserCookbooks(recipeFilter.cookbookUser)
+                        .filterByFollowed(recipeFilter.followedBy)
                         .endOr()
                 }
             }
@@ -126,6 +127,17 @@ class RecipeService: KoinComponent {
                 WHERE cr.recipe_id = t0.id
                 AND cu.user_id = ?
             )""".trimIndent(), userId)
+
+    private fun QRecipe.filterByFollowed(followerId: Long?) =
+        if (followerId == null) this
+        else this.raw("""
+            EXISTS(
+                SELECT 1
+                FROM follows f
+                JOIN users u ON f.user_id = u.id
+                WHERE f.follower_id = ?
+                AND t0.owner_id = f.user_id
+            )""".trimIndent(), followerId)
 
     private fun QRecipe.filterByIngredient(ingredientsId: Set<Long>) =
         if (ingredientsId.isEmpty()) this

@@ -59,6 +59,7 @@ object RecipeController: Controller(RECIPE_URL) {
             likedBy = getIdPathVariable(RecipeFilter::likedBy.name),
             cookbook = getIdPathVariable(RecipeFilter::cookbook.name),
             cookbookUser = getIdPathVariable(RecipeFilter::cookbookUser.name),
+            followedBy = getIdPathVariable(RecipeFilter::followedBy.name),
             ingredient = getIdPathVariableSet(RecipeFilter::ingredient.name),
             dishClasses = call.parameters[RecipeFilter::dishClasses.name]?.split(",")?.map { DishClass.valueOf(it.trim()) }?.toSet() ?: setOf(),
             search = call.parameters[RecipeFilter::search.name],

@@ -39,7 +39,7 @@ const timelineRecipes = ref()
 const authStore = useAuthStore()
 const userId = authStore.id
 
-listRecipes(`?sort=DATE_DESCENDING`).then(
+listRecipes(`?user=${userId}&followedBy=${userId}&sort=DATE_DESCENDING`).then(
   function (response) {
     console.log(response)
     recipes.value = response.data
