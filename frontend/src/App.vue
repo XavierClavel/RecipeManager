@@ -18,7 +18,7 @@
             color="primary"
             @click="toCreateRecipe"
           >
-            New recipe
+            {{$t("new_recipe")}}
           </v-btn>
         </v-list-item>
         <v-list-item prepend-icon="mdi-home" rounded="xl" link title="Home" @click="toHome"></v-list-item>
@@ -50,10 +50,10 @@
           </template>
 
           <v-list>
-            <v-list-item prepend-icon="mdi-account-circle" rounded="xl" link title="Profile" @click="toMyProfile" ></v-list-item>
-            <v-list-item prepend-icon="mdi-cog" rounded="xl" link title="Settings" @click="toMyProfile" ></v-list-item>
-            <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link title="About" @click="toHome"></v-list-item>
-            <v-list-item prepend-icon="mdi-logout" rounded="xl" link title="Logout" @click="logout" ></v-list-item>
+            <v-list-item prepend-icon="mdi-account-circle" rounded="xl" link :title="`${$t('profile')}`" @click="toMyProfile" ></v-list-item>
+            <v-list-item prepend-icon="mdi-cog" rounded="xl" link :title="`${$t('settings')}`" @click="toMyProfile" ></v-list-item>
+            <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link :title="`${$t('about')}`" @click="toHome"></v-list-item>
+            <v-list-item prepend-icon="mdi-logout" rounded="xl" link :title="`${$t('log_out')}`" @click="logout" ></v-list-item>
           </v-list>
         </v-menu>
       </template>
@@ -81,7 +81,7 @@
             variant="solo"
             clearable
             flat
-            label="Search a recipe"
+            :label="`${$t('search_recipe')}`"
             bg-color="primary"
           ></v-text-field>
         </v-card>

@@ -62,7 +62,7 @@
         min-height="70px"
         min-width="300px"
         @click="toEditUser(userId)"
-      >Edit</v-btn>
+      >{{$t("edit")}}</v-btn>
     </span>
     <error :error="errorMessage"></error>
 

@@ -6,12 +6,12 @@
   >
     <form @submit.prevent="submit" class="mx-auto">
       <v-card-title class="text-primary text-h3">
-        Signup
+        {{$t("signup")}}
       </v-card-title>
       <v-text-field
         v-model="user.username"
         prepend-icon="mdi-account"
-        label="Username"
+        :label="`${$t('username')}`"
         class="mx-auto px-3"
         color="primary"
         :rules="[rules.required]"
@@ -20,7 +20,7 @@
       <v-text-field
         v-model="user.mail"
         prepend-icon="mdi-email-outline"
-        label="Email address"
+        :label="`${$t('mail')}`"
         class="mx-auto px-3"
         color="primary"
         :rules="[rules.required]"
@@ -33,7 +33,7 @@
         :rules="[rules.required, rules.min]"
         :type="show1 ? 'text' : 'password'"
         hint="At least 8 characters"
-        label="Password"
+        :label="`${$t('password')}`"
         counter
         @click:append="show1 = !show1"
         class="mx-3"
@@ -46,7 +46,7 @@
         :rules="[rules.required, rules.passwordMatch]"
         :type="show2 ? 'text' : 'password'"
         hint="Passwords must match"
-        label="Confirm password"
+        :label="`${$t('password_confirm')}`"
         counter
         @click:append="show2 = !show2"
         class="mx-3"
@@ -70,7 +70,7 @@
               min-height="70px"
               min-width="200px"
               @click="toLogin"
-            >Log in</v-btn>
+            >{{$t("log_in")}}</v-btn>
             <v-btn
               @click="submit"
               prepend-icon="mdi-send"
@@ -80,7 +80,7 @@
               class="mb-10 text-h6 mx-4"
               min-height="70px"
               min-width="200px"
-            >Sign up</v-btn>
+            >{{$t("sign_up")}}</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -97,6 +97,7 @@ import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe} from "@/scripts/recipes";
 import {signup, toLogin} from "@/scripts/common";
+import {useI18n} from "vue-i18n";
 
 // Get the route object
 const route = useRoute();
@@ -104,11 +105,12 @@ const recipeId = route.query.id
 const show1 = ref<boolean>(false)
 const show2 = ref<boolean>(false)
 const password2 = ref<string>('')
+const { t } = useI18n();
 
 const rules = {
-    required: value => !!value || 'Required.',
-    min: v => v.length >= 8 || 'Min 8 characters',
-    passwordMatch: () => user.value.password == password2.value || `Passwords do not match`,
+    required: value => !!value || t('required'),
+    min: v => v.length >= 8 || t('min_8_characters'),
+    passwordMatch: () => user.value.password == password2.value || t('passwords_must_match'),
   }
 
 const user = ref<object>({

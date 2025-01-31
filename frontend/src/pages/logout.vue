@@ -1,4 +1,5 @@
 <template>
+  <v-container class="mx-auto" align="center">
   <v-card
   class="rounded-xl pa-5 ma-5"
   max-width="1000px"
@@ -10,7 +11,7 @@
         Logout
       </v-card-title>
       <v-card-text>
-        You have successfully logged out.
+        {{$t("logout_successful")}}
       </v-card-text>
 
       <v-container>
@@ -28,7 +29,7 @@
               min-height="70px"
               min-width="300px"
               @click="toSignup"
-            >Sign up</v-btn>
+            >{{$t("signup")}}</v-btn>
           </v-col>
           <v-col cols="12" sm="auto">
             <v-btn
@@ -40,13 +41,14 @@
               class="mb-10 text-h6"
               min-height="70px"
               min-width="300px"
-            >Log in</v-btn>
+            >{{$t("login")}}</v-btn>
           </v-col>
         </v-row>
       </v-container>
 
     </form>
   </v-card>
+  </v-container>
 
 </template>
 

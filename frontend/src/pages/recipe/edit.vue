@@ -8,7 +8,7 @@
     <form @submit.prevent="submit" class="mx-auto">
       <v-text-field
         v-model="recipe.title"
-        label="Title"
+        :label="`${$t('title')}`"
         class="mx-auto px-3"
         color="primary"
         :rules="[rules.max100]"
@@ -16,7 +16,7 @@
 
       <v-textarea
         v-model="recipe.description"
-        label="Description"
+        :label="`${$t('description')}`"
         class="mx-auto px-3"
         color="primary"
         :rules="[rules.max]"
@@ -31,13 +31,13 @@
           group
           mandatory
         >
-          <v-btn value="ENTREE"> Entree </v-btn>
+          <v-btn value="ENTREE">{{$t("entree")}}</v-btn>
 
-          <v-btn value="MAIN_DISH"> Main dish </v-btn>
+          <v-btn value="MAIN_DISH">{{$t("plat")}}</v-btn>
 
-          <v-btn value="DESERT"> Desert </v-btn>
+          <v-btn value="DESERT">{{$t("desert")}}</v-btn>
 
-          <v-btn value="OTHER"> Other </v-btn>
+          <v-btn value="OTHER">{{$t("other")}}</v-btn>
         </v-btn-toggle>
       </v-col>
 
@@ -52,7 +52,7 @@
 
       <v-number-input
         v-model="recipe.yield"
-        label="Yield"
+        :label="`${$t('yield')}`"
         class="mx-auto px-3"
         type="number"
         color="primary"
@@ -61,7 +61,7 @@
 
       <v-number-input
         v-model="recipe.conservationTime"
-        label="Conservation time (days)"
+        :label="`${$t('time_conservation')}`"
         class="mx-auto px-3"
         type="number"
         color="primary"
@@ -70,7 +70,7 @@
 
       <v-number-input
         v-model="recipe.preparationTime"
-        label="Preparation Time (minutes)"
+        :label="`${$t('time_preparation')}`"
         class="mx-auto px-3"
         type="number"
         color="primary"
@@ -80,7 +80,7 @@
 
       <v-number-input
         v-model="recipe.cookingTime"
-        label="Cooking time (minutes)"
+        :label="`${$t('time_cooking')}`"
         class="mx-auto px-3"
         type="number"
         color="primary"
@@ -90,7 +90,7 @@
 
       <v-number-input
         v-model="recipe.cookingTemperature"
-        label="Cooking temperature (°C)"
+        :label="`${$t('cooking_temperature')}`"
         class="mx-auto px-3"
         type="number"
         color="primary"
@@ -99,7 +99,7 @@
       ></v-number-input>
 
       <!-- Ingredients -->
-      <h2 class="my-3" >Ingredients</h2>
+      <h2 class="my-3" >{{$t("ingredients")}}</h2>
       <draggable v-model="recipe.ingredients" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
@@ -112,7 +112,7 @@
 
             <v-autocomplete
               v-model="recipe.ingredients[index].ingredient"
-              :label="`Ingredient ${index + 1}`"
+              :label="`${$t('ingredient')} ${index + 1}`"
               class="flex-grow-1"
               color="primary"
               :items="autocompleteList[index]"
@@ -126,7 +126,7 @@
 
             <v-select
               v-model="recipe.ingredients[index].unit"
-              label="Unit"
+              :label="`${$t('unit')}`"
               outlined
               class="flex-grow-1 mx-2"
               :items="units"
@@ -139,7 +139,7 @@
 
             <v-number-input
               v-model="recipe.ingredients[index].amount"
-              label="Amount"
+              :label="`${$t('amount')}`"
               outlined
               class="flex-grow-1"
               type="number"
@@ -154,7 +154,7 @@
             <v-text-field
               v-model="recipe.ingredients[index].complement"
               class="flex-grow-1 mx-2"
-              label="Complement"
+              :label="`${$t('complement')}`"
             ></v-text-field>
 
             <div>
@@ -185,7 +185,7 @@
 
             <v-text-field
               v-model="recipe.customIngredients[index].name"
-              :label="`Custom ingredient ${index + 1}`"
+              :label="`${$t('custom_ingredient')} ${index + 1}`"
               class="flex-grow-1"
               color="primary"
               item-color="primary"
@@ -195,7 +195,7 @@
 
             <v-select
               v-model="recipe.customIngredients[index].unit"
-              label="Unit"
+              :label="`${$t('unit')}`"
               outlined
               class="flex-grow-1 mx-2"
               :items="units"
@@ -206,7 +206,7 @@
 
             <v-number-input
               v-model="recipe.customIngredients[index].amount"
-              label="Amount"
+              :label="`${$t('amount')}`"
               outlined
               class="flex-grow-1"
               type="number"
@@ -238,7 +238,7 @@
         flat
         rounded
         class="mb-10"
-      >Add new ingredient</v-btn>
+      >{{$t("ingredients_add_new")}}</v-btn>
 
       <!-- Button to add custom ingredient -->
       <v-tooltip text="Custom ingredients should only be used if an ingredient you want to add is not registered in the database."
@@ -253,13 +253,13 @@
             rounded
             class="mb-10 ml-8"
             variant="outlined"
-          >Add custom ingredient</v-btn>
+          >{{$t("ingredients_add_custom")}}</v-btn>
         </template>
       </v-tooltip>
 
 
       <!-- Steps -->
-      <h2 class="my-3" >Steps</h2>
+      <h2 class="my-3" >{{$t("steps")}}</h2>
       <draggable v-model="recipe.steps" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
@@ -274,7 +274,7 @@
             <v-text-field
 
               v-model="recipe.steps[index]"
-              :label="`Step ${index + 1}`"
+              :label="`${$t('step')} ${index + 1}`"
               outlined
               class="flex-grow-1"
               color="primary"
@@ -303,7 +303,7 @@
         flat
         rounded
         class="mb-10"
-      >Add new step</v-btn>
+      >{{$t("steps_add_new")}}</v-btn>
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
@@ -316,7 +316,7 @@
           min-height="70px"
           min-width="300px"
           @click="toViewRecipe(recipeId)"
-        >Cancel</v-btn>
+        >{{$t("cancel")}}</v-btn>
         <v-btn
           @click="submit"
           prepend-icon="mdi-content-save"
@@ -326,7 +326,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-        >Save</v-btn>
+        >{{$t("save")}}</v-btn>
       </span>
     </form>
   </v-card>

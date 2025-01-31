@@ -17,6 +17,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
+import org.bouncycastle.cms.RecipientId.password
 import java.time.Instant
 import java.util.UUID
 
@@ -40,6 +41,7 @@ class User (
     var bio: String = "",
 
     //Validation
+    @Column(unique = true)
     var verificationToken: String = "",
     var isVerified: Boolean = false,
 
@@ -115,5 +117,13 @@ class User (
 
     fun validate() = this.apply {
         isVerified = true
+    }
+
+    fun updatePassword(password: String) = this.apply {
+        passwordHash = BCrypt.withDefaults().hashToString(12, password.toCharArray())
+    }
+
+    fun updateToken(token: String) = this.apply {
+        verificationToken = token
     }
 }

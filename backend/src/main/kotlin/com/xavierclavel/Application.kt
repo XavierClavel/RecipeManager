@@ -14,6 +14,7 @@ import com.xavierclavel.controllers.LikeController
 import com.xavierclavel.controllers.TestController
 import com.xavierclavel.controllers.UserController
 import com.xavierclavel.exceptions.AuthenticationException
+import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.utils.serve
 import com.xavierclavel.plugins.*
 import com.xavierclavel.services.UserService
@@ -61,6 +62,9 @@ fun Application.module() {
     install(StatusPages) {
         exception<AuthenticationException> {call, cause ->
             call.respond(HttpStatusCode.Unauthorized, cause.message ?: "Unknown error")
+        }
+        exception<ForbiddenException> { call, cause ->
+            call.respond(HttpStatusCode.Forbidden, cause.message ?: "Unknown error")
         }
         exception<NotFoundException> { call, cause ->
             call.respond(HttpStatusCode.NotFound, cause.message ?: "Unknown error")

@@ -42,6 +42,25 @@ class MailService: KoinComponent {
 
     }
 
+    fun sendPasswordResetEmail(mail: String, token: String) {
+        val link = "$FRONTEND_URL/user/reset-password?token=$token"
+        val body = """
+            Hello ! 
+            
+            A password reset was requested for the Cook&Co account linked to this email.
+            Please use this link to reset your password: $link
+            If you did not request a password reset, please ignore this mail.
+            
+            Have a great day, 
+            Xavier
+        """.trimIndent()
+        try {
+            sendEmail(mail, MAIL_TITLE_VERIFICATION, body)
+        } catch (e: Exception) {
+            logger.error{"Token: $token"}
+        }
+
+    }
 
     fun sendEmail(recipient: String, subject: String, body: String) {
         val dotenv = dotenv()

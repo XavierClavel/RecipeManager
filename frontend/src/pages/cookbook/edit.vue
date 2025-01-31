@@ -7,14 +7,14 @@
     <form @submit.prevent="submit" class="mx-auto">
       <v-text-field
         v-model="cookbook.title"
-        label="Title"
+        :label="`${$t('title')}`"
         class="mx-auto px-3"
         color="primary"
       ></v-text-field>
 
       <v-textarea
         v-model="cookbook.description"
-        label="Description"
+        :label="`${$t('description')}`"
         class="mx-auto px-3"
         color="primary"
       ></v-textarea>
@@ -50,7 +50,7 @@
        ></editable-picture>
 
       <!-- Ingredients -->
-      <h2 class="my-3" >Users</h2>
+      <h2 class="my-3" >{{$t("users")}}</h2>
       <draggable v-model="cookbook.users" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
@@ -63,7 +63,7 @@
 
             <v-autocomplete
               v-model="cookbook.users[index].username"
-              :label="`User ${index + 1}`"
+              :label="`${$t('user')} ${index + 1}`"
               class="flex-grow-1"
               color="primary"
               :items="autocompleteList[index]"
@@ -76,7 +76,7 @@
 
             <v-select
               v-model="cookbook.users[index].role"
-              label="Role"
+              :label="`${$t('role')}`"
               outlined
               class="flex-grow-1 mx-2"
               :items="['READER','WRITER','OWNER']"
@@ -107,7 +107,7 @@
         flat
         rounded
         class="mb-10"
-      >Add new user</v-btn>
+      >{{$t("users_add_new")}}</v-btn>
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
@@ -130,7 +130,7 @@
           class="mb-10 text-h6"
           min-height="70px"
           min-width="300px"
-        >Save</v-btn>
+        >{{$t("save")}}</v-btn>
       </span>
     </form>
   </v-card>
