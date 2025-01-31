@@ -66,11 +66,14 @@ object RecipeController: Controller(RECIPE_URL) {
         logger.info {"paging : $paging"}
         logger.info {"sort : $sort"}
         logger.info {"filter : $recipeFilter"}
-        val result = recipeService.findList(
-            paging = paging,
-            sort = sort,
-            recipeFilter = recipeFilter,
-        )
+        val result = if (recipeFilter.hasAdditiveFilters()) {
+            recipeService.findList(
+                paging = paging,
+                sort = sort,
+                recipeFilter = recipeFilter,
+            )
+        } else listOf()
+
         call.respond(result)
     }
 

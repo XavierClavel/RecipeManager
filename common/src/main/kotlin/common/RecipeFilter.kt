@@ -7,6 +7,7 @@ data class RecipeFilter(
     val likedBy: Long? = null,
     val cookbook: Long? = null,
     val cookbookUser: Long? = null,
+    val followedBy: Long? = null,
     val search: String? = null,
     val ingredient: Set<Long> = setOf(),
     val dishClasses: Set<DishClass> = setOf(),
@@ -21,5 +22,6 @@ data class RecipeFilter(
         user != null ||
         likedBy != null ||
         cookbook != null ||
-        cookbookUser != null
+        cookbookUser != null ||
+        followedBy != null
 }
