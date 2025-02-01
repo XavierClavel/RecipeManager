@@ -30,6 +30,8 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import main.com.xavierclavel.utils.login
+import main.com.xavierclavel.utils.logout
 import org.junit.Rule
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
@@ -74,11 +76,9 @@ abstract class ApplicationTest: KoinTest {
 
     @KtorDsl
     suspend fun TestBuilderWrapper.runAs(username: String, password: String = "password", block: suspend TestBuilderWrapper.() -> Unit) {
-        client.post("/v1/auth/login") {
-            basicAuth(username = username, password = password)
-        }
+        client.login(username, password)
         this.block()
-        client.post("/v1/auth/logout")
+        client.logout()
     }
 
     @KtorDsl

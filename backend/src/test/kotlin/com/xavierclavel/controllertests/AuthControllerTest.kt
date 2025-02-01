@@ -1,51 +1,32 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
-import common.dto.UserDTO
-import common.utils.URL.AUTH_URL
-import io.ktor.client.request.header
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
+import com.xavierclavel.exceptions.AuthenticationException
+import com.xavierclavel.models.query.QUser
+import main.com.xavierclavel.utils.login
+import main.com.xavierclavel.utils.signup
+import main.com.xavierclavel.utils.verifyUser
 import org.junit.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
+import java.util.UUID
 
 class AuthControllerTest : ApplicationTest() {
     @Test
-    fun `signup`() = runTest {
-        val userDTO = UserDTO("test_user", "test_user@example.com", "123456")
-        client.post("$AUTH_URL/signup") {
-            contentType(ContentType.Application.Json)
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
-            setBody(userDTO)
-        }.apply {
-            assertEquals(HttpStatusCode.Created, status)
-        }
+    fun `signup does not grant access`() = runTest {
+        val password = UUID.randomUUID().toString()
+        val user = client.signup(password = password)
+        assertThrows<AuthenticationException> { client.login(user.username, password) }
     }
 
-    /*
     @Test
-    fun `reset password`() = runTestUnauthenticated {
-        val mail = "test_user@example.com"
-        val username = "test_user_reset"
-        val userDTO = UserDTO(username, mail, "123456")
-        it.post("$AUTH_URL/signup") {
-            contentType(ContentType.Application.Json)
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
-            setBody(userDTO)
-        }.apply {
-            assertEquals(HttpStatusCode.Created, status)
-        }
-        it.get("$AUTH_URL/reset-password/$mail").apply {
-            assertEquals(HttpStatusCode.OK, status)
-            val response = Json.decodeFromString<UserInfo>(bodyAsText())
-            assertEquals(username, response.username)
-        }
+    fun `access is granted after email verification`() = runTest {
+        val password = UUID.randomUUID().toString()
+        val user = client.signup(password = password)
+        val token = userService.findEntityById(user.id).verificationToken
+        client.verifyUser(token)
+        assertDoesNotThrow { client.login(user.username, password) }
     }
 
-     */
 
 }
