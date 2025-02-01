@@ -21,11 +21,11 @@
             {{$t("new_recipe")}}
           </v-btn>
         </v-list-item>
-        <v-list-item prepend-icon="mdi-home" rounded="xl" link title="Home" @click="toHome"></v-list-item>
-        <v-list-item prepend-icon="mdi-dots-grid" rounded="xl" link title="Recipes" @click="toListRecipe('')"></v-list-item>
-        <v-list-item prepend-icon="mdi-food-apple-outline" rounded="xl" link title="Ingredients" @click="toListIngredient"></v-list-item>
-        <v-list-item prepend-icon="mdi-notebook-outline" rounded="xl" link title="Cookbooks" @click="toMyCookbooks"></v-list-item>
-        <v-list-item prepend-icon="mdi-security" rounded="xl" link title="Admin" @click="toUsers"></v-list-item>
+        <v-list-item :prepend-icon="ICON_HOME" rounded="xl" link :title="`${$t('home')}`" @click="toHome"></v-list-item>
+        <v-list-item :prepend-icon="ICON_RECIPE" rounded="xl" link :title="`${$t('recipes')}`" @click="toListRecipe(`?user=${userId}&likedBy=${userId}`)"></v-list-item>
+        <v-list-item :prepend-icon="ICON_INGREDIENT" rounded="xl" link :title="`${$t('ingredients')}`" @click="toListIngredient"></v-list-item>
+        <v-list-item :prepend-icon="ICON_COOKBOOK" rounded="xl" link :title="`${$t('cookbooks')}`" @click="toMyCookbooks"></v-list-item>
+        <v-list-item :prepend-icon="ICON_ADMIN" rounded="xl" link :title="`${$t('admin')}`" @click="toUsers"></v-list-item>
 
       </v-list>
     </v-navigation-drawer>
@@ -39,7 +39,7 @@
           <template v-slot:activator="{ props }">
             <v-img
               color="surface-variant"
-              :src="imageUrl"
+              :src="getUserIconUrl(userId)"
               height="50px"
               width="50px"
               rounded="circle"
@@ -100,19 +100,20 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import {
-  base_url,
+  getUserIconUrl,
   logout,
   noLoginRedirect,
   toCreateRecipe,
-  toHome, toListCookbooks,
+  toHome,
   toListIngredient,
   toListRecipe, toMyCookbooks, toMyProfile,
   toUsers,
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
+import {ICON_ADMIN, ICON_COOKBOOK, ICON_HOME, ICON_INGREDIENT, ICON_RECIPE} from "@/scripts/icons";
 
 const authStore = useAuthStore()
-const imageUrl = computed(() => `${base_url}/image/users/${authStore.id}.webp`);
+const userId = ref(authStore.id)
 
 const route = useRoute();
 

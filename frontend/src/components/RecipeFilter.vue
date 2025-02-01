@@ -2,25 +2,35 @@
 import {searchIngredients} from "@/scripts/ingredients";
 import router from "@/router";
 import {useAuthStore} from "@/stores/auth";
+import {useI18n} from "vue-i18n";
 
-const dishTypes = ["Entree","Main Dish","Desert","Other"]
-const dishClasses = ["ENTREE", "MAIN_DISH", "DESERT", "OTHER"]
-const source = ["My recipes", "Likes", "Cookbooks", "Follows"]
-const myRecipes = ref(false)
 const autocompleteList = ref([])
 
 const selectedDishType = ref([0, 1, 2])
 const selectedSource = ref([0,1])
 const selectedIngredients = ref([])
+const { t } = useI18n();
 
 const authStore = useAuthStore()
 
-const recipeQueries = ref("")
+const dishOptions = ref([
+  {label: t('entree'), value: "ENTREE"},
+  {label: t('plat'), value: "MAIN_DISH"},
+  {label: t('desert'), value: "DESERT"},
+  {label: t('other'), value: "OTHER"},
+])
+
+const sourceOptions = ref([
+  {label: t('my_recipes'), value: "user"},
+  {label: t('likes'), value: "likedBy"},
+  {label: t('cookbooks'), value: "userCookbooks"},
+  {label: t('follows'), value: "followedBy"},
+])
 
 const sortOptions = ref([
-  { label: "Alphabetical", value: "NAME", icon:"mdi-format-letter-case" },
-  { label: "Likes", value: "LIKES", icon:"mdi-heart" },
-  { label: "Date", value: "DATE", icon:"mdi-clock" },
+  { label: t('alphabetical'), value: "NAME", icon:"mdi-format-letter-case" },
+  { label: t('likes'), value: "LIKES", icon:"mdi-heart" },
+  { label: t('date'), value: "DATE", icon:"mdi-clock" },
 ]);
 
 const selectedSort = ref(null); // Stores the selected sort field
@@ -80,7 +90,7 @@ const updateUrl = () => {
         likedBy: selectedSource.value.includes(1) ? authStore.id : undefined,
         cookbookUser: selectedSource.value.includes(2) ? authStore.id : undefined,
         followedBy: selectedSource.value.includes(3) ? authStore.id : undefined,
-        dishClasses: selectedDishType.value.length > 0 ? selectedDishType.value.map(it => dishClasses[it]).join(",") : undefined,
+        dishClasses: selectedDishType.value.length > 0 ? selectedDishType.value.map(it => dishOptions.value[it].value).join(",") : undefined,
         ingredient: selectedIngredients.value.length > 0 ? selectedIngredients.value.map(it => it.id).join(",") : undefined,
         sort: selectedSort.value != null ? selectedSort.value + selectedSortOrder  : undefined
       }).filter(([_, value]) => value !== undefined) // Remove undefined values
@@ -107,16 +117,16 @@ const updateUrl = () => {
           variant="flat"
         >
           <v-chip
-            v-for="s in source"
-            :text="s"
+            v-for="s in sourceOptions"
+            :text="s.label"
             filter
           ></v-chip>
         </v-chip-group>
 
         <v-row class="d-flex flex-row ma-1">
           <v-chip
-            v-for="(dish, index) in dishTypes"
-            :text="dish"
+            v-for="(dish, index) in dishOptions"
+            :text="dish.label"
             filter
             class="mx-1"
             :color="getDishClassChipColor(index)"
@@ -142,7 +152,7 @@ const updateUrl = () => {
           closable-chips
           clearable
           @update:modelValue="updateUrl"
-          label="Ingredients"
+          :label="`${$t('ingredients')}`"
           max-width="400px"
           variant="solo-filled"
           rounded="lg"

@@ -1,4 +1,9 @@
 export default {
+  home: "Accueil",
+  recipes: "Recettes",
+  cookbooks: "Carnets de recettes",
+  admin: "Administration",
+
   logout_successful: "Vous vous êtes déconnecté avec succès.",
   sign_up: "S'inscrire",
   log_in: "Se connecter",
@@ -56,10 +61,11 @@ export default {
   plat: "Plat",
   desert: "Dessert",
   other: "Autre",
-  sort: {
-    alphabetical: "Alphabétique",
-    likes: "Likes",
-    date: "Date",
-  },
 
+  alphabetical: "Alphabétique",
+  likes: "Likes",
+  date: "Date",
+
+  my_recipes: "Mes recettes",
+  follows: "Follows",
 };

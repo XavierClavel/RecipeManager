@@ -4,6 +4,12 @@ import apiClient from '@/plugins/axios.js';
 import {useAuthStore, declareLogin} from "@/stores/auth";
 
 export {
+  ICON_RECIPE,
+  ICON_COOKBOOK,
+  ICON_INGREDIENT,
+  ICON_HOME,
+  ICON_ADMIN,
+
   ICON_SAVE,
   ICON_DELETE,
 
@@ -19,6 +25,12 @@ export {
 
   getIngredientIcon,
 }
+
+const ICON_RECIPE = "mdi-notebook"
+const ICON_COOKBOOK = "mdi-bookshelf"
+const ICON_INGREDIENT = "mdi-food-apple"
+const ICON_HOME = "mdi-home"
+const ICON_ADMIN = "mdi-security"
 
 const ICON_SAVE = "mdi-save"
 const ICON_DELETE = "mdi-delete"
