@@ -43,7 +43,7 @@
       width="800px"
       class="mt-n3 mx-auto"
       rounded="lg"
-      :src="getRecipeIconUrl(recipe.id)"
+      :src="getRecipeImageUrl(recipe.id)"
 
       cover
     ></v-img>
@@ -258,7 +258,7 @@ import { useRoute } from 'vue-router';
 import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {
-  base_url, getRecipeIconUrl,
+  base_url, getRecipeImageUrl,
   toCreateCookbookAddRecipe,
   toEditRecipe,
   toListRecipe, toViewIngredient, toViewUser,
@@ -293,7 +293,7 @@ getRecipe(recipeId).then (
     recipe.value = response.data
     console.log("Recipe", recipe.value)
     const authStore = useAuthStore()
-    isOwner.value = response.data.owner == authStore.username
+    isOwner.value = response.data.owner.id == authStore.id
     console.log("Recipe owner", recipe.value.owner)
   }).catch(function (error) {
     displayError.value = true

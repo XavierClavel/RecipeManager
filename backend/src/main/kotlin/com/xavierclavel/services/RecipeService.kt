@@ -147,10 +147,10 @@ class RecipeService: KoinComponent {
                 FROM recipe_ingredients ri
                 JOIN ingredients i ON ri.ingredient_id = i.id
                 WHERE ri.recipe_id = t0.id
-                AND i.id IN (?${ingredientsId.size.coerceAtLeast(1)})
+                AND i.id IN (CAST(? AS bigint[]))
                 GROUP BY ri.recipe_id
-                HAVING COUNT(DISTINCT i.id) = ?
-        )""".trimIndent(), ingredientsId, ingredientsId.size)
+                HAVING COUNT(DISTINCT i.id) = ?::int
+        )""".trimIndent(), ingredientsId.toTypedArray(), ingredientsId.size)
 
     private fun QRecipe.filterBySearch(search: String?) =
         if (search.isNullOrEmpty()) this

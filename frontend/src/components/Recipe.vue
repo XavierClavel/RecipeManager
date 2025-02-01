@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getRecipeIconUrl, getUserIconUrl, toViewRecipe, toViewUser} from "@/scripts/common";
+import {getRecipeImageUrl, getRecipeThumbnailUrl, getUserIconUrl, toViewRecipe, toViewUser} from "@/scripts/common";
 
 defineProps({
   recipe: {
@@ -11,17 +11,17 @@ defineProps({
 
 <template>
       <v-card
-        class="ma-4 pa-0"
+        class="ma-3 pa-0"
         rounded="lg"
-        width="250px"
+        width="240px"
         @click="toViewRecipe(recipe.id)"
       >
           <v-img
             color="surface-variant"
-            height="187px"
+            height="180px"
             class="mt-n2"
             rounded="t-lg"
-            :src="getRecipeIconUrl(recipe.id)"
+            :src="getRecipeThumbnailUrl(recipe.id)"
             cover
           ></v-img>
         <v-card-title class="text-primary justify-end">{{recipe.title}}</v-card-title>

@@ -78,6 +78,9 @@ dependencies {
     //Webp support
     implementation("org.sejda.imageio:webp-imageio:0.1.6")
 
+    //
+    implementation("net.coobird:thumbnailator:0.4.20")
+
     //PDF write
     implementation("com.itextpdf:itext-core:$itextVersion")
     implementation("com.itextpdf:bouncy-castle-adapter:$itextVersion")

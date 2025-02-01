@@ -72,40 +72,40 @@ object CookbookController: Controller(COOKBOOK_URL) {
     }
 
     private fun Route.getCookbook() = get("/{id}") {
-        val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId()
         val cookbook = cookbookService.getCookbook(id) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(cookbook)
     }
 
     private fun Route.getCookbookUsers() = get("/{id}/users") {
-        val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId()
         val paging = getPaging()
         val users = cookbookService.getCookbookUsers(id, paging) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(users)
     }
 
     private fun Route.getCookbookRecipes() = get("/{id}/recipes") {
-        val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId()
         val paging = getPaging()
         val recipes = cookbookService.getCookbookRecipes(id, paging) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(recipes)
     }
 
     private fun Route.updateCookbook() = put("/{id}") {
-        val id = getPathId() ?: return@put call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId()
         val cookbookDTO = call.receive<CookbookDTO>()
         val cookbook = cookbookService.updateCookbook(id, cookbookDTO) ?: return@put call.respond(HttpStatusCode.NotFound)
         call.respond(cookbook)
     }
 
     private fun Route.deleteCookbook() = delete("/{id}") {
-        val id = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId()
         imageService.deleteImage(COOKBOOKS_IMG_PATH, id)
         handleDeletion(cookbookService.deleteCookbook(id))
     }
 
     private fun Route.addCookbookUser() = post("/{id}/user/{user}") {
-        val cookbookId = getPathId() ?: return@post call.respond(HttpStatusCode.BadRequest)
+        val cookbookId = getPathId()
         val userId = getIdPathVariable("user") ?: return@post call.respond(HttpStatusCode.BadRequest)
         val role = call.parameters["role"]?.let { CookbookRole.valueOf(it) } ?: CookbookRole.READER
         cookbookService.addUserToCookbook(cookbookId, userId, role)
@@ -114,13 +114,13 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
     private fun Route.deleteCookbookUser() = delete("/{id}/user/{user}") {
         logger.info { "deleting cb user"}
-        val cookbookId = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        val cookbookId = getPathId()
         val userId = getIdPathVariable("user") ?: return@delete call.respond(HttpStatusCode.BadRequest)
         handleDeletion(cookbookService.removeUserFromCookbook(cookbookId, userId))
     }
 
     private fun Route.addCookbookRecipe() = post("/{id}/recipe/{recipe}") {
-        val cookbookId = getPathId() ?: return@post call.respond(HttpStatusCode.BadRequest)
+        val cookbookId = getPathId()
         val recipeId = getIdPathVariable("recipe") ?: return@post call.respond(HttpStatusCode.BadRequest)
         val userId = getSessionUserId() ?: return@post call.respond(HttpStatusCode.Unauthorized)
         if (cookbookService.doesCookbookHaveRecipe(cookbookId, recipeId)) return@post call.respond(HttpStatusCode.BadRequest)
@@ -129,7 +129,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     }
 
     private fun Route.deleteCookbookRecipe() = delete("/{id}/recipe/{recipe}") {
-        val cookbookId = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        val cookbookId = getPathId()
         val recipeId = getIdPathVariable("recipe") ?: return@delete call.respond(HttpStatusCode.BadRequest)
         if (!cookbookService.doesCookbookHaveRecipe(cookbookId, recipeId)) return@delete call.respond(HttpStatusCode.BadRequest)
         handleDeletion(cookbookService.removeRecipeFromCookbook(cookbookId, recipeId))
