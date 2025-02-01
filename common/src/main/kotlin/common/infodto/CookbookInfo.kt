@@ -1,6 +1,8 @@
 package common.infodto
 
 import common.enums.UserRole
+import common.infodto.LikeInfo.User
+import common.overviewdto.UserOverview
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,4 +12,5 @@ data class CookbookInfo(
     val description: String = "",
     val recipesCount: Int,
     val usersCount: Int,
+    val members: List<UserOverview>,
 )

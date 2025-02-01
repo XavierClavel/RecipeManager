@@ -20,28 +20,18 @@
           dense
         >
           <v-col cols="12" sm="auto">
-            <v-btn
-              prepend-icon="mdi-account-plus"
-              color="primary"
-              flat
-              rounded
-              class="mb-10 text-h6"
-              min-height="70px"
-              min-width="300px"
-              @click="toSignup"
-            >{{$t("signup")}}</v-btn>
+            <action-button
+              icon="mdi-account-plus"
+              :text="`${$t('signup')}`"
+              :action="toSignup"
+            ></action-button>
           </v-col>
           <v-col cols="12" sm="auto">
-            <v-btn
-              @click="toLogin"
-              prepend-icon="mdi-send"
-              color="primary"
-              flat
-              rounded
-              class="mb-10 text-h6"
-              min-height="70px"
-              min-width="300px"
-            >{{$t("login")}}</v-btn>
+            <action-button
+              icon="mdi-send"
+              :text="`${$t('login')}`"
+              :action="toLogin"
+            ></action-button>
           </v-col>
         </v-row>
       </v-container>

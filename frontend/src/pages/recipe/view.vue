@@ -196,39 +196,24 @@
 
       </v-container>
 
-      <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
-        <v-btn
-          @click="remove(recipeId)"
-          prepend-icon="mdi-delete"
-          color="primary"
-          flat
-          rounded
-          class="mb-10 text-h6"
-          min-height="70px"
-          min-width="200px"
+      <span class="d-flex align-center justify-center mb-10 mt-16 ga-16" >
+        <action-button
+          icon="mdi-delete"
+          :text="`${$t('delete')}`"
+          :action="() => remove(recipeId)"
           v-if="isOwner"
-        >Delete</v-btn>
-        <v-btn
-          prepend-icon="mdi-pencil"
-          color="primary"
-          flat
-          rounded
-          class="mb-10 text-h6"
-          min-height="70px"
-          min-width="200px"
-          @click="toEditRecipe(recipeId)"
+        ></action-button>
+        <action-button
+          icon="mdi-pencil"
+          :text="`${$t('edit')}`"
+          :action="() => toEditRecipe(recipeId)"
           v-if="isOwner"
-        >Edit</v-btn>
-        <v-btn
-          prepend-icon="mdi-tray-arrow-down"
-          color="primary"
-          flat
-          rounded
-          class="mb-10 text-h6"
-          min-height="70px"
-          min-width="200px"
-          @click="downloadRecipe(recipeId)"
-        >Download</v-btn>
+        ></action-button>
+        <action-button
+          icon="mdi-tray-arrow-down"
+          :text="`${$t('download')}`"
+          :action="() => downloadRecipe(recipeId)"
+        ></action-button>
       </span>
 
     <v-snackbar

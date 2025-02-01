@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ActionButton: typeof import('./components/ActionButton.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     Cookbook: typeof import('./components/Cookbook.vue')['default']
     EditablePicture: typeof import('./components/EditablePicture.vue')['default']

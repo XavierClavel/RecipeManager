@@ -109,28 +109,18 @@
         class="mb-10"
       >{{$t("users_add_new")}}</v-btn>
 
-      <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
-        <v-btn
-          v-if="cookbookId != null"
-          prepend-icon="mdi-close-circle-outline"
-          color="primary"
-          flat
-          rounded
-          class="mb-10 text-h6"
-          min-height="70px"
-          min-width="300px"
-          @click="toViewCookbookRecipes(cookbookId)"
-        >Cancel</v-btn>
-        <v-btn
-          @click="submit"
-          prepend-icon="mdi-content-save"
-          color="primary"
-          flat
-          rounded
-          class="mb-10 text-h6"
-          min-height="70px"
-          min-width="300px"
-        >{{$t("save")}}</v-btn>
+      <span class="d-flex align-center justify-center mb-6 mt-6 ga-16" >
+        <action-button
+          v-if="cookbookId"
+          icon="mdi-close-circle-outline"
+          :text="`${$t('cancel')}`"
+          :action="() => toViewCookbook(cookbookId)"
+        ></action-button>
+        <action-button
+          icon="mdi-content-save"
+          :text="`${$t('save')}`"
+          :action="submit"
+        ></action-button>
       </span>
     </form>
   </v-card>
@@ -142,7 +132,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRecipe} from "@/scripts/recipes";
-import {base_url, toViewCookbookRecipes, toViewRecipe} from "@/scripts/common";
+import {base_url, toViewCookbook, toViewRecipe, toViewUser} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {searchUsers} from "@/scripts/users";
@@ -201,7 +191,7 @@ async function submit() {
 
   await editablePicture.value.submitImage()
 
-  toViewCookbookRecipes(cookbookId.value)
+  toViewCookbook(cookbookId.value)
 }
 
 if (cookbookId.value != null) {

@@ -18,7 +18,7 @@
     <v-container class="d-flex flex-row">
       <v-img
         color="surface-variant"
-        :src="imageUrl"
+        :src="getUserIconUrl(user.id)"
         rounded="circle"
         height="200px"
         width="200px"
@@ -41,28 +41,20 @@
 
     </v-container>
 
-    <v-btn
-      v-if="userId != currentUserId"
-      prepend-icon="mdi-plus-box-outline"
-      color="primary"
-      rounded="lg"
-      flat
-      class="ml-8"
-      @click="followUnfollow"
-    >{{ followsUser ? "Unfollow" : "Follow" }}</v-btn>
+    <span class="d-flex align-center justify-center mt-8 mb-8 ga-16"  >
 
-    <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" v-if="userId == currentUserId" >
-
-      <v-btn
-        prepend-icon="mdi-pencil"
-        color="primary"
-        flat
-        rounded
-        class="mb-10 text-h6"
-        min-height="70px"
-        min-width="300px"
-        @click="toEditUser(userId)"
-      >{{$t("edit")}}</v-btn>
+      <action-button
+        :icon="`${followsUser ? 'mdi-account-minus' : 'mdi-account-plus'}`"
+        :text="`${followsUser ? $t('unfollow') : $t('follow')}`"
+        :action="followUnfollow"
+        v-if="userId != currentUserId"
+      ></action-button>
+      <action-button
+        icon="mdi-pencil"
+        :text="`${$t('edit')}`"
+        :action="() => toEditUser(userId)"
+        v-if="userId == currentUserId"
+      ></action-button>
     </span>
     <error :error="errorMessage"></error>
 
@@ -76,7 +68,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import {ref} from "vue";
-import {base_url, toEditUser, toListRecipe} from "@/scripts/common";
+import {base_url, getUserIconUrl, toEditUser, toListRecipe} from "@/scripts/common";
 import {getUser} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {follow, isFollowingUser, unfollow} from "@/scripts/follows";
@@ -92,7 +84,6 @@ const authStore = useAuthStore();
 const currentUserId = authStore.id
 
 const user = ref<object>({})
-const imageUrl = computed(() => `${base_url}/image/users/${userId}.webp`);
 const followsUser = ref(null)
 
 isFollowingUser(userId).then (
@@ -111,14 +102,14 @@ const redirectRecipesLiked = () => {
   toListRecipe(`?likedBy=${userId}`)
 }
 
-const followUnfollow = () => {
+async function followUnfollow() {
   if (followsUser.value) {
-    unfollow(userId).catch(function (error) {
+    await unfollow(userId).catch(function (error) {
       errorMessage.value = error.response.data
     })
   }
   else {
-    follow(userId).catch(function (error) {
+    await follow(userId).catch(function (error) {
       errorMessage.value = error.response.data
     })
   }

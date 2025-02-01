@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import {getCookbookIconUrl, toViewCookbookRecipes} from "@/scripts/common";
-import {ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS, ICON_RECIPE_YIELD} from "../scripts/icons";
+import {getCookbookIconUrl, getUserIconUrl, toViewCookbook} from "@/scripts/common";
 
 defineProps({
   cookbook: {
@@ -15,7 +14,7 @@ defineProps({
     class="ma-4"
     rounded="lg"
     width="250px"
-    @click="toViewCookbookRecipes(cookbook.id)"
+    @click="toViewCookbook(cookbook.id)"
   >
         <v-img
           color="surface-variant"
@@ -26,6 +25,12 @@ defineProps({
           cover
         ></v-img>
         <v-card-title class="text-primary">{{ cookbook.title }}</v-card-title>
+        <v-row class="px-6 pt-2 pb-5">
+          <v-avatar start size="30">
+            <v-img :src="getUserIconUrl(cookbook.members[0].id)"></v-img>
+          </v-avatar>
+        </v-row>
+
     </v-card>
 
 </template>

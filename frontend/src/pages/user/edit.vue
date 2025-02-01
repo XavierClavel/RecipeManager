@@ -43,27 +43,17 @@
         color="primary"
     ></v-textarea>
 
-    <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
-        <v-btn
-            prepend-icon="mdi-close-circle-outline"
-            color="primary"
-            flat
-            rounded
-            class="mb-10 text-h6"
-            min-height="70px"
-            min-width="300px"
-            @click="toViewUser(userId)"
-        >Cancel</v-btn>
-        <v-btn
-            @click="submit"
-            prepend-icon="mdi-content-save"
-            color="primary"
-            flat
-            rounded
-            class="mb-10 text-h6"
-            min-height="70px"
-            min-width="300px"
-        >Save</v-btn>
+    <span class="d-flex align-center justify-center mb-6 mt-6 ga-16" >
+      <action-button
+        icon="mdi-close-circle-outline"
+        :text="`${$t('cancel')}`"
+        :action="() => toViewUser(userId)"
+      ></action-button>
+      <action-button
+        icon="mdi-content-save"
+        :text="`${$t('save')}`"
+        :action="submit"
+      ></action-button>
       </span>
 
 
@@ -105,7 +95,6 @@ async function submit() {
   console.log(submitted)
   await updateUser(userId, submitted)
   await editablePicture.value.submitImage()
-
   toViewUser(userId)
 }
 

@@ -51,6 +51,11 @@ export default {
   cancel: "Cancel",
   save: "Save",
   edit: "Edit",
+  delete: "Delete",
+  download: "Download",
+
+  follow: "Follow",
+  unfollow: "Unfollow",
 
   entree: "Entree",
   plat: "Main Dish",

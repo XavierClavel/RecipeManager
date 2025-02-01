@@ -26,7 +26,7 @@ export {
   toEditCookbook,
   toListCookbooks,
   toMyCookbooks,
-  toViewCookbookRecipes,
+  toViewCookbook,
 
   toHome,
   toUsers,
@@ -67,7 +67,7 @@ const toViewIngredient = (id) => navigateTo(`/ingredient/view?ingredient=${id}`)
 const toCreateCookbook = () => navigateTo(`/cookbook/edit`)
 const toEditCookbook = (id) => navigateTo(`/cookbook/edit?cookbook=${id}`)
 const toCreateCookbookAddRecipe = (id) => navigateTo(`/cookbook/edit?addRecipe=${id}`)
-const toViewCookbookRecipes = (id) => navigateTo(`/cookbook/recipes?cookbook=${id}`)
+const toViewCookbook = (id) => navigateTo(`/cookbook/view?cookbook=${id}`)
 const toListCookbooks = (id) => navigateTo(`/cookbook/list?user=${id}`)
 
 const toMyCookbooks = () => {

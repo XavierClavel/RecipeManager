@@ -22,7 +22,7 @@ declare module 'vue-router/auto-routes' {
     '/admin': RouteRecordInfo<'/admin', '/admin', Record<never, never>, Record<never, never>>,
     '/cookbook/edit': RouteRecordInfo<'/cookbook/edit', '/cookbook/edit', Record<never, never>, Record<never, never>>,
     '/cookbook/list': RouteRecordInfo<'/cookbook/list', '/cookbook/list', Record<never, never>, Record<never, never>>,
-    '/cookbook/recipes': RouteRecordInfo<'/cookbook/recipes', '/cookbook/recipes', Record<never, never>, Record<never, never>>,
+    '/cookbook/view': RouteRecordInfo<'/cookbook/view', '/cookbook/view', Record<never, never>, Record<never, never>>,
     '/home': RouteRecordInfo<'/home', '/home', Record<never, never>, Record<never, never>>,
     '/ingredient/view': RouteRecordInfo<'/ingredient/view', '/ingredient/view', Record<never, never>, Record<never, never>>,
     '/ingredients': RouteRecordInfo<'/ingredients', '/ingredients', Record<never, never>, Record<never, never>>,

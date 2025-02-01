@@ -54,33 +54,22 @@
 
       <v-container>
         <v-row
-          class="d-flex align-center justify-center mb-2 mt-16 gx-16"
+          class="d-flex align-center justify-center mb-2 gx-16"
           dense
           justify="center"
           align="center"
         >
           <v-col cols="12" sm="auto" justify-center>
-
-            <v-btn
-              prepend-icon="mdi-close-circle-outline"
-              color="primary"
-              flat
-              rounded
-              class="mb-10 text-h6 mx-4"
-              min-height="70px"
-              min-width="200px"
-              @click="toLogin"
-            >{{$t("log_in")}}</v-btn>
-            <v-btn
-              @click="submit"
-              prepend-icon="mdi-send"
-              color="primary"
-              flat
-              rounded
-              class="mb-10 text-h6 mx-4"
-              min-height="70px"
-              min-width="200px"
-            >{{$t("sign_up")}}</v-btn>
+            <action-button
+              icon="mdi-close-circle-outline"
+              :text="`${$t('log_in')}`"
+              :action="toLogin"
+            ></action-button>
+            <action-button
+              icon="mdi-send"
+              :text="`${$t('sign_up')}`"
+              :action="submit"
+            ></action-button>
           </v-col>
         </v-row>
       </v-container>

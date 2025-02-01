@@ -56,6 +56,11 @@ export default {
   cancel: "Annuler",
   save: "Sauvegarder",
   edit: "Modifier",
+  delete: "Supprimer",
+  download: "Télécharger",
+
+  follow: "S'abonner",
+  unfollow: "Se désabonner",
 
   entree: "Entrée",
   plat: "Plat",
@@ -67,5 +72,5 @@ export default {
   date: "Date",
 
   my_recipes: "Mes recettes",
-  follows: "Follows",
+  follows: "Abonnements",
 };

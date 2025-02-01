@@ -45,7 +45,7 @@ fun Application.configureAuthentication() {
         }
         session<UserSession>("auth-session") {
             validate { session ->
-                if(userService.findEntityById(session.id) != null) {
+                if(userService.existsById(session.id)) {
                     session
                 } else {
                     null

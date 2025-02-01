@@ -113,7 +113,8 @@ import {useAuthStore} from "@/stores/auth";
 import {ICON_ADMIN, ICON_COOKBOOK, ICON_HOME, ICON_INGREDIENT, ICON_RECIPE} from "@/scripts/icons";
 
 const authStore = useAuthStore()
-const userId = ref(authStore.id)
+const userId = computed(() => authStore.id)
+
 
 const route = useRoute();
 

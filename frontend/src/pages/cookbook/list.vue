@@ -32,10 +32,9 @@ const route = useRoute();
 
 listCookbooks(window.location.search).then(
   function (response) {
-    console.log(response)
+    console.log(response.data)
     cookbooks.value = response.data
   }
 )
 
-const toRecipe = (id) => toViewRecipe((id))
 </script>
