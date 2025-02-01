@@ -32,6 +32,7 @@ declare module 'vue-router/auto-routes' {
     '/recipe/edit': RouteRecordInfo<'/recipe/edit', '/recipe/edit', Record<never, never>, Record<never, never>>,
     '/recipe/list': RouteRecordInfo<'/recipe/list', '/recipe/list', Record<never, never>, Record<never, never>>,
     '/recipe/view': RouteRecordInfo<'/recipe/view', '/recipe/view', Record<never, never>, Record<never, never>>,
+    '/search': RouteRecordInfo<'/search', '/search', Record<never, never>, Record<never, never>>,
     '/signup': RouteRecordInfo<'/signup', '/signup', Record<never, never>, Record<never, never>>,
     '/user/edit': RouteRecordInfo<'/user/edit', '/user/edit', Record<never, never>, Record<never, never>>,
     '/user/verify': RouteRecordInfo<'/user/verify', '/user/verify', Record<never, never>, Record<never, never>>,

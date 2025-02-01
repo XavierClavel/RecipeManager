@@ -68,7 +68,7 @@
               color="primary"
               :items="autocompleteList[index]"
               item-color="primary"
-              item-title="name"
+              item-title="username"
               item-value="id"
               @update:search="(query) => onIngredientAutocompleteChange(query, index)"
               :key="index"
@@ -151,7 +151,7 @@ const autocompleteList = ref([])
 
 const onIngredientAutocompleteChange = async (query, index) => {
   const response = await searchUsers(query, 0, 20);
-  autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: item.username }));
+  autocompleteList.value[index] = response.data;
 }
 
 

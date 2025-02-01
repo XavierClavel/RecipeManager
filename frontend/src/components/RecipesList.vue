@@ -31,7 +31,6 @@ const removeAfterEach = router.afterEach((to, from) => {
 
 // Cleanup when the component is unmounted
 onUnmounted(() => {
-  console.log("unmouting")
   removeAfterEach() // Remove the navigation guard
 })
 

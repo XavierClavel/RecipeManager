@@ -12,6 +12,7 @@ import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
 import common.infodto.IngredientInfo
+import common.overviewdto.UserOverview
 import io.ebean.Paging
 import io.ktor.server.plugins.NotFoundException
 import org.koin.core.component.KoinComponent
@@ -65,8 +66,8 @@ class UserService: KoinComponent {
     fun getUser(id: Long) : UserInfo? =
         QUser().id.eq(id).findOne()?.toInfo()
 
-    fun listUsers(): List<UserInfo> =
-        QUser().findList().map { it.toInfo() }
+    fun listUsers(): List<UserOverview> =
+        QUser().findList().map { it.toOverview() }
 
     //TODO :parameterize password
     fun setupDefaultAdmin() {

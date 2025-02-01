@@ -83,6 +83,7 @@
             flat
             :label="`${$t('search_recipe')}`"
             bg-color="primary"
+            @update:modelValue="toSearch"
           ></v-text-field>
         </v-card>
       </div>
@@ -110,10 +111,12 @@ import {
   toUsers,
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
+import { debounce } from 'lodash'
 import {ICON_ADMIN, ICON_COOKBOOK, ICON_HOME, ICON_INGREDIENT, ICON_RECIPE} from "@/scripts/icons";
 
 const authStore = useAuthStore()
 const userId = computed(() => authStore.id)
+const router = useRouter()
 
 
 const route = useRoute();
@@ -127,6 +130,12 @@ const toggleDrawer = () => {
 }
 
 const showSidebar = computed(() => !noLoginRedirect.includes(route.name));
+
+const toSearch = debounce((query) => {
+  if (!query) return; // Avoid empty redirects
+  router.push({ name: '/search', query: { search: query } })
+}, 500) // Buffer input for 500ms
+
 
 </script>
 <style scoped>

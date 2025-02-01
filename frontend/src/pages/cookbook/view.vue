@@ -30,11 +30,11 @@
           </v-col>
         </v-row>
         <v-row class="px-3">
-          <v-btn
-          icon="mdi-cog"
-          flat
-          @click="toEditCookbook(cookbookId)"
-          ></v-btn>
+          <action-button
+            icon="mdi-cog"
+            :text="`${$t('edit')}`"
+            :action="() => toEditCookbook(cookbookId)"
+          ></action-button>
         </v-row>
       </v-container>
 
