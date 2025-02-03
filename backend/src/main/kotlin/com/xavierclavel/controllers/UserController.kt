@@ -42,7 +42,7 @@ object UserController: Controller(USER_URL) {
     }
 
     private fun Route.getUser() = get("/{id}") {
-        val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId()
         val user = userService.getUser(id) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(user)
     }
@@ -55,7 +55,7 @@ object UserController: Controller(USER_URL) {
 
     private fun Route.editUser() = put("/{id}") {
         checkIfActionPerformedOnSelf()
-        val id = getPathId() ?: return@put call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId()
         val userDTO = call.receive<UserDTO>()
         val response = userService.editUser(id, userDTO) ?: return@put call.respond(HttpStatusCode.NotFound)
         call.respond(response)
@@ -63,7 +63,7 @@ object UserController: Controller(USER_URL) {
 
     private fun Route.deleteUser() = delete("/{id}") {
         checkIfActionPerformedOnSelf()
-        val id = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        val id = getPathId()
         val user = userService.getUser(id) ?: return@delete call.respond(HttpStatusCode.NotFound)
         userService.deleteUserById(user.id)
         imageService.deleteImage(USERS_IMG_PATH, user.id)
@@ -72,7 +72,7 @@ object UserController: Controller(USER_URL) {
 
     private fun Route.updatePassword() = put("/password/{id}") {
         checkIfActionPerformedOnSelf()
-        val id = getPathId() ?: throw BadRequestException("ID parameter missing")
+        val id = getPathId()
         val passwordDTO = call.receive<PasswordDTO>()
         if (!userService.isPasswordValid(id, passwordDTO.old)) {
             throw BadRequestException("Invalid password")
@@ -81,7 +81,7 @@ object UserController: Controller(USER_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun Route.deletePassword() = delete("/password{mail}") {
+    private fun Route.deletePassword() = delete("/password/{mail}") {
         val mail = call.parameters["mail"] ?: throw BadRequestException("Mail parameter missing")
         val uuid = UUID.randomUUID().toString()
         userService.updateToken(mail, uuid)
