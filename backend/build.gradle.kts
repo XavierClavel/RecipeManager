@@ -91,6 +91,9 @@ dependencies {
     //Mocking
     testImplementation("io.mockk:mockk:1.13.16")
 
+    //Job scheduling
+    implementation("dev.inmo:krontab:2.7.1")
+
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

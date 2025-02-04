@@ -59,7 +59,8 @@ const toMyProfile = () => {
   const authStore = useAuthStore();
   navigateTo(`/user/view?user=${authStore.id}`)
 }
-const toEditUser = (id) => navigateTo(`/user/edit/?user=${id}`)
+const toEditUser = (id) => navigateTo(`/user/edit?user=${id}`)
+const toSettings = () => navigateTo(`/user/settings`)
 
 const toListIngredient = () => navigateTo(`/ingredients`)
 const toViewIngredient = (id) => navigateTo(`/ingredient/view?ingredient=${id}`)

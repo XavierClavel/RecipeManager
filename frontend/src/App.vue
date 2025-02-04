@@ -32,7 +32,7 @@
 
     <v-app-bar color="surface" scroll-behavior="hide" scroll-threshold="100">
       <template v-slot:prepend>
-        <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click="toggleDrawer" v-if="showSidebar"></v-app-bar-nav-icon>
       </template>
       <template v-slot:append v-if="showSidebar">
         <v-menu>

@@ -43,9 +43,10 @@ fun main() {
 
     DatabaseManager.init()
 
+    logger.info { " Server started." }
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
-    logger.info { " Server started." }
+    logger.info { " Server closed." }
 }
 
 fun Application.module() {
@@ -75,6 +76,7 @@ fun Application.module() {
     }
     configureAuthentication()
     serveRoutes()
+    scheduleJob()
 
     val userService: UserService by inject()
     userService.setupDefaultAdmin()
