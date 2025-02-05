@@ -1,6 +1,5 @@
 package com.xavierclavel.plugins
 
-import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.exceptions.AuthenticationException
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.UserSession
@@ -15,8 +14,10 @@ import io.ktor.server.auth.session
 import io.ktor.server.response.respond
 import io.ktor.server.sessions.Sessions
 import io.ktor.server.sessions.cookie
+import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import org.koin.ktor.ext.inject
 
+@OptIn(ExperimentalLettuceCoroutinesApi::class)
 fun Application.configureAuthentication() {
     val userService : UserService by inject<UserService>()
 
@@ -34,18 +35,18 @@ fun Application.configureAuthentication() {
             validate { credentials ->
                 val user = userService.findByUsername(credentials.name) ?: throw AuthenticationException("User not found")
                 if (!user.isVerified) throw AuthenticationException("User not verified")
-                if (BCrypt.verifyer().verify(credentials.password.toCharArray(), user.passwordHash).verified) {
-                    logger.info {"login accepted"}
+                if (userService.isPasswordValid(credentials.password, user.passwordHash)) {
+                    logger.info {"Login accepted for user ${user.username}"}
                     UserIdPrincipal(credentials.name)
                 } else {
-                    logger.error {"login rejected"}
+                    logger.error {"Login rejected for user ${user.username}"}
                     null
                 }
             }
         }
         session<UserSession>("auth-session") {
             validate { session ->
-                if(userService.existsById(session.id)) {
+                if (RedisManager.redis.get("session:${session.sessionId}")?.toLongOrNull() != null) {
                     session
                 } else {
                     null

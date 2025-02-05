@@ -26,7 +26,7 @@ object ExportController: Controller(EXPORT_URL) {
     }
 
     private fun Route.exportRecipe() = get("/recipe/{id}") {
-        val id = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing ID parameter")
+        val id = getPathId()
         val recipe = recipeService.findById(id) ?: return@get call.respond(HttpStatusCode.NotFound, "Recipe not found")
         try {
             val byteArray = exportService.generatePDF(recipe)

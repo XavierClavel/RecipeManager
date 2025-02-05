@@ -1,13 +1,12 @@
 package com.xavierclavel.controllers
 
-import com.xavierclavel.exceptions.AuthenticationException
+import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.services.FollowService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
-import com.xavierclavel.utils.getSessionUserId
 import common.utils.URL.FOLLOW_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.plugins.BadRequestException
@@ -48,37 +47,37 @@ object FollowController: Controller(FOLLOW_URL) {
     }
 
     private fun Route.getFollowers() = get("/{id}/followers") {
-        val userId = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val userId = getPathId()
         val user = userService.getUser(userId) ?: return@get call.respond(HttpStatusCode.NotFound)
         val paging = getPaging()
         call.respond(followService.getFollowers(userId, paging))
     }
 
     private fun Route.getFollows() = get("/{id}/follows") {
-        val userId = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val userId = getPathId()
         val user = userService.getUser(userId) ?: return@get call.respond(HttpStatusCode.NotFound)
         val paging = getPaging()
         call.respond(followService.getFollows(userId, paging))
     }
 
     private fun Route.isFollowedByUser() = get("/{id}/followedBy/{targetId}") {
-        val userId = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val userId = getPathId()
         val targetId = getIdPathVariable("targetId") ?: return@get call.respond(HttpStatusCode.BadRequest)
         call.respond(followService.isFollowing(userId, targetId))
     }
 
     private fun Route.isFollowingUser() = get("/{id}/follows/{targetId}") {
-        val userId = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val userId = getPathId()
         val targetId = getIdPathVariable("targetId") ?: return@get call.respond(HttpStatusCode.BadRequest)
         call.respond(followService.isFollowing(targetId, userId))
     }
 
 
 
-    private fun RoutingContext.handleFollowRequest(): Pair<Long, Long> {
+    private suspend fun RoutingContext.handleFollowRequest(): Pair<Long, Long> {
         val userId = getPathId() ?: throw BadRequestException("No id specified in request")
         userService.getUser(userId) ?: throw NotFoundException("User not found")
-        val followerId = getSessionUserId() ?: throw AuthenticationException("No session found for user")
+        val followerId = getSessionUserId()
         if(userId == followerId) throw BadRequestException("Cannot follow self")
         return Pair(userId, followerId)
     }

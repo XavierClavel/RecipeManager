@@ -1,6 +1,8 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.UserController.mailService
+import com.xavierclavel.exceptions.AuthenticationException
+import com.xavierclavel.plugins.RedisManager
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
@@ -15,12 +17,15 @@ import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.sessions.clear
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
+import io.lettuce.core.ExperimentalLettuceCoroutinesApi
+import kotlinx.coroutines.delay
 import org.koin.java.KoinJavaComponent.inject
 import java.util.UUID
 
@@ -40,11 +45,15 @@ object AuthController: Controller(AUTH_URL) {
         resetPassword()
     }
 
+    @OptIn(ExperimentalLettuceCoroutinesApi::class)
     private fun Route.login() = post("/login") {
         val username = call.principal<UserIdPrincipal>()?.name.toString()
         val user = userService.getUserByUsername(username)!!
         userService.registerUserActivity(user.id)
-        call.sessions.set(UserSession(username = username, role = user.role, id = user.id))
+
+        val sessionId = UUID.randomUUID().toString()
+        RedisManager.redis.setex("session:$sessionId", 7 * 24 * 60 * 60, user.id.toString())
+        call.sessions.set(UserSession(sessionId))
         call.respond(HttpStatusCode.OK)
     }
 
@@ -62,7 +71,7 @@ object AuthController: Controller(AUTH_URL) {
     private fun Route.whoami() = get("/me") {
         val userSession = call.sessions.get<UserSession>()
         if (userSession == null) return@get call.respond(HttpStatusCode.Unauthorized, "Session expired")
-        val userInfo = userService.getUserByUsername(userSession.username)!!
+        val userInfo = userService.getUser(getSessionUserId()) ?: throw BadRequestException("User does not exist")
         call.respond(userInfo)
     }
 
@@ -84,6 +93,17 @@ object AuthController: Controller(AUTH_URL) {
         val mail = call.parameters["mail"] ?: return@get call.respond(HttpStatusCode.BadRequest)
         val user = userService.findByMail(mail).toInfo()
         call.respond(user)
+    }
+
+    @OptIn(ExperimentalLettuceCoroutinesApi::class)
+    suspend fun RoutingContext.getSessionUserId(): Long {
+        val session = call.sessions.get<UserSession>() ?: throw AuthenticationException("No session found")
+        val userId = RedisManager.redis.get("session:${session.sessionId}")?.toLongOrNull()
+        if (userId == null) {
+            call.sessions.clear<UserSession>()
+            throw AuthenticationException("No session found")
+        }
+        return userId
     }
 
 }

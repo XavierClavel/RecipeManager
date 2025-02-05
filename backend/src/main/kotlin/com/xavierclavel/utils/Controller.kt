@@ -42,12 +42,6 @@ fun RoutingContext.getPaging():Paging =
 fun RoutingContext.getSort(): Sort =
     Sort.valueOf(call.request.queryParameters["sort"] ?: "NONE")
 
-fun RoutingContext.getSessionUsername(): String? =
-    call.sessions.get<UserSession>()?.username
-
-fun RoutingContext.getSessionUserId(): Long? =
-    call.sessions.get<UserSession>()?.id
-
 fun RoutingContext.getPathId(): Long = getIdPathVariable("id") ?: throw BadRequestException("Request is missing ID parameter")
 
 fun RoutingContext.getIdPathVariable(value: String): Long? = call.parameters[value]?.toLongOrNull()

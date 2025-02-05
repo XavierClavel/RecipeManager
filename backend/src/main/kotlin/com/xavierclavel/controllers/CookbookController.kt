@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.controllers.UserController.imageService
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.utils.Controller
@@ -7,14 +8,12 @@ import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getIdQueryParam
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
-import com.xavierclavel.utils.getSessionUserId
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.handleDeletion
 import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
 import common.enums.CookbookRole
 import common.utils.Filepath.COOKBOOKS_IMG_PATH
-import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.COOKBOOK_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -49,7 +48,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.createCookbook() = post {
         val cookbookDTO = call.receive<CookbookDTO>()
         val cookbook = cookbookService.createCookbook(cookbookDTO)
-        val userId = getSessionUserId() ?: return@post call.respond(HttpStatusCode.Unauthorized)
+        val userId = getSessionUserId()
         cookbookService.addUserToCookbook(cookbook.id, userId, CookbookRole.OWNER)
         call.respond(HttpStatusCode.Created, cookbook)
     }

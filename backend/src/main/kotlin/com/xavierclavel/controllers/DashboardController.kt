@@ -3,10 +3,6 @@ package com.xavierclavel.controllers
 import com.xavierclavel.services.DashboardService
 import com.xavierclavel.services.LikeService
 import com.xavierclavel.utils.Controller
-import com.xavierclavel.utils.getPaging
-import com.xavierclavel.utils.getPathId
-import com.xavierclavel.utils.getIdPathVariable
-import com.xavierclavel.utils.getSessionUserId
 import common.utils.URL.DASHBOARD_URL
 import common.utils.URL.LIKE_URL
 import io.ktor.http.HttpStatusCode

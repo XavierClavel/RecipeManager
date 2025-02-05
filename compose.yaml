@@ -42,7 +42,7 @@ services:
   database:
     image: postgres:17.2
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
@@ -56,10 +56,20 @@ services:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 1s
 
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: [ "redis-server", "--appendonly", "yes" ]
+
 volumes:
   pictures: {}
   logs: {}
-  postgres: {}
+  postgres_data: {}
+  redis_data: {}
 
 networks:
   front-tier: {}

@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.MailService
@@ -7,7 +8,6 @@ import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
-import com.xavierclavel.utils.getSessionUserId
 import common.dto.PasswordDTO
 import common.dto.UserDTO
 import common.utils.Filepath.USERS_IMG_PATH
@@ -95,7 +95,7 @@ object UserController: Controller(USER_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun RoutingContext.checkIfActionPerformedOnSelf() {
+    private suspend fun RoutingContext.checkIfActionPerformedOnSelf() {
         if(getSessionUserId() != getPathId()) throw ForbiddenException("You are not authorized to edit another user.")
     }
 

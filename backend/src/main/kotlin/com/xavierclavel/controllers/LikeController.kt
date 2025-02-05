@@ -1,11 +1,11 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.services.LikeService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getIdPathVariable
-import com.xavierclavel.utils.getSessionUserId
 import common.utils.URL.LIKE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
@@ -46,15 +46,15 @@ object LikeController: Controller(LIKE_URL) {
     }
 
     private fun Route.createLike() = post("/{id}") {
-        val recipeId = getPathId() ?: return@post call.respond(HttpStatusCode.BadRequest)
-        val userId = getSessionUserId() ?: return@post call.respond(HttpStatusCode.Unauthorized)
+        val recipeId = getPathId()
+        val userId = getSessionUserId()
         val userCreated = likeService.createLike(recipeId, userId)
         call.respond(HttpStatusCode.Created, userCreated)
     }
 
     private fun Route.deleteLike() = delete("/{id}") {
-        val recipeId = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
-        val userId = getSessionUserId() ?: return@delete call.respond(HttpStatusCode.Unauthorized)
+        val recipeId = getPathId()
+        val userId = getSessionUserId()
         val result = likeService.deleteLike(recipeId, userId) ?: return@delete call.respond(HttpStatusCode.BadRequest)
         if (!result) return@delete call.respond(HttpStatusCode.BadRequest)
         call.respond(HttpStatusCode.OK)

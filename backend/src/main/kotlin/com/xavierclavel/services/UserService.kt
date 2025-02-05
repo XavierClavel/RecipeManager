@@ -85,10 +85,11 @@ class UserService: KoinComponent {
         return user.validate().updateAndGet().toInfo()
     }
 
-    fun isPasswordValid(id: Long, password: String): Boolean {
-        val currentPasswordHash = findEntityById(id).passwordHash
-        return BCrypt.verifyer().verify(password.toCharArray(), currentPasswordHash).verified
-    }
+    fun isPasswordValid(id: Long, password: String): Boolean =
+        isPasswordValid(password, findEntityById(id).passwordHash)
+
+    fun isPasswordValid(password: String, hash: String): Boolean =
+        BCrypt.verifyer().verify(password.toCharArray(), hash).verified
 
     fun updatePassword(id: Long, password: String) =
         findEntityById(id).updatePassword(password).updateAndGet().toInfo()

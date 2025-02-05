@@ -94,6 +94,13 @@ dependencies {
     //Job scheduling
     implementation("dev.inmo:krontab:2.7.1")
 
+    //Redis for session storage
+    implementation("io.lettuce:lettuce-core:6.5.3.RELEASE")
+
+    //Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.10.1")
+
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

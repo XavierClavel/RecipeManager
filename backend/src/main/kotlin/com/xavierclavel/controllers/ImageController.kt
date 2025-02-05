@@ -1,10 +1,10 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPathId
-import com.xavierclavel.utils.getSessionUsername
 import com.xavierclavel.utils.receiveImage
 import common.utils.Filepath.COOKBOOKS_IMG_PATH
 import common.utils.Filepath.RECIPES_IMG_PATH
@@ -121,9 +121,9 @@ object ImageController: Controller(IMAGE_URL) {
     }
 
 
-    private fun RoutingContext.isAuthorizedToEditRecipe(recipeId: Long) : Boolean {
-        val currentUser = getSessionUsername() ?: return false
-        return  recipeService.getRecipeOwner(recipeId)?.username != currentUser
+    private suspend fun RoutingContext.isAuthorizedToEditRecipe(recipeId: Long) : Boolean {
+        val currentUser = getSessionUserId()
+        return recipeService.getRecipeOwner(recipeId)?.id != currentUser
     }
 
 

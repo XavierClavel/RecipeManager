@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.services.CustomIngredientService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.RecipeIngredientService
@@ -10,7 +11,6 @@ import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getIdPathVariableSet
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
-import com.xavierclavel.utils.getSessionUsername
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.logger
 import common.RecipeFilter
@@ -46,7 +46,7 @@ object RecipeController: Controller(RECIPE_URL) {
     }
 
     private fun Route.getRecipe() = get("/{id}") {
-        val recipeId = getPathId() ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val recipeId = getPathId()
         val recipe = recipeService.findById(recipeId) ?: return@get call.respond(HttpStatusCode.NotFound)
         call.respond(recipe)
     }
@@ -80,8 +80,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.createRecipe() = post {
         try {
-            val username = getSessionUsername() ?: return@post call.respond(HttpStatusCode.Unauthorized)
-            val user = userService.findByUsername(username) ?: return@post call.respond(HttpStatusCode.Unauthorized)
+            val user = userService.findEntityById(getSessionUserId())
             val recipeDto = call.receive<RecipeDTO>()
             val recipe = recipeService.createRecipe(recipeDto, user)
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
@@ -96,7 +95,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.updateRecipe() = put("/{id}") {
         try {
-            val recipeId = getPathId() ?: return@put call.respond(HttpStatusCode.BadRequest)
+            val recipeId = getPathId()
             val recipe = recipeService.findById(recipeId) ?: return@put call.respond(HttpStatusCode.NotFound)
             if (!isAuthorizedToEditRecipe(recipe)) return@put call.respond(HttpStatusCode.Unauthorized)
             val recipeDto = call.receive<RecipeDTO>()
@@ -110,7 +109,7 @@ object RecipeController: Controller(RECIPE_URL) {
     }
 
     private fun Route.deleteRecipe() = delete("/{id}") {
-        val recipeId = getPathId() ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        val recipeId = getPathId()
         val recipe = recipeService.findById(recipeId) ?: return@delete call.respond(HttpStatusCode.NotFound)
         if (!isAuthorizedToEditRecipe(recipe)) return@delete call.respond(HttpStatusCode.Unauthorized)
         recipeService.deleteRecipe(recipeId)
@@ -118,9 +117,9 @@ object RecipeController: Controller(RECIPE_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun RoutingContext.isAuthorizedToEditRecipe(recipe: RecipeInfo): Boolean {
-        val currentUser = getSessionUsername() ?: return false
-        return recipe.owner.username == currentUser
+    private suspend fun RoutingContext.isAuthorizedToEditRecipe(recipe: RecipeInfo): Boolean {
+        val currentUser = getSessionUserId()
+        return recipe.owner.id == currentUser
     }
 
 
