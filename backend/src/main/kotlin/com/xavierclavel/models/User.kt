@@ -42,7 +42,8 @@ class User (
 
     //Validation
     @Column(unique = true)
-    var verificationToken: String = "",
+    var token: String = "",
+    var tokenEndValidity: Long = Instant.now().epochSecond,
     var isVerified: Boolean = false,
 
     //Privacy
@@ -81,7 +82,7 @@ class User (
                 mail = userDTO.mail,
                 role = userDTO.role,
                 passwordHash = passwordHash,
-                verificationToken = token,
+                token = token,
             )
         }
     }
@@ -124,6 +125,6 @@ class User (
     }
 
     fun updateToken(token: String) = this.apply {
-        verificationToken = token
+        this.token = token
     }
 }

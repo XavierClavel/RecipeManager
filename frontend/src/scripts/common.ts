@@ -34,6 +34,7 @@ export {
   toSignup,
   toMyProfile,
   whoami,
+  toSettings,
 
   uploadImage,
   deleteImage,

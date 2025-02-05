@@ -17,22 +17,19 @@ import router from "@/router";
 import { createI18n } from 'vue-i18n';
 import en from './locales/en';
 import fr from './locales/fr';
+import VueCookies from 'vue-cookies'
+import i18n from "@/plugins/i18n";
+
 
 const pinia = createPinia();
-
-const i18n = createI18n({
-  locale: 'fr', // Default language
-  fallbackLocale: 'en', // Fallback if a translation is missing
-  messages: {
-    en,
-    fr
-  }
-});
-
 
 const app = createApp(App)
 app.use(pinia);
 app.use(i18n)
-app.use(router); // Add the router to the app
+app.use(router);
+app.use(VueCookies)
+
+app.config.globalProperties.$cookies.config('1y')
+
 registerPlugins(app)
 app.mount('#app')

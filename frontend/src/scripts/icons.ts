@@ -32,7 +32,7 @@ const ICON_INGREDIENT = "mdi-food-apple"
 const ICON_HOME = "mdi-home"
 const ICON_ADMIN = "mdi-security"
 
-const ICON_SAVE = "mdi-save"
+const ICON_SAVE = "mdi-content-save"
 const ICON_DELETE = "mdi-delete"
 
 const ICON_RECIPE_YIELD = "mdi-silverware-fork-knife"

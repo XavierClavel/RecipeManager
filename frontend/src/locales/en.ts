@@ -22,7 +22,7 @@ export default {
   search_recipe: "Search a recipe",
 
   profile: "Profile",
-  settings: "Parameters",
+  settings: "Settings",
   about: "About",
 
   new_recipe: "New recipe",

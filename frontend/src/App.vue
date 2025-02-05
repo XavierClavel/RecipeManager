@@ -51,7 +51,7 @@
 
           <v-list>
             <v-list-item prepend-icon="mdi-account-circle" rounded="xl" link :title="`${$t('profile')}`" @click="toMyProfile" ></v-list-item>
-            <v-list-item prepend-icon="mdi-cog" rounded="xl" link :title="`${$t('settings')}`" @click="toMyProfile" ></v-list-item>
+            <v-list-item prepend-icon="mdi-cog" rounded="xl" link :title="`${$t('settings')}`" @click="toSettings" ></v-list-item>
             <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link :title="`${$t('about')}`" @click="toHome"></v-list-item>
             <v-list-item prepend-icon="mdi-logout" rounded="xl" link :title="`${$t('log_out')}`" @click="logout" ></v-list-item>
           </v-list>
@@ -107,12 +107,13 @@ import {
   toCreateRecipe,
   toHome,
   toListIngredient,
-  toListRecipe, toMyCookbooks, toMyProfile,
+  toListRecipe, toMyCookbooks, toMyProfile, toSettings,
   toUsers,
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
 import { debounce } from 'lodash'
 import {ICON_ADMIN, ICON_COOKBOOK, ICON_HOME, ICON_INGREDIENT, ICON_RECIPE} from "@/scripts/icons";
+import {overrideLocaleFromCookie} from "@/scripts/localization";
 
 const authStore = useAuthStore()
 const userId = computed(() => authStore.id)
@@ -136,6 +137,7 @@ const toSearch = debounce((query) => {
   router.push({ name: '/search', query: { search: query } })
 }, 500) // Buffer input for 500ms
 
+overrideLocaleFromCookie()
 
 </script>
 <style scoped>

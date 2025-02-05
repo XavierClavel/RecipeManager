@@ -39,7 +39,15 @@ class UserService: KoinComponent {
     }
 
     fun findByToken(token: String) : User =
-        QUser().verificationToken.eq(token).findOne() ?: throw NotFoundException("Invalid verification token")
+        QUser().token.eq(token).findOne() ?: throw NotFoundException("Invalid verification token")
+
+    fun isTokenValid(token: String) : Boolean {
+        val currentEpoch = Instant.now().epochSecond
+        val user = findByToken(token)
+        return user.tokenEndValidity > currentEpoch
+    }
+
+
 
     fun existsById(id: Long) = QUser().id.eq(id).exists()
     fun existsByMail(mail: String) = QUser().mail.eq(mail).exists()
