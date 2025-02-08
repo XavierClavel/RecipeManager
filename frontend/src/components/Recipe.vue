@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getRecipeImageUrl, getRecipeThumbnailUrl, getUserIconUrl, toViewRecipe, toViewUser} from "@/scripts/common";
+import {getRecipeThumbnailUrl, toViewRecipe} from "@/scripts/common";
 
 defineProps({
   recipe: {

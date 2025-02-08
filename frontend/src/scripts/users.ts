@@ -7,6 +7,7 @@ export{
   getUsers,
   deleteUser,
   searchUsers,
+  updatePassword,
 }
 
 async function getUser(id) {
@@ -28,4 +29,13 @@ async function deleteUser(id) {
 
 async function searchUsers(query, page, size) {
   return await apiClient.get(`/user?search=${query}&page=${page}&size=${size}`)
+}
+
+async function updatePassword(oldPassword, newPassword) {
+  return await apiClient.put("/user/password",
+    {
+      old: oldPassword,
+      new: newPassword
+    }
+  )
 }

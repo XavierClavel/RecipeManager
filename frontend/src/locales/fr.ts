@@ -15,6 +15,11 @@ export default {
   password_confirm: "Confirmer le mot de passe",
   mail: "Adresse mail",
 
+  update_password: "Changer de mot de passe",
+  new_password: "Nouveau mot de passe",
+  current_password: "Mot de passe actuel",
+  confirm_new_password: "Confirmer nouveau mot de passe",
+
   required: "Champs obligatoire.",
   passwords_must_match: "Les mots de passe doivent être identiques",
   min_8_characters: "Minimum 8 charactères",

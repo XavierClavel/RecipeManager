@@ -1,9 +1,4 @@
-import axios from "axios";
-import router from "@/router";
-import apiClient from '@/plugins/axios.js';
-import {useAuthStore, declareLogin} from "@/stores/auth";
 import i18n from '@/plugins/i18n'
-import {ref} from "vue";
 import {getCookie, setCookie} from "@/scripts/cookies";
 
 export {
@@ -11,7 +6,6 @@ export {
   forceLocale,
   getLocale,
   getBrowserLocale,
-  getInitialLocale,
 }
 
 

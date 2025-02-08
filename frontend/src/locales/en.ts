@@ -15,6 +15,11 @@ export default {
   password_confirm: "Confirm password",
   mail: "Email address",
 
+  update_password: "Update password",
+  new_password: "New password",
+  current_password: "Current password",
+  confirm_new_password: "Confirm new password",
+
   required: "Required.",
   passwords_must_match: "Passwords do not match.",
   min_8_characters: "At least 8 characters",

@@ -1,19 +1,7 @@
 <template>
   <v-card
-    class="mx-auto rounded-xl pa-5 ma-auto my-5 d-flex flex-row"
-    max-width="1000px"
-    v-if="displayError"
-  >
-    <v-icon color="primary" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
-    <v-card-title prepend-icon="mdi-alert" class="text-primary text-h4">
-      {{ errorMessage }}
-    </v-card-title>
-  </v-card>
-
-  <v-card
   class="mx-auto rounded-xl pa-5 ma-auto my-5"
   max-width="1000px"
-  v-if="!displayError"
   >
     <v-container class="d-flex flex-row">
       <editable-picture
@@ -35,6 +23,8 @@
       </v-container>
 
     </v-container>
+
+    <error :error="errorMessage"></error>
 
     <v-textarea
         v-model="user.bio"
@@ -72,8 +62,7 @@ import EditablePicture from "@/components/EditablePicture.vue";
 // Get the route object
 const route = useRoute();
 const userId = route.query.user
-let displayError = ref<Boolean>(false)
-const errorMessage = ref<String>("This user does not exist")
+const errorMessage = ref(null)
 const editablePicture = ref(null)
 
 const user = ref<object>({})
@@ -83,9 +72,7 @@ getUser(userId).then (
     console.log(response)
     user.value = response.data
   }).catch(function (error) {
-    displayError.value = true
-  console.log(error);
-    console.log(displayError)
+    errorMessage.value = error.response.data
 })
 
 async function submit() {

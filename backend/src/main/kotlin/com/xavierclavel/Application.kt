@@ -13,12 +13,13 @@ import com.xavierclavel.controllers.ImageController
 import com.xavierclavel.controllers.LikeController
 import com.xavierclavel.controllers.TestController
 import com.xavierclavel.controllers.UserController
-import com.xavierclavel.exceptions.AuthenticationException
+import com.xavierclavel.exceptions.BadRequestException
+import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.exceptions.ForbiddenException
+import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.utils.serve
 import com.xavierclavel.plugins.*
 import com.xavierclavel.services.UserService
-import com.xavierclavel.utils.Database
 import com.xavierclavel.utils.logger
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -26,15 +27,10 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.BadRequestException
-import io.ktor.server.plugins.NotFoundException
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.statuspages.StatusPages
-import io.ktor.server.plugins.statuspages.exception
 import io.ktor.server.response.respond
-import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
-import kotlinx.coroutines.delay
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.ktor.ext.inject
 
@@ -64,7 +60,7 @@ fun Application.module() {
 
     }
     install(StatusPages) {
-        exception<AuthenticationException> {call, cause ->
+        exception<UnauthorizedException> { call, cause ->
             call.respond(HttpStatusCode.Unauthorized, cause.message ?: "Unknown error")
         }
         exception<ForbiddenException> { call, cause ->
@@ -84,17 +80,6 @@ fun Application.module() {
     val userService: UserService by inject()
     userService.setupDefaultAdmin()
 
-    routing {
-        authenticate("auth-session") {
-            get("/a") {
-                a()
-            }
-        }
-    }
-}
-
-suspend fun a() {
-    delay(1000)
 }
 
 //Controllers declaration

@@ -1,17 +1,13 @@
 package com.xavierclavel.services
 
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.xavierclavel.exceptions.AuthenticationException
 import com.xavierclavel.models.User
-import com.xavierclavel.models.query.QIngredient
 import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
-import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
-import common.infodto.IngredientInfo
 import common.overviewdto.UserOverview
 import io.ebean.Paging
 import io.ktor.server.plugins.NotFoundException

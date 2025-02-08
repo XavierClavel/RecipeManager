@@ -53,26 +53,23 @@ object UserController: Controller(USER_URL) {
         call.respond(userService.search(searchString, getPaging()))
     }
 
-    private fun Route.editUser() = put("/{id}") {
-        checkIfActionPerformedOnSelf()
-        val id = getPathId()
+    private fun Route.editUser() = put {
+        val id = getSessionUserId()
         val userDTO = call.receive<UserDTO>()
         val response = userService.editUser(id, userDTO) ?: return@put call.respond(HttpStatusCode.NotFound)
         call.respond(response)
     }
 
-    private fun Route.deleteUser() = delete("/{id}") {
-        checkIfActionPerformedOnSelf()
-        val id = getPathId()
+    private fun Route.deleteUser() = delete {
+        val id = getSessionUserId()
         val user = userService.getUser(id) ?: return@delete call.respond(HttpStatusCode.NotFound)
         userService.deleteUserById(user.id)
         imageService.deleteImage(USERS_IMG_PATH, user.id)
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun Route.updatePassword() = put("/password/{id}") {
-        checkIfActionPerformedOnSelf()
-        val id = getPathId()
+    private fun Route.updatePassword() = put("/password") {
+        val id = getSessionUserId()
         val passwordDTO = call.receive<PasswordDTO>()
         if (!userService.isPasswordValid(id, passwordDTO.old)) {
             throw BadRequestException("Invalid password")
@@ -81,8 +78,9 @@ object UserController: Controller(USER_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun Route.deletePassword() = delete("/password/{mail}") {
-        val mail = call.parameters["mail"] ?: throw BadRequestException("Mail parameter missing")
+    private fun Route.deletePassword() = delete("/password") {
+        val id = getSessionUserId()
+        val mail = userService.findEntityById(id).mail
         val uuid = UUID.randomUUID().toString()
         userService.updateToken(mail, uuid)
         mailService.sendPasswordResetEmail(mail, uuid)
@@ -95,8 +93,5 @@ object UserController: Controller(USER_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
-    private suspend fun RoutingContext.checkIfActionPerformedOnSelf() {
-        if(getSessionUserId() != getPathId()) throw ForbiddenException("You are not authorized to edit another user.")
-    }
 
 }

@@ -1,6 +1,9 @@
 package com.xavierclavel.plugins
 
-import com.xavierclavel.exceptions.AuthenticationException
+import com.xavierclavel.exceptions.NotFoundCause
+import com.xavierclavel.exceptions.NotFoundException
+import com.xavierclavel.exceptions.UnauthorizedCause
+import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.logger
@@ -33,8 +36,8 @@ fun Application.configureAuthentication() {
         basic("auth-basic") {
             realm = "Access to the '/' path"
             validate { credentials ->
-                val user = userService.findByUsername(credentials.name) ?: throw AuthenticationException("User not found")
-                if (!user.isVerified) throw AuthenticationException("User not verified")
+                val user = userService.findByUsername(credentials.name) ?: throw NotFoundException(NotFoundCause.USER_NOT_FOUND)
+                if (!user.isVerified) throw UnauthorizedException(UnauthorizedCause.USER_NOT_VERIFIED)
                 if (userService.isPasswordValid(credentials.password, user.passwordHash)) {
                     logger.info {"Login accepted for user ${user.username}"}
                     UserIdPrincipal(credentials.name)
