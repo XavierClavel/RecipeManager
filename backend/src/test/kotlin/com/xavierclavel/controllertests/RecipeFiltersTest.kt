@@ -9,7 +9,7 @@ import common.enums.DishClass
 import common.infodto.RecipeInfo
 import common.infodto.UserInfo
 import io.ktor.client.request.get
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser

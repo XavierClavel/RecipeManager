@@ -33,6 +33,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.routing
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.ktor.ext.inject
+import org.koin.ktor.plugin.Koin
 
 fun main() {
     startKoin {

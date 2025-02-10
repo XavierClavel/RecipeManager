@@ -10,7 +10,7 @@ import main.com.xavierclavel.utils.getFollowers
 import main.com.xavierclavel.utils.getFollows
 import main.com.xavierclavel.utils.getUser
 import main.com.xavierclavel.utils.unfollow
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class FollowControllerTest : ApplicationTest() {

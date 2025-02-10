@@ -1,15 +1,20 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
+import com.xavierclavel.exceptions.BadRequestCause
+import com.xavierclavel.exceptions.BadRequestException
+import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
 import main.com.xavierclavel.utils.login
+import main.com.xavierclavel.utils.logout
 import main.com.xavierclavel.utils.signup
 import main.com.xavierclavel.utils.updatePassword
 import main.com.xavierclavel.utils.verifyUser
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.util.UUID
+import kotlin.test.assertEquals
 
 class AuthControllerTest : ApplicationTest() {
     @Test
@@ -37,7 +42,7 @@ class AuthControllerTest : ApplicationTest() {
         assertDoesNotThrow { client.login(user.username, oldPassword) }
 
         val newPassword = UUID.randomUUID().toString()
-        client.updatePassword(user.id, oldPassword, newPassword)
+        client.updatePassword(oldPassword, newPassword)
         assertDoesNotThrow { client.login(user.username, newPassword) }
         assertThrows<UnauthorizedException> { client.login(user.username, oldPassword) }
     }
@@ -48,12 +53,25 @@ class AuthControllerTest : ApplicationTest() {
         val user = client.signup(password = oldPassword)
         val token = userService.findEntityById(user.id).token
         client.verifyUser(token)
+        client.login(user.username, oldPassword)
 
         val wrongPassword = UUID.randomUUID().toString()
         val newPassword = UUID.randomUUID().toString()
-        client.updatePassword(user.id, wrongPassword, newPassword)
-        assertDoesNotThrow { client.login(user.username, newPassword) }
-        assertThrows<UnauthorizedException> { client.login(user.username, oldPassword) }
+        client.login(user.username, oldPassword)
+
+        val exception = assertThrows<UnauthorizedException> {
+            client.updatePassword(wrongPassword, newPassword)
+        }
+        assertEquals(exception.message, UnauthorizedCause.INVALID_PASSWORD.key)
+
+        assertDoesNotThrow {
+            client.login(user.username, oldPassword)
+            client.logout()
+        }
+         val exception2 = assertThrows<UnauthorizedException> {
+            client.login(user.username, newPassword)
+        }
+        assertEquals(exception2.message, UnauthorizedCause.INVALID_PASSWORD.key)
     }
 
 

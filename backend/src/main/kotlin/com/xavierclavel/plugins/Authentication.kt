@@ -18,11 +18,13 @@ import io.ktor.server.response.respond
 import io.ktor.server.sessions.Sessions
 import io.ktor.server.sessions.cookie
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
+import org.koin.java.KoinJavaComponent
 import org.koin.ktor.ext.inject
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 fun Application.configureAuthentication() {
     val userService : UserService by inject<UserService>()
+    val redisService: RedisService by inject<RedisService>()
 
     install(Sessions) {
         cookie<UserSession>("user_session") {
@@ -43,13 +45,13 @@ fun Application.configureAuthentication() {
                     UserIdPrincipal(credentials.name)
                 } else {
                     logger.error {"Login rejected for user ${user.username}"}
-                    null
+                    throw UnauthorizedException(UnauthorizedCause.INVALID_PASSWORD)
                 }
             }
         }
         session<UserSession>("auth-session") {
             validate { session ->
-                if (RedisManager.redis.get("session:${session.sessionId}")?.toLongOrNull() != null) {
+                if (redisService.redis.get("session:${session.sessionId}")?.toLongOrNull() != null) {
                     session
                 } else {
                     null

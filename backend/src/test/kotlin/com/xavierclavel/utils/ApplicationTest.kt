@@ -1,7 +1,7 @@
 package com.xavierclavel
 
-import com.xavierclavel.config.appModules
 import com.xavierclavel.plugins.DatabaseManager
+import com.xavierclavel.plugins.RedisService
 import com.xavierclavel.plugins.configureAuthentication
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.services.CustomIngredientService
@@ -15,11 +15,8 @@ import com.xavierclavel.services.MailService
 import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
-import com.xavierclavel.utils.logger
-import common.dto.UserDTO
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
-import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.Plugin
@@ -28,16 +25,14 @@ import io.ktor.server.testing.*
 import io.ktor.utils.io.KtorDsl
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import main.com.xavierclavel.containers.RedisTestContainer
 import main.com.xavierclavel.utils.login
 import main.com.xavierclavel.utils.logout
-import org.junit.Rule
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
-import org.junit.rules.TestRule
-import org.junit.runner.Description
-import org.junit.runners.model.Statement
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
@@ -49,11 +44,58 @@ import kotlin.coroutines.EmptyCoroutineContext
 abstract class ApplicationTest: KoinTest {
     val userService: UserService by inject()
 
-    @get:Rule
-    val koinTestRule = KoinTestRule()
+    @BeforeAll
+    fun startContainers() {
+        RedisTestContainer.startContainer()
+        System.setProperty("REDIS_URL", RedisTestContainer.getRedisUri())
+    }
 
-    @get:Rule
-    val cleanDbRule = CleanDbRule()
+    @AfterAll
+    fun stopContainers() {
+        RedisTestContainer.stopContainer()
+    }
+
+    @BeforeEach
+    fun cleanDb() {
+        DatabaseManager.getTables().forEach {
+            it.findList().forEach { it.delete() }
+        }
+    }
+
+    @BeforeAll
+    fun startKoin() {
+        val mockMailService = mockk<MailService>()
+        every {mockMailService.sendVerificationEmail(any(),any())} answers {}
+        every {mockMailService.sendPasswordResetEmail(any(),any())} answers {}
+
+        val testModules = module {
+            single { RecipeService() }
+            single { UserService() }
+            single { IngredientService() }
+            single { ImageService() }
+            single { ExportService() }
+            single { LikeService() }
+            single { CookbookService() }
+            single { DashboardService() }
+            single { RecipeIngredientService() }
+            single { CustomIngredientService() }
+            single { FollowService() }
+            single { mockMailService }
+            single { RedisService(getProperty("redis.url", "redis://redis:6379")) }
+        }
+
+        startKoin {
+            modules(testModules)
+            properties(mapOf("redis.url" to "redis://localhost:6379"))
+        }
+    }
+
+    @AfterAll
+    fun stopKoinApplication() {
+        stopKoin()
+    }
+
+
 
 
 
@@ -101,57 +143,6 @@ abstract class ApplicationTest: KoinTest {
 
 }
 
-class KoinTestRule : TestRule {
-
-    override fun apply(base: Statement, description: Description): Statement {
-        return object : Statement() {
-
-            override fun evaluate() {
-                val mockMailService = mockk<MailService>()
-                every {mockMailService.sendVerificationEmail(any(),any())} answers {}
-                every {mockMailService.sendPasswordResetEmail(any(),any())} answers {}
-
-                val testModules = module {
-                    single { RecipeService() }
-                    single { UserService() }
-                    single { IngredientService() }
-                    single { ImageService() }
-                    single { ExportService() }
-                    single { LikeService() }
-                    single { CookbookService() }
-                    single { DashboardService() }
-                    single { RecipeIngredientService() }
-                    single { CustomIngredientService() }
-                    single { FollowService() }
-                    single { mockMailService }
-                }
-
-                startKoin { modules(testModules) }
-
-                try {
-                    base.evaluate()
-                } finally {
-                    stopKoin()
-                }
-            }
-        }
-    }
-}
-
-class CleanDbRule : TestRule {
-
-    override fun apply(base: Statement, description: Description): Statement {
-        return object : Statement() {
-
-            override fun evaluate() {
-                DatabaseManager.getTables().forEach {
-                    it.findList().forEach { it.delete() }
-                }
-                base.evaluate()
-            }
-        }
-    }
-}
 
 class TestBuilderWrapper(private val builder: ApplicationTestBuilder) {
     val client: HttpClient by lazy {

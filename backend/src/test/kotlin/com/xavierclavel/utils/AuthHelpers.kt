@@ -58,10 +58,10 @@ suspend fun HttpClient.verifyUser(token: String) {
     }
 }
 
-suspend fun HttpClient.updatePassword(userId: Long, oldPassword: String, newPassword: String) {
-    this.put("/v1/user/password/${userId}") {
-        PasswordDTO(old = oldPassword, new = newPassword)
-    }.apply {
-        assertEquals(HttpStatusCode.OK, status)
+suspend fun HttpClient.updatePassword(oldPassword: String, newPassword: String) {
+    this.put("/v1/user/password") {
+        contentType(ContentType.Application.Json)
+        header(HttpHeaders.ContentType, ContentType.Application.Json)
+        setBody(PasswordDTO(old = oldPassword, new = newPassword))
     }
 }

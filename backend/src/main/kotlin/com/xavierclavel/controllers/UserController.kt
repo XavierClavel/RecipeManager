@@ -1,7 +1,11 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.AuthController.getSessionUserId
+import com.xavierclavel.exceptions.BadRequestCause
+import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.exceptions.ForbiddenException
+import com.xavierclavel.exceptions.UnauthorizedCause
+import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.MailService
 import com.xavierclavel.services.UserService
@@ -13,7 +17,6 @@ import common.dto.UserDTO
 import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.USER_URL
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -72,7 +75,7 @@ object UserController: Controller(USER_URL) {
         val id = getSessionUserId()
         val passwordDTO = call.receive<PasswordDTO>()
         if (!userService.isPasswordValid(id, passwordDTO.old)) {
-            throw BadRequestException("Invalid password")
+            throw UnauthorizedException(UnauthorizedCause.INVALID_PASSWORD)
         }
         userService.updatePassword(id, passwordDTO.new)
         call.respond(HttpStatusCode.OK)

@@ -7,7 +7,7 @@ import com.xavierclavel.exceptions.NotFoundCause
 import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
-import com.xavierclavel.plugins.RedisManager
+import com.xavierclavel.plugins.RedisService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
@@ -34,6 +34,7 @@ import java.util.UUID
 
 object AuthController: Controller(AUTH_URL) {
     val userService: UserService by inject(UserService::class.java)
+    val redisService: RedisService by inject(RedisService::class.java)
 
     override fun Route.routes() {
         authenticate("auth-basic") {
@@ -55,7 +56,7 @@ object AuthController: Controller(AUTH_URL) {
         userService.registerUserActivity(user.id)
 
         val sessionId = UUID.randomUUID().toString()
-        RedisManager.redis.setex("session:$sessionId", 7 * 24 * 60 * 60, user.id.toString())
+        redisService.redis.setex("session:$sessionId", 7 * 24 * 60 * 60, user.id.toString())
         call.sessions.set(UserSession(sessionId))
         call.respond(HttpStatusCode.OK)
     }
@@ -101,7 +102,7 @@ object AuthController: Controller(AUTH_URL) {
     @OptIn(ExperimentalLettuceCoroutinesApi::class)
     suspend fun RoutingContext.getSessionUserId(): Long {
         val session = call.sessions.get<UserSession>() ?: throw UnauthorizedException(UnauthorizedCause.SESSION_NOT_FOUND)
-        val userId = RedisManager.redis.get("session:${session.sessionId}")?.toLongOrNull()
+        val userId = redisService.redis.get("session:${session.sessionId}")?.toLongOrNull()
         if (userId == null) {
             call.sessions.clear<UserSession>()
             throw UnauthorizedException(UnauthorizedCause.SESSION_NOT_FOUND)

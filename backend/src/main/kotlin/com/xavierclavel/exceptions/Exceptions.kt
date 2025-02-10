@@ -11,6 +11,7 @@ class NotFoundException(cause: NotFoundCause): Exception(cause.key)
 enum class UnauthorizedCause(val key: String) {
     SESSION_NOT_FOUND("session.not.found"),
     USER_NOT_VERIFIED("user.not.verified"),
+    INVALID_PASSWORD("invalid.password"),
 }
 
 enum class ForbiddenCause(val key: String) {
@@ -22,7 +23,6 @@ enum class NotFoundCause(val key: String) {
 }
 
 enum class BadRequestCause (val key: String) {
-    INVALID_PASSWORD("invalid.password"),
     TOKEN_MISSING("token.missing"),
     MAIL_MISSING("mail.missing"),
     USER_ALREADY_FOLLOWED("user.already.followed"),

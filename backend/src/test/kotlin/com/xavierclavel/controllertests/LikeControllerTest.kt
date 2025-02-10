@@ -12,7 +12,7 @@ import main.com.xavierclavel.utils.getLikes
 import main.com.xavierclavel.utils.getMe
 import main.com.xavierclavel.utils.getRecipe
 import main.com.xavierclavel.utils.getUser
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class LikeControllerTest : ApplicationTest() {

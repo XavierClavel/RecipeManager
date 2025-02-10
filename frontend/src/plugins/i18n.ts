@@ -5,8 +5,8 @@ import {getBrowserLocale} from "@/scripts/localization";
 
 
 const i18n = createI18n({
-  locale: getBrowserLocale(), // Default language
-  fallbackLocale: 'en', // Fallback if a translation is missing
+  locale: getBrowserLocale(),
+  fallbackLocale: 'en',
   messages: {
     en,
     fr

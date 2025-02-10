@@ -1,5 +1,6 @@
 package com.xavierclavel.config
 
+import com.xavierclavel.plugins.RedisService
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.services.CustomIngredientService
 import com.xavierclavel.services.DashboardService
@@ -27,4 +28,5 @@ val appModules = module {
     single { CustomIngredientService() }
     single { FollowService() }
     single { MailService() }
+    single { RedisService(getProperty("redis.url", "redis://redis:6379")) }
 }

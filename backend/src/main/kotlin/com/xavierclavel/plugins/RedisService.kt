@@ -4,9 +4,10 @@ import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.RedisClient
 import io.lettuce.core.api.coroutines
 import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
+import org.koin.core.component.KoinComponent
 
-object RedisManager {
-    private val client = RedisClient.create("redis://redis:6379")
+class RedisService(redisUrl: String): KoinComponent {
+    private val client = RedisClient.create(redisUrl)
     private val connection = client.connect()
 
     @OptIn(ExperimentalLettuceCoroutinesApi::class)

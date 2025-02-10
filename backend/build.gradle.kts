@@ -30,6 +30,8 @@ dependencies {
     val ebeanVersion = "15.8.0"
     val koinVersion = "4.0.0"
     val itextVersion = "8.0.5"
+    val testcontainersVersion = "1.20.4"
+    val junitVersion = "5.11.4"
 
     implementation(project(":common"))
 
@@ -101,9 +103,14 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.10.1")
 
-
+    //Tests
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
+    //Test containers
+    testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion") // For JUnit 5
+
 }
 
 ktor {
@@ -135,6 +142,10 @@ tasks.register("generateVersionProperties") {
 
 tasks.named("processResources") {
     dependsOn("generateVersionProperties")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 ebean {

@@ -20,8 +20,7 @@ import main.com.xavierclavel.utils.getCookbookUsers
 import main.com.xavierclavel.utils.getRecipeUserCookbooks
 import main.com.xavierclavel.utils.listCookbooks
 import main.com.xavierclavel.utils.listRecipes
-import org.apache.http.HttpStatus
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
