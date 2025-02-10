@@ -17,7 +17,7 @@ object RedisTestContainer {
 
     fun startContainer() {
         redis.start()
-        println("redis started")
+        System.setProperty("REDIS_URL", getRedisUri())
     }
 
     fun stopContainer() {

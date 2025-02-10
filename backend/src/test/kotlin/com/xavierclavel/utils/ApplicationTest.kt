@@ -26,6 +26,7 @@ import io.ktor.utils.io.KtorDsl
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.serialization.json.Json
+import main.com.xavierclavel.containers.PostgresTestContainer
 import main.com.xavierclavel.containers.RedisTestContainer
 import main.com.xavierclavel.utils.login
 import main.com.xavierclavel.utils.logout
@@ -47,12 +48,13 @@ abstract class ApplicationTest: KoinTest {
     @BeforeAll
     fun startContainers() {
         RedisTestContainer.startContainer()
-        System.setProperty("REDIS_URL", RedisTestContainer.getRedisUri())
+        PostgresTestContainer.startContainer()
     }
 
     @AfterAll
     fun stopContainers() {
         RedisTestContainer.stopContainer()
+        PostgresTestContainer.stopContainer()
     }
 
     @BeforeEach

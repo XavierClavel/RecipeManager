@@ -4,7 +4,6 @@ import java.util.Properties
 val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
-val h2_version: String by project
 
 plugins {
     //kotlin("kapt") version "2.0.21" apply false
@@ -64,7 +63,6 @@ dependencies {
     //DB -> Ebean
     implementation("org.hibernate:hibernate-core:6.6.1.Final")
     implementation("org.postgresql:postgresql:42.7.4")
-    implementation("com.h2database:h2:$h2_version")
     implementation("com.zaxxer:HikariCP:6.0.0")
     implementation("org.flywaydb:flyway-core:10.20.0")
     implementation("io.ebean:ebean:$ebeanVersion")
@@ -110,6 +108,7 @@ dependencies {
     //Test containers
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion") // For JUnit 5
+    testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
 
 }
 
