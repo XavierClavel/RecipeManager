@@ -26,7 +26,6 @@ import io.ktor.utils.io.KtorDsl
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.serialization.json.Json
-import main.com.xavierclavel.containers.PostgresTestContainer
 import main.com.xavierclavel.containers.RedisTestContainer
 import main.com.xavierclavel.utils.login
 import main.com.xavierclavel.utils.logout
@@ -45,17 +44,44 @@ import kotlin.coroutines.EmptyCoroutineContext
 abstract class ApplicationTest: KoinTest {
     val userService: UserService by inject()
 
-    @BeforeAll
-    fun startContainers() {
-        RedisTestContainer.startContainer()
-        PostgresTestContainer.startContainer()
+    companion object {
+        @BeforeAll
+        @JvmStatic
+        fun startKoin() {
+            val mockMailService = mockk<MailService>()
+            every {mockMailService.sendVerificationEmail(any(),any())} answers {}
+            every {mockMailService.sendPasswordResetEmail(any(),any())} answers {}
+
+            val testModules = module {
+                single { RecipeService() }
+                single { UserService() }
+                single { IngredientService() }
+                single { ImageService() }
+                single { ExportService() }
+                single { LikeService() }
+                single { CookbookService() }
+                single { DashboardService() }
+                single { RecipeIngredientService() }
+                single { CustomIngredientService() }
+                single { FollowService() }
+                single { mockMailService }
+                single { RedisService(getProperty("redis.url", "redis://redis:6379")) }
+            }
+
+            startKoin {
+                modules(testModules)
+                properties(mapOf("redis.url" to RedisTestContainer.getRedisUri()))
+            }
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun stopKoinApplication() {
+            stopKoin()
+        }
     }
 
-    @AfterAll
-    fun stopContainers() {
-        RedisTestContainer.stopContainer()
-        PostgresTestContainer.stopContainer()
-    }
+
 
     @BeforeEach
     fun cleanDb() {
@@ -64,38 +90,7 @@ abstract class ApplicationTest: KoinTest {
         }
     }
 
-    @BeforeAll
-    fun startKoin() {
-        val mockMailService = mockk<MailService>()
-        every {mockMailService.sendVerificationEmail(any(),any())} answers {}
-        every {mockMailService.sendPasswordResetEmail(any(),any())} answers {}
 
-        val testModules = module {
-            single { RecipeService() }
-            single { UserService() }
-            single { IngredientService() }
-            single { ImageService() }
-            single { ExportService() }
-            single { LikeService() }
-            single { CookbookService() }
-            single { DashboardService() }
-            single { RecipeIngredientService() }
-            single { CustomIngredientService() }
-            single { FollowService() }
-            single { mockMailService }
-            single { RedisService(getProperty("redis.url", "redis://redis:6379")) }
-        }
-
-        startKoin {
-            modules(testModules)
-            properties(mapOf("redis.url" to "redis://localhost:6379"))
-        }
-    }
-
-    @AfterAll
-    fun stopKoinApplication() {
-        stopKoin()
-    }
 
 
 

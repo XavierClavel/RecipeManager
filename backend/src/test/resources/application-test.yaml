@@ -1,0 +1,5 @@
+ebean:
+  test:
+    platform: postgres
+    ddlMode: dropCreate
+    dbName: my_app

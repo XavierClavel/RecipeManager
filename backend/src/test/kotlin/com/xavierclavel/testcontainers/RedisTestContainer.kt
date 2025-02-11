@@ -14,13 +14,4 @@ object RedisTestContainer {
     fun getRedisUri(): String {
         return "redis://${redis.host}:${redis.firstMappedPort}"
     }
-
-    fun startContainer() {
-        redis.start()
-        System.setProperty("REDIS_URL", getRedisUri())
-    }
-
-    fun stopContainer() {
-        redis.stop()
-    }
 }

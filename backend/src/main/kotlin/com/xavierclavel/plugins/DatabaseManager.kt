@@ -1,6 +1,5 @@
 package com.xavierclavel.plugins
 
-import com.xavierclavel.config.DbConfig
 import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.jointables.query.QCookbookUser
 import com.xavierclavel.models.jointables.query.QCustomIngredient
@@ -25,7 +24,6 @@ import kotlinx.coroutines.runBlocking
 
 object DatabaseManager {
     var mainDB : Database? = null
-    private lateinit var dbConfig: DbConfig
 
     fun getTables() = listOf(
         QRecipe(),
@@ -41,24 +39,12 @@ object DatabaseManager {
         QDietaryRestrictions(),
     )
 
-    fun configure(dbConfig: DbConfig) {
-        this.dbConfig = dbConfig
-    }
-
     private fun hikari(): HikariDataSource {
-        val hikariConfig = HikariConfig().apply {
-            jdbcUrl = dbConfig.jdbcUrl
-            username = dbConfig.user
-            password = dbConfig.password
-            driverClassName = "org.postgresql.Driver"
-            maximumPoolSize = 5
-        }
+        val hikariConfig = HikariConfig("/db.properties")
         return HikariDataSource(hikariConfig)
     }
 
     fun init() {
-        require(::dbConfig.isInitialized) { "DatabaseManager is not configured. Call configure() before init()." }
-
         logger.info("Initializing database...")
         while (mainDB == null) {
             try {
