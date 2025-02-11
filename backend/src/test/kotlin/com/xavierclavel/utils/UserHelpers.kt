@@ -3,6 +3,7 @@ package main.com.xavierclavel.utils
 import com.xavierclavel.services.UserService
 import common.dto.UserDTO
 import common.infodto.UserInfo
+import common.overviewdto.UserOverview
 import common.utils.URL.AUTH_URL
 import common.utils.URL.USER_URL
 import io.ktor.client.HttpClient
@@ -73,9 +74,9 @@ suspend fun HttpClient.assertUserDoesNotExist(id: Long) {
     }
 }
 
-suspend fun HttpClient.listUsers() : Set<UserInfo> {
+suspend fun HttpClient.listUsers() : Set<UserOverview> {
     this.get(USER_URL).apply {
         assertEquals(HttpStatusCode.OK, status)
-        return Json.decodeFromString<Set<UserInfo>>(bodyAsText())
+        return Json.decodeFromString<Set<UserOverview>>(bodyAsText())
     }
 }
