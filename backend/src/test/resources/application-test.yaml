@@ -3,3 +3,5 @@ ebean:
     platform: postgres
     ddlMode: dropCreate
     dbName: my_app
+    postgres:
+      version: 17.2
