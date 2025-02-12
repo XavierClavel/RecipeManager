@@ -1,13 +1,11 @@
 package com.xavierclavel.utils
 
 import com.xavierclavel.controllers.AuthController.getSessionUserId
-import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.exceptions.BadRequestCause
 import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.exceptions.ForbiddenCause
 import com.xavierclavel.exceptions.ForbiddenException
 import common.enums.Sort
-import common.infodto.RecipeInfo
 import io.ebean.Paging
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode

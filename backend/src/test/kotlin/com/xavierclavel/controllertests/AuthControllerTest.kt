@@ -3,6 +3,7 @@ package main.com.xavierclavel.controllertests
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
+import main.com.xavierclavel.utils.assertException
 import main.com.xavierclavel.utils.login
 import main.com.xavierclavel.utils.logout
 import main.com.xavierclavel.utils.signup

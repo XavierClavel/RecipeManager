@@ -43,8 +43,8 @@ class LikeService: KoinComponent {
 
     fun createLike(recipeId: Long, userId: Long): LikeInfo =
         Like(
-            recipe = recipeService.findEntityById(recipeId)!!,
-            user = userService.getEntityById(userId)!!,
+            recipe = recipeService.getEntityById(recipeId),
+            user = userService.getEntityById(userId),
         ).insertAndGet().toInfo()
 
     fun deleteLike(recipeId: Long, userId: Long) =

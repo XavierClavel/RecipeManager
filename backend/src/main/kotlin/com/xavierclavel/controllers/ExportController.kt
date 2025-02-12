@@ -7,9 +7,6 @@ import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.logger
 import com.xavierclavel.utils.respondPDF
 import common.utils.URL.EXPORT_URL
-import io.ktor.http.ContentType
-import io.ktor.server.response.header
-import io.ktor.server.response.respondBytes
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import org.koin.java.KoinJavaComponent.inject

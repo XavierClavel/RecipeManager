@@ -1,9 +1,6 @@
 package com.xavierclavel.controllers
 
-import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.controllers.RecipeController.recipeService
-import com.xavierclavel.exceptions.ForbiddenCause
-import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.checkRecipeEditionRights
@@ -20,7 +17,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.http.content.staticFiles
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import org.koin.java.KoinJavaComponent.inject

@@ -9,6 +9,7 @@ import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.checkRecipeEditionRights
 import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getIdPathVariableSet
 import com.xavierclavel.utils.getPaging
@@ -98,7 +99,7 @@ object RecipeController: Controller(RECIPE_URL) {
         try {
             val recipeId = getPathId()
             val recipe = recipeService.getById(recipeId)
-            checkRecipeEditionRights(recipe)
+            checkRecipeEditionRights(recipe.owner.id)
             val recipeDto = call.receive<RecipeDTO>()
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
             customIngredientService.updateCustomIngredients(recipe.id, recipeDto)
@@ -112,7 +113,7 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.deleteRecipe() = delete("/{id}") {
         val recipeId = getPathId()
         val recipe = recipeService.getById(recipeId)
-        checkRecipeEditionRights(recipe)
+        checkRecipeEditionRights(recipe.owner.id)
         recipeService.tagRecipeForDeletion(recipeId)
         recipeService.tryDelete(recipeId)
         call.respond(HttpStatusCode.OK)
