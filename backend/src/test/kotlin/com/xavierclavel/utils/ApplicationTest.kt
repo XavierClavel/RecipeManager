@@ -1,5 +1,7 @@
 package com.xavierclavel
 
+import com.xavierclavel.exceptions.UnauthorizedCause
+import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.plugins.DatabaseManager
 import com.xavierclavel.plugins.RedisService
 import com.xavierclavel.plugins.configureAuthentication
@@ -29,16 +31,19 @@ import kotlinx.serialization.json.Json
 import main.com.xavierclavel.containers.RedisTestContainer
 import main.com.xavierclavel.utils.login
 import main.com.xavierclavel.utils.logout
+import main.com.xavierclavel.utils.updatePassword
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.test.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class ApplicationTest: KoinTest {
@@ -92,7 +97,12 @@ abstract class ApplicationTest: KoinTest {
 
 
 
-
+    inline fun assertException(message:String, executable: () -> Unit) {
+        val exception = assertThrows<UnauthorizedException> {
+            executable()
+        }
+        assertEquals(exception.message, message)
+    }
 
 
 

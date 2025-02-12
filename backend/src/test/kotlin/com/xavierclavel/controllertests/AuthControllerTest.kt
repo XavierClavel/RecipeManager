@@ -59,19 +59,19 @@ class AuthControllerTest : ApplicationTest() {
         val newPassword = UUID.randomUUID().toString()
         client.login(user.username, oldPassword)
 
-        val exception = assertThrows<UnauthorizedException> {
+
+        assertException(UnauthorizedCause.INVALID_PASSWORD.key) {
             client.updatePassword(wrongPassword, newPassword)
         }
-        assertEquals(exception.message, UnauthorizedCause.INVALID_PASSWORD.key)
 
         assertDoesNotThrow {
             client.login(user.username, oldPassword)
             client.logout()
         }
-         val exception2 = assertThrows<UnauthorizedException> {
+
+        assertException(UnauthorizedCause.INVALID_PASSWORD.key) {
             client.login(user.username, newPassword)
         }
-        assertEquals(exception2.message, UnauthorizedCause.INVALID_PASSWORD.key)
     }
 
 
