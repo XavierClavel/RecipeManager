@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {getRecipeImageUrl, getUserIconUrl, toViewRecipe, toViewUser} from "@/scripts/common";
 
 defineProps({
   error: {
@@ -18,7 +17,7 @@ defineProps({
   >
     <v-icon color="primary" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
     <v-card-title prepend-icon="mdi-alert" class="text-primary text-h4">
-      {{ error }}
+      {{ $t(error) }}
     </v-card-title>
   </v-card>
 </template>

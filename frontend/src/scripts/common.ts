@@ -32,6 +32,8 @@ export {
   toUsers,
   toLogin,
   toSignup,
+  toMaintenance,
+
   toMyProfile,
   whoami,
   toSettings,
@@ -81,6 +83,7 @@ const toHome = () => navigateTo('/home')
 const toUsers = () => navigateTo('/users')
 const toLogin = () => navigateTo('/login')
 const toSignup = () => navigateTo('/signup')
+const toMaintenance = () => navigateTo('/maintenance')
 
 function navigateTo(path) {
   nextTick(() => {
@@ -88,7 +91,7 @@ function navigateTo(path) {
   })
 }
 
-const noLoginRedirect = ['/login', '/logout', '/signup', '/user/verify']
+const noLoginRedirect = ['/login', '/logout', '/signup', '/user/verify', '/maintenance']
 
 const base_url = "http://localhost:8080/v1"
 const getUserIconUrl = (id) => id ? `${base_url}/image/users/${id}.webp` : `${base_url}/image/users/placeholder.webp`
