@@ -112,8 +112,8 @@ object RecipeController: Controller(RECIPE_URL) {
         val recipeId = getPathId()
         val recipe = recipeService.findById(recipeId) ?: return@delete call.respond(HttpStatusCode.NotFound)
         if (!isAuthorizedToEditRecipe(recipe)) return@delete call.respond(HttpStatusCode.Unauthorized)
-        recipeService.deleteRecipe(recipeId)
-        imageService.deleteImage(RECIPES_IMG_PATH, recipeId)
+        recipeService.tagRecipeForDeletion(recipeId)
+        recipeService.tryDelete(recipeId)
         call.respond(HttpStatusCode.OK)
     }
 

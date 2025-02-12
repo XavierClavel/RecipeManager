@@ -1,6 +1,7 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.AuthController.getSessionUserId
+import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.services.LikeService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPaging
@@ -57,6 +58,7 @@ object LikeController: Controller(LIKE_URL) {
         val userId = getSessionUserId()
         val result = likeService.deleteLike(recipeId, userId) ?: return@delete call.respond(HttpStatusCode.BadRequest)
         if (!result) return@delete call.respond(HttpStatusCode.BadRequest)
+        recipeService.tryDelete(recipeId)
         call.respond(HttpStatusCode.OK)
     }
 

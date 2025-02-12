@@ -4,7 +4,6 @@ import com.xavierclavel.models.jointables.CookbookRecipe
 import com.xavierclavel.models.jointables.Like
 import com.xavierclavel.models.jointables.RecipeIngredient
 import com.xavierclavel.models.jointables.CustomIngredient
-import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.enums.DishClass
 import common.infodto.RecipeInfo
@@ -15,13 +14,10 @@ import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import io.ebean.Model
-import io.ebean.annotation.Aggregation
-import jakarta.persistence.JoinTable
 import java.time.Instant
 
 @Entity
@@ -70,6 +66,8 @@ class Recipe (
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
     var likes: MutableList<Like> = mutableListOf(),
 
+    var taggedForDeletion: Boolean = false,
+
     ) : Model() {
     fun mergeDTO(recipeDTO: RecipeDTO) : Recipe = apply {
         this.title = recipeDTO.title
@@ -110,4 +108,11 @@ class Recipe (
         cookingTemperature = this.cookingTemperature,
         conservationTime = this.conservationTime,
     )
+
+    fun tagForDeletion(): Recipe = this.apply {
+            taggedForDeletion = true
+    }
+
+    fun hasReferences(): Boolean =
+        likes.isNotEmpty() && cookbooks.isNotEmpty()
 }

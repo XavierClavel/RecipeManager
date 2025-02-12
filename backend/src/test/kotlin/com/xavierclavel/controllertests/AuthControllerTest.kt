@@ -12,16 +12,16 @@ import main.com.xavierclavel.utils.updatePassword
 import main.com.xavierclavel.utils.verifyUser
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import java.util.UUID
-import kotlin.test.assertEquals
 
 class AuthControllerTest : ApplicationTest() {
     @Test
-    fun `signup does not grant access`() = runTest {
+    fun `signup does not grant access before email verification`() = runTest {
         val password = UUID.randomUUID().toString()
         val user = client.signup(password = password)
-        assertThrows<UnauthorizedException> { client.login(user.username, password) }
+        assertException<UnauthorizedException>(UnauthorizedCause.USER_NOT_VERIFIED.key) {
+            client.login(user.username, password)
+        }
     }
 
     @Test
@@ -44,7 +44,9 @@ class AuthControllerTest : ApplicationTest() {
         val newPassword = UUID.randomUUID().toString()
         client.updatePassword(oldPassword, newPassword)
         assertDoesNotThrow { client.login(user.username, newPassword) }
-        assertThrows<UnauthorizedException> { client.login(user.username, oldPassword) }
+        assertException<UnauthorizedException>(UnauthorizedCause.INVALID_PASSWORD.key) {
+            client.login(user.username, oldPassword)
+        }
     }
 
     @Test
@@ -60,7 +62,7 @@ class AuthControllerTest : ApplicationTest() {
         client.login(user.username, oldPassword)
 
 
-        assertException(UnauthorizedCause.INVALID_PASSWORD.key) {
+        assertException<UnauthorizedException>(UnauthorizedCause.INVALID_PASSWORD.key) {
             client.updatePassword(wrongPassword, newPassword)
         }
 
@@ -69,7 +71,7 @@ class AuthControllerTest : ApplicationTest() {
             client.logout()
         }
 
-        assertException(UnauthorizedCause.INVALID_PASSWORD.key) {
+        assertException<UnauthorizedException>(UnauthorizedCause.INVALID_PASSWORD.key) {
             client.login(user.username, newPassword)
         }
     }

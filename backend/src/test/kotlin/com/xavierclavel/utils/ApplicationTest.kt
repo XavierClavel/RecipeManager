@@ -1,7 +1,5 @@
 package com.xavierclavel
 
-import com.xavierclavel.exceptions.UnauthorizedCause
-import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.plugins.DatabaseManager
 import com.xavierclavel.plugins.RedisService
 import com.xavierclavel.plugins.configureAuthentication
@@ -17,6 +15,7 @@ import com.xavierclavel.services.MailService
 import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
+import common.dto.UserDTO
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.serialization.kotlinx.json.json
@@ -42,6 +41,7 @@ import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
+import java.util.UUID
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.assertEquals
 
@@ -50,6 +50,10 @@ abstract class ApplicationTest: KoinTest {
     val userService: UserService by inject()
 
     companion object {
+        const val USER1 = "user1"
+        const val USER2 = "user2"
+        const val password = "Passw0rd"
+
         @BeforeAll
         @JvmStatic
         fun startKoin() {
@@ -93,33 +97,43 @@ abstract class ApplicationTest: KoinTest {
         DatabaseManager.getTables().forEach {
             it.findList().forEach { it.delete() }
         }
+        val token = UUID.randomUUID().toString()
+        val userDTO1 = UserDTO(username = USER1, password = password, mail = UUID.randomUUID().toString())
+        val userDTO2 = UserDTO(username = USER1, password = password, mail = UUID.randomUUID().toString())
+        userService.createUser(userDTO1, token)
+        userService.createUser(userDTO2, token)
+        userService.verifyUser(token)
+        userService.verifyUser(token)
     }
-
-
-
-    inline fun assertException(message:String, executable: () -> Unit) {
-        val exception = assertThrows<UnauthorizedException> {
-            executable()
-        }
-        assertEquals(exception.message, message)
-    }
-
 
 
     @KtorDsl
-    fun runTestAsAdmin(block: suspend TestBuilderWrapper.() -> Unit) {
-        runTest {
-            runAs("admin", "Passw0rd") {
-                block()
-            }
-        }
-    }
-
-    @KtorDsl
-    suspend fun TestBuilderWrapper.runAsAdmin(block: suspend TestBuilderWrapper.() -> Unit) {
-        runAs("admin", "Passw0rd") {
+    fun runTestAsAdmin(block: suspend TestBuilderWrapper.() -> Unit) = runTest {
+        runAsAdmin {
             this.block()
         }
+    }
+
+    @KtorDsl
+    fun runTestAsUser(block: suspend TestBuilderWrapper.() -> Unit) = runTest {
+        runAsUser1 {
+            this.block()
+        }
+    }
+
+    @KtorDsl
+    suspend fun TestBuilderWrapper.runAsAdmin(block: suspend TestBuilderWrapper.() -> Unit) = runAs("admin", password) {
+        this.block()
+    }
+
+    @KtorDsl
+    suspend fun TestBuilderWrapper.runAsUser1(block: suspend TestBuilderWrapper.() -> Unit) = runAs(USER1, password) {
+        this.block()
+    }
+
+    @KtorDsl
+    suspend fun TestBuilderWrapper.runAsUser2(block: suspend TestBuilderWrapper.() -> Unit) = runAs(USER2, password) {
+        this.block()
     }
 
 

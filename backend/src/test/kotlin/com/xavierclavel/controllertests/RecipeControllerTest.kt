@@ -1,6 +1,8 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
+import com.xavierclavel.exceptions.NotFoundCause
+import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
@@ -26,17 +28,21 @@ import io.ktor.client.request.put
 import junit.framework.TestCase.assertTrue
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser
+import main.com.xavierclavel.utils.assertException
+import main.com.xavierclavel.utils.assertRecipeDoesNotExist
 import main.com.xavierclavel.utils.assertRecipeExists
 import main.com.xavierclavel.utils.createCookbook
 import main.com.xavierclavel.utils.createIngredient
 import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.createUser
+import main.com.xavierclavel.utils.deleteLike
 import main.com.xavierclavel.utils.deleteRecipe
 import main.com.xavierclavel.utils.getMe
 import main.com.xavierclavel.utils.getRecipe
 import main.com.xavierclavel.utils.listRecipes
 import main.com.xavierclavel.utils.updateRecipe
+import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertFalse
 
 class RecipeControllerTest : ApplicationTest() {
@@ -369,6 +375,74 @@ class RecipeControllerTest : ApplicationTest() {
 
         val result2 = client.listRecipes(user=user.id, Sort.DATE_ASCENDING)
         assertEquals(dateOrderAscending, result2.map {it.id}.toSet())
+    }
+
+    @Test
+    fun `recipes with no links are deleted`() = runTestAsUser {
+        val recipe = client.createRecipe(recipeDTO)
+        assertDoesNotThrow {
+            client.getRecipe(recipe.id)
+        }
+        client.deleteRecipe(recipe.id)
+        assertRecipeDoesNotExist(recipe.id)
+    }
+
+    @Test
+    fun `recipes with links are not deleted`() = runTest {
+        var recipe: RecipeInfo? = null
+        runAsUser1 {
+            recipe = client.createRecipe()
+        }
+        recipe!!
+        runAsUser2 {
+            client.createLike(recipe.id)
+        }
+        runAsUser1 {
+            client.deleteRecipe(recipe.id)
+        }
+        runAsUser2 {
+            assertRecipeExists(recipe.id)
+        }
+
+    }
+
+    @Test
+    fun `recipes with links are deleted once links are removed`() = runTestAsAdmin {
+        var recipe: RecipeInfo? = null
+        runAsUser1 {
+            recipe = client.createRecipe()
+        }
+        recipe!!
+        runAsUser2 {
+            client.createLike(recipe.id)
+        }
+        runAsUser1 {
+            client.deleteRecipe(recipe.id)
+        }
+        runAsUser2 {
+            assertRecipeExists(recipe.id)
+            client.deleteLike(recipe.id)
+            assertRecipeDoesNotExist(recipe.id)
+        }
+    }
+
+    @Test
+    fun `recipes tagged for deletion are not shown to recipe owner`() = runTestAsAdmin {
+        var recipe: RecipeInfo? = null
+        runAsUser1 {
+            recipe = client.createRecipe()
+        }
+        recipe!!
+        runAsUser2 {
+            client.createLike(recipe.id)
+        }
+        runAsUser1 {
+            client.deleteRecipe(recipe.id)
+            assertRecipeDoesNotExist(recipe.id)
+        }
+        runAsUser2 {
+            assertRecipeExists(recipe.id)
+        }
     }
 
 }

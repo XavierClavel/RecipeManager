@@ -1,6 +1,7 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.AuthController.getSessionUserId
+import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.controllers.UserController.imageService
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.utils.Controller
@@ -121,7 +122,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.addCookbookRecipe() = post("/{id}/recipe/{recipe}") {
         val cookbookId = getPathId()
         val recipeId = getIdPathVariable("recipe") ?: return@post call.respond(HttpStatusCode.BadRequest)
-        val userId = getSessionUserId() ?: return@post call.respond(HttpStatusCode.Unauthorized)
+        val userId = getSessionUserId()
         if (cookbookService.doesCookbookHaveRecipe(cookbookId, recipeId)) return@post call.respond(HttpStatusCode.BadRequest)
         cookbookService.addRecipeToCookbook(cookbookId, recipeId, userId)
         call.respond(HttpStatusCode.OK)
@@ -132,6 +133,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val recipeId = getIdPathVariable("recipe") ?: return@delete call.respond(HttpStatusCode.BadRequest)
         if (!cookbookService.doesCookbookHaveRecipe(cookbookId, recipeId)) return@delete call.respond(HttpStatusCode.BadRequest)
         handleDeletion(cookbookService.removeRecipeFromCookbook(cookbookId, recipeId))
+        recipeService.tryDelete(recipeId)
     }
 
 }

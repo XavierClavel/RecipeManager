@@ -1,5 +1,9 @@
 package com.xavierclavel.services
 
+import com.xavierclavel.controllers.RecipeController.imageService
+import com.xavierclavel.controllers.RecipeController.recipeService
+import com.xavierclavel.exceptions.NotFoundCause
+import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
 import com.xavierclavel.models.query.QRecipe
@@ -10,6 +14,8 @@ import common.dto.RecipeDTO
 import common.enums.DishClass
 import common.enums.Sort
 import common.infodto.RecipeInfo
+import common.utils.Filepath.RECIPES_IMG_PATH
+import common.utils.Filepath.RECIPES_THUMBNAIL_PATH
 import io.ebean.FetchConfig
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
@@ -40,6 +46,9 @@ class RecipeService: KoinComponent {
     fun findEntityById(recipeId: Long) : Recipe? =
         QRecipe().id.eq(recipeId).findOne()
 
+    fun getEntityById(recipeId: Long) : Recipe =
+        findEntityById(recipeId) ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
+
     fun findById(recipeId: Long) : RecipeInfo? =
         findEntityById(recipeId)?.toInfo()
 
@@ -65,6 +74,18 @@ class RecipeService: KoinComponent {
 
     fun deleteRecipe(id: Long) {
         QRecipe().id.eq(id).delete()
+    }
+
+    fun tagRecipeForDeletion(id: Long) {
+        getEntityById(id).tagForDeletion().update()
+    }
+
+    fun tryDelete(id: Long) {
+        val recipe = getEntityById(id)
+        if (recipe.hasReferences()) return
+        recipe.delete()
+        imageService.deleteImage(RECIPES_IMG_PATH, id)
+        imageService.deleteImage(RECIPES_THUMBNAIL_PATH, id)
     }
 
     private fun queryByOwner(username: String) =
