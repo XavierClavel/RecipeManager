@@ -5,11 +5,10 @@ import com.xavierclavel.services.RecipeService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.logger
+import com.xavierclavel.utils.respondPDF
 import common.utils.URL.EXPORT_URL
 import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.header
-import io.ktor.server.response.respond
 import io.ktor.server.response.respondBytes
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
@@ -22,17 +21,15 @@ object ExportController: Controller(EXPORT_URL) {
     override fun Route.routes() {
         exportRecipe()
         exportUser()
-        exportCircle()
+        exportCookbook()
     }
 
     private fun Route.exportRecipe() = get("/recipe/{id}") {
         val id = getPathId()
-        val recipe = recipeService.findById(id) ?: return@get call.respond(HttpStatusCode.NotFound, "Recipe not found")
+        val recipe = recipeService.getById(id)
         try {
-            val byteArray = exportService.generatePDF(recipe)
-            val filename = "example.pdf"
-            call.response.header("Content-Disposition", "attachment; filename=\"$filename\"")
-            call.respondBytes(byteArray, contentType = ContentType.Application.Pdf)
+            val pdfFile = exportService.generatePDF(recipe)
+            call.respondPDF("example.pdf", pdfFile)
         } catch (e: Exception) {
             logger.error(e.message)
         }
@@ -40,17 +37,13 @@ object ExportController: Controller(EXPORT_URL) {
     }
 
     private fun Route.exportUser() = get("/user/{id}") {
-        val byteArray = exportService.generatePDF(listOf())
-        val filename = "example.pdf"
-        call.response.header("Content-Disposition", "attachment; filename=\"$filename\"")
-        call.respondBytes(byteArray, contentType = ContentType.Application.Pdf)
+        val pdfFile = exportService.generatePDF(listOf())
+        call.respondPDF("example.pdf", pdfFile)
     }
 
-    private fun Route.exportCircle() = get("/circle/{id}") {
-        val byteArray = exportService.generatePDF(listOf())
-        val filename = "example.pdf"
-        call.response.header("Content-Disposition", "attachment; filename=\"$filename\"")
-        call.respondBytes(byteArray, contentType = ContentType.Application.Pdf)
+    private fun Route.exportCookbook() = get("/cookbook/{id}") {
+        val pdfFile = exportService.generatePDF(listOf())
+        call.respondPDF("example.pdf",pdfFile)
     }
 
 }

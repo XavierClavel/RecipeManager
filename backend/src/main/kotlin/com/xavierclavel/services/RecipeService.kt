@@ -1,7 +1,6 @@
 package com.xavierclavel.services
 
 import com.xavierclavel.controllers.RecipeController.imageService
-import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.exceptions.NotFoundCause
 import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.Recipe
@@ -49,8 +48,8 @@ class RecipeService: KoinComponent {
     fun getEntityById(recipeId: Long) : Recipe =
         findEntityById(recipeId) ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
 
-    fun findById(recipeId: Long) : RecipeInfo? =
-        findEntityById(recipeId)?.toInfo()
+    fun getById(recipeId: Long) : RecipeInfo =
+        getEntityById(recipeId).toInfo()
 
 
     fun deleteById(recipeId: Long) {
@@ -58,7 +57,7 @@ class RecipeService: KoinComponent {
     }
 
 
-    fun getRecipeOwner(recipeId: Long) = findById(recipeId)?.owner
+    fun getRecipeOwner(recipeId: Long) = getById(recipeId).owner
 
     fun createRecipe(recipeDTO: RecipeDTO, owner: User): RecipeInfo =
         Recipe()
@@ -68,8 +67,8 @@ class RecipeService: KoinComponent {
             .toInfo()
 
 
-    fun updateRecipe(id: Long, recipeDTO: RecipeDTO): RecipeInfo? =
-        QRecipe().id.eq(id).findOne()?.mergeDTO(recipeDTO)?.updateAndGet()?.toInfo()
+    fun updateRecipe(id: Long, recipeDTO: RecipeDTO): RecipeInfo =
+        getEntityById(id).mergeDTO(recipeDTO).updateAndGet().toInfo()
 
 
     fun deleteRecipe(id: Long) {

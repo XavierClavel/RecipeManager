@@ -1,9 +1,6 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.AuthController.getSessionUserId
-import com.xavierclavel.exceptions.BadRequestCause
-import com.xavierclavel.exceptions.BadRequestException
-import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.services.ImageService
@@ -20,7 +17,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -46,7 +42,7 @@ object UserController: Controller(USER_URL) {
 
     private fun Route.getUser() = get("/{id}") {
         val id = getPathId()
-        val user = userService.getUser(id) ?: return@get call.respond(HttpStatusCode.NotFound)
+        val user = userService.getUser(id)
         call.respond(user)
     }
 
@@ -59,13 +55,13 @@ object UserController: Controller(USER_URL) {
     private fun Route.editUser() = put {
         val id = getSessionUserId()
         val userDTO = call.receive<UserDTO>()
-        val response = userService.editUser(id, userDTO) ?: return@put call.respond(HttpStatusCode.NotFound)
+        val response = userService.editUser(id, userDTO)
         call.respond(response)
     }
 
     private fun Route.deleteUser() = delete {
         val id = getSessionUserId()
-        val user = userService.getUser(id) ?: return@delete call.respond(HttpStatusCode.NotFound)
+        val user = userService.getUser(id)
         userService.deleteUserById(user.id)
         imageService.deleteImage(USERS_IMG_PATH, user.id)
         call.respond(HttpStatusCode.OK)
@@ -83,7 +79,7 @@ object UserController: Controller(USER_URL) {
 
     private fun Route.deletePassword() = delete("/password") {
         val id = getSessionUserId()
-        val mail = userService.findEntityById(id).mail
+        val mail = userService.getEntityById(id).mail
         val uuid = UUID.randomUUID().toString()
         userService.updateToken(mail, uuid)
         mailService.sendPasswordResetEmail(mail, uuid)

@@ -1,21 +1,14 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
-import com.xavierclavel.exceptions.NotFoundCause
-import com.xavierclavel.exceptions.NotFoundException
-import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
 import common.enums.AmountUnit
-import common.enums.CookbookRole
 import common.enums.IngredientType
 import common.enums.Sort
-import common.infodto.IngredientInfo
 import common.infodto.RecipeInfo
 import common.infodto.RecipeIngredientInfo
-import common.infodto.UserInfo
 import common.utils.URL.RECIPE_URL
-import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -25,13 +18,8 @@ import io.ktor.http.contentType
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import io.ktor.client.request.put
-import junit.framework.TestCase.assertTrue
-import main.com.xavierclavel.utils.addCookbookRecipe
-import main.com.xavierclavel.utils.addCookbookUser
-import main.com.xavierclavel.utils.assertException
 import main.com.xavierclavel.utils.assertRecipeDoesNotExist
 import main.com.xavierclavel.utils.assertRecipeExists
-import main.com.xavierclavel.utils.createCookbook
 import main.com.xavierclavel.utils.createIngredient
 import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
@@ -42,6 +30,7 @@ import main.com.xavierclavel.utils.getMe
 import main.com.xavierclavel.utils.getRecipe
 import main.com.xavierclavel.utils.listRecipes
 import main.com.xavierclavel.utils.updateRecipe
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertFalse
 

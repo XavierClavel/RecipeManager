@@ -1,35 +1,25 @@
 package com.xavierclavel.services
 
-import at.favre.lib.crypto.bcrypt.BCrypt
+import com.xavierclavel.exceptions.NotFoundCause
+import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.Cookbook
-import com.xavierclavel.models.User
 import com.xavierclavel.models.jointables.CookbookRecipe
 import com.xavierclavel.models.jointables.CookbookUser
 import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.jointables.query.QCookbookUser
 import com.xavierclavel.models.query.QCookbook
-import com.xavierclavel.models.query.QRecipe
-import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.Extensions.page
-import com.xavierclavel.utils.log
-import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
-import common.dto.UserDTO
 import common.enums.CookbookRole
 import common.enums.Sort
-import common.infodto.UserInfo
-import common.enums.UserRole
 import common.infodto.CookbookInfo
 import common.infodto.CookbookRecipeInfo
 import common.infodto.CookbookUserInfo
-import common.infodto.RecipeInfo
 import common.overviewdto.CookbookRecipeOverview
-import io.ebean.ExpressionList
 import io.ebean.FetchConfig
 import io.ebean.Paging
-import io.ktor.server.plugins.NotFoundException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -44,11 +34,14 @@ class CookbookService: KoinComponent {
     fun findEntityById(id: Long) : Cookbook? =
         QCookbook().id.eq(id).findOne()
 
+    fun getEntityById(id: Long): Cookbook =
+        findEntityById(id) ?: throw NotFoundException(NotFoundCause.COOKBOOK_NOT_FOUND)
+
 
     fun createCookbook(cookbookDTO: CookbookDTO): CookbookInfo =
         Cookbook.from(cookbookDTO).insertAndGet().toInfo()
 
-    fun getCookbook(id: Long) = findEntityById(id)?.toInfo()
+    fun getCookbook(id: Long): CookbookInfo = getEntityById(id).toInfo()
 
     fun listCookbooks(paging: Paging, sort:Sort, user: Long?) : List<CookbookInfo> =
         QCookbook()
@@ -76,21 +69,17 @@ class CookbookService: KoinComponent {
 
 
 
-    fun getCookbookUsers(id: Long, paging: Paging): List<CookbookUserInfo>? =
-        QCookbook()
-            .id.eq(id)
-            .findOne()
-            ?.users
-            ?.map { it.toInfo() }
-            ?.page(paging)
+    fun getCookbookUsers(id: Long, paging: Paging): List<CookbookUserInfo> =
+        getEntityById(id)
+            .users
+            .map { it.toInfo() }
+            .page(paging)
 
-    fun getCookbookRecipes(id: Long, paging: Paging): List<CookbookRecipeInfo>? =
-        QCookbook()
-            .id.eq(id)
-            .findOne()
-            ?.recipes
-            ?.map { it.toInfo() }
-            ?.page(paging)
+    fun getCookbookRecipes(id: Long, paging: Paging): List<CookbookRecipeInfo> =
+        getEntityById(id)
+            .recipes
+            .map { it.toInfo() }
+            .page(paging)
 
     fun doesCookbookHaveRecipe(cookbookId: Long, recipeId: Long): Boolean =
         QCookbook()
@@ -99,17 +88,17 @@ class CookbookService: KoinComponent {
             .exists()
 
     fun updateCookbook(id: Long, cookbookDTO: CookbookDTO) =
-        findEntityById(id)
-            ?.merge(cookbookDTO)
-            ?.updateAndGet()
-            ?.toInfo()
+        getEntityById(id)
+            .merge(cookbookDTO)
+            .updateAndGet()
+            .toInfo()
 
-    fun deleteCookbook(id: Long): Boolean? =
-        findEntityById(id)?.delete()
+    fun deleteCookbook(id: Long): Boolean =
+        getEntityById(id).delete()
 
     fun addUserToCookbook(cookbookId: Long, userId: Long, role: CookbookRole) {
-        val cookbook = findEntityById(cookbookId) ?: throw NotFoundException("Cookbook not found")
-        val user = userService.findEntityById(userId) ?: throw NotFoundException("User not found")
+        val cookbook = getEntityById(cookbookId)
+        val user = userService.getEntityById(userId)
         val cookbookUser = CookbookUser(
             user = user,
             role = role,
@@ -118,11 +107,11 @@ class CookbookService: KoinComponent {
     }
 
     fun addRecipeToCookbook(cookbookId: Long, recipeId: Long, userId: Long) {
-        val cookbook = findEntityById(cookbookId) ?: throw NotFoundException("Cookbook $cookbookId not found")
-        val recipe = recipeService.findEntityById(recipeId) ?: throw NotFoundException("Recipe $recipeId not found")
+        val cookbook = getEntityById(cookbookId)
+        val recipe = recipeService.getEntityById(recipeId)
         val cookbookRecipe = CookbookRecipe(
             cookbook = cookbook,
-            addedBy = userService.findEntityById(userId) ?: throw NotFoundException("User $userId not found"),
+            addedBy = userService.getEntityById(userId),
             recipe = recipe,
         ).insertAndGet()
 

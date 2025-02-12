@@ -12,10 +12,12 @@ enum class UnauthorizedCause(val key: String) {
     SESSION_NOT_FOUND("session.not.found"),
     USER_NOT_VERIFIED("user.not.verified"),
     INVALID_PASSWORD("invalid.password"),
+    INVALID_TOKEN("invalid.token"),
 }
 
 enum class ForbiddenCause(val key: String) {
-
+    NOT_ALLOWED_TO_EDIT_RECIPE("not.allowed.to.edit.recipe"),
+    NOT_ALLOWED_TO_EDIT_USER("not.allowed.to.edit.user"),
 }
 
 enum class NotFoundCause(val key: String) {
@@ -23,14 +25,24 @@ enum class NotFoundCause(val key: String) {
     RECIPE_NOT_FOUND("recipe.not.found"),
     COOKBOOK_NOT_FOUND("cookbook.not.found"),
     INGREDIENT_NOT_FOUND("ingredient.not.found"),
+    MAIL_NOT_FOUND("mail.not.found"),
+    FOLLOW_NOT_FOUND("follow.not.found"),
 }
 
 enum class BadRequestCause (val key: String) {
+    INVALID_REQUEST("invalid.request"),
+    INVALID_IMAGE("invalid.image"),
+
     TOKEN_MISSING("token.missing"),
     MAIL_MISSING("mail.missing"),
+
     USER_ALREADY_FOLLOWED("user.already.followed"),
     USER_NOT_FOLLOWED("user.not.followed"),
+
     NOT_APPLICABLE_ON_SELF("not.applicable.on.self"),
     MAIL_ALREADY_USED("mail.already.used"),
     USERNAME_ALREADY_USED("username.already.used"),
+    RECIPE_ALREADY_IN_COOKBOOK("recipe.already.in.cookbood"),
+    RECIPE_NOT_IN_COOKBOOK("recipe.not.in.cookbook"),
+
 }

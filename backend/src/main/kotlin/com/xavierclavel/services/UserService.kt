@@ -1,6 +1,10 @@
 package com.xavierclavel.services
 
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.xavierclavel.exceptions.NotFoundCause
+import com.xavierclavel.exceptions.NotFoundException
+import com.xavierclavel.exceptions.UnauthorizedCause
+import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.models.User
 import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
@@ -10,7 +14,6 @@ import common.infodto.UserInfo
 import common.enums.UserRole
 import common.overviewdto.UserOverview
 import io.ebean.Paging
-import io.ktor.server.plugins.NotFoundException
 import org.koin.core.component.KoinComponent
 import java.time.Instant
 
@@ -24,25 +27,25 @@ class UserService: KoinComponent {
             .where().lastActivityDate.gt(Instant.now().minusSeconds(60 * 60 * 24 * 30).epochSecond)
             .findCount()
 
-    fun findEntityById(userId: Long) : User =
-        QUser().id.eq(userId).findOne() ?: throw NotFoundException("User not found")
+    fun getEntityById(userId: Long) : User =
+        QUser().id.eq(userId).findOne() ?: throw NotFoundException(NotFoundCause.USER_NOT_FOUND)
 
     fun findByUsername(username: String) : User? =
         QUser().username.eq(username).findOne()
 
     fun findByMail(mail: String) : User {
-        return QUser().mail.eq(mail).findOne() ?: throw NotFoundException("Mail not found")
+        return QUser().mail.eq(mail).findOne() ?: throw NotFoundException(NotFoundCause.MAIL_NOT_FOUND)
     }
 
+
     fun findByToken(token: String) : User =
-        QUser().token.eq(token).findOne() ?: throw NotFoundException("Invalid verification token")
+        QUser().token.eq(token).findOne() ?: throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
 
     fun isTokenValid(token: String) : Boolean {
         val currentEpoch = Instant.now().epochSecond
         val user = findByToken(token)
         return user.tokenEndValidity > currentEpoch
     }
-
 
 
     fun existsById(id: Long) = QUser().id.eq(id).exists()
@@ -52,10 +55,10 @@ class UserService: KoinComponent {
     fun createUser(userDTO: UserDTO, token: String = ""): User =
         User.from(userDTO, token).insertAndGet()
 
-    fun editUser(id: Long, userDTO: UserDTO): UserInfo? =
-        QUser().id.eq(id).findOne()?.merge(userDTO)?.updateAndGet()?.toInfo()
+    fun editUser(id: Long, userDTO: UserDTO): UserInfo =
+        getEntityById(id).merge(userDTO).updateAndGet().toInfo()
 
-    fun registerUserActivity(id: Long) = findEntityById(id).registerNewActivity()
+    fun registerUserActivity(id: Long) = getEntityById(id).registerNewActivity()
 
     fun deleteUserById(userId: Long) =
         QUser().id.eq(userId).delete()
@@ -67,8 +70,8 @@ class UserService: KoinComponent {
         return findByUsername(username)?.toInfo()
     }
 
-    fun getUser(id: Long) : UserInfo? =
-        QUser().id.eq(id).findOne()?.toInfo()
+    fun getUser(id: Long) : UserInfo =
+        getEntityById(id).toInfo()
 
     fun listUsers(): List<UserOverview> =
         QUser().findList().map { it.toOverview() }
@@ -90,13 +93,13 @@ class UserService: KoinComponent {
     }
 
     fun isPasswordValid(id: Long, password: String): Boolean =
-        isPasswordValid(password, findEntityById(id).passwordHash)
+        isPasswordValid(password, getEntityById(id).passwordHash)
 
     fun isPasswordValid(password: String, hash: String): Boolean =
         BCrypt.verifyer().verify(password.toCharArray(), hash).verified
 
     fun updatePassword(id: Long, password: String) =
-        findEntityById(id).updatePassword(password).updateAndGet().toInfo()
+        getEntityById(id).updatePassword(password).updateAndGet().toInfo()
 
     fun resetPassword(token: String, password: String) =
         findByToken(token).updatePassword(password).updateAndGet().toInfo()
@@ -105,7 +108,7 @@ class UserService: KoinComponent {
         findByMail(mail).updateToken(token).updateAndGet().toInfo()
 
     fun validateUser(id: Long) =
-        findEntityById(id).validate().updateAndGet()
+        getEntityById(id).validate().updateAndGet()
 
     fun search(searchString: String, paging: Paging): List<UserInfo> =
         QUser()

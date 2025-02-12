@@ -2,8 +2,12 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.controllers.RecipeController.recipeService
+import com.xavierclavel.exceptions.ForbiddenCause
+import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.checkRecipeEditionRights
+import com.xavierclavel.utils.checkUserEditionRights
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.receiveImage
 import common.utils.Filepath.COOKBOOKS_IMG_PATH
@@ -14,7 +18,6 @@ import common.utils.URL.IMAGE_URL
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.http.content.staticFiles
-import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.RoutingContext
@@ -81,6 +84,7 @@ object ImageController: Controller(IMAGE_URL) {
 
     private fun Route.uploadRecipeImage() = post("/recipes/{id}") {
         val id = getPathId()
+        checkRecipeEditionRights(recipeService.getRecipeOwner(id).id)
         val image = receiveImage()
         imageService.saveImage(RECIPES_IMG_PATH, id, SIZE_IMG_RECIPE, image)
         imageService.saveImage(RECIPES_THUMBNAIL_PATH, id, SIZE_THUMBNAIL_RECIPE, image)
@@ -96,6 +100,7 @@ object ImageController: Controller(IMAGE_URL) {
 
     private fun Route.uploadUserIcon() = post("/users/{id}") {
         val id = getPathId()
+        checkUserEditionRights(id)
         val image = receiveImage()
         imageService.saveImage(USERS_IMG_PATH, id, SIZE_IMG_USER, image)
         call.respond(HttpStatusCode.OK)
@@ -103,7 +108,7 @@ object ImageController: Controller(IMAGE_URL) {
 
     private fun Route.deleteRecipeImage() = delete("/recipes/{id}") {
         val id = getPathId()
-        if (!isAuthorizedToEditRecipe(id)) return@delete call.respond(HttpStatusCode.Unauthorized)
+        checkRecipeEditionRights(recipeService.getRecipeOwner(id).id)
         imageService.deleteImage(RECIPES_IMG_PATH,id)
         call.respond(HttpStatusCode.OK)
     }
@@ -116,15 +121,13 @@ object ImageController: Controller(IMAGE_URL) {
 
     private fun Route.deleteUserImage() = delete("/users/{id}") {
         val id = getPathId()
+        checkUserEditionRights(id)
         imageService.deleteImage(USERS_IMG_PATH, id)
         call.respond(HttpStatusCode.OK)
     }
 
 
-    private suspend fun RoutingContext.isAuthorizedToEditRecipe(recipeId: Long) : Boolean {
-        val currentUser = getSessionUserId()
-        return recipeService.getRecipeOwner(recipeId)?.id != currentUser
-    }
+
 
 
 }

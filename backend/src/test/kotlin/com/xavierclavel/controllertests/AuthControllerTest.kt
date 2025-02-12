@@ -1,8 +1,6 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
-import com.xavierclavel.exceptions.BadRequestCause
-import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
 import main.com.xavierclavel.utils.login
@@ -28,7 +26,7 @@ class AuthControllerTest : ApplicationTest() {
     fun `access is granted after email verification`() = runTest {
         val password = UUID.randomUUID().toString()
         val user = client.signup(password = password)
-        val token = userService.findEntityById(user.id).token
+        val token = userService.getEntityById(user.id).token
         client.verifyUser(token)
         assertDoesNotThrow { client.login(user.username, password) }
     }
@@ -37,7 +35,7 @@ class AuthControllerTest : ApplicationTest() {
     fun `update user password`() = runTest {
         val oldPassword = UUID.randomUUID().toString()
         val user = client.signup(password = oldPassword)
-        val token = userService.findEntityById(user.id).token
+        val token = userService.getEntityById(user.id).token
         client.verifyUser(token)
         assertDoesNotThrow { client.login(user.username, oldPassword) }
 
@@ -53,7 +51,7 @@ class AuthControllerTest : ApplicationTest() {
     fun `updating password fails if password provided is wrong`() = runTest {
         val oldPassword = UUID.randomUUID().toString()
         val user = client.signup(password = oldPassword)
-        val token = userService.findEntityById(user.id).token
+        val token = userService.getEntityById(user.id).token
         client.verifyUser(token)
         client.login(user.username, oldPassword)
 
