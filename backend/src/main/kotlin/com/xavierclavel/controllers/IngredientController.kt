@@ -8,6 +8,7 @@ import common.dto.IngredientDTO
 import common.infodto.IngredientInfo
 import common.utils.URL.INGREDIENT_URL
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -21,13 +22,16 @@ object IngredientController: Controller(INGREDIENT_URL) {
     val ingredientService : IngredientService by inject(IngredientService::class.java)
 
     override fun Route.routes() {
-        createIngredient()
-        createIngredientsBatch()
         getIngredient()
-        updateIngredient()
         searchIngredients()
-        deleteIngredient()
         getCount()
+
+        authenticate("auth-session") {
+            createIngredient()
+            createIngredientsBatch()
+            updateIngredient()
+            deleteIngredient()
+        }
     }
 
     private fun Route.createIngredient() = post {

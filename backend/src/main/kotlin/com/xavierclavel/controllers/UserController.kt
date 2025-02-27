@@ -14,6 +14,7 @@ import common.dto.UserDTO
 import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.USER_URL
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -30,14 +31,17 @@ object UserController: Controller(USER_URL) {
     val mailService: MailService by inject(MailService::class.java)
 
     override fun Route.routes() {
-        editUser()
         getUser()
         listUsers()
-        deleteUser()
 
-        updatePassword()
-        deletePassword()
-        resetPassword()
+        authenticate("auth-session") {
+            editUser()
+            deleteUser()
+
+            updatePassword()
+            deletePassword()
+            resetPassword()
+        }
     }
 
     private fun Route.getUser() = get("/{id}") {
