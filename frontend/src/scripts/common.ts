@@ -42,6 +42,7 @@ export {
   deleteImage,
 
   noLoginRedirect,
+  noLoginRedirectStartsWith,
 
   unitToReadable,
 
@@ -92,6 +93,8 @@ function navigateTo(path) {
 }
 
 const noLoginRedirect = ['/login', '/logout', '/signup', '/user/verify', '/maintenance']
+const noLoginRedirectStartsWith = ['/recipe/view']
+
 
 const base_url = "http://localhost:8080/v1"
 const getUserIconUrl = (id) => id ? `${base_url}/image/users/${id}.webp` : `${base_url}/image/users/placeholder.webp`

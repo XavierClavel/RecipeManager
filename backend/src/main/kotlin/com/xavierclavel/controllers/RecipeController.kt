@@ -22,6 +22,7 @@ import common.enums.DishClass
 import common.infodto.RecipeInfo
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -42,9 +43,11 @@ object RecipeController: Controller(RECIPE_URL) {
     override fun Route.routes() {
         getRecipe()
         listRecipes()
-        createRecipe()
-        updateRecipe()
-        deleteRecipe()
+        authenticate("auth-session") {
+            createRecipe()
+            updateRecipe()
+            deleteRecipe()
+        }
     }
 
     private fun Route.getRecipe() = get("/{id}") {

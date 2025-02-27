@@ -14,6 +14,7 @@ import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.IMAGE_URL
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.http.content.staticFiles
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -69,12 +70,14 @@ object ImageController: Controller(IMAGE_URL) {
             }
         }
 
-        uploadRecipeImage()
-        uploadCookbookImage()
-        uploadUserIcon()
-        deleteRecipeImage()
-        deleteCookbookImage()
-        deleteUserImage()
+        authenticate("auth-session") {
+            uploadRecipeImage()
+            uploadCookbookImage()
+            uploadUserIcon()
+            deleteRecipeImage()
+            deleteCookbookImage()
+            deleteUserImage()
+        }
     }
 
 

@@ -9,7 +9,7 @@ import { createRouter, createWebHistory } from 'vue-router/auto'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
 import { useAuthStore } from '@/stores/auth';
-import {noLoginRedirect} from "@/scripts/common";
+import {noLoginRedirect, noLoginRedirectStartsWith} from "@/scripts/common";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,7 +19,7 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from) => {
-  if (noLoginRedirect.includes(to.name)) {
+  if (noLoginRedirect.includes(to.name) || noLoginRedirectStartsWith.some((it) => to.name.startsWith(it))) {
     return
   }
   const authStore = useAuthStore();

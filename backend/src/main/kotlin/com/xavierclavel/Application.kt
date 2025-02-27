@@ -88,9 +88,7 @@ fun Application.serveRoutes() = routing {
     authenticate("auth-session") {
         serve(HealthController)
         serve(UserController)
-        serve(RecipeController)
         serve(IngredientController)
-        serve(ImageController)
         serve(ExportController)
         serve(LikeController)
         serve(CookbookController)
@@ -98,5 +96,7 @@ fun Application.serveRoutes() = routing {
         serve(FollowController)
         serve(TestController)
     }
+    serve(ImageController)
+    serve(RecipeController)
     serve(AuthController)
 }
