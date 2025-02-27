@@ -30,12 +30,10 @@ import kotlinx.serialization.json.Json
 import main.com.xavierclavel.containers.RedisTestContainer
 import main.com.xavierclavel.utils.login
 import main.com.xavierclavel.utils.logout
-import main.com.xavierclavel.utils.updatePassword
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertThrows
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
@@ -43,7 +41,6 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 import java.util.UUID
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.test.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class ApplicationTest: KoinTest {
@@ -97,13 +94,14 @@ abstract class ApplicationTest: KoinTest {
         DatabaseManager.getTables().forEach {
             it.findList().forEach { it.delete() }
         }
-        val token = UUID.randomUUID().toString()
+        val token1 = UUID.randomUUID().toString()
+        val token2 = UUID.randomUUID().toString()
         val userDTO1 = UserDTO(username = USER1, password = password, mail = UUID.randomUUID().toString())
-        val userDTO2 = UserDTO(username = USER1, password = password, mail = UUID.randomUUID().toString())
-        userService.createUser(userDTO1, token)
-        userService.createUser(userDTO2, token)
-        userService.verifyUser(token)
-        userService.verifyUser(token)
+        val userDTO2 = UserDTO(username = USER2, password = password, mail = UUID.randomUUID().toString())
+        userService.createUser(userDTO1, token1)
+        userService.createUser(userDTO2, token2)
+        userService.verifyUser(token1)
+        userService.verifyUser(token2)
     }
 
 

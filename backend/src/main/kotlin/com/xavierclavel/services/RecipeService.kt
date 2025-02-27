@@ -113,7 +113,9 @@ class RecipeService: KoinComponent {
 
     private fun QRecipe.filterByOwner(userId: Long?) =
         if (userId == null) this
-        else this.where().owner.id.eq(userId)
+        else this.where()
+            .owner.id.eq(userId)
+            .taggedForDeletion.eq(false)
 
     private fun QRecipe.filterByDishClass(dishClasses: Set<DishClass>) =
         if (dishClasses.isEmpty()) this
@@ -187,6 +189,7 @@ class RecipeService: KoinComponent {
             Sort.LIKES_DESCENDING -> this.orderBy("count(likes.id) desc")
             Sort.DATE_ASCENDING -> this.orderBy().creationDate.asc()
             Sort.DATE_DESCENDING -> this.orderBy().creationDate.desc()
+            Sort.RANDOM -> this.orderBy("random()")
         }
 
 }

@@ -73,4 +73,6 @@ export default {
 
   my_recipes: "My recipes",
   follows: "Follows",
+
+  random: "Random",
 };

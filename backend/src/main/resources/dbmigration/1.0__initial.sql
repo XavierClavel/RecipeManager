@@ -93,6 +93,7 @@ create table recipes (
   cooking_temperature           integer,
   conservation_time             integer,
   owner_id                      bigint,
+  tagged_for_deletion           boolean default false not null,
   title                         varchar(255) not null,
   description                   varchar(255) not null,
   constraint ck_recipes_dish_class check ( dish_class in (0,1,2,3)),

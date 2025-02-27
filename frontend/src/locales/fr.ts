@@ -78,4 +78,6 @@ export default {
 
   my_recipes: "Mes recettes",
   follows: "Abonnements",
+
+  random: "Aléatoire",
 };

@@ -52,11 +52,11 @@ class CookbookControllerTest : ApplicationTest() {
     fun `add user to cookbook`() = runTestAsAdmin {
         val cookbook = client.createCookbook()
         client.assertCookbookExists(cookbook.id)
-        val user = client.createUser("user1")
+        val user = client.createUser("user3")
         client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
         val users = client.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)
-        assertTrue(users.any { it.username == "user1" })
+        assertTrue(users.any { it.username == "user3" })
     }
 
     @Test
@@ -227,6 +227,7 @@ class CookbookControllerTest : ApplicationTest() {
     fun `adding recipes to cookbook already present returns HTTP Bad Request`() = runTestAsAdmin {
         val cookbook = client.createCookbook()
         val recipe = client.createRecipe()
+
 
         client.addCookbookRecipe(cookbook.id, recipe.id).apply {
             assertEquals(HttpStatusCode.OK, status)

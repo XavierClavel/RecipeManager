@@ -23,6 +23,11 @@ export {
   ICON_USER_FOLLOWS,
   ICON_USER_FOLLOWERS,
 
+  ICON_RANDOM,
+  ICON_DATE,
+  ICON_LIKES,
+  ICON_ALPHABETICAL,
+
   getIngredientIcon,
 }
 
@@ -44,6 +49,11 @@ const ICON_USER_LIKES = "mdi-heart"
 const ICON_USER_RECIPES = "mdi-notebook"
 const ICON_USER_FOLLOWS = "mdi-account-heart"
 const ICON_USER_FOLLOWERS = "mdi-account-multiple"
+
+const ICON_RANDOM = "mdi-shuffle-variant"
+const ICON_DATE = "mdi-clock"
+const ICON_LIKES = "mdi-heart"
+const ICON_ALPHABETICAL = "mdi-format-letter-case"
 
 const ICON_INGREDIENT_CHEESE = "mdi-cheese"
 const ICON_INGREDIENT_MEAT = "mdi-food-drumstick"

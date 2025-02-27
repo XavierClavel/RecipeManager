@@ -9,6 +9,7 @@ import com.xavierclavel.services.CookbookService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getIdQueryParam
+import com.xavierclavel.utils.getMandatoryIdQueryParam
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSort
@@ -67,8 +68,8 @@ object CookbookController: Controller(COOKBOOK_URL) {
     }
 
     private fun Route.getRecipeStatusInUserCookbooks() = get("/recipeStatus") {
-        val userId = getIdQueryParam("user") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
-        val recipeId = getIdQueryParam("recipe") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
+        val userId = getMandatoryIdQueryParam("user")
+        val recipeId = getMandatoryIdQueryParam("recipe")
         val cookbook = cookbookService.getRecipeStatusInUserCookbooks(userId, recipeId)
         call.respond(cookbook)
     }

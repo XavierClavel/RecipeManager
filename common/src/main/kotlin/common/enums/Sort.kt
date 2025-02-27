@@ -8,4 +8,5 @@ enum class Sort {
     LIKES_DESCENDING,
     DATE_ASCENDING,
     DATE_DESCENDING,
+    RANDOM,
 }

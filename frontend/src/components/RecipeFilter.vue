@@ -3,6 +3,7 @@ import {searchIngredients} from "@/scripts/ingredients";
 import router from "@/router";
 import {useAuthStore} from "@/stores/auth";
 import {useI18n} from "vue-i18n";
+import {ICON_ALPHABETICAL, ICON_DATE, ICON_LIKES, ICON_RANDOM} from "@/scripts/icons";
 
 const autocompleteList = ref([])
 
@@ -28,9 +29,10 @@ const sourceOptions = ref([
 ])
 
 const sortOptions = ref([
-  { label: t('alphabetical'), value: "NAME", icon:"mdi-format-letter-case" },
-  { label: t('likes'), value: "LIKES", icon:"mdi-heart" },
-  { label: t('date'), value: "DATE", icon:"mdi-clock" },
+  { label: t('alphabetical'), value: "NAME", icon:ICON_ALPHABETICAL, ordered: true },
+  { label: t('random'), value: "RANDOM", icon:ICON_RANDOM, ordered: false },
+  { label: t('likes'), value: "LIKES", icon:ICON_LIKES, ordered: true },
+  { label: t('date'), value: "DATE", icon:ICON_DATE, ordered: true },
 ]);
 
 const selectedSort = ref(null); // Stores the selected sort field
@@ -46,7 +48,10 @@ const selectDishClass = (index) => {
 }
 
 const toggleSort = (field) => {
-  if (selectedSort.value === field) {
+
+  if (selectedSort.value === "RANDOM" && sortOrder.value === "desc") {
+    selectedSort.value = null;
+  } else if (selectedSort.value === field) {
     if (sortOrder.value === "desc") {
       sortOrder.value = "asc"; // Toggle to ascending
     } else {
@@ -80,7 +85,11 @@ const onIngredientAutocompleteChange = async (query) => {
 
 const updateUrl = () => {
   const route = router.currentRoute
-  const selectedSortOrder = sortOrder.value == "asc" ? "_ASCENDING" : "_DESCENDING"
+  let selectedSortOrder = sortOrder.value == "asc" ? "_ASCENDING" : "_DESCENDING"
+  if (selectedSort.value == "RANDOM") {
+    selectedSortOrder = ""
+  }
+  console.log(selectedSort.value)
   router.push({
     path: route.path, // Keep the current path
     query: Object.fromEntries(
@@ -182,7 +191,7 @@ const updateUrl = () => {
           class="ma-1"
         >
           {{ option.label }}
-          <v-icon v-if="selectedSort === option.value">
+          <v-icon v-if="selectedSort === option.value && option.ordered">
             {{ sortOrder === 'desc' ? 'mdi-arrow-down' : 'mdi-arrow-up' }}
           </v-icon>
         </v-chip>

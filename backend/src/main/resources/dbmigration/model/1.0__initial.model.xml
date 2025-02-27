@@ -78,6 +78,7 @@
             <column name="cooking_temperature" type="integer"/>
             <column name="conservation_time" type="integer"/>
             <column name="owner_id" type="bigint" references="users.id" foreignKeyName="fk_recipes_owner_id" foreignKeyIndex="ix_recipes_owner_id"/>
+            <column name="tagged_for_deletion" type="boolean" defaultValue="false" notnull="true"/>
         </createTable>
         <createTable name="recipes_steps" pkName="pk_recipes_steps">
             <column name="recipes_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_recipes_steps_recipes_id" foreignKeyIndex="ix_recipes_steps_recipes_id"/>
