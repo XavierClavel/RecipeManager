@@ -28,8 +28,6 @@ services:
     container_name: cooknco-frontend
     build:
       context: frontend
-    volumes:
-      - /secrets/cooknco/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "80:80"
     networks:
