@@ -21,6 +21,8 @@ import io.ebean.migration.MigrationConfig
 import io.ebean.migration.MigrationRunner
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import kotlin.io.path.Path
+import kotlin.io.path.exists
 
 object DatabaseManager {
     var mainDB : Database? = null
@@ -40,7 +42,12 @@ object DatabaseManager {
     )
 
     private fun hikari(): HikariDataSource {
-        val hikariConfig = HikariConfig("/app/config/db.properties")
+        val dbConfigPath = if (Path("/app/config/db.properties").exists()) {
+            "/app/config/db.properties" // Path in VPS container
+        } else {
+            "/db.properties" // Local path
+        }
+        val hikariConfig = HikariConfig(dbConfigPath)
         return HikariDataSource(hikariConfig)
     }
 
