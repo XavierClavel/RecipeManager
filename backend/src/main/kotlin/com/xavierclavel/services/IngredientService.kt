@@ -36,7 +36,7 @@ class IngredientService: KoinComponent {
     }
 
     fun deleteById(ingredientId: Long): Boolean =
-        QIngredient().id.eq(ingredientId).findOne().deleteAndGet() != null
+        QIngredient().id.eq(ingredientId).findOne()?.deleteAndGet() != null
 
 
     fun search(searchString: String, paging: Paging): List<IngredientInfo> =
