@@ -1,6 +1,7 @@
+name: cooknco
+
 services:
   backend:
-    image: cooknco/backend
     build:
       context: .
     volumes:
@@ -22,7 +23,6 @@ services:
         condition: service_healthy
 
   frontend:
-    image: cooknco/frontend
     build:
       context: frontend
     ports:
