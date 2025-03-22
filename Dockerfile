@@ -15,10 +15,7 @@ COPY . /usr/src/app/
 WORKDIR /usr/src/app
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-# Build the fat JAR, Gradle also supports shadow
-# and boot JAR by default.
-RUN gradle shadowJar -x test --no-daemon
-RUN gradle shadowJar --no-daemon -x test && ls -lah build/libs/
+RUN gradle shadowJar --no-daemon -x test && find / -name "*.jar"
 
 # Stage 3: Create the Runtime Image
 FROM amazoncorretto:22 AS runtime
