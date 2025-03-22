@@ -25,7 +25,7 @@ application {
 }
 
 dependencies {
-    val ktorVersion = "3.0.3"
+    val ktorVersion = "3.1.1"
     val ebeanVersion = "15.8.0"
     val koinVersion = "4.0.0"
     val itextVersion = "8.0.5"
@@ -141,6 +141,12 @@ tasks.register("generateVersionProperties") {
 
 tasks.named("processResources") {
     dependsOn("generateVersionProperties")
+}
+
+tasks.register<Jar>("buildFatJar") {
+    archiveBaseName.set("cooknco")
+    from(sourceSets.main.get().output)
+    with(tasks.getByName<Jar>("jar"))
 }
 
 tasks.test {
