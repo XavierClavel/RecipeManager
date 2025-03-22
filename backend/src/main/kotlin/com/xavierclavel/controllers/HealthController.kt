@@ -1,6 +1,7 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.utils.Controller
+import common.dto.HealthDto
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.util.Properties
@@ -23,14 +24,11 @@ object HealthController: Controller("v1/health") {
         getHealth()
     }
 
-    private fun Route.getHealth() = get("health") {
+    private fun Route.getHealth() = get {
         val versionProperties = Properties()
         versionProperties.load(this.javaClass.getResourceAsStream("/version.properties"))
         val version = versionProperties.getProperty("version") ?: "no version"
-        call.respond(mapOf(
-            "dbUp" to true,
-            "version" to version,
-        ))
+        call.respond(HealthDto(true, version))
     }
 }
 
