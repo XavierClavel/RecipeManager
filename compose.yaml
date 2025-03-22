@@ -7,11 +7,14 @@ services:
     volumes:
       - pictures:/img
       - logs:/var/log/cooknco
+      - /secrets/cooknco/db.properties:/app/db.properties:ro
     ports:
       - "8080:8080"
     networks:
       - back-tier
       - front-tier
+    env_file:
+      - /secrets/cooknco/.env
     healthcheck:
       test: curl --fail http://localhost:8080/v1/health
       interval: 30s
