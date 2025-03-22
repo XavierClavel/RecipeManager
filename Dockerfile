@@ -20,6 +20,8 @@ RUN gradle shadowJar --no-daemon -x test && find / -name "*.jar"
 # Stage 3: Create the Runtime Image
 FROM amazoncorretto:22 AS runtime
 EXPOSE 8080:8080
+RUN ls -l /home/gradle/app
+RUN ls -l /home/gradle/app/backend
 RUN mkdir /app
-COPY --from=build /home/gradle/src/app/build/libs/*.jar /app/cooknco.jar
+COPY --from=build /home/gradle/app/build/libs/*.jar /app/cooknco.jar
 ENTRYPOINT ["java","-jar","/app/cooknco.jar"]
