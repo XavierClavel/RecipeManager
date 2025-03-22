@@ -143,7 +143,7 @@ tasks.named("processResources") {
     dependsOn("generateVersionProperties")
 }
 
-tasks.register<Jar>("buildFatJar") {
+tasks.register<Jar>("buildCustomFatJar") {
     archiveBaseName.set("cooknco")
     from(sourceSets.main.get().output)
     with(tasks.getByName<Jar>("jar"))

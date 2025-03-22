@@ -17,11 +17,11 @@ COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 # Build the fat JAR, Gradle also supports shadow
 # and boot JAR by default.
-RUN gradle buildFatJar --no-daemon -x test
+RUN gradle buildCustomFatJar --no-daemon -x test
 
 # Stage 3: Create the Runtime Image
 FROM amazoncorretto:22 AS runtime
 EXPOSE 8080:8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/cooknco.jar
-ENTRYPOINT ["java","-jar","/app/ktor-docker-sample.jar"]
+ENTRYPOINT ["java","-jar","/app/cooknco.jar"]
