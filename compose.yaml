@@ -2,6 +2,7 @@ name: cooknco
 
 services:
   backend:
+    container_name: cooknco-backend
     build:
       context: .
     volumes:
@@ -24,6 +25,7 @@ services:
         condition: service_healthy
 
   frontend:
+    container_name: cooknco-frontend
     build:
       context: frontend
     ports:
@@ -41,6 +43,7 @@ services:
         condition: service_healthy
 
   database:
+    container_name: cooknco-database
     image: postgres:17.2
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -58,6 +61,7 @@ services:
       interval: 1s
 
   redis:
+    container_name: redis
     image: redis:alpine
     restart: always
     ports:
