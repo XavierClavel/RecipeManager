@@ -29,7 +29,7 @@ services:
     build:
       context: frontend
     ports:
-      - "3000:3000"
+      - "3000:80"
     networks:
       - front-tier
     healthcheck:
