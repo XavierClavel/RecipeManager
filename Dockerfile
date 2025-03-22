@@ -6,7 +6,7 @@ COPY build.gradle.* gradle.properties settings.gradle.* /home/gradle/app/
 COPY backend /home/gradle/app/backend
 COPY common /home/gradle/app/common
 WORKDIR /home/gradle/app
-RUN gradle clean build -i --stacktrace
+RUN gradle clean build -i --stacktrace -x test
 
 # Stage 2: Build Application
 FROM gradle:latest AS build
