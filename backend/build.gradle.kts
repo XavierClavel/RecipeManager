@@ -13,6 +13,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.ebean") version "15.8.0"
     id("org.jetbrains.kotlin.kapt")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     //id("com.google.devtools.ksp") version "1.5.30-1.0.0"
 
 }
@@ -143,13 +144,8 @@ tasks.named("processResources") {
     dependsOn("generateVersionProperties")
 }
 
-tasks.register<Jar>("buildCustomFatJar") {
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveBaseName.set("cooknco")
-    from(sourceSets.main.get().output)
-    with(tasks.getByName<Jar>("jar"))
-
-    // Resolve duplicate files
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.test {
