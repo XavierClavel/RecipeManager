@@ -14,6 +14,10 @@ import {aliases, mdi} from "vuetify/iconsets/mdi";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/',
+  build: {
+    outDir: 'dist'
+  },
   icons: {
     defaultSet: 'mdi',
     aliases,
