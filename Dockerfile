@@ -21,5 +21,5 @@ RUN gradle shadowJar --no-daemon -x test && find / -name "*.jar"
 FROM amazoncorretto:22 AS runtime
 EXPOSE 8080:8080
 RUN mkdir /app
-COPY --from=build /usr/src/app/build/libs/*.jar /app/cooknco.jar
+COPY --from=build /home/gradle/src/app/build/libs/*.jar /app/cooknco.jar
 ENTRYPOINT ["java","-jar","/app/cooknco.jar"]
