@@ -13,8 +13,6 @@ services:
     networks:
       - back-tier
       - front-tier
-    env_file:
-      - /secrets/cooknco/.env
     healthcheck:
       test: curl --fail http://localhost:8080/v1/health
       interval: 30s
