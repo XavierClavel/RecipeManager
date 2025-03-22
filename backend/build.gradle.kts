@@ -147,6 +147,9 @@ tasks.register<Jar>("buildCustomFatJar") {
     archiveBaseName.set("cooknco")
     from(sourceSets.main.get().output)
     with(tasks.getByName<Jar>("jar"))
+
+    // Resolve duplicate files
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.test {
