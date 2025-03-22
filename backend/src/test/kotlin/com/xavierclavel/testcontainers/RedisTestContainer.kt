@@ -8,6 +8,7 @@ object RedisTestContainer {
 
     val redis = GenericContainer("redis:alpine").apply {
         withExposedPorts(6379)
+        withNetworkMode("host")
         start()
     }
 
