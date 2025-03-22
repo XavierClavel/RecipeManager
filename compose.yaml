@@ -7,7 +7,7 @@ services:
     volumes:
       - pictures:/img
       - logs:/var/log/cooknco
-      - /secrets/cooknco/db.properties:/app/db.properties:ro
+      - /secrets/cooknco/db.properties:/app/config/db.properties:ro
     ports:
       - "8080:8080"
     networks:

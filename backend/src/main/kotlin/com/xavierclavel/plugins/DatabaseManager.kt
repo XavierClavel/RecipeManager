@@ -40,7 +40,7 @@ object DatabaseManager {
     )
 
     private fun hikari(): HikariDataSource {
-        val hikariConfig = HikariConfig("/db.properties")
+        val hikariConfig = HikariConfig("/app/config/db.properties")
         return HikariDataSource(hikariConfig)
     }
 
