@@ -13,7 +13,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.ebean") version "15.8.0"
     id("org.jetbrains.kotlin.kapt")
-    id("com.gradleup.shadow") version "8.3.6"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     //id("com.google.devtools.ksp") version "1.5.30-1.0.0"
 
 }
