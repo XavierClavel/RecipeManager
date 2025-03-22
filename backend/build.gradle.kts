@@ -146,6 +146,7 @@ tasks.named("processResources") {
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveBaseName.set("cooknco")
+    archiveClassifier.set("")
 }
 
 tasks.test {
