@@ -69,6 +69,7 @@ class MailService: KoinComponent {
     fun sendEmail(recipient: String, subject: String, body: String) {
         val smtpEmail = configuration.smtp.email
         val smtpPassword = configuration.smtp.password
+        logger.info {configuration.smtp}
         val session = Session.getInstance(props, object : Authenticator() {
             override fun getPasswordAuthentication(): PasswordAuthentication {
                 return PasswordAuthentication(smtpEmail, smtpPassword)

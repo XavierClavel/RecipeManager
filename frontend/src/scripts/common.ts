@@ -91,7 +91,7 @@ function navigateTo(path) {
   })
 }
 
-const noLoginRedirect = ['/login', '/logout', '/signup', '/user/verify', '/maintenance']
+const noLoginRedirect = ['/login', '/logout', '/signup', '/user/verify', '/maintenance', '/verification-email-sent']
 const noLoginRedirectStartsWith = ['/recipe/view']
 
 
@@ -119,8 +119,8 @@ async function login(user) {
 
 async function signup(user) {
   const result = await apiClient.post(`/auth/signup`, user)
-  if (result.status == 200) {
-    navigateTo(`/login`)
+  if (result.status == 201) {
+    navigateTo(`/verification-email-sent`)
   }
   return result
 }

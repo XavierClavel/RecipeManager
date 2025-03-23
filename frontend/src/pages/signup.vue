@@ -8,6 +8,7 @@
       <v-card-title class="text-primary text-h3">
         {{$t("signup")}}
       </v-card-title>
+      <error :error="errorMessage"></error>
       <v-text-field
         v-model="user.username"
         prepend-icon="mdi-account"
@@ -85,7 +86,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe} from "@/scripts/recipes";
-import {signup, toLogin} from "@/scripts/common";
+import {login, signup, toLogin} from "@/scripts/common";
 import {useI18n} from "vue-i18n";
 
 // Get the route object
@@ -95,6 +96,7 @@ const show1 = ref<boolean>(false)
 const show2 = ref<boolean>(false)
 const password2 = ref<string>('')
 const { t } = useI18n();
+const errorMessage = ref(null)
 
 const rules = {
     required: value => !!value || t('required'),
@@ -111,10 +113,11 @@ const user = ref<object>({
 
 
 const submit = () => {
-  console.log(password2)
-  console.log(user.password)
-  console.log(user)
-  signup(user.value)
+  errorMessage.value = null
+  signup(user.value).catch(function (error) {
+    errorMessage.value = error.response.data
+    console.log(error);
+  })
 }
 
 if (recipeId != undefined) {

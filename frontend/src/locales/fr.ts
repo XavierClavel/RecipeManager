@@ -80,4 +80,7 @@ export default {
   follows: "Abonnements",
 
   random: "Aléatoire",
+
+  verification_email_sent_title: 'Mail de vérification envoyé !',
+  verification_email_sent_description: 'Un lien vous a été envoyé sur votre addresse mail. Cliquez sur le lien dans les 24h pour valider votre compte.',
 };

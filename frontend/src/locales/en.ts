@@ -75,4 +75,7 @@ export default {
   follows: "Follows",
 
   random: "Random",
+
+  verification_email_sent_title: 'Verification email sent !',
+  verification_email_sent_description: 'A link was sent to your inbox. Open it in the next 24h in order to validate your account.',
 };

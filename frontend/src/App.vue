@@ -40,11 +40,12 @@
       color="surface"
       class="custom-bar flex-grow-1 mt-n2 mr-n2 mb-n4"
       rounded="lg"
+      v-if="showSidebar"
     >
       <template v-slot:prepend>
-        <v-app-bar-nav-icon @click="toggleDrawer" v-if="showSidebar"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       </template>
-      <template v-slot:append v-if="showSidebar">
+      <template v-slot:append>
         <v-menu>
           <template v-slot:activator="{ props }">
             <v-img
