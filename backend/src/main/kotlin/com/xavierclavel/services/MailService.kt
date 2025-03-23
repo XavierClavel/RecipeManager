@@ -2,16 +2,11 @@ package com.xavierclavel.services
 
 import com.xavierclavel.utils.Configuration
 import com.xavierclavel.utils.logger
-import common.dto.UserDTO
-import common.utils.URL.BASE_URL
-import common.utils.URL.FRONTEND_URL
-import common.utils.URL.USER_URL
 import org.koin.core.component.KoinComponent
 import jakarta.mail.*
 import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
 import java.util.Properties
-import io.github.cdimascio.dotenv.dotenv
 import org.koin.core.component.inject
 
 class MailService: KoinComponent {
@@ -28,7 +23,7 @@ class MailService: KoinComponent {
     }
 
     fun sendVerificationEmail(mail: String, token: String) {
-        val link = "$FRONTEND_URL/user/verify?token=$token"
+        val link = "$${configuration.frontend.url}/user/verify?token=$token"
         val body = """
             Hello ! 
             
