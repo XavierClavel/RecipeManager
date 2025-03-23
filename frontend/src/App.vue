@@ -8,7 +8,7 @@
       rounded="lg"
       class="custom-drawer"
       elevation="2"
-      width="300"
+      width="250"
     >
       <v-list>
         <v-list-item title="Cook&Co"></v-list-item>
