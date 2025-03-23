@@ -12,8 +12,9 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - back-tier
-      - front-tier
+      - cooknco-database-network
+      - cooknco-frontend-network
+      - cooknco-auth-network
     healthcheck:
       test: curl --fail http://localhost:8080/v1/health
       interval: 30s
@@ -31,7 +32,7 @@ services:
     ports:
       - "80:80"
     networks:
-      - front-tier
+      - cooknco-frontend-network
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:80" ]
       interval: 10s
@@ -55,7 +56,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - back-tier
+      - cooknco-database-network
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 1s
@@ -68,6 +69,8 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    networks:
+      - cooknco-auth-network
     command: [ "redis-server", "--appendonly", "yes" ]
 
 volumes:
@@ -77,5 +80,6 @@ volumes:
   redis_data: {}
 
 networks:
-  front-tier: {}
-  back-tier: {}
+  cooknco-frontend-network: {}
+  cooknco-database-network: {}
+  cooknco-auth-network: {}
