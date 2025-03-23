@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from "axios";
+import apiClient from "@/plugins/axios";
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
       if (this.isAuthenticated) return
       try {
         console.log("auth checked")
-        const response = await axios.get(`/auth/me`, {
+        const response = await apiClient.get(`/auth/me`, {
           withCredentials: true  // Ensure cookies are sent with the request
         });
         this.isAuthenticated = response.status === 200;
