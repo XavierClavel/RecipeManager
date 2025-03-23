@@ -77,6 +77,8 @@ const show1 = ref<boolean>(false)
 const errorMessage = ref(null)
 const { t } = useI18n();
 
+console.log(import.meta.env.VITE_API_URL)
+
 const rules = {
   required: value => !!value || t('required'),
   min: v => v.length >= 8 || t('min_8_characters'),
