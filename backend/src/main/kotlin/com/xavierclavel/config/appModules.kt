@@ -16,6 +16,7 @@ import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.loadConfig
 import org.koin.dsl.module
 
+val config = loadConfig()
 val appModules = module {
     single { RecipeService() }
     single { UserService() }
@@ -30,5 +31,5 @@ val appModules = module {
     single { FollowService() }
     single { MailService() }
     single { RedisService(getProperty("redis.url", "redis://cooknco-redis:6379")) }
-    single { loadConfig() }
+    single { config }
 }
