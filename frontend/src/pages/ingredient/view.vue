@@ -68,11 +68,10 @@
 import {useRoute} from "vue-router";
 import {ref} from "vue";
 import {toEditCookbook, toEditUser} from "@/scripts/common";
-import {getIngredientIcon, ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS} from "@/scripts/icons";
-const base_url = import.meta.env.VITE_API_URL
+import {getIngredientIcon, ICON_COOKBOOK_RECIPES} from "@/scripts/icons";
 const route = useRoute();
 let ingredientId = ref(route.query.ingredient)
-const imageUrl = computed(() => `${base_url}/image/cookbooks/${ingredientId.value}.webp`);
+const imageUrl = computed(() => `${import.meta.env.VITE_API_URL}/image/cookbooks/${ingredientId.value}.webp`);
 
 const ingredient = ref<object>({
   id: null,

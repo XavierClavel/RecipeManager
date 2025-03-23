@@ -50,10 +50,9 @@ import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {toEditCookbook, toEditUser} from "@/scripts/common";
 import {getCookbook} from "@/scripts/cookbooks";
 import {ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS} from "@/scripts/icons";
-const base_url = import.meta.env.VITE_API_URL
 const route = useRoute();
 let cookbookId = ref(route.query.cookbook)
-const imageUrl = computed(() => `${base_url}/image/cookbooks/${cookbookId.value}.webp`);
+const imageUrl = computed(() => `${import.meta.env.VITE_API_URL}/image/cookbooks/${cookbookId.value}.webp`);
 
 const cookbook = ref<object>({
   title: "",

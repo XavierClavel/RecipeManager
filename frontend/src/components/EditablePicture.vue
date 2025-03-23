@@ -105,11 +105,9 @@ const props = defineProps({
 import {uploadImage} from "@/scripts/common";
 import {ref} from "vue";
 
-const base_url = import.meta.env.VITE_API_URL
-
 const image = ref<File | null>(null)
-const baseImageUrl = ref<string>(`${base_url}/${props.path}/${props.id}.webp`)
-const defaultImageUrl = ref<string>(`${base_url}/${props.path}/default.webp`)
+const baseImageUrl = ref<string>(`${import.meta.env.VITE_API_URL}/${props.path}/${props.id}.webp`)
+const defaultImageUrl = ref<string>(`${import.meta.env.VITE_API_URL}/${props.path}/default.webp`)
 const imageUrl = ref<string>(baseImageUrl)
 
 const fileInput = ref(null)
