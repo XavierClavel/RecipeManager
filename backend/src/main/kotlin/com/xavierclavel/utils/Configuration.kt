@@ -13,7 +13,7 @@ data class Smtp(
 
 fun loadConfig(): Configuration {
     return ConfigLoaderBuilder.default()
-        .log {Path("/app/config.configuration.yaml").readText()}
+        .log {Path("/app/config/configuration.yaml").readText()}
         .addResourceSource("/app/config/configuration.yaml", true)
         .build()
         .loadConfigOrThrow<Configuration>()
