@@ -38,11 +38,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <v-row class="ma-8">
+  <v-row class="ma-1">
         <recipe :recipe="recipe" v-for="recipe in recipes"></recipe>
   </v-row>
+
   <v-card
-    class="rounded-xl pa-5 ma-5 d-flex flex-row"
+    class="rounded-lg pa-5 ma-5 d-flex flex-row"
     v-if="noRecipes"
   >
     <v-icon color="primary" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>

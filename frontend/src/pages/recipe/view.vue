@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mx-auto rounded-xl pa-5 ma-auto my-5 d-flex flex-row"
+    class="mx-auto rounded-lg pa-5 ma-auto my-5 d-flex flex-row"
     max-width="1000px"
     v-if="displayError"
   >
@@ -11,7 +11,7 @@
   </v-card>
 
   <v-card
-  class="mx-auto rounded-xl pa-5 ma-auto my-5"
+  class="mx-auto rounded-lg pa-5 ma-auto my-5"
   max-width="1000px"
   v-if="!displayError"
   >

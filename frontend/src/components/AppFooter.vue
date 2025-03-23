@@ -1,5 +1,6 @@
 <template>
-  <v-footer height="40" app>
+  <v-container fluid class="d-flex flex-grow-1">
+  <v-footer height="40" app rounded="lg" class="mx-1" >
     <a
       v-for="item in items"
       :key="item.title"
@@ -31,6 +32,7 @@
       </a>
     </div>
   </v-footer>
+  </v-container>
 </template>
 
 <script setup lang="ts">

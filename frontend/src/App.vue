@@ -1,17 +1,21 @@
 <template>
-  <v-app>
+  <v-app class="d-flex">
 
     <v-navigation-drawer
       v-model="drawer"
       floating
       v-if="showSidebar"
+      rounded="lg"
+      class="custom-drawer"
+      elevation="2"
+      width="300"
     >
       <v-list>
         <v-list-item title="Cook&Co"></v-list-item>
         <v-list-item class="d-flex justify-center">
           <v-btn
             prepend-icon="mdi-pencil"
-            rounded
+            rounded="pill"
             min-height="50px"
             min-width="200px"
             class="elevation-0"
@@ -30,7 +34,13 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar color="surface" scroll-behavior="hide" scroll-threshold="100">
+    <v-main class="d-flex flex-grow-1">
+    <v-container fluid class="d-flex">
+    <v-card
+      color="surface"
+      class="custom-bar flex-grow-1 mt-n2 mr-n2 mb-n4"
+      rounded="lg"
+    >
       <template v-slot:prepend>
         <v-app-bar-nav-icon @click="toggleDrawer" v-if="showSidebar"></v-app-bar-nav-icon>
       </template>
@@ -57,7 +67,6 @@
           </v-list>
         </v-menu>
       </template>
-      <v-app-bar-title>Cook&Co</v-app-bar-title>
       <div class="d-flex flex-grow-1 justify-center align-center position-absolute"
            style ="
         left: 50%;
@@ -71,7 +80,8 @@
           min-width="500px"
           max-width="100%"
           height="48px"
-          class="d-flex align-center rounded-xl"
+          class="d-flex align-center"
+          rounded="lg"
         >
           <v-text-field
             class="mx-auto"
@@ -88,9 +98,11 @@
         </v-card>
       </div>
 
-    </v-app-bar>
+    </v-card>
+    </v-container>
+    </v-main>
 
-    <v-main>
+    <v-main class="ma-2">
       <router-view />
     </v-main>
 
@@ -143,5 +155,19 @@ overrideLocaleFromCookie()
 <style scoped>
 .clickable_image {
   cursor: pointer
+}
+.custom-drawer {
+  margin: 8px; /* Adjust margin to prevent overflow */
+  max-height: calc(100% - 16px); /* Reduce height to prevent overflow */
+  overflow: hidden; /* Ensures child elements respect border-radius */
+}
+
+.custom-bar {
+  //margin: 8px; /* Adjust margin to prevent overflow */
+  //margin-left: 0px;
+  //margin-right: 16px;
+  //max-width: calc(100% - 296px); /* Reduce width to account for margin */
+  height: 65px; /* Optional: Limit width */
+  //overflow: hidden; /* Ensures child elements respect border-radius */
 }
 </style>

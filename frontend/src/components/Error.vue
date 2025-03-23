@@ -10,7 +10,7 @@ defineProps({
 
 <template>
   <v-card
-    class="rounded-xl pa-5 ma-5 d-flex flex-row"
+    class="rounded-lg pa-5 ma-5 d-flex flex-row"
     v-if="error"
     variant="outlined"
     color="primary"
