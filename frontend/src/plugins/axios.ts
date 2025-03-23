@@ -1,11 +1,9 @@
 // src/axios.js
 import axios from 'axios';
-import {toHome, toMaintenance, toSignup} from "@/scripts/common";
-
-const instance = axios.create()
+import {toMaintenance} from "@/scripts/common";
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: "/api",
   withCredentials: true, // to include cookies for session-based auth
   headers: {
     'Content-Type': 'application/json',
