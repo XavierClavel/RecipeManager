@@ -3,7 +3,7 @@ import axios from 'axios';
 import {toMaintenance} from "@/scripts/common";
 
 const apiClient = axios.create({
-  baseURL: "/api",
+  baseURL: "/api/v1",
   withCredentials: true, // to include cookies for session-based auth
   headers: {
     'Content-Type': 'application/json',
