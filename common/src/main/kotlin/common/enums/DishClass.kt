@@ -4,5 +4,7 @@ enum class DishClass {
     ENTREE,
     MAIN_DISH,
     DESERT,
-    OTHER,
+    BREAKFAST,
+    SNACKS,
+    DRINKS,
 }
