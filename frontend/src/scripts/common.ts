@@ -4,7 +4,6 @@ import apiClient from '@/plugins/axios.js';
 import {useAuthStore, declareLogin} from "@/stores/auth";
 
 export {
-  base_url,
   login,
   logout,
   signup,
@@ -96,15 +95,14 @@ const noLoginRedirect = ['/login', '/logout', '/signup', '/user/verify', '/maint
 const noLoginRedirectStartsWith = ['/recipe/view']
 
 
-const base_url = import.meta.env.VITE_API_URL
-const getUserIconUrl = (id) => id ? `${base_url}/image/users/${id}.webp` : `${base_url}/image/users/placeholder.webp`
-const getCookbookIconUrl = (id) => `${base_url}/image/cookbooks/${id}.webp`
-const getRecipeImageUrl = (id) => `${base_url}/image/recipes/${id}.webp`
-const getRecipeThumbnailUrl = (id) => `${base_url}/image/recipes-thumbnails/${id}.webp`
+const getUserIconUrl = (id) => id ? `/image/users/${id}.webp` : `/image/users/placeholder.webp`
+const getCookbookIconUrl = (id) => `/image/cookbooks/${id}.webp`
+const getRecipeImageUrl = (id) => `/image/recipes/${id}.webp`
+const getRecipeThumbnailUrl = (id) => `/image/recipes-thumbnails/${id}.webp`
 
 
 async function login(user) {
-  const result = await apiClient.post(`${base_url}/auth/login`, {}, {
+  const result = await apiClient.post(`/auth/login`, {}, {
     auth: {
       username: user.username,
       password: user.password,
@@ -144,7 +142,7 @@ async function logout() {
 }
 
 async function whoami() {
-  const result = await apiClient.get(`${base_url}/auth/me`).then( function (response) {
+  const result = await apiClient.get(`/auth/me`).then( function (response) {
     authStore.login({ username: 'test_user' });
     }
   ).catch (function (error) {

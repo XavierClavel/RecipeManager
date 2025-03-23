@@ -12,6 +12,7 @@
         class="mx-auto px-3"
         color="primary"
         :rules="[rules.max100]"
+        variant="outlined"
       ></v-text-field>
 
       <v-textarea
@@ -20,6 +21,7 @@
         class="mx-auto px-3"
         color="primary"
         :rules="[rules.max]"
+        variant="outlined"
       ></v-textarea>
 
       <v-col class="py-2" cols="12">
@@ -57,6 +59,7 @@
         type="number"
         color="primary"
         :min=1
+        variant="outlined"
       ></v-number-input>
 
       <v-number-input
@@ -66,6 +69,7 @@
         type="number"
         color="primary"
         :min=1
+        variant="outlined"
       ></v-number-input>
 
       <v-number-input
@@ -76,6 +80,7 @@
         color="primary"
         :step="5"
         :min=0
+        variant="outlined"
       ></v-number-input>
 
       <v-number-input
@@ -86,6 +91,7 @@
         color="primary"
         :step="5"
         :min=0
+        variant="outlined"
       ></v-number-input>
 
       <v-number-input
@@ -96,6 +102,7 @@
         color="primary"
         :step="5"
         :min=0
+        variant="outlined"
       ></v-number-input>
 
       <!-- Ingredients -->
@@ -122,6 +129,7 @@
               @update:search="(query) => onIngredientAutocompleteChange(query, index)"
               :key="index"
               return-object
+              variant="outlined"
             ></v-autocomplete>
 
             <v-select
@@ -149,12 +157,14 @@
               min=0
               item-title="amount"
               return-object
+              variant="outlined"
             ></v-number-input>
 
             <v-text-field
               v-model="recipe.ingredients[index].complement"
               class="flex-grow-1 mx-2"
               :label="`${$t('complement')}`"
+              variant="outlined"
             ></v-text-field>
 
             <div>
@@ -191,6 +201,7 @@
               item-color="primary"
               :key="index"
               :rules="[rules.max50]"
+              variant="outlined"
             ></v-text-field>
 
             <v-select
@@ -214,6 +225,7 @@
               color="primary"
               control-variant="stacked"
               min=0
+              variant="outlined"
             ></v-number-input>
 
             <div>
@@ -275,13 +287,13 @@
 
               v-model="recipe.steps[index]"
               :label="`${$t('step')} ${index + 1}`"
-              outlined
               class="flex-grow-1"
               color="primary"
               :id="`step_${index}`"
               :rules="[rules.max]"
               @keyup.enter="addStepAt(index)"
               @keyup.delete="deleteStepAt(index)"
+              variant="outlined"
             ></v-text-field>
 
             <v-btn

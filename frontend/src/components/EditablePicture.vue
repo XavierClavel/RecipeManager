@@ -102,8 +102,10 @@ const props = defineProps({
   },
 })
 
-import {base_url, toViewRecipe, uploadImage} from "@/scripts/common";
+import {uploadImage} from "@/scripts/common";
 import {ref} from "vue";
+
+const base_url = import.meta.env.VITE_API_URL
 
 const image = ref<File | null>(null)
 const baseImageUrl = ref<string>(`${base_url}/${props.path}/${props.id}.webp`)

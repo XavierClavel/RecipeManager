@@ -243,7 +243,7 @@ import { useRoute } from 'vue-router';
 import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {
-  base_url, getRecipeImageUrl,
+  getRecipeImageUrl,
   toCreateCookbookAddRecipe,
   toEditRecipe,
   toListRecipe, toViewIngredient, toViewUser,

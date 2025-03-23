@@ -131,9 +131,7 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
-import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRecipe} from "@/scripts/recipes";
-import {base_url, toViewCookbook, toViewRecipe, toViewUser} from "@/scripts/common";
-import {searchIngredients} from "@/scripts/ingredients";
+import {toViewCookbook} from "@/scripts/common";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {searchUsers} from "@/scripts/users";
 import {addRecipeToCookbook, createCookbook, editCookbook, getCookbook} from "@/scripts/cookbooks";

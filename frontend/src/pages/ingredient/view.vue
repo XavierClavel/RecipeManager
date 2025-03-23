@@ -67,11 +67,9 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
 import {ref} from "vue";
-import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
-import {base_url, toEditCookbook, toEditUser} from "@/scripts/common";
-import {getCookbook} from "@/scripts/cookbooks";
+import {toEditCookbook, toEditUser} from "@/scripts/common";
 import {getIngredientIcon, ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS} from "@/scripts/icons";
-
+const base_url = import.meta.env.VITE_API_URL
 const route = useRoute();
 let ingredientId = ref(route.query.ingredient)
 const imageUrl = computed(() => `${base_url}/image/cookbooks/${ingredientId.value}.webp`);

@@ -68,7 +68,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import {ref} from "vue";
-import {base_url, getUserIconUrl, toEditUser, toListRecipe} from "@/scripts/common";
+import {getUserIconUrl, toEditUser, toListRecipe} from "@/scripts/common";
 import {getUser} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {follow, isFollowingUser, unfollow} from "@/scripts/follows";
