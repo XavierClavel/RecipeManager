@@ -47,7 +47,7 @@ class MailService: KoinComponent {
     }
 
     fun sendPasswordResetEmail(mail: String, token: String) {
-        val link = "$FRONTEND_URL/user/reset-password?token=$token"
+        val link = "${configuration.frontend.url}/user/reset-password?token=$token"
         val body = """
             Hello ! 
             

@@ -6,6 +6,10 @@ import com.sksamuel.hoplite.addResourceSource
 import kotlin.io.path.Path
 import kotlin.io.path.readText
 
+data class Frontend(
+    val url: String,
+)
+
 
 data class Smtp(
     val email: String,
@@ -24,6 +28,7 @@ fun loadConfig(): Configuration {
 
 data class Configuration(
     val smtp: Smtp,
+    val frontend: Frontend,
 )
 
 data class Database(

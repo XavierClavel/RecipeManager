@@ -9,6 +9,7 @@ import com.xavierclavel.models.User
 import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
+import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
@@ -35,6 +36,10 @@ class UserService: KoinComponent {
 
     fun findByMail(mail: String) : User {
         return QUser().mail.eq(mail).findOne() ?: throw NotFoundException(NotFoundCause.MAIL_NOT_FOUND)
+    }
+
+    fun listAllTokens() {
+        QUser().findList().forEach {logger.info {"'${it.token}'"}}
     }
 
 
