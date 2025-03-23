@@ -11,8 +11,7 @@ data class Smtp(
 
 fun loadConfig(): Configuration {
     return ConfigLoaderBuilder.default()
-        .addResourceSource("/app/config/application.properties", true)
-        .addResourceSource("/.env", true)
+        .addResourceSource("/app/config/configuration.yaml", true)
         .build()
         .loadConfigOrThrow<Configuration>()
         .log { "configuration loaded successfully: $this" }
