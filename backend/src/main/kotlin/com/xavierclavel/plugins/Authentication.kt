@@ -58,7 +58,7 @@ fun Application.configureAuthentication() {
                 }
             }
             challenge {
-                call.respond(HttpStatusCode.Unauthorized)
+                call.respond(HttpStatusCode.Unauthorized, UnauthorizedCause.SESSION_NOT_FOUND.key)
             }
         }
     }

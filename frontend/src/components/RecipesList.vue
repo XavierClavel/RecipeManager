@@ -2,14 +2,20 @@
 import {listRecipes} from "@/scripts/recipes";
 import {useRoute} from "vue-router";
 
+const props = defineProps({
+  query: {
+    type: String,
+    required: false,
+  },
+})
 
 const recipes = ref<object[]>([])
 const noRecipes = ref(false)
 const router = useRouter()
 const routesToCheck = ["/recipe/list", "/ingredient/view", "/cookbook/recipes"]
 
-const updateGrid = () => {
-  listRecipes(window.location.search).then(
+const updateGrid = (query) => {
+  listRecipes(query).then(
     function (response) {
       console.log(`recipes from ${router.currentRoute.value.name}`, response)
       recipes.value = response.data
@@ -18,15 +24,18 @@ const updateGrid = () => {
   )
 }
 
-updateGrid()
-
-
+if (props.query) {
+  updateGrid(props.query) }
+else {
+  updateGrid(window.location.search)
+}
 
 const removeAfterEach = router.afterEach((to, from) => {
+  if (query) return
   if (!routesToCheck.includes(router.currentRoute.value.name)) {
     return
   }
-  updateGrid()
+  updateGrid(window.location.search)
 })
 
 // Cleanup when the component is unmounted

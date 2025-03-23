@@ -23,7 +23,7 @@ class MailService: KoinComponent {
     }
 
     fun sendVerificationEmail(mail: String, token: String) {
-        val link = "$${configuration.frontend.url}/user/verify?token=$token"
+        val link = "${configuration.frontend.url}/user/verify?token=$token"
         val body = """
             Hello ! 
             
