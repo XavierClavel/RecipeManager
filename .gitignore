@@ -36,4 +36,4 @@ out/
 .vscode/
 
 ### Custom ###
-**/.env
+/backend/.env
