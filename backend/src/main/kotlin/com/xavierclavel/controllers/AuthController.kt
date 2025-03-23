@@ -68,6 +68,7 @@ object AuthController: Controller(AUTH_URL) {
 
     private fun Route.verifyUser() = post("/verify") {
         val token = call.queryParameters["token"] ?: throw BadRequestException(BadRequestCause.TOKEN_MISSING)
+        logger.info {"'$token'"}
         userService.verifyUser(token)
         call.respond(HttpStatusCode.OK)
     }
@@ -80,7 +81,6 @@ object AuthController: Controller(AUTH_URL) {
     }
 
     private fun Route.signup() = post("/signup") {
-        logger.info {"here"}
         val userDTO = call.receive(UserDTO::class)
         logger.info {userDTO}
         if (UserController.userService.existsByUsername(userDTO.username)) throw BadRequestException(BadRequestCause.USERNAME_ALREADY_USED)
