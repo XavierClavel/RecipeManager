@@ -5,7 +5,7 @@ import {toHome, toMaintenance, toSignup} from "@/scripts/common";
 const instance = axios.create()
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8080/v1', // your Ktor server base URL
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true, // to include cookies for session-based auth
   headers: {
     'Content-Type': 'application/json',
