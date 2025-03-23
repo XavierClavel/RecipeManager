@@ -1,7 +1,7 @@
 <template>
   <v-container class="mx-auto" align="center">
     <v-card
-    class="rounded-xl pa-5 ma-5"
+    class="lg pa-5 ma-5"
     max-width="1000px"
     min-width="300px"
     >

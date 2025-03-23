@@ -1,10 +1,26 @@
 package com.xavierclavel.utils
 
-import org.koin.core.component.KoinComponent
+import com.sksamuel.hoplite.ConfigLoaderBuilder
+import com.sksamuel.hoplite.addResourceSource
+
+
+data class Smtp(
+    val email: String,
+    val password: String,
+)
+
+fun loadConfig(): Configuration {
+    return ConfigLoaderBuilder.default()
+        .addResourceSource("/app/config/application.properties", true)
+        .addResourceSource("/.env", true)
+        .build()
+        .loadConfigOrThrow<Configuration>()
+}
+
 
 
 data class Configuration(
-    val database: Database,
+    val smtp: Smtp,
 )
 
 data class Database(

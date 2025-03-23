@@ -9,7 +9,7 @@ services:
       - pictures:/img
       - logs:/var/log/cooknco
       - /secrets/cooknco/db.properties:/app/config/db.properties:ro
-      - /secrets/cooknco/.env:/app/.env:ro
+      - /secrets/cooknco/application.properties:/app/config/application.properties:ro
     ports:
       - "8080:8080"
     networks:

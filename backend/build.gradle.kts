@@ -32,6 +32,7 @@ dependencies {
     val itextVersion = "8.0.5"
     val testcontainersVersion = "1.20.4"
     val junitVersion = "5.11.4"
+    val hopliteVersion = "2.9.0"
 
     implementation(project(":common"))
 
@@ -55,6 +56,10 @@ dependencies {
 
     //Secrets
     implementation("io.github.cdimascio:dotenv-kotlin:6.5.0")
+
+    //Configuration
+    implementation("com.sksamuel.hoplite:hoplite-core:$hopliteVersion")
+    implementation("com.sksamuel.hoplite:hoplite-yaml:$hopliteVersion")
 
     //Dependency injection -> Koin
     implementation("io.insert-koin:koin-ktor:$koinVersion")

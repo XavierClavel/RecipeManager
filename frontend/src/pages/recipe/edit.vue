@@ -1,6 +1,6 @@
 <template>
   <v-card
-  class="mx-auto rounded-xl pa-5 ma-auto my-5"
+  class="mx-auto rounded-lg pa-5 ma-auto my-5"
   max-width="1000px"
   >
 

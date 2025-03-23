@@ -77,8 +77,7 @@
            v-if="showSidebar"
       >
         <v-card
-          min-width="500px"
-          max-width="100%"
+          width="500px"
           height="48px"
           class="d-flex align-center"
           rounded="lg"

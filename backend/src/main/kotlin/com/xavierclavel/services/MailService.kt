@@ -1,5 +1,6 @@
 package com.xavierclavel.services
 
+import com.xavierclavel.utils.Configuration
 import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.utils.URL.BASE_URL
@@ -11,11 +12,14 @@ import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
 import java.util.Properties
 import io.github.cdimascio.dotenv.dotenv
+import org.koin.core.component.inject
 
 class MailService: KoinComponent {
     companion object {
         const val MAIL_TITLE_VERIFICATION = "Cook&co account verification"
     }
+    val configuration: Configuration by inject()
+
     val props = Properties().apply {
         put("mail.smtp.auth", "true")
         put("mail.smtp.starttls.enable", "true")
@@ -63,9 +67,8 @@ class MailService: KoinComponent {
     }
 
     fun sendEmail(recipient: String, subject: String, body: String) {
-        val dotenv = dotenv()
-        val smtpEmail = dotenv["SMTP_EMAIL"]
-        val smtpPassword = dotenv["SMTP_PASSWORD"]
+        val smtpEmail = configuration.smtp.email
+        val smtpPassword = configuration.smtp.password
         val session = Session.getInstance(props, object : Authenticator() {
             override fun getPasswordAuthentication(): PasswordAuthentication {
                 return PasswordAuthentication(smtpEmail, smtpPassword)
