@@ -80,7 +80,7 @@ async function submit() {
   submitted["username"] = user.value.username
   submitted["bio"] = user.value.bio
   console.log(submitted)
-  await updateUser(userId, submitted)
+  await updateUser(submitted)
   await editablePicture.value.submitImage()
   toViewUser(userId)
 }

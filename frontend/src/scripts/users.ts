@@ -14,8 +14,8 @@ async function getUser(id) {
 }
 
 
-async function updateUser(id, user) {
-  return await apiClient.put(`/user/${id}`, user)
+async function updateUser(user) {
+  return await apiClient.put(`/user`, user)
 }
 
 async function getUsers() {
