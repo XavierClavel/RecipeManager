@@ -15,6 +15,7 @@ fun loadConfig(): Configuration {
         .addResourceSource("/.env", true)
         .build()
         .loadConfigOrThrow<Configuration>()
+        .log { "configuration loaded successfully: $this" }
 }
 
 

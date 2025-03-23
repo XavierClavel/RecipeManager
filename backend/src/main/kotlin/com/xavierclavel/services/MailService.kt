@@ -61,12 +61,15 @@ class MailService: KoinComponent {
         try {
             sendEmail(mail, MAIL_TITLE_VERIFICATION, body)
         } catch (e: Exception) {
+            logger.error {e.message}
             logger.error{"Token: $token"}
         }
 
     }
 
     fun sendEmail(recipient: String, subject: String, body: String) {
+        logger.info {"here"}
+        logger.info {configuration.smtp}
         val smtpEmail = configuration.smtp.email
         val smtpPassword = configuration.smtp.password
         logger.info {configuration.smtp}
