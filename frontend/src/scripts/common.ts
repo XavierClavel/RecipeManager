@@ -96,7 +96,7 @@ const noLoginRedirect = ['/login', '/logout', '/signup', '/user/verify', '/maint
 const noLoginRedirectStartsWith = ['/recipe/view']
 
 
-const base_url = "http://localhost:8080/v1"
+const base_url = import.meta.env.VITE_API_URL
 const getUserIconUrl = (id) => id ? `${base_url}/image/users/${id}.webp` : `${base_url}/image/users/placeholder.webp`
 const getCookbookIconUrl = (id) => `${base_url}/image/cookbooks/${id}.webp`
 const getRecipeImageUrl = (id) => `${base_url}/image/recipes/${id}.webp`
