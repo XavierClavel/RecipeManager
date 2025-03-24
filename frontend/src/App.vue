@@ -51,16 +51,15 @@
       <template v-slot:append>
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-img
-              color="surface-variant"
-              :src="getUserIconUrl(userId)"
-              height="50px"
-              width="50px"
-              rounded="circle"
-              cover
-              v-bind="props"
-              class="clickable_image"
-            ></v-img>
+            <v-avatar size="50">
+              <v-img
+                color="surface-variant"
+                :src="getUserIconUrl(userId)"
+                cover
+                v-bind="props"
+                class="clickable_image"
+              ></v-img>
+            </v-avatar>
           </template>
 
           <v-list>
@@ -73,11 +72,11 @@
       </template>
       <div class="d-flex flex-grow-1 justify-center align-center position-absolute"
            style ="
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        position: absolute;
-        z-index: 1;"
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            z-index: 1;"
            v-if="showSidebar"
       >
         <v-card

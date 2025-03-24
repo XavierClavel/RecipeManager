@@ -2,6 +2,7 @@ import axios from "axios";
 import router from "@/router";
 import apiClient from '@/plugins/axios.js';
 import {useAuthStore, declareLogin} from "@/stores/auth";
+import {deleteCookie, getCookie} from "@/scripts/cookies";
 
 export {
   login,
@@ -112,7 +113,13 @@ async function login(user) {
     withCredentials: true
   })
   if (result.status == 200) {
-    navigateTo(`/home`)
+    const redirectPath = getCookie("redirectedFrom")
+    if (redirectPath) {
+      navigateTo(redirectPath)
+      deleteCookie("redirectedFrom")
+    } else {
+      navigateTo(`/home`)
+    }
     const authStore = useAuthStore();
     authStore.login()
   }
