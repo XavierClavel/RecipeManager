@@ -157,8 +157,7 @@ const toSearch = debounce((query) => {
 overrideLocaleFromCookie()
 
 getHealth().then((response) => {
-  version.value = response.version
-  console.log(response.data)
+  version.value = response.data.version
 })
 
 </script>
