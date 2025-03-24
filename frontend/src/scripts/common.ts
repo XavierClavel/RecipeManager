@@ -49,6 +49,8 @@ export {
   getCookbookIconUrl,
   getRecipeImageUrl,
   getRecipeThumbnailUrl,
+
+  getHealth,
 }
 
 
@@ -172,6 +174,11 @@ async function uploadImage(id, file, path) {
       console.log('FAILURE!!');
       console.log(error)
     });
+}
+
+
+async function getHealth() {
+  return await apiClient.get(`/health`)
 }
 
 async function deleteImage(id, path) {

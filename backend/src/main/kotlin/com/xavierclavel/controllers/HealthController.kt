@@ -2,6 +2,7 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.utils.Controller
 import common.dto.HealthDto
+import common.utils.URL.HEALTH_URL
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.util.Properties
@@ -19,7 +20,7 @@ class StatusService : IStatusService {
 }
  */
 
-object HealthController: Controller("v1/health") {
+object HealthController: Controller(HEALTH_URL) {
     override fun Route.routes() {
         getHealth()
     }

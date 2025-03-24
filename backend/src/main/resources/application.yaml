@@ -1,2 +1,5 @@
 frontend:
   url: http://localhost:3000
+smtp:
+  email: test
+  password: test

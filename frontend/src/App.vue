@@ -32,6 +32,9 @@
         <v-list-item :prepend-icon="ICON_ADMIN" rounded="xl" link :title="`${$t('admin')}`" @click="toUsers"></v-list-item>
 
       </v-list>
+      <template v-slot:append>
+        <v-card-text class="text-center">{{ `Version ${version}` }}</v-card-text>
+      </template>
     </v-navigation-drawer>
 
     <v-main class="d-flex flex-grow-1">
@@ -113,6 +116,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import {
+  getHealth,
   getUserIconUrl,
   logout,
   noLoginRedirect,
@@ -130,6 +134,7 @@ import {overrideLocaleFromCookie} from "@/scripts/localization";
 const authStore = useAuthStore()
 const userId = computed(() => authStore.id)
 const router = useRouter()
+const version = ref(null)
 
 
 const route = useRoute();
@@ -151,7 +156,13 @@ const toSearch = debounce((query) => {
 
 overrideLocaleFromCookie()
 
+getHealth().then((response) => {
+  version.value = response.version
+  console.log(response.data)
+})
+
 </script>
+
 <style scoped>
 .clickable_image {
   cursor: pointer
