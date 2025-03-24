@@ -115,7 +115,6 @@ class RecipeService: KoinComponent {
         if (userId == null) this
         else this.where()
             .owner.id.eq(userId)
-            .taggedForDeletion.eq(false)
 
     private fun QRecipe.filterByDishClass(dishClasses: Set<DishClass>) =
         if (dishClasses.isEmpty()) this

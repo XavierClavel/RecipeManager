@@ -373,7 +373,7 @@ class RecipeControllerTest : ApplicationTest() {
             client.getRecipe(recipe.id)
         }
         client.deleteRecipe(recipe.id)
-        assertRecipeDoesNotExist(recipe.id)
+        client.assertRecipeDoesNotExist(recipe.id)
     }
 
     @Test
@@ -390,7 +390,7 @@ class RecipeControllerTest : ApplicationTest() {
             client.deleteRecipe(recipe.id)
         }
         runAsUser2 {
-            assertRecipeExists(recipe.id)
+            client.assertRecipeExists(recipe.id)
         }
 
     }
@@ -409,9 +409,9 @@ class RecipeControllerTest : ApplicationTest() {
             client.deleteRecipe(recipe.id)
         }
         runAsUser2 {
-            assertRecipeExists(recipe.id)
+            client.assertRecipeExists(recipe.id)
             client.deleteLike(recipe.id)
-            assertRecipeDoesNotExist(recipe.id)
+            client.assertRecipeDoesNotExist(recipe.id)
         }
     }
 
@@ -427,10 +427,10 @@ class RecipeControllerTest : ApplicationTest() {
         }
         runAsUser1 {
             client.deleteRecipe(recipe.id)
-            assertRecipeDoesNotExist(recipe.id)
+            client.assertRecipeDoesNotExist(recipe.id)
         }
         runAsUser2 {
-            assertRecipeExists(recipe.id)
+            client.assertRecipeExists(recipe.id)
         }
     }
 

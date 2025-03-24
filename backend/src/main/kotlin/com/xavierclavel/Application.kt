@@ -68,12 +68,14 @@ fun Application.module() {
             call.respond(HttpStatusCode.Forbidden, cause.message ?: "Unknown error")
         }
         exception<NotFoundException> { call, cause ->
+            logger.error {cause.message ?: "Unknown error"}
             call.respond(HttpStatusCode.NotFound, cause.message ?: "Unknown error")
         }
         exception<BadRequestException> {call, cause ->
             call.respond(HttpStatusCode.BadRequest, cause.message ?: "Unknown error")
         }
     }
+    logger.info { "Status pages configured" }
     configureAuthentication()
     serveRoutes()
     scheduleJob()

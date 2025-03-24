@@ -46,8 +46,11 @@ suspend fun HttpClient.createRecipe(recipe: RecipeDTO = recipeDTO) : RecipeInfo 
 
 }
 
+suspend fun HttpClient.getRecipeRaw(recipeId: Long) =
+    this.get("$RECIPE_URL/$recipeId")
+
 suspend fun HttpClient.getRecipe(recipeId: Long): RecipeInfo {
-    this.get("$RECIPE_URL/$recipeId").apply {
+    this.getRecipeRaw(recipeId).apply {
         assertEquals(HttpStatusCode.OK, status)
         val response = Json.decodeFromString<RecipeInfo>(bodyAsText())
         return response
@@ -106,13 +109,13 @@ suspend fun HttpClient.deleteRecipe(recipeId: Long) {
 }
 
 suspend fun HttpClient.assertRecipeExists(recipeId: Long) {
-    this.get("$RECIPE_URL/$recipeId").apply {
+    this.getRecipeRaw(recipeId).apply {
         assertEquals(HttpStatusCode.OK, status)
     }
 }
 
 suspend fun HttpClient.assertRecipeDoesNotExist(recipeId: Long) {
-    this.get("$RECIPE_URL/$recipeId").apply {
+    this.getRecipeRaw(recipeId).apply {
         assertEquals(HttpStatusCode.NotFound, status)
     }
 }

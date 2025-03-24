@@ -3,6 +3,8 @@ package main.com.xavierclavel.controllertests
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
 import main.com.xavierclavel.utils.assertException
 import main.com.xavierclavel.utils.login
 import main.com.xavierclavel.utils.logout
@@ -12,14 +14,16 @@ import main.com.xavierclavel.utils.verifyUser
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import java.util.UUID
+import kotlin.test.assertEquals
 
 class AuthControllerTest : ApplicationTest() {
     @Test
     fun `signup does not grant access before email verification`() = runTest {
         val password = UUID.randomUUID().toString()
         val user = client.signup(password = password)
-        assertException<UnauthorizedException>(UnauthorizedCause.USER_NOT_VERIFIED.key) {
-            client.login(user.username, password)
+        client.login(user.username, password).apply {
+            assertEquals(status, HttpStatusCode.Unauthorized)
+            assertEquals(bodyAsText(), UnauthorizedCause.USER_NOT_VERIFIED.key)
         }
     }
 
@@ -42,9 +46,12 @@ class AuthControllerTest : ApplicationTest() {
 
         val newPassword = UUID.randomUUID().toString()
         client.updatePassword(oldPassword, newPassword)
-        assertDoesNotThrow { client.login(user.username, newPassword) }
-        assertException<UnauthorizedException>(UnauthorizedCause.INVALID_PASSWORD.key) {
-            client.login(user.username, oldPassword)
+        client.login(user.username, newPassword).apply {
+            assertEquals(status, HttpStatusCode.OK)
+        }
+        client.login(user.username, oldPassword).apply {
+            assertEquals(status, HttpStatusCode.Unauthorized)
+            assertEquals(bodyAsText(), UnauthorizedCause.INVALID_PASSWORD.key)
         }
     }
 
@@ -60,18 +67,21 @@ class AuthControllerTest : ApplicationTest() {
         val newPassword = UUID.randomUUID().toString()
         client.login(user.username, oldPassword)
 
-
-        assertException<UnauthorizedException>(UnauthorizedCause.INVALID_PASSWORD.key) {
-            client.updatePassword(wrongPassword, newPassword)
+        client.updatePassword(wrongPassword, newPassword).apply {
+            assertEquals(status, HttpStatusCode.Unauthorized)
+            assertEquals(bodyAsText(), UnauthorizedCause.INVALID_PASSWORD.key)
         }
 
-        assertDoesNotThrow {
-            client.login(user.username, oldPassword)
-            client.logout()
+        client.login(user.username, oldPassword).apply {
+            assertEquals(status, HttpStatusCode.OK)
+        }
+        client.logout().apply {
+            assertEquals(status, HttpStatusCode.OK)
         }
 
-        assertException<UnauthorizedException>(UnauthorizedCause.INVALID_PASSWORD.key) {
-            client.login(user.username, newPassword)
+        client.login(user.username, newPassword).apply {
+            assertEquals(status, HttpStatusCode.Unauthorized)
+            assertEquals(bodyAsText(), UnauthorizedCause.INVALID_PASSWORD.key)
         }
     }
 

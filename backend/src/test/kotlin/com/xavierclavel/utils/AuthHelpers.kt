@@ -38,18 +38,18 @@ suspend fun HttpClient.signup(username: String = UUID.randomUUID().toString(), p
     }
 }
 
-suspend fun HttpClient.login(username: String, password: String) {
-    this.post("/v1/auth/login") {
+suspend fun HttpClient.login(username: String, password: String) =
+    this.post("$AUTH_URL/login") {
         basicAuth(username = username, password = password)
     }
-}
 
-suspend fun HttpClient.logout() {
-    this.post("/v1/auth/logout")
-}
+
+suspend fun HttpClient.logout() =
+    this.post("$AUTH_URL/logout")
+
 
 suspend fun HttpClient.verifyUser(token: String) {
-    this.post("/v1/auth/verify") {
+    this.post("$AUTH_URL/verify") {
         url {
             parameters.append("token", token)
         }
@@ -58,10 +58,9 @@ suspend fun HttpClient.verifyUser(token: String) {
     }
 }
 
-suspend fun HttpClient.updatePassword(oldPassword: String, newPassword: String) {
-    this.put("/v1/user/password") {
+suspend fun HttpClient.updatePassword(oldPassword: String, newPassword: String) =
+    this.put("$USER_URL/password") {
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
         setBody(PasswordDTO(old = oldPassword, new = newPassword))
     }
-}

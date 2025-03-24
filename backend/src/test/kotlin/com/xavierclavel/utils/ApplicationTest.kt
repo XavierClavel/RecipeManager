@@ -146,12 +146,8 @@ abstract class ApplicationTest: KoinTest {
     fun runTest(block: suspend TestBuilderWrapper.() -> Unit) {
         return testApplication(EmptyCoroutineContext) {
             userService.setupDefaultAdmin()
-            install(ContentNegotiation) {
-                json()
-            }
             application {
-                configureAuthentication()
-                serveRoutes()
+                module()
             }
 
             val wrapper = TestBuilderWrapper(this)
