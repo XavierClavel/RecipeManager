@@ -2,7 +2,7 @@
   <v-layout>
 
     <v-main class="d-flex align-center justify-center" style="min-height: 300px;" >
-      <v-card width="100%" max-width="1500px"  class="ma-5" rounded="xl">
+      <v-card width="100%" max-width="1500px"  class="ma-5">
         <v-card-title class="text-primary">
           Ingredients
         </v-card-title>
