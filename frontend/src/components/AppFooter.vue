@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid class="d-flex flex-grow-1">
-  <v-footer height="40" app rounded="lg" class="mx-1" >
+  <v-container fluid class="">
+  <v-footer height="40" class="ml-n2 mb-n4" rounded="lg" style="width: 120%; max-width: calc(100% + 24px);" >
     <a
       v-for="item in items"
       :key="item.title"
