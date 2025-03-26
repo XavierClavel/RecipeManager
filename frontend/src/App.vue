@@ -34,7 +34,7 @@
       <template v-slot:append>
         <v-card-text class="text-center">{{ `Version ${version}` }}</v-card-text>
       </template>
-    </v-navigation-drawer>
+      </v-navigation-drawer>
 
     <v-main class="d-flex flex-grow-1">
     <v-container fluid class="d-flex">
@@ -68,17 +68,19 @@
           </v-list>
         </v-menu>
       </template>
+
       <div class="d-flex flex-grow-1 justify-center align-center position-absolute"
            style ="
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
+            width: 40%;
             position: absolute;
             z-index: 1;"
            v-if="showSidebar"
       >
         <v-card
-          width="500px"
+          width="100%"
           height="48px"
           class="d-flex align-center"
         >
@@ -163,9 +165,9 @@ getHealth().then((response) => {
   cursor: pointer
 }
 .custom-drawer {
-  margin: 8px; /* Adjust margin to prevent overflow */
-  max-height: calc(100% - 16px); /* Reduce height to prevent overflow */
-  overflow: hidden; /* Ensures child elements respect border-radius */
+  margin: 8px;
+  max-height: calc(100% - 16px);
+  overflow: hidden;
 }
 
 .custom-bar {
