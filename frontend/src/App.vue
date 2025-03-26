@@ -1,11 +1,10 @@
 <template>
-  <v-app class="d-flex">
+  <v-app class="d-flex" >
 
     <v-navigation-drawer
       v-model="drawer"
       floating
       v-if="showSidebar"
-      rounded="lg"
       class="custom-drawer"
       elevation="2"
       width="250"
@@ -42,7 +41,6 @@
     <v-card
       color="surface"
       class="custom-bar flex-grow-1 mt-n2 mr-n2 mb-n4"
-      rounded="lg"
       v-if="showSidebar"
     >
       <template v-slot:prepend>
@@ -83,7 +81,6 @@
           width="500px"
           height="48px"
           class="d-flex align-center"
-          rounded="lg"
         >
           <v-text-field
             class="mx-auto"

@@ -12,7 +12,6 @@ defineProps({
 <template>
       <v-card
         class="ma-3 pa-0"
-        rounded="lg"
         width="240px"
         @click="toViewRecipe(recipe.id)"
       >

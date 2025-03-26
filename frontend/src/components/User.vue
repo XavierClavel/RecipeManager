@@ -12,7 +12,6 @@ defineProps({
 <template>
   <v-card
     class="ma-4"
-    rounded="lg"
     width="150px"
     @click="toViewUser(user.id)"
   >

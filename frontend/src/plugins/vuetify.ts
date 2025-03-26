@@ -23,7 +23,7 @@ const customTheme: ThemeDefinition = {
     info: '#2196F3',
     success: '#4CAF50',
     warning: '#FB8C00',
-  }
+  },
 }
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
@@ -33,6 +33,17 @@ export default createVuetify({
     themes: {
       customTheme,
     }
+  },
+  defaults: {
+    VCard: {
+      rounded: 'lg',
+    },
+    VBtn: {
+      rounded: 'lg',
+    },
+    VNavigationDrawer: {
+      rounded: 'lg',
+    },
   },
   components: {
     VNumberInput,

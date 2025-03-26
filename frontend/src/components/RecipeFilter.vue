@@ -111,7 +111,6 @@ const updateUrl = () => {
 <template>
   <v-card
     class="ma-2 mr-0 py-2 px-4"
-    rounded="lg"
   >
 
     <v-row class="d-flex justify-space-between align-start">

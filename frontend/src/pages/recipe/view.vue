@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mx-auto rounded-lg pa-5 ma-auto my-5 d-flex flex-row"
+    class="mx-auto pa-5 ma-auto my-5 d-flex flex-row"
     max-width="1000px"
     v-if="displayError"
   >
@@ -11,7 +11,7 @@
   </v-card>
 
   <v-card
-  class="mx-auto rounded-lg pa-5 ma-auto my-5"
+  class="mx-auto pa-5 ma-auto my-5"
   max-width="1000px"
   v-if="!displayError"
   >
@@ -157,7 +157,7 @@
     </v-list>
 
     <v-list v-for="(ingredient, index) in recipe.customIngredients">
-      <v-card color="background" rounded="lg">
+      <v-card color="background">
         <v-list-item
           :key="index"
           :subtitle="`${ingredient.amount ? ingredient.amount : ''}${unitToReadable(ingredient.unit)}`"
