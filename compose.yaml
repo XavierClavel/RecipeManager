@@ -18,7 +18,7 @@ services:
       - cooknco-auth-network
     healthcheck:
       test: curl --fail http://localhost:8080/api/v1/health
-      interval: 30s
+      interval: 10s
       timeout: 5s
       retries: 3
       start_period: 30s
@@ -57,7 +57,9 @@ services:
       - cooknco-database-network
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 1s
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   redis:
     container_name: cooknco-redis
