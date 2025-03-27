@@ -31,7 +31,7 @@ else {
 }
 
 const removeAfterEach = router.afterEach((to, from) => {
-  if (query) return
+  if (props.query) return
   if (!routesToCheck.includes(router.currentRoute.value.name)) {
     return
   }
