@@ -63,16 +63,6 @@
       ></v-number-input>
 
       <v-number-input
-        v-model="recipe.conservationTime"
-        :label="`${$t('time_conservation')}`"
-        class="mx-auto px-3"
-        type="number"
-        color="primary"
-        :min=1
-        variant="outlined"
-      ></v-number-input>
-
-      <v-number-input
         v-model="recipe.preparationTime"
         :label="`${$t('time_preparation')}`"
         class="mx-auto px-3"
@@ -464,7 +454,6 @@ if (recipeId.value != null) {
       }))
       recipe.value.customIngredients = response.data.customIngredients
       recipe.value.yield = response.data.yield
-      recipe.value.conservationTime = response.data.conservationTime
       recipe.value.preparationTime = response.data.preparationTime
       recipe.value.cookingTime = response.data.cookingTime
       recipe.value.cookingTemperature = response.data.cookingTemperature

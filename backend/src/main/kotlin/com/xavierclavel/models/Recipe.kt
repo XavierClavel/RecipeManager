@@ -44,7 +44,6 @@ class Recipe (
     var preparationTime: Int? = null,
     var cookingTime: Int? = null,
     var cookingTemperature: Int? = null,
-    var conservationTime: Int? = null,
 
 
     @ElementCollection
@@ -81,7 +80,6 @@ class Recipe (
         this.preparationTime = recipeDTO.preparationTime
         this.cookingTime = recipeDTO.cookingTime
         this.cookingTemperature = recipeDTO.cookingTemperature
-        this.conservationTime = recipeDTO.conservationTime
     }
 
     fun setOwner(user: User): Recipe = apply {
@@ -106,7 +104,6 @@ class Recipe (
         preparationTime = this.preparationTime,
         cookingTime = this.cookingTime,
         cookingTemperature = this.cookingTemperature,
-        conservationTime = this.conservationTime,
     )
 
     fun tagForDeletion(): Recipe = this.apply {

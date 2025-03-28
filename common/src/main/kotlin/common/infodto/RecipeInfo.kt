@@ -17,7 +17,6 @@ data class RecipeInfo (
     val preparationTime: Int? = null,
     val cookingTime: Int? = null,
     val cookingTemperature: Int? = null,
-    val conservationTime: Int? = null,
 
     val ingredients: List<RecipeIngredientInfo> = listOf(),
     val customIngredients: List<CustomIngredientInfo> = listOf(),

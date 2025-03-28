@@ -15,7 +15,6 @@ data class RecipeDTO (
     val preparationTime: Int? = null,
     val cookingTime: Int? = null,
     val cookingTemperature: Int? = null,
-    val conservationTime: Int? = null,
 
     val ingredients: MutableList<RecipeIngredientDTO> = mutableListOf(),
     val customIngredients: MutableList<CustomIngredientDTO> = mutableListOf(),

@@ -35,7 +35,6 @@ export default {
   title: "Title",
   description: "Description",
   yield: "Yield",
-  time_conservation: "Conservation time (days)",
   time_preparation: "Preparation time (minutes)",
   time_cooking: "Cooking time (minutes)",
   cooking_temperature: "Cooking temperature (°C)",
