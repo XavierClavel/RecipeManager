@@ -62,6 +62,7 @@
   </v-card>
 
   <recipes-list :query="`?user=${userId}`"></recipes-list>
+  <followers-display></followers-display>
 
 </template>
 

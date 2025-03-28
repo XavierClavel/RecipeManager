@@ -47,6 +47,7 @@
         <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       </template>
       <template v-slot:append>
+        <v-btn :icon="ICON_NOTIFICATION" flat class="mr-2"></v-btn>
         <v-menu>
           <template v-slot:activator="{ props }">
             <v-avatar size="50">
@@ -126,7 +127,7 @@ import {
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
 import { debounce } from 'lodash'
-import {ICON_ADMIN, ICON_COOKBOOK, ICON_HOME, ICON_INGREDIENT, ICON_RECIPE} from "@/scripts/icons";
+import {ICON_ADMIN, ICON_COOKBOOK, ICON_HOME, ICON_INGREDIENT, ICON_NOTIFICATION, ICON_RECIPE} from "@/scripts/icons";
 import {overrideLocaleFromCookie} from "@/scripts/localization";
 
 const authStore = useAuthStore()

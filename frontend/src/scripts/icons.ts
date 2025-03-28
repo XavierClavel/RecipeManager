@@ -28,6 +28,14 @@ export {
   ICON_LIKES,
   ICON_ALPHABETICAL,
 
+  ICON_NOTIFICATION,
+  ICON_NOTIFICATION_NEW,
+
+  ICON_REMOVE,
+  ICON_ACCEPT,
+  ICON_DENY,
+
+
   getIngredientIcon,
 }
 
@@ -61,6 +69,15 @@ const ICON_INGREDIENT_VEGETABLE = "mdi-carrot"
 const ICON_INGREDIENT_FRUIT = "mdi-food-apple"
 const ICON_INGREDIENT_FISH = "mdi-fish"
 const ICON_INGREDIENT_SPICE = "mdi-shaker-outline"
+
+const ICON_NOTIFICATION = "mdi-bell"
+const ICON_NOTIFICATION_NEW = "mdi-bell-badge"
+
+const ICON_REMOVE = "mdi-delete"
+const ICON_ACCEPT = "mdi-check"
+const ICON_DENY = "mdi-close"
+
+const ICON_INTEGRATION = "mdi-xml"
 
 const getIngredientIcon = (ingredientType) => {
   switch (ingredientType) {

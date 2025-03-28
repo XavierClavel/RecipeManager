@@ -33,10 +33,12 @@ class Follow (
     fun toFollowersInfo() = FollowInfo(
         user = this.follower!!.toOverview(),
         followedSince = this.followedSince,
+        pending = this.pending,
     )
 
     fun toFollowsInfo() = FollowInfo(
         user = this.user!!.toOverview(),
         followedSince = this.followedSince,
+        pending = this.pending,
     )
 }
