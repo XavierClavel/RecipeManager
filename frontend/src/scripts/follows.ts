@@ -8,6 +8,9 @@ export{
   getFollows,
   getFollowers,
   isFollowingUser,
+
+  acceptFollowRequest,
+  declineFollowRequest,
 }
 
 async function follow(id) {
@@ -18,8 +21,16 @@ async function unfollow(id) {
   return await apiClient.delete(`/follow/${id}`)
 }
 
-async function removeFollower(id) {
+async function acceptFollowRequest(id) {
+  return await apiClient.post(`/follow/${id}/request`)
+}
 
+async function declineFollowRequest(id) {
+  return await apiClient.delete(`/follow/${id}/request`)
+}
+
+async function removeFollower(id) {
+  return await apiClient.delete(`/follow/${id}/request`)
 }
 
 async function getFollows(id) {
@@ -27,7 +38,7 @@ async function getFollows(id) {
 }
 
 async function getFollowers(id) {
-  return await apiClient.delete(`/follow/${id}/followers`)
+  return await apiClient.get(`/follow/${id}/followers`)
 }
 
 async function isFollowingUser(id) {

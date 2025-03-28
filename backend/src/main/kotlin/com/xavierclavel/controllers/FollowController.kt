@@ -42,14 +42,15 @@ object FollowController: Controller(FOLLOW_URL) {
     }
 
     private fun Route.acceptFollow() = post("/{id}/request") {
-        val (userId,followerId) = handleFollowRequest()
+        val (followerId,userId) = handleFollowRequest()
         followService.acceptFollowRequest(userId, followerId)
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.declineFollow() = delete("/{id}/request") {
-        val (userId,followerId) = handleFollowRequest()
-        call.respond(HttpStatusCode.OK, followService.deleteFollow(userId, followerId))
+        val (followerId,userId) = handleFollowRequest()
+        followService.deleteFollow(userId, followerId)
+        call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.unfollow() = delete("/{id}") {

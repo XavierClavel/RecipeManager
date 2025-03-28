@@ -78,4 +78,8 @@ export default {
 
   verification_email_sent_title: 'Verification email sent !',
   verification_email_sent_description: 'A link was sent to your inbox. Open it in the next 24h in order to validate your account.',
+
+  accepted: "Accepted",
+  pending: "Pending",
+  nothing_to_display: "Nothing to display",
 };

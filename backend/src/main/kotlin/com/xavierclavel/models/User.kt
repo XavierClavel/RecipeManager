@@ -102,8 +102,8 @@ class User (
             recipesCount = this.recipes.size,
             likesCount = this.likes.size,
             cookbooksCount = this.cookbooks.size,
-            followersCount = this.followers.size,
-            followsCount = this.follows.size,
+            followersCount = this.followers.count { !it.pending },
+            followsCount = this.follows.count { !it.pending },
         )
 
     fun toOverview() = UserOverview(

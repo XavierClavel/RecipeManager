@@ -1,4 +1,13 @@
 <template>
+
+  <v-dialog v-model="followersDialog" width="auto">
+    <followers-display :is-followers-tab=true></followers-display>
+  </v-dialog>
+
+  <v-dialog v-model="followsDialog" width="auto">
+    <followers-display :is-followers-tab="false"></followers-display>
+  </v-dialog>
+
   <v-card
     class="mx-auto rounded-xl pa-5 ma-auto my-5 d-flex flex-row"
     max-width="1000px"
@@ -34,8 +43,8 @@
         <span class="d-flex flex-row">
           <interactible-picto-info :value="user.recipesCount" :icon="`${ICON_USER_RECIPES}`" :action="redirectRecipesOwned"></interactible-picto-info>
           <interactible-picto-info :value="user.likesCount" :icon="`${ICON_USER_LIKES}`" :action="redirectRecipesLiked"></interactible-picto-info>
-          <interactible-picto-info :value="user.followsCount" :icon="`${ICON_USER_FOLLOWS}`"></interactible-picto-info>
-          <interactible-picto-info :value="user.followersCount" :icon="`${ICON_USER_FOLLOWERS}`"></interactible-picto-info>
+          <interactible-picto-info :value="user.followsCount" :icon="`${ICON_USER_FOLLOWS}`" :action="openFollowsWindow"></interactible-picto-info>
+          <interactible-picto-info :value="user.followersCount" :icon="`${ICON_USER_FOLLOWERS}`" :action="openFollowersWindow"></interactible-picto-info>
         </span>
       </v-container>
 
@@ -62,7 +71,6 @@
   </v-card>
 
   <recipes-list :query="`?user=${userId}`"></recipes-list>
-  <followers-display></followers-display>
 
 </template>
 
@@ -77,7 +85,6 @@ import {useAuthStore} from "@/stores/auth";
 import {ICON_USER_FOLLOWERS, ICON_USER_FOLLOWS, ICON_USER_LIKES, ICON_USER_RECIPES} from "@/scripts/icons";
 import RecipesList from "@/components/RecipesList.vue";
 
-// Get the route object
 const route = useRoute();
 const userId = route.query.user
 const errorMessage = ref(null)
@@ -86,6 +93,16 @@ const currentUserId = authStore.id
 
 const user = ref<object>({})
 const followsUser = ref(null)
+const followersDialog = ref(false)
+const followsDialog = ref(false)
+
+const openFollowersWindow = () => {
+  followersDialog.value = true
+}
+
+const openFollowsWindow = () => {
+  followsDialog.value = true
+}
 
 isFollowingUser(userId).then (
   function (response) {
