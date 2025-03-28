@@ -2,20 +2,58 @@
 import {getUsers} from "@/scripts/users";
 import {getUserIconUrl, toViewUser} from "../scripts/common";
 import {ICON_ACCEPT, ICON_DENY, ICON_REMOVE} from "../scripts/icons";
+import {removeFollower, unfollow} from "@/scripts/follows";
+
+const props = defineProps({
+  isFollowersTab: {
+    type: Boolean,
+    required: true,
+  },
+})
 
 const usersAccepted = ref(null)
 const usersPending = ref(null)
-getUsers().then((response) => {
-  usersPending.value = response.data.filter((it) => it.pending)
-  usersAccepted.value = response.data.filter((it) => !it.pending)
-})
+
+const refreshData = () => {
+  getUsers().then((response) => {
+    usersPending.value = response.data.filter((it) => it.pending)
+    usersAccepted.value = response.data.filter((it) => !it.pending)
+  })
+}
+
+refreshData()
+
+
+const hasPending = computed(() => usersPending?.value?.length)
+const hasAccepted = computed(() => usersAccepted?.value?.length)
+
+async function denyFollowRequest(id) {
+
+}
+
+async function acceptFollowRequest(id) {
+
+}
+
+async function cancelFollowRequest(id) {
+  await unfollow(id)
+}
+
+async function remove(id) {
+  if (props.isFollowersTab) {
+    await unfollow(id)
+  } else {
+    await removeFollower(id)
+  }
+  await refreshData()
+}
 
 </script>
 
 <template>
 <v-card class="ml-2" max-width="500px">
   <v-list lines="two">
-    <v-list-subheader inset v-if="usersPending.size > 0">Pending</v-list-subheader>
+    <v-list-subheader inset v-if="hasPending">Pending</v-list-subheader>
 
     <v-list-item
       v-for="user in usersPending"
@@ -44,9 +82,9 @@ getUsers().then((response) => {
       </template>
     </v-list-item>
 
-    <v-divider inset v-if="usersPending.size > 0 && usersAccepted.size > 0"></v-divider>
+    <v-divider inset v-if="hasPending && hasAccepted"></v-divider>
 
-    <v-list-subheader inset v-if="usersAccepted.size > 0">Accepted</v-list-subheader>
+    <v-list-subheader inset v-if="hasAccepted">Accepted</v-list-subheader>
 
     <v-list-item
       v-for="user in usersAccepted"

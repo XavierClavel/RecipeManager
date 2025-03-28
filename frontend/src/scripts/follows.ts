@@ -4,6 +4,7 @@ import {useAuthStore} from "@/stores/auth";
 export{
   follow,
   unfollow,
+  removeFollower,
   getFollows,
   getFollowers,
   isFollowingUser,
@@ -15,6 +16,10 @@ async function follow(id) {
 
 async function unfollow(id) {
   return await apiClient.delete(`/follow/${id}`)
+}
+
+async function removeFollower(id) {
+
 }
 
 async function getFollows(id) {

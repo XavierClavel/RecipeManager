@@ -30,12 +30,26 @@ object FollowController: Controller(FOLLOW_URL) {
         getFollows()
         isFollowingUser()
         isFollowedByUser()
+
+        acceptFollow()
+        declineFollow()
     }
 
     private fun Route.follow() = post("/{id}") {
         val (userId,followerId) = handleFollowRequest()
         if (followService.isFollowing(userId, followerId)) throw BadRequestException(BadRequestCause.USER_ALREADY_FOLLOWED)
         call.respond(HttpStatusCode.Created, followService.createFollow(userId, followerId))
+    }
+
+    private fun Route.acceptFollow() = post("/{id}/request") {
+        val (userId,followerId) = handleFollowRequest()
+        followService.acceptFollowRequest(userId, followerId)
+        call.respond(HttpStatusCode.OK)
+    }
+
+    private fun Route.declineFollow() = delete("/{id}/request") {
+        val (userId,followerId) = handleFollowRequest()
+        call.respond(HttpStatusCode.OK, followService.deleteFollow(userId, followerId))
     }
 
     private fun Route.unfollow() = delete("/{id}") {

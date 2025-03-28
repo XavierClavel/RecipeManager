@@ -38,6 +38,7 @@ enum class BadRequestCause (val key: String) {
 
     USER_ALREADY_FOLLOWED("user.already.followed"),
     USER_NOT_FOLLOWED("user.not.followed"),
+    NO_FOLLOW_REQUEST("no.follow.request"),
 
     NOT_APPLICABLE_ON_SELF("not.applicable.on.self"),
     MAIL_ALREADY_USED("mail.already.used"),

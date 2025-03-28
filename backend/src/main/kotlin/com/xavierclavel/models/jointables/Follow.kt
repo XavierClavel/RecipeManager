@@ -41,4 +41,9 @@ class Follow (
         followedSince = this.followedSince,
         pending = this.pending,
     )
+
+    fun acceptRequest() = this.apply {
+        pending = false;
+        followedSince = Instant.now().epochSecond
+    }
 }
