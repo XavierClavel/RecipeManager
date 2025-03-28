@@ -5,6 +5,7 @@ import com.xavierclavel.models.jointables.CookbookUser
 import com.xavierclavel.models.jointables.Follow
 import com.xavierclavel.models.jointables.Like
 import common.dto.UserDTO
+import common.dto.UserSettingsDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
 import common.enums.Visibility
@@ -48,7 +49,7 @@ class User (
 
     //Privacy
     var accountVisibility : Visibility = Visibility.PUBLIC,
-    var autoAcceptFollowRequestss : Boolean = false,
+    var autoAcceptFollowRequests : Boolean = false,
 
     var joinDate: Long = Instant.now().epochSecond,
     var lastActivityDate: Long = Instant.now().epochSecond,
@@ -126,5 +127,10 @@ class User (
 
     fun updateToken(token: String) = this.apply {
         this.token = token
+    }
+
+    fun updateSettings(userSettingsDTO: UserSettingsDTO) = this.apply {
+        autoAcceptFollowRequests = userSettingsDTO.autoAcceptFollowRequests
+        accountVisibility = userSettingsDTO.accountVisibility
     }
 }

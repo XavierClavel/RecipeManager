@@ -1,5 +1,7 @@
 package com.xavierclavel.services
 
+import com.xavierclavel.exceptions.BadRequestCause
+import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.exceptions.NotFoundCause
 import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.Cookbook
@@ -121,10 +123,10 @@ class CookbookService: KoinComponent {
     fun removeRecipeFromCookbook(cookbookId: Long, recipeId: Long): Boolean? =
         QCookbookRecipe()
             .recipe.id.eq(recipeId)
-            .and()
             .cookbook.id.eq(cookbookId)
             .findOne()
             ?.delete()
+            ?: throw BadRequestException(BadRequestCause.RECIPE_NOT_IN_COOKBOOK)
 
 
     fun removeUserFromCookbook(cookbookId: Long, userId: Long): Boolean? =

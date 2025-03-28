@@ -2,15 +2,18 @@ package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
+import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.overviewdto.UserOverview
 import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.follow
 import main.com.xavierclavel.utils.getFollowers
 import main.com.xavierclavel.utils.getFollows
+import main.com.xavierclavel.utils.getMe
 import main.com.xavierclavel.utils.getUser
 import main.com.xavierclavel.utils.unfollow
 import org.junit.jupiter.api.Test
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class FollowControllerTest : ApplicationTest() {
@@ -111,38 +114,37 @@ class FollowControllerTest : ApplicationTest() {
 
     @Test
     fun `count followers`() = runTest {
-        var user: UserInfo? = null
+        var user: Long = setupTestUser("user3")
         var follower1: UserInfo? = null
         var follower2: UserInfo? = null
         runAsAdmin {
-            user = client.createUser("myUser")
-            follower1 = client.createUser("follower1")
-            follower2 = client.createUser("follower2")
+            val result = client.getUser(user)
+            follower1 = userService.getUserByUsername("user1")!!
+            follower2 = userService.getUserByUsername("user2")!!
 
-            val userInfo = client.getUser(user.id)
-            assertEquals(0, userInfo.followersCount)
+            assertEquals(0, result.followersCount)
         }
         user!!
         follower1!!
         follower2!!
 
 
-        runAs(follower1.username, "password") {
-            client.follow(user.id)
-            val userInfo = client.getUser(user.id)
+        runAs(follower1.username) {
+            client.follow(user)
+            val userInfo = client.getUser(user)
             logger.info { userInfo }
             assertEquals(1, userInfo.followersCount)
         }
 
-        runAs(follower2.username, "password") {
-            client.follow(user.id)
-            val userInfo = client.getUser(user.id)
+        runAs(follower2.username) {
+            client.follow(user)
+            val userInfo = client.getUser(user)
             assertEquals(2, userInfo.followersCount)
         }
 
-        runAs(follower1.username, "password") {
-            client.unfollow(user.id)
-            val userInfo = client.getUser(user.id)
+        runAs(follower1.username) {
+            client.unfollow(user)
+            val userInfo = client.getUser(user)
             assertEquals(1, userInfo.followersCount)
         }
     }

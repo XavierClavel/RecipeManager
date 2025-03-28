@@ -1,6 +1,7 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
+import com.xavierclavel.utils.logger
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
 import common.enums.AmountUnit
@@ -381,6 +382,8 @@ class RecipeControllerTest : ApplicationTest() {
         var recipe: RecipeInfo? = null
         runAsUser1 {
             recipe = client.createRecipe()
+            val a = client.getRecipe(recipe.id)
+            logger.info {a}
         }
         recipe!!
         runAsUser2 {

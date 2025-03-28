@@ -11,6 +11,7 @@ import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.logger
 import common.dto.UserDTO
+import common.dto.UserSettingsDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
 import common.overviewdto.UserOverview
@@ -114,6 +115,9 @@ class UserService: KoinComponent {
 
     fun validateUser(id: Long) =
         getEntityById(id).validate().updateAndGet()
+
+    fun updateSettings(id: Long, userSettingsDTO: UserSettingsDTO) =
+        getEntityById(id).updateSettings(userSettingsDTO).updateAndGet().toInfo()
 
     fun search(searchString: String, paging: Paging): List<UserInfo> =
         QUser()

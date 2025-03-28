@@ -105,7 +105,6 @@ suspend fun HttpClient.deleteRecipe(recipeId: Long) {
     this.delete("$RECIPE_URL/$recipeId").apply{
         assertEquals(HttpStatusCode.OK, status)
     }
-    this.assertRecipeDoesNotExist(recipeId)
 }
 
 suspend fun HttpClient.assertRecipeExists(recipeId: Long) {

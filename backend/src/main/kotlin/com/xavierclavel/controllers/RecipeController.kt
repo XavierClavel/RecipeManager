@@ -52,7 +52,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.getRecipe() = get("/{id}") {
         val recipeId = getPathId()
-        val recipe = recipeService.getById(recipeId)
+        val recipe = recipeService.getById(getSessionUserId(),recipeId)
         call.respond(recipe)
     }
 
@@ -74,6 +74,7 @@ object RecipeController: Controller(RECIPE_URL) {
         logger.info {"filter : $recipeFilter"}
         val result = if (recipeFilter.hasAdditiveFilters()) {
             recipeService.findList(
+                requestorId = getSessionUserId(),
                 paging = paging,
                 sort = sort,
                 recipeFilter = recipeFilter,
@@ -90,7 +91,7 @@ object RecipeController: Controller(RECIPE_URL) {
             val recipe = recipeService.createRecipe(recipeDto, user)
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
             customIngredientService.updateCustomIngredients(recipe.id, recipeDto)
-            val recipeInfo = recipeService.getById(recipe.id)
+            val recipeInfo = recipeService.getById(getSessionUserId(), recipe.id)
             call.respond(HttpStatusCode.Created, recipeInfo)
         } catch (e: Exception) {
             logger.error {e.message}
@@ -101,7 +102,7 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.updateRecipe() = put("/{id}") {
         try {
             val recipeId = getPathId()
-            val recipe = recipeService.getById(recipeId)
+            val recipe = recipeService.getById(getSessionUserId(), recipeId)
             checkRecipeEditionRights(recipe.owner.id)
             val recipeDto = call.receive<RecipeDTO>()
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
@@ -115,7 +116,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.deleteRecipe() = delete("/{id}") {
         val recipeId = getPathId()
-        val recipe = recipeService.getById(recipeId)
+        val recipe = recipeService.getById(getSessionUserId(), recipeId)
         checkRecipeEditionRights(recipe.owner.id)
         recipeService.tagRecipeForDeletion(recipeId)
         recipeService.tryDelete(recipeId)

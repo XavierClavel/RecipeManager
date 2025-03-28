@@ -134,9 +134,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.deleteCookbookRecipe() = delete("/{id}/recipe/{recipe}") {
         val cookbookId = getPathId()
         val recipeId = getIdPathVariable("recipe") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
-        if (!cookbookService.doesCookbookHaveRecipe(cookbookId, recipeId)) throw BadRequestException(BadRequestCause.RECIPE_NOT_IN_COOKBOOK)
         handleDeletion(cookbookService.removeRecipeFromCookbook(cookbookId, recipeId))
-        recipeService.tryDelete(recipeId)
     }
 
 }

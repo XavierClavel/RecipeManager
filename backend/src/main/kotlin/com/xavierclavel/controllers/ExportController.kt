@@ -23,7 +23,7 @@ object ExportController: Controller(EXPORT_URL) {
 
     private fun Route.exportRecipe() = get("/recipe/{id}") {
         val id = getPathId()
-        val recipe = recipeService.getById(id)
+        val recipe = recipeService.getEntityById(id).toInfo()
         try {
             val pdfFile = exportService.generatePDF(recipe)
             call.respondPDF("example.pdf", pdfFile)

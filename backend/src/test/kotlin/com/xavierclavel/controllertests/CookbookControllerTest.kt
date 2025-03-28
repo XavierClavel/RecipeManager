@@ -77,7 +77,7 @@ class CookbookControllerTest : ApplicationTest() {
         val cookbook = client.createCookbook()
         client.assertCookbookExists(cookbook.id)
 
-        val user = client.createUser("user1")
+        val user = userService.getUserByUsername("user1")!!
         client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
         val users = client.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)
@@ -197,6 +197,7 @@ class CookbookControllerTest : ApplicationTest() {
         client.addCookbookRecipe(cookbook1.id, recipe1.id)
         client.addCookbookRecipe(cookbook2.id, recipe1.id)
         val result1 = client.getRecipeUserCookbooks(user.id, recipe1.id)
+        logger.info {result1}
         assertEquals(4, result1.size)
         assertEquals(2, result1.filter { it.hasRecipe }.size)
 

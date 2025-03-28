@@ -41,11 +41,15 @@ class FollowService: KoinComponent {
         getFollow(userId, followerId).acceptRequest().updateAndGet()
     }
 
-    fun createFollow(userId: Long, followerId: Long) =
-        Follow(
-            user = userService.getEntityById(userId),
-            follower = userService.getEntityById(followerId),
+    fun createFollow(userId: Long, followerId: Long): FollowInfo {
+        val user = userService.getEntityById(userId)
+        val follower = userService.getEntityById(followerId)
+        return Follow(
+            user = user,
+            follower = follower,
+            pending = !user.autoAcceptFollowRequests
         ).insertAndGet().toFollowsInfo()
+    }
 
     fun deleteFollow(userId: Long, followerId: Long) =
         getEntityByIds(userId, followerId).delete()

@@ -32,14 +32,14 @@ class RecipeFiltersTest : ApplicationTest() {
         var adminUser: UserInfo? = null
         var recipe: RecipeInfo? = null
         runAsAdmin {
-            user = client.createUser()
+            user = userService.getUserByUsername(USER1)!!
             adminUser = client.getMe()
         }
-        runAs(user!!.username) {
+        runAs(USER1) {
             recipe = client.createRecipe()
         }
         runAsAdmin {
-            val response1 = client.listRecipes(user = user.id)
+            val response1 = client.listRecipes(user = user!!.id)
             assertEquals(1, response1.size)
 
             val response2 = client.listRecipes(likedBy = adminUser!!.id)
@@ -78,7 +78,7 @@ class RecipeFiltersTest : ApplicationTest() {
         var recipeOwned: RecipeInfo? = null
         var recipeLiked: RecipeInfo? = null
         runAsAdmin {
-            user = client.createUser()
+            user = userService.getUserByUsername("user1")
             adminUser = client.getMe()
             recipeOwned = client.createRecipe()
         }
@@ -94,7 +94,7 @@ class RecipeFiltersTest : ApplicationTest() {
             val response2 = client.listRecipes(likedBy = adminUser.id)
             assertEquals(1, response2.size)
 
-            val response3 = client.listRecipes(user = adminUser!!.id, likedBy = adminUser.id)
+            val response3 = client.listRecipes(user = adminUser.id, likedBy = adminUser.id)
             assertEquals(2, response3.size)
         }
     }
@@ -107,7 +107,7 @@ class RecipeFiltersTest : ApplicationTest() {
         var recipe2: RecipeInfo? = null
         var recipe3: RecipeInfo? = null
         runAsAdmin {
-            user = client.createUser()
+            user = userService.getUserByUsername(USER1)!!
             adminUser = client.getMe()
             recipe1 = client.createRecipe()
             recipe2 = client.createRecipe()
@@ -236,19 +236,17 @@ class RecipeFiltersTest : ApplicationTest() {
         var recipe12: RecipeInfo? = null
         var recipe21: RecipeInfo? = null
         runAsAdmin {
-            user1 = client.createUser()
-            user2 = client.createUser()
+            user1 = userService.getUserByUsername("user1")
+            user2 = userService.getUserByUsername("user2")
             adminUser = client.getMe()
             recipe0 = client.createRecipe()
         }
         adminUser!!
-        user1!!
-        user2!!
-        runAs(user1.username) {
+        runAs(user1!!.username) {
             recipe11 = client.createRecipe()
             recipe12 = client.createRecipe()
         }
-        runAs(user2.username) {
+        runAs(user2!!.username) {
             recipe21 = client.createRecipe()
         }
         recipe0!!
@@ -256,15 +254,15 @@ class RecipeFiltersTest : ApplicationTest() {
         recipe12!!
         recipe21!!
         runAsAdmin {
-            client.follow(user1.id)
+            client.follow(user1!!.id)
             val response1 = client.listRecipes(followedBy = adminUser.id)
             assertEquals(setOf(recipe11, recipe12), response1.toSet())
 
-            client.follow(user2.id)
+            client.follow(user2!!.id)
             val response2 = client.listRecipes(followedBy = adminUser.id)
             assertEquals(setOf(recipe11, recipe12, recipe21), response2.toSet())
 
-            client.unfollow(user1.id)
+            client.unfollow(user1!!.id)
             val response3 = client.listRecipes(followedBy = adminUser.id)
             assertEquals(setOf(recipe21), response3.toSet())
         }

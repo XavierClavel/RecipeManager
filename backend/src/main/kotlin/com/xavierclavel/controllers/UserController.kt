@@ -11,6 +11,7 @@ import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import common.dto.PasswordDTO
 import common.dto.UserDTO
+import common.dto.UserSettingsDTO
 import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.USER_URL
 import io.ktor.http.HttpStatusCode
@@ -41,6 +42,8 @@ object UserController: Controller(USER_URL) {
             updatePassword()
             deletePassword()
             resetPassword()
+
+            updateSettings()
         }
     }
 
@@ -93,6 +96,12 @@ object UserController: Controller(USER_URL) {
     private fun Route.resetPassword() = post("/password") {
         val passwordDTO = call.receive<PasswordDTO>()
         userService.resetPassword(passwordDTO.old, passwordDTO.new)
+        call.respond(HttpStatusCode.OK)
+    }
+
+    private fun Route.updateSettings() = put("/settings") {
+        val settingsDTO = call.receive<UserSettingsDTO>()
+        userService.updateSettings(getSessionUserId(), settingsDTO)
         call.respond(HttpStatusCode.OK)
     }
 

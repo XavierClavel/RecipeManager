@@ -7,6 +7,7 @@ import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getIdPathVariable
+import com.xavierclavel.utils.logger
 import common.utils.URL.LIKE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond

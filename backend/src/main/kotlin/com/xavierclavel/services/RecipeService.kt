@@ -5,9 +5,11 @@ import com.xavierclavel.exceptions.NotFoundCause
 import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
+import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
+import com.xavierclavel.utils.logger
 import common.RecipeFilter
 import common.dto.RecipeDTO
 import common.enums.DishClass
@@ -29,6 +31,7 @@ class RecipeService: KoinComponent {
 
 
     fun findList(
+        requestorId: Long,
         paging: Paging,
         sort: Sort,
         recipeFilter: RecipeFilter,
@@ -37,6 +40,7 @@ class RecipeService: KoinComponent {
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
             .having().raw("count(likes.id) >= 0") // Ensure recipes with no likes are included
             .filter(recipeFilter)
+            .filterOutDeletion(requestorId)
             .setPaging(paging)
             .sort(sort)
             .findList()
@@ -46,10 +50,15 @@ class RecipeService: KoinComponent {
         QRecipe().id.eq(recipeId).findOne()
 
     fun getEntityById(recipeId: Long) : Recipe =
-        findEntityById(recipeId) ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
+        findEntityById(recipeId)
+            ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
 
-    fun getById(recipeId: Long) : RecipeInfo =
-        getEntityById(recipeId).toInfo()
+    fun getById(userId: Long, recipeId: Long) : RecipeInfo =
+        QRecipe().id.eq(recipeId)
+            .filterOutDeletion(userId)
+            .findOne()
+            ?.toInfo()
+            ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
 
 
     fun deleteById(recipeId: Long) {
@@ -57,7 +66,9 @@ class RecipeService: KoinComponent {
     }
 
 
-    fun getRecipeOwner(recipeId: Long) = getById(recipeId).owner
+    fun getRecipeOwner(recipeId: Long) =
+        getEntityById(recipeId).owner
+            ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
 
     fun createRecipe(recipeDTO: RecipeDTO, owner: User): RecipeInfo =
         Recipe()
@@ -81,7 +92,10 @@ class RecipeService: KoinComponent {
 
     fun tryDelete(id: Long) {
         val recipe = getEntityById(id)
-        if (recipe.hasReferences()) return
+        val recipeInfo = recipe.toInfo()
+        logger.info {recipe}
+        logger.info {"Has references: ${recipeInfo.likesCount > 0 || QCookbookRecipe().recipe.id.eq(recipe.id).exists()}"}
+        if (recipeInfo.likesCount > 0 || QCookbookRecipe().recipe.id.eq(recipe.id).exists()) return
         recipe.delete()
         imageService.deleteImage(RECIPES_IMG_PATH, id)
         imageService.deleteImage(RECIPES_THUMBNAIL_PATH, id)
@@ -115,6 +129,12 @@ class RecipeService: KoinComponent {
         if (userId == null) this
         else this.where()
             .owner.id.eq(userId)
+
+    private fun QRecipe.filterOutDeletion(userId: Long?) =
+        if (userId == null) this
+        else this.where().not()
+            .owner.id.eq(userId).and()
+            .taggedForDeletion.eq(true)
 
     private fun QRecipe.filterByDishClass(dishClasses: Set<DishClass>) =
         if (dishClasses.isEmpty()) this
@@ -157,6 +177,7 @@ class RecipeService: KoinComponent {
                 FROM follows f
                 JOIN users u ON f.user_id = u.id
                 WHERE f.follower_id = ?
+                AND f.pending = false
                 AND t0.owner_id = f.user_id
             )""".trimIndent(), followerId)
 

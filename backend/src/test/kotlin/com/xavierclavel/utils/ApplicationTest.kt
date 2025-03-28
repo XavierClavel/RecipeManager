@@ -16,6 +16,7 @@ import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import common.dto.UserDTO
+import common.dto.UserSettingsDTO
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.serialization.kotlinx.json.json
@@ -94,14 +95,18 @@ abstract class ApplicationTest: KoinTest {
         DatabaseManager.getTables().forEach {
             it.findList().forEach { it.delete() }
         }
+        setupTestUser(USER1)
+        setupTestUser(USER2)
+    }
+
+    fun setupTestUser(username: String): Long {
+        val settings = UserSettingsDTO(true)
         val token1 = UUID.randomUUID().toString()
-        val token2 = UUID.randomUUID().toString()
-        val userDTO1 = UserDTO(username = USER1, password = password, mail = UUID.randomUUID().toString())
-        val userDTO2 = UserDTO(username = USER2, password = password, mail = UUID.randomUUID().toString())
-        userService.createUser(userDTO1, token1)
-        userService.createUser(userDTO2, token2)
+        val userDTO1 = UserDTO(username = username, password = password, mail = UUID.randomUUID().toString())
+        val id1 = userService.createUser(userDTO1, token1).id
         userService.verifyUser(token1)
-        userService.verifyUser(token2)
+        userService.updateSettings(id1, settings)
+        return id1
     }
 
 
@@ -136,7 +141,7 @@ abstract class ApplicationTest: KoinTest {
 
 
     @KtorDsl
-    suspend fun TestBuilderWrapper.runAs(username: String, password: String = "password", block: suspend TestBuilderWrapper.() -> Unit) {
+    suspend fun TestBuilderWrapper.runAs(username: String, password: String = "Passw0rd", block: suspend TestBuilderWrapper.() -> Unit) {
         client.login(username, password)
         this.block()
         client.logout()
