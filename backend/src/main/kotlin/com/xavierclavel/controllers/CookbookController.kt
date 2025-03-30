@@ -5,6 +5,8 @@ import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.controllers.UserController.imageService
 import com.xavierclavel.exceptions.BadRequestCause
 import com.xavierclavel.exceptions.BadRequestException
+import com.xavierclavel.exceptions.ForbiddenCause
+import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getIdPathVariable
@@ -127,6 +129,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val recipeId = getIdPathVariable("recipe") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
         val userId = getSessionUserId()
         if (cookbookService.doesCookbookHaveRecipe(cookbookId, recipeId)) throw BadRequestException(BadRequestCause.RECIPE_ALREADY_IN_COOKBOOK)
+        if (!cookbookService.isMemberOfCookbook(cookbookId, userId)) throw ForbiddenException(ForbiddenCause.NOT_MEMBER_OF_COOKBOOK)
         cookbookService.addRecipeToCookbook(cookbookId, recipeId, userId)
         call.respond(HttpStatusCode.OK)
     }
@@ -134,6 +137,8 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.deleteCookbookRecipe() = delete("/{id}/recipe/{recipe}") {
         val cookbookId = getPathId()
         val recipeId = getIdPathVariable("recipe") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
+        val userId = getSessionUserId()
+        if (!cookbookService.isMemberOfCookbook(cookbookId, userId)) throw ForbiddenException(ForbiddenCause.NOT_MEMBER_OF_COOKBOOK)
         handleDeletion(cookbookService.removeRecipeFromCookbook(cookbookId, recipeId))
     }
 

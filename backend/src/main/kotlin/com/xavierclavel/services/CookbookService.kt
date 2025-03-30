@@ -143,4 +143,10 @@ class CookbookService: KoinComponent {
 
     private fun QCookbook.filterByRecipe(recipeId: Long?) =
         if (recipeId == null) this else this.where().recipes.recipe.id.eq(recipeId)
+
+    fun isMemberOfCookbook(cookbookId: Long, userId: Long) =
+        QCookbook()
+            .id.eq(cookbookId)
+            .users.user.id.eq(userId)
+            .exists()
 }
