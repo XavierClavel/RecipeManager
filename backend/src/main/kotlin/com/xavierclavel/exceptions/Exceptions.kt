@@ -18,6 +18,9 @@ enum class UnauthorizedCause(val key: String) {
 enum class ForbiddenCause(val key: String) {
     NOT_ALLOWED_TO_EDIT_RECIPE("not.allowed.to.edit.recipe"),
     NOT_ALLOWED_TO_EDIT_USER("not.allowed.to.edit.user"),
+    NOT_ALLOWED_TO_SEE_RECIPE("not.allowed.to.see.recipe"),
+    NOT_ALLOWED_TO_SEE_USER("not.allowed.to.see.user"),
+    ACCOUNT_NOT_PUBLIC("account.not.public"),
 }
 
 enum class NotFoundCause(val key: String) {

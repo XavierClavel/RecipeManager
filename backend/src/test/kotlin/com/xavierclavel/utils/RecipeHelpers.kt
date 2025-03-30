@@ -39,6 +39,8 @@ suspend fun HttpClient.createRecipe(recipe: RecipeDTO = recipeDTO) : RecipeInfo 
         setBody(recipe)
     }.apply{
         assertEquals(HttpStatusCode.Created, status)
+        val a = bodyAsText()
+        logger.info {a}
         val response = Json.decodeFromString<RecipeInfo>(bodyAsText())
         assertTrue(response.compareToDTO(recipe))
         return response
@@ -68,6 +70,34 @@ suspend fun HttpClient.listRecipes(
     ingredient: Set<Long> = setOf(),
     dishClasses: Set<DishClass> = setOf(),
 ): List<RecipeInfo> {
+    listRecipesRaw(
+        user = user,
+        sort = sort,
+        cookbook = cookbook,
+        likedBy = likedBy,
+        followedBy = followedBy,
+        cookbookUser = cookbookUser,
+        search = search,
+        ingredient = ingredient,
+        dishClasses = dishClasses,
+    ).apply {
+        assertEquals(HttpStatusCode.OK, status)
+        val response = Json.decodeFromString<List<RecipeInfo>>(bodyAsText())
+        return response
+    }
+}
+
+suspend fun HttpClient.listRecipesRaw(
+    user: Long? = null,
+    sort: Sort? = null,
+    cookbook: Long? = null,
+    likedBy: Long? = null,
+    followedBy: Long? = null,
+    cookbookUser: Long? = null,
+    search: String? = null,
+    ingredient: Set<Long> = setOf(),
+    dishClasses: Set<DishClass> = setOf(),
+) =
     this.get(RECIPE_URL) {
         url {
             user?.let { parameters.append("user", it.toString()) }
@@ -80,12 +110,7 @@ suspend fun HttpClient.listRecipes(
             ingredient.takeIf { it.isNotEmpty() }?.let { parameters.append("ingredient", it.joinToString(","))}
             dishClasses.takeIf { it.isNotEmpty() }?.let { parameters.append("dishClasses", it.joinToString(",")) }
         }
-    }.apply {
-        assertEquals(HttpStatusCode.OK, status)
-        val response = Json.decodeFromString<List<RecipeInfo>>(bodyAsText())
-        return response
     }
-}
 
 suspend fun HttpClient.updateRecipe(recipeId: Long, recipe: RecipeDTO): RecipeInfo {
     logger.info {"update"}

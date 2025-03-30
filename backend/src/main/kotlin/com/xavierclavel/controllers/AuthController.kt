@@ -100,6 +100,17 @@ object AuthController: Controller(AUTH_URL) {
     }
 
     @OptIn(ExperimentalLettuceCoroutinesApi::class)
+    suspend fun RoutingContext.getOptionalSessionId(): Long? {
+        val session = call.sessions.get<UserSession>() ?: return null
+        val userId = redisService.redis.get("session:${session.sessionId}")?.toLongOrNull()
+        if (userId == null) {
+            call.sessions.clear<UserSession>()
+            throw UnauthorizedException(UnauthorizedCause.SESSION_NOT_FOUND)
+        }
+        return userId
+    }
+
+    @OptIn(ExperimentalLettuceCoroutinesApi::class)
     suspend fun RoutingContext.getSessionUserId(): Long {
         val session = call.sessions.get<UserSession>() ?: throw UnauthorizedException(UnauthorizedCause.SESSION_NOT_FOUND)
         val userId = redisService.redis.get("session:${session.sessionId}")?.toLongOrNull()

@@ -1,12 +1,15 @@
 package com.xavierclavel.services
 
 import com.xavierclavel.controllers.RecipeController.imageService
+import com.xavierclavel.exceptions.ForbiddenCause
+import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.exceptions.NotFoundCause
 import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
 import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.query.QRecipe
+import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.logger
@@ -20,8 +23,10 @@ import common.utils.Filepath.RECIPES_THUMBNAIL_PATH
 import io.ebean.FetchConfig
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class RecipeService: KoinComponent {
+    val userService: UserService by inject()
 
     fun countAll() =
         QRecipe().findCount()
@@ -31,12 +36,27 @@ class RecipeService: KoinComponent {
 
 
     fun findList(
-        requestorId: Long,
+        requestorId: Long?,
         paging: Paging,
         sort: Sort,
         recipeFilter: RecipeFilter,
-    ) : List<RecipeInfo> =
-        QRecipe()
+    ) : List<RecipeInfo> {
+        if (recipeFilter.user != null && !QUser()
+                .id.eq(recipeFilter.user)
+                .or()
+                .isAccountPublic.isTrue // Public recipe
+                .apply {
+                    if (requestorId != null) {
+                        id.eq(requestorId) // Owner can see
+                        followers.id.eq(requestorId).and().followers.pending.isFalse //Requestor follows owner
+                    }
+                }
+                .endOr()
+                .exists()) {
+            throw ForbiddenException(ForbiddenCause.NOT_ALLOWED_TO_SEE_USER)
+        }
+
+        return QRecipe()
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
             .having().raw("count(likes.id) >= 0") // Ensure recipes with no likes are included
             .filter(recipeFilter)
@@ -45,6 +65,8 @@ class RecipeService: KoinComponent {
             .sort(sort)
             .findList()
             .map { it.toInfo() }
+    }
+
 
     fun findEntityById(recipeId: Long) : Recipe? =
         QRecipe().id.eq(recipeId).findOne()
@@ -53,13 +75,48 @@ class RecipeService: KoinComponent {
         findEntityById(recipeId)
             ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
 
-    fun getById(userId: Long, recipeId: Long) : RecipeInfo =
-        QRecipe().id.eq(recipeId)
+    fun existsById(recipeId:Long, userId: Long?) =
+        QRecipe()
+            .id.eq(recipeId)
+            .filterOutDeletion(userId)
+            .exists()
+
+    fun QRecipe.filterByVisibility(userId: Long?): QRecipe {
+        if (userId == null) {
+            return QRecipe().owner.isAccountPublic.isTrue.endOr() // Only return public recipes
+        }
+
+        return this
+            .or()
+            .owner.isAccountPublic.isTrue // Public recipe
+            .owner.id.eq(userId) // Owner can see
+            .and()
+                .owner.followers.id.eq(userId)
+                .owner.followers.pending.isFalse
+            .endAnd() //Requestor follows owner
+            .likes.user.id.eq(userId) // User liked the recipe
+            .cookbooks.cookbook.users.id.eq(userId) // User has access via a cookbook
+            .endOr()
+    }
+
+    fun getRawById(recipeId: Long, userId: Long?): RecipeInfo =
+        QRecipe()
+            .id.eq(recipeId)
             .filterOutDeletion(userId)
             .findOne()
             ?.toInfo()
             ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
 
+    fun getById(userId: Long?, recipeId: Long) : RecipeInfo {
+        if (!existsById(recipeId, userId)) throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
+        if (!QRecipe()
+            .id.eq(recipeId)
+            .filterByVisibility(userId)
+            .exists()) {
+            throw ForbiddenException(ForbiddenCause.NOT_ALLOWED_TO_SEE_RECIPE)
+        }
+        return getRawById(recipeId, userId)
+    }
 
     fun deleteById(recipeId: Long) {
         QRecipe().id.eq(recipeId).delete()
@@ -180,6 +237,14 @@ class RecipeService: KoinComponent {
                 AND f.pending = false
                 AND t0.owner_id = f.user_id
             )""".trimIndent(), followerId)
+
+    private fun QRecipe.isPublic() =
+        this.owner.isAccountPublic.eq(true)
+
+    private fun QRecipe.isOwnerFollowed(userId: Long?) {
+        if (userId == null) throw ForbiddenException(ForbiddenCause.ACCOUNT_NOT_PUBLIC)
+        this.filterByFollowed(userId)
+    }
 
     private fun QRecipe.filterByIngredient(ingredientsId: Set<Long>) =
         if (ingredientsId.isEmpty()) this

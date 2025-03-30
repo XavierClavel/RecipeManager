@@ -8,7 +8,6 @@ import common.dto.UserDTO
 import common.dto.UserSettingsDTO
 import common.infodto.UserInfo
 import common.enums.UserRole
-import common.enums.Visibility
 import common.overviewdto.UserOverview
 import io.ebean.Model
 import jakarta.persistence.CascadeType
@@ -48,7 +47,7 @@ class User (
     var isVerified: Boolean = false,
 
     //Privacy
-    var accountVisibility : Visibility = Visibility.PUBLIC,
+    var isAccountPublic: Boolean = true,
     var autoAcceptFollowRequests : Boolean = false,
 
     var joinDate: Long = Instant.now().epochSecond,
@@ -131,6 +130,6 @@ class User (
 
     fun updateSettings(userSettingsDTO: UserSettingsDTO) = this.apply {
         autoAcceptFollowRequests = userSettingsDTO.autoAcceptFollowRequests
-        accountVisibility = userSettingsDTO.accountVisibility
+        isAccountPublic = userSettingsDTO.isAccountPublic
     }
 }

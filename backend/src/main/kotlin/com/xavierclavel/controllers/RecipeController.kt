@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.AuthController.getOptionalSessionId
 import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.exceptions.ForbiddenCause
 import com.xavierclavel.exceptions.ForbiddenException
@@ -52,7 +53,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.getRecipe() = get("/{id}") {
         val recipeId = getPathId()
-        val recipe = recipeService.getById(getSessionUserId(),recipeId)
+        val recipe = recipeService.getById(getOptionalSessionId(),recipeId)
         call.respond(recipe)
     }
 
@@ -74,7 +75,7 @@ object RecipeController: Controller(RECIPE_URL) {
         logger.info {"filter : $recipeFilter"}
         val result = if (recipeFilter.hasAdditiveFilters()) {
             recipeService.findList(
-                requestorId = getSessionUserId(),
+                requestorId = getOptionalSessionId(),
                 paging = paging,
                 sort = sort,
                 recipeFilter = recipeFilter,
@@ -91,7 +92,7 @@ object RecipeController: Controller(RECIPE_URL) {
             val recipe = recipeService.createRecipe(recipeDto, user)
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
             customIngredientService.updateCustomIngredients(recipe.id, recipeDto)
-            val recipeInfo = recipeService.getById(getSessionUserId(), recipe.id)
+            val recipeInfo = recipeService.getRawById(recipe.id, getSessionUserId())
             call.respond(HttpStatusCode.Created, recipeInfo)
         } catch (e: Exception) {
             logger.error {e.message}
@@ -102,8 +103,8 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.updateRecipe() = put("/{id}") {
         try {
             val recipeId = getPathId()
-            val recipe = recipeService.getById(getSessionUserId(), recipeId)
-            checkRecipeEditionRights(recipe.owner.id)
+            val recipe = recipeService.getRawById(recipeId, getSessionUserId())
+            checkRecipeEditionRights(recipe.owner!!.id)
             val recipeDto = call.receive<RecipeDTO>()
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
             customIngredientService.updateCustomIngredients(recipe.id, recipeDto)
@@ -116,8 +117,8 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.deleteRecipe() = delete("/{id}") {
         val recipeId = getPathId()
-        val recipe = recipeService.getById(getSessionUserId(), recipeId)
-        checkRecipeEditionRights(recipe.owner.id)
+        val recipe = recipeService.getRawById(recipeId, getSessionUserId())
+        checkRecipeEditionRights(recipe.owner!!.id)
         recipeService.tagRecipeForDeletion(recipeId)
         recipeService.tryDelete(recipeId)
         call.respond(HttpStatusCode.OK)

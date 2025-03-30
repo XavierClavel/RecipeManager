@@ -18,6 +18,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import io.ebean.Model
+import io.ebean.annotation.NotNull
 import java.time.Instant
 
 @Entity

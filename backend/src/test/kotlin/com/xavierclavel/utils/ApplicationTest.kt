@@ -99,8 +99,7 @@ abstract class ApplicationTest: KoinTest {
         setupTestUser(USER2)
     }
 
-    fun setupTestUser(username: String): Long {
-        val settings = UserSettingsDTO(true)
+    fun setupTestUser(username: String, settings: UserSettingsDTO = UserSettingsDTO(true, true)): Long {
         val token1 = UUID.randomUUID().toString()
         val userDTO1 = UserDTO(username = username, password = password, mail = UUID.randomUUID().toString())
         val id1 = userService.createUser(userDTO1, token1).id
