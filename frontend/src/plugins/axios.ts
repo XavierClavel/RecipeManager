@@ -33,7 +33,7 @@ apiClient.interceptors.response.use(
     console.log(error)
     console.log("intercepted error!")
     console.log(error.status)
-    if (error.code == "ERR_NETWORK") {
+    if (error.code == "ERR_NETWORK" || error.status == 502) {
       console.log("backend down")
       toMaintenance()
     } else {
