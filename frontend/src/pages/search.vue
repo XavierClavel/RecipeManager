@@ -50,7 +50,7 @@ updateSearch()
 </script>
 <template>
   <v-card
-    class="rounded-xl  ma-5"
+    class="ma-5"
   >
     <v-card-title
       class="text-primary text-h3"
@@ -61,7 +61,7 @@ updateSearch()
       <user v-for="user in users" :user="user"></user>
     </v-row>
   <v-card
-    class="rounded-xl  ma-5"
+    class="ma-5"
   >
     <v-card-title
       class="text-primary text-h3"
@@ -71,7 +71,7 @@ updateSearch()
       <recipe v-for="recipe in recipes" :recipe="recipe"></recipe>
     </v-row>
   <v-card
-    class="rounded-xl  ma-5"
+    class="ma-5"
   >
     <v-card-title
       class="text-primary text-h3"

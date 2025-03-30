@@ -48,7 +48,10 @@ class RecipeService: KoinComponent {
                 .apply {
                     if (requestorId != null) {
                         id.eq(requestorId) // Owner can see
-                        followers.id.eq(requestorId).and().followers.pending.isFalse //Requestor follows owner
+                        .and()
+                            .followers.follower.id.eq(requestorId)
+                            .followers.pending.isFalse //Requestor follows owner
+                        endAnd()
                     }
                 }
                 .endOr()
@@ -91,11 +94,11 @@ class RecipeService: KoinComponent {
             .owner.isAccountPublic.isTrue // Public recipe
             .owner.id.eq(userId) // Owner can see
             .and()
-                .owner.followers.id.eq(userId)
+                .owner.followers.follower.id.eq(userId)
                 .owner.followers.pending.isFalse
             .endAnd() //Requestor follows owner
             .likes.user.id.eq(userId) // User liked the recipe
-            .cookbooks.cookbook.users.id.eq(userId) // User has access via a cookbook
+            .cookbooks.cookbook.users.user.id.eq(userId) // User has access via a cookbook
             .endOr()
     }
 

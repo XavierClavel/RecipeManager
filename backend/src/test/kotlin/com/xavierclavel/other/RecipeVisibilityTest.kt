@@ -143,7 +143,7 @@ class RecipeVisibilityTest: ApplicationTest() {
     @Test
     fun `pending followers cannot list recipes of private account`() = runTest{
         var recipeId: Long? = null
-        setupTestUser("user3", UserSettingsDTO(isAccountPublic = false))
+        setupTestUser("user3", UserSettingsDTO(isAccountPublic = false, autoAcceptFollowRequests = false))
         runAs("user3") {
             recipeId = client.createRecipe(recipeDTO).id
         }
