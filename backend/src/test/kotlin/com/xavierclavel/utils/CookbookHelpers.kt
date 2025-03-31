@@ -95,18 +95,24 @@ suspend fun HttpClient.deleteCookbook(id: Long) {
 }
 
 suspend fun HttpClient.addCookbookUser(cookbookId: Long, userId: Long, isAdmin: Boolean) {
-    this.post("$COOKBOOK_URL/$cookbookId/user/$userId?isAdmin=$isAdmin")
+    this.addCookbookUserRaw(cookbookId, userId, isAdmin)
         .apply {
             assertEquals(HttpStatusCode.OK, status)
         }
 }
 
+suspend fun HttpClient.addCookbookUserRaw(cookbookId: Long, userId: Long, isAdmin: Boolean) =
+    this.post("$COOKBOOK_URL/$cookbookId/user/$userId?isAdmin=$isAdmin")
+
 suspend fun HttpClient.deleteCookbookUser(cookbookId: Long, userId: Long) {
-    this.delete("$COOKBOOK_URL/$cookbookId/user/$userId")
+    this.deleteCookbookUserRaw(cookbookId, userId)
         .apply {
             assertEquals(HttpStatusCode.OK, status)
         }
 }
+
+suspend fun HttpClient.deleteCookbookUserRaw(cookbookId: Long, userId: Long) =
+    this.delete("$COOKBOOK_URL/$cookbookId/user/$userId")
 
 suspend fun HttpClient.addCookbookRecipe(cookbookId: Long, recipeId: Long) =
     this.post("$COOKBOOK_URL/$cookbookId/recipe/$recipeId")

@@ -22,6 +22,7 @@ enum class ForbiddenCause(val key: String) {
     NOT_ALLOWED_TO_SEE_USER("not.allowed.to.see.user"),
     NOT_MEMBER_OF_COOKBOOK("not.member.of.cookbook"),
     ACCOUNT_NOT_PUBLIC("account.not.public"),
+    MUST_BE_COOKBOOK_ADMINISTRATOR("must.be.cookbook.administrator"),
 }
 
 enum class NotFoundCause(val key: String) {

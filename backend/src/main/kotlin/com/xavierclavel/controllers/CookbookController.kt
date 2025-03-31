@@ -25,6 +25,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -55,7 +56,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val cookbookDTO = call.receive<CookbookDTO>()
         val cookbook = cookbookService.createCookbook(cookbookDTO)
         val userId = getSessionUserId()
-        cookbookService.addUserToCookbook(cookbook.id, userId, true)
+        cookbookService.addUserToCookbook(cookbook.id, userId, isAdmin = true)
         call.respond(HttpStatusCode.Created, cookbook)
     }
 
@@ -98,6 +99,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
     private fun Route.updateCookbook() = put("/{id}") {
         val id = getPathId()
+        checkIfAdminOfCookbook(id)
         val cookbookDTO = call.receive<CookbookDTO>()
         val cookbook = cookbookService.updateCookbook(id, cookbookDTO)
         call.respond(cookbook)
@@ -111,6 +113,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
     private fun Route.addCookbookUser() = post("/{id}/user/{user}") {
         val cookbookId = getPathId()
+        checkIfAdminOfCookbook(cookbookId)
         val userId = getIdPathVariable("user") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
         val role = getBooleanQueryParam("role") ?: false
         cookbookService.addUserToCookbook(cookbookId, userId, role)
@@ -119,6 +122,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
     private fun Route.deleteCookbookUser() = delete("/{id}/user/{user}") {
         val cookbookId = getPathId()
+        checkIfAdminOfCookbook(cookbookId)
         val userId = getIdPathVariable("user") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
         handleDeletion(cookbookService.removeUserFromCookbook(cookbookId, userId))
     }
@@ -139,6 +143,12 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val userId = getSessionUserId()
         if (!cookbookService.isMemberOfCookbook(cookbookId, userId)) throw ForbiddenException(ForbiddenCause.NOT_MEMBER_OF_COOKBOOK)
         handleDeletion(cookbookService.removeRecipeFromCookbook(cookbookId, recipeId))
+    }
+
+    private suspend fun RoutingContext.checkIfAdminOfCookbook(cookbookId: Long) {
+        if (!cookbookService.isAdminOfCookbook(cookbookId, getSessionUserId())) {
+            throw ForbiddenException(ForbiddenCause.MUST_BE_COOKBOOK_ADMINISTRATOR)
+        }
     }
 
 }
