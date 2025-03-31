@@ -9,6 +9,7 @@ import com.xavierclavel.exceptions.ForbiddenCause
 import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getBooleanQueryParam
 import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getIdQueryParam
 import com.xavierclavel.utils.getMandatoryIdQueryParam
@@ -18,7 +19,6 @@ import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.handleDeletion
 import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
-import common.enums.CookbookRole
 import common.utils.Filepath.COOKBOOKS_IMG_PATH
 import common.utils.URL.COOKBOOK_URL
 import io.ktor.http.HttpStatusCode
@@ -55,7 +55,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val cookbookDTO = call.receive<CookbookDTO>()
         val cookbook = cookbookService.createCookbook(cookbookDTO)
         val userId = getSessionUserId()
-        cookbookService.addUserToCookbook(cookbook.id, userId, CookbookRole.OWNER)
+        cookbookService.addUserToCookbook(cookbook.id, userId, true)
         call.respond(HttpStatusCode.Created, cookbook)
     }
 
@@ -112,13 +112,12 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.addCookbookUser() = post("/{id}/user/{user}") {
         val cookbookId = getPathId()
         val userId = getIdPathVariable("user") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
-        val role = call.parameters["role"]?.let { CookbookRole.valueOf(it) } ?: CookbookRole.READER
+        val role = getBooleanQueryParam("role") ?: false
         cookbookService.addUserToCookbook(cookbookId, userId, role)
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.deleteCookbookUser() = delete("/{id}/user/{user}") {
-        logger.info { "deleting cb user"}
         val cookbookId = getPathId()
         val userId = getIdPathVariable("user") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
         handleDeletion(cookbookService.removeUserFromCookbook(cookbookId, userId))

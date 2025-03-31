@@ -1,7 +1,5 @@
 package common.infodto
 
-import common.enums.CookbookRole
-import common.enums.UserRole
 import kotlinx.serialization.Serializable
 
 @Serializable

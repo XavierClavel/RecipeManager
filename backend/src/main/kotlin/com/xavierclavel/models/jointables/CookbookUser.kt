@@ -2,7 +2,6 @@ package com.xavierclavel.models.jointables
 
 import com.xavierclavel.models.Cookbook
 import com.xavierclavel.models.User
-import common.enums.CookbookRole
 import common.infodto.CookbookUserInfo
 import io.ebean.Model
 import jakarta.persistence.Entity
@@ -27,7 +26,7 @@ class CookbookUser (
     @ManyToOne
     var cookbook: Cookbook,
 
-    var role: CookbookRole = CookbookRole.READER,
+    var isAdmin: Boolean = false,
 
     var pending: Boolean = false,
 
@@ -38,7 +37,7 @@ class CookbookUser (
     fun toInfo() = CookbookUserInfo(
         id = user.id,
         username = user.username,
-        role = role,
+        isAdmin = isAdmin,
         joinDate = joinDate,
     )
 }

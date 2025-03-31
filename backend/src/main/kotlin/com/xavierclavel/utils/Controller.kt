@@ -60,6 +60,8 @@ fun RoutingContext.getIdQueryParam(value: String): Long? = call.queryParameters[
 fun RoutingContext.getMandatoryIdQueryParam(value: String): Long = getIdQueryParam(value)
     ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
 
+fun RoutingContext.getBooleanQueryParam(value: String): Boolean? = call.parameters[value]?.toBooleanStrictOrNull()
+
 suspend fun RoutingContext.handleDeletion(deleted: Boolean?) {
     if (deleted == null) call.respond(HttpStatusCode.NotFound)
     else if (!deleted) call.respond(HttpStatusCode.InternalServerError)

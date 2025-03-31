@@ -7,7 +7,6 @@ import com.xavierclavel.controllers.LikeController.likeService
 import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
 import common.dto.UserSettingsDTO
-import common.enums.CookbookRole
 import io.ktor.http.HttpStatusCode
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.getRecipe
@@ -166,7 +165,7 @@ class RecipeVisibilityTest: ApplicationTest() {
         recipeId!!
         val cookbookInfo = cookbookService.createCookbook(CookbookDTO("cookbook"))
         cookbookService.addRecipeToCookbook(cookbookInfo.id, recipeId, userService.getUserByUsername("user3")!!.id)
-        cookbookService.addUserToCookbook(cookbookInfo.id, userService.getUserByUsername(USER1)!!.id, CookbookRole.READER)
+        cookbookService.addUserToCookbook(cookbookInfo.id, userService.getUserByUsername(USER1)!!.id, false)
         runAsUser1 {
             client.getRecipe(recipeId)
         }

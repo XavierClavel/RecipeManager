@@ -14,7 +14,6 @@ import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.Extensions.page
 import common.dto.CookbookDTO
-import common.enums.CookbookRole
 import common.enums.Sort
 import common.infodto.CookbookInfo
 import common.infodto.CookbookRecipeInfo
@@ -98,12 +97,12 @@ class CookbookService: KoinComponent {
     fun deleteCookbook(id: Long): Boolean =
         getEntityById(id).delete()
 
-    fun addUserToCookbook(cookbookId: Long, userId: Long, role: CookbookRole) {
+    fun addUserToCookbook(cookbookId: Long, userId: Long, isAdmin: Boolean) {
         val cookbook = getEntityById(cookbookId)
         val user = userService.getEntityById(userId)
         val cookbookUser = CookbookUser(
             user = user,
-            role = role,
+            isAdmin = isAdmin,
             cookbook = cookbook,
         ).insertAndGet()
     }

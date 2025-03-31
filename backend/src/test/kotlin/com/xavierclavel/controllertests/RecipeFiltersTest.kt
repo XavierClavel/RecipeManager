@@ -4,7 +4,6 @@ import com.xavierclavel.ApplicationTest
 import common.dto.IngredientDTO
 import common.dto.RecipeDTO
 import common.dto.RecipeDTO.RecipeIngredientDTO
-import common.enums.CookbookRole
 import common.enums.DishClass
 import common.infodto.RecipeInfo
 import common.infodto.UserInfo
@@ -114,7 +113,7 @@ class RecipeFiltersTest : ApplicationTest() {
             recipe3 = client.createRecipe()
 
             val cookbook = client.createCookbook()
-            client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+            client.addCookbookUser(cookbook.id, user.id, false)
             client.addCookbookRecipe(cookbook.id, recipe1.id)
             client.addCookbookRecipe(cookbook.id, recipe2.id)
         }

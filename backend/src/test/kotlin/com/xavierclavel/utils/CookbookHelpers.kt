@@ -2,7 +2,6 @@ package main.com.xavierclavel.utils
 
 import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
-import common.enums.CookbookRole
 import common.infodto.CookbookInfo
 import common.infodto.CookbookRecipeInfo
 import common.infodto.CookbookUserInfo
@@ -95,8 +94,8 @@ suspend fun HttpClient.deleteCookbook(id: Long) {
         }
 }
 
-suspend fun HttpClient.addCookbookUser(cookbookId: Long, userId: Long, role: CookbookRole) {
-    this.post("$COOKBOOK_URL/$cookbookId/user/$userId?role=$role")
+suspend fun HttpClient.addCookbookUser(cookbookId: Long, userId: Long, isAdmin: Boolean) {
+    this.post("$COOKBOOK_URL/$cookbookId/user/$userId?isAdmin=$isAdmin")
         .apply {
             assertEquals(HttpStatusCode.OK, status)
         }

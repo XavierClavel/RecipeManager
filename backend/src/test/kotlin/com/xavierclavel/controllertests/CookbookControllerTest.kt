@@ -2,7 +2,6 @@ package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
-import common.enums.CookbookRole
 import io.ktor.http.HttpStatusCode
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser
@@ -37,7 +36,7 @@ class CookbookControllerTest : ApplicationTest() {
         client.assertCookbookExists(cookbook.id)
         val users = client.getCookbookUsers(cookbook.id)
         assertEquals(1, users.size)
-        assertEquals(CookbookRole.OWNER, users.first().role)
+        assertEquals(true, users.first().isAdmin)
     }
 
     @Test
@@ -53,7 +52,7 @@ class CookbookControllerTest : ApplicationTest() {
         val cookbook = client.createCookbook()
         client.assertCookbookExists(cookbook.id)
         val user = client.createUser("user3")
-        client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+        client.addCookbookUser(cookbook.id, user.id, false)
         val users = client.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)
         assertTrue(users.any { it.username == "user3" })
@@ -66,7 +65,7 @@ class CookbookControllerTest : ApplicationTest() {
 
         repeat(3) {
             val user = client.createUser()
-            client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+            client.addCookbookUser(cookbook.id, user.id, false)
         }
         val users = client.getCookbookUsers(cookbook.id)
         assertEquals(4, users.size)
@@ -78,7 +77,7 @@ class CookbookControllerTest : ApplicationTest() {
         client.assertCookbookExists(cookbook.id)
 
         val user = userService.getUserByUsername("user1")!!
-        client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+        client.addCookbookUser(cookbook.id, user.id, false)
         val users = client.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)
         assertTrue(users.any { it.username == "user1" })
@@ -114,10 +113,10 @@ class CookbookControllerTest : ApplicationTest() {
         val user2 = client.createUser()
         val user3 = client.createUser()
 
-        client.addCookbookUser(cookbook1.id, user1.id, CookbookRole.READER)
-        client.addCookbookUser(cookbook2.id, user1.id, CookbookRole.READER)
-        client.addCookbookUser(cookbook2.id, user2.id, CookbookRole.READER)
-        client.addCookbookUser(cookbook3.id, user2.id, CookbookRole.READER)
+        client.addCookbookUser(cookbook1.id, user1.id, false)
+        client.addCookbookUser(cookbook2.id, user1.id, false)
+        client.addCookbookUser(cookbook2.id, user2.id, false)
+        client.addCookbookUser(cookbook3.id, user2.id, false)
 
         val result1 = client.listCookbooks(user1.id).map { it.id }.toSet()
         val result2 = client.listCookbooks(user2.id).map { it.id }.toSet()
@@ -139,7 +138,7 @@ class CookbookControllerTest : ApplicationTest() {
 
         repeat(2) {
             val user = client.createUser()
-            client.addCookbookUser(cookbook.id, user.id, CookbookRole.READER)
+            client.addCookbookUser(cookbook.id, user.id, false)
         }
 
         repeat(2) {
