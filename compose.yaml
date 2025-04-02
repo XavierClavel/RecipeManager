@@ -67,7 +67,7 @@ services:
       - redis_data:/data
     networks:
       - auth-network
-    command: [ "redis-server", "--bind", "127.0.0.1", "--appendonly", "yes" ]
+    command: [ "redis-server", "--appendonly", "yes" ]
     healthcheck:
       test: [ "CMD", "redis-cli","ping" ]
       interval: 10s
