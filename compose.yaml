@@ -51,8 +51,6 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: changeit
-    ports:
-      - "5432:5432"
     networks:
       - cooknco-database-network
     healthcheck:
@@ -65,13 +63,11 @@ services:
     container_name: cooknco-redis
     image: redis:alpine
     restart: always
-    ports:
-      - "6379:6379"
     volumes:
       - redis_data:/data
     networks:
       - cooknco-auth-network
-    command: [ "redis-server", "--bind", "127.0.0.1", "cooknco-auth-network", "--appendonly", "yes" ]
+    command: [ "redis-server", "--bind", "127.0.0.1", "--appendonly", "yes" ]
     healthcheck:
       test: [ "CMD", "redis-cli","ping" ]
       interval: 10s
