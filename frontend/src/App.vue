@@ -8,9 +8,11 @@
       class="custom-drawer"
       elevation="2"
       width="250"
+      variant="elevated"
+      color="#4f4193"
     >
       <v-list>
-        <v-list-item title="Cook&Co"></v-list-item>
+        <v-img src="/src/assets/logo.png" class="mx-12 my-8"></v-img>
         <v-list-item class="d-flex justify-center">
           <v-btn
             prepend-icon="mdi-pencil"
@@ -39,18 +41,20 @@
     <v-main class="d-flex flex-grow-1">
     <v-container fluid class="d-flex">
     <v-card
-      color="surface"
-      class="custom-bar flex-grow-1 mt-n2 mr-n2 mb-n4"
+      color="transparent"
+      style="border: 0"
+      class="custom-bar flex-grow-1 mt-n2  mb-n4"
       v-if="showSidebar"
+      variant="flat"
     >
       <template v-slot:prepend>
-        <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click="toggleDrawer" style="border: 3px solid #0d1821 !important;"></v-app-bar-nav-icon>
       </template>
       <template v-slot:append>
-        <v-btn :icon="ICON_NOTIFICATION" flat class="mr-2"></v-btn>
-        <v-menu>
+        <v-btn :icon="ICON_NOTIFICATION" flat class="mr-4 text-black" color="#0476a3" style="border: 3px solid #0d1821 !important;"></v-btn>
+        <v-menu style="border: 0" >
           <template v-slot:activator="{ props }">
-            <v-avatar size="50">
+            <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;">
               <v-img
                 color="surface-variant"
                 :src="getUserIconUrl(userId)"
@@ -61,7 +65,7 @@
             </v-avatar>
           </template>
 
-          <v-list>
+          <v-list base-color="black" bg-color="#0476a3" style="border: 3px solid #0d1821 !important;">
             <v-list-item prepend-icon="mdi-account-circle" rounded="xl" link :title="`${$t('profile')}`" @click="toMyProfile" ></v-list-item>
             <v-list-item prepend-icon="mdi-cog" rounded="xl" link :title="`${$t('settings')}`" @click="toSettings" ></v-list-item>
             <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link :title="`${$t('about')}`" @click="toHome"></v-list-item>
@@ -104,7 +108,7 @@
     </v-container>
     </v-main>
 
-    <v-main class="ma-2">
+    <v-main class="ma-2 ml-6 mr-4 mt-0">
       <router-view />
     </v-main>
 
@@ -166,8 +170,8 @@ getHealth().then((response) => {
   cursor: pointer
 }
 .custom-drawer {
-  margin: 8px;
-  max-height: calc(100% - 16px);
+  margin: 16px;
+  max-height: calc(100% - 32px);
   overflow: hidden;
 }
 

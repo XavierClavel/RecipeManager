@@ -8,3 +8,41 @@
 // @use 'vuetify/settings' with (
 //   $color-pack: false
 // );
+
+$body-font-family: 'Geologica', Comic Sans MS !default;
+
+
+@use 'vuetify/settings' with (
+  $body-font-family: $body-font-family,
+);
+
+@import url('https://fonts.googleapis.com/css?family=Geologica:300,400,700&display=swap');
+
+
+.v-card {
+  border: 3px solid #0d1821;
+}
+
+.v-chip {
+  border: 2px solid #0d1821 !important;
+}
+
+.v-navigation-drawer {
+  border: 3px solid #0d1821 !important;
+}
+
+.v-footer {
+  border: 3px solid #0d1821 !important;
+}
+
+.v-btn {
+  border: 3px solid #0d1821 !important;
+}
+
+.v-combobox {
+  border: 3px solid #0d1821 !important;
+}
+
+.v-text-field {
+  border: 3px solid #0d1821 !important;
+}

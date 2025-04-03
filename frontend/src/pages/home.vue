@@ -1,16 +1,18 @@
 <template>
   <v-layout class="rounded rounded-md">
-        <v-timeline class="ma-2" align="center" side="end">
+        <v-timeline class="ma-2" align="center" side="end" line-color="black" line-thickness="3px" density="comfortable" >
           <v-timeline-item
             v-for="(timelineRecipe, date) in timelineRecipes"
             :key="date"
             size="large"
             side="end"
             fill-dot
-            dot-color="surface"
+            dot-color="black"
+            class="mb-8"
+            style="padding-bottom: 50px;"
           >
           <template v-slot:icon>
-            <v-avatar color="primary">
+            <v-avatar color="primary text-black">
               {{timelineRecipe.length}}
             </v-avatar>
           </template>

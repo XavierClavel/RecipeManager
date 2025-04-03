@@ -4,7 +4,7 @@ import router from "@/router";
 import {useAuthStore} from "@/stores/auth";
 import {useI18n} from "vue-i18n";
 import {ICON_ALPHABETICAL, ICON_DATE, ICON_LIKES, ICON_RANDOM} from "@/scripts/icons";
-
+import ChipRow from "@/components/ChipRow.vue";
 const autocompleteList = ref([])
 
 const selectedDishType = ref([0, 1, 2])
@@ -66,14 +66,14 @@ const toggleSort = (field) => {
 
 const getChipColor = (field) => {
   if (selectedSort.value === field) {
-    return sortOrder.value === "desc" ? "primary" : "primary";
+    return "primary";
   }
   return "background"; // Default color when unselected
 };
 
 const getDishClassChipColor = (index) => {
   if (selectedDishType.value.includes(index)) {
-    return sortOrder.value === "desc" ? "primary" : "primary";
+    return "primary";
   }
   return "background"; // Default color when unselected
 };
@@ -116,39 +116,16 @@ const updateUrl = () => {
     <v-row class="d-flex justify-space-between align-start">
       <!-- Left Section: Filters & Input -->
       <v-col class="d-flex flex-column">
-        <v-chip-group
-          v-model="selectedSource"
-          column
-          multiple
-          @update:modelValue="updateUrl"
-          color="surface"
-          variant="flat"
-        >
-          <v-chip
-            v-for="s in sourceOptions"
-            :text="s.label"
-            filter
-          ></v-chip>
-        </v-chip-group>
 
-        <v-row class="d-flex flex-row ma-1">
-          <v-chip
-            v-for="(dish, index) in dishOptions"
-            :text="dish.label"
-            filter
-            class="mx-1"
-            :color="getDishClassChipColor(index)"
-            variant="elevated"
-            @click="selectDishClass(index)"
-            :prepend-icon="selectedDishType.includes(index) ? 'mdi-check' : undefined"
-          ></v-chip>
-        </v-row>
+        <chip-row :values="sourceOptions"  :action="updateUrl" :selected="selectedSource"></chip-row>
+        <chip-row :values="dishOptions" :action="updateUrl"></chip-row>
 
 
         <v-combobox
           v-model="selectedIngredients"
           class="flex-grow-1 ma-1"
           color="primary"
+          bg-color="background"
           :items="autocompleteList"
           item-color="primary"
           item-title="name"
@@ -200,7 +177,5 @@ const updateUrl = () => {
 </template>
 
 <style scoped>
-
-
 
 </style>

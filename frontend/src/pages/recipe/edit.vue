@@ -11,8 +11,8 @@
         :label="`${$t('title')}`"
         class="mx-auto px-3"
         color="primary"
+        bg-color="background"
         :rules="[rules.max100]"
-        variant="outlined"
       ></v-text-field>
 
       <v-textarea

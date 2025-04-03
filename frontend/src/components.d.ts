@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     ActionButton: typeof import('./components/ActionButton.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    ChipRow: typeof import('./components/ChipRow.vue')['default']
     Cookbook: typeof import('./components/Cookbook.vue')['default']
     EditablePicture: typeof import('./components/EditablePicture.vue')['default']
     Error: typeof import('./components/Error.vue')['default']

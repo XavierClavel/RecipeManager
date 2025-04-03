@@ -38,6 +38,7 @@
 -->
 
     <v-img
+      style="border: 3px solid #0d1821 !important;"
       color="surface-variant"
       height="600px"
       width="800px"
