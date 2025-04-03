@@ -86,4 +86,7 @@ export default {
   accepted: "Acceptés",
   pending: "En attente",
   nothing_to_display: "Rien à afficher",
+
+  welcome: "Bienvenue",
+  welcome_subtext: "Qu'est-ce que tu mijotes aujourd'hui ?"
 };

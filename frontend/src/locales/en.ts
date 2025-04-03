@@ -81,4 +81,7 @@ export default {
   accepted: "Accepted",
   pending: "Pending",
   nothing_to_display: "Nothing to display",
+
+  welcome: "Welcome",
+  welcome_subtext: "What's cooking, good looking ?"
 };

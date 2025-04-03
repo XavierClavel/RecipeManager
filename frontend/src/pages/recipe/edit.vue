@@ -46,6 +46,7 @@
           rounded="lg"
           group
           mandatory
+          class="ga-2"
         >
           <v-btn value="ENTREE">{{$t("entree")}}</v-btn>
 
@@ -131,14 +132,14 @@
       </v-card>
 
       <!-- Ingredients -->
-      <h2 class="my-3" >{{$t("ingredients")}}</h2>
+      <h2 class="my-3 mt-12" >{{$t("ingredients")}}</h2>
       <draggable v-model="recipe.ingredients" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
             <v-icon
               class="mr-2 drag-handle"
-              color="primary"
+              color="black"
               small
             >mdi-drag</v-icon>
 
@@ -213,7 +214,7 @@
                 @click="removeIngredient(index)"
                 icon="mdi-delete"
                 color="primary"
-                class="rounded-lg ml-4"
+                class="ml-4"
               ></v-btn>
             </div>
 
@@ -223,59 +224,71 @@
       </draggable>
 
       <!-- Custom ingredients -->
-      <h2 class="my-3" v-if="recipe.customIngredients && recipe.customIngredients.length > 0">Custom ingredients</h2>
+      <h2 class="my-3 mt-12" v-if="recipe.customIngredients && recipe.customIngredients.length > 0">Custom ingredients</h2>
       <draggable v-model="recipe.customIngredients" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
             <v-icon
-              class="mr-2 drag-handle mb-5"
-              color="primary"
+              class="mr-2 drag-handle"
+              color="black"
               small
             >mdi-drag</v-icon>
 
+            <v-card class="flex-grow-1 ma-1">
             <v-text-field
               v-model="recipe.customIngredients[index].name"
               :label="`${$t('custom_ingredient')} ${index + 1}`"
-              class="flex-grow-1"
               color="primary"
               item-color="primary"
               :key="index"
               :rules="[rules.max50]"
-              variant="outlined"
+              variant="solo"
+              flat
+              single-line
+              hide-details
+              bg-color="background"
             ></v-text-field>
+            </v-card>
 
+            <v-card class="flex-grow-1 ma-1" max-width="200px">
             <v-select
               v-model="recipe.customIngredients[index].unit"
               :label="`${$t('unit')}`"
               outlined
-              class="flex-grow-1 mx-2"
               :items="units"
-              variant="outlined"
-              max-width="200px"
               color="primary"
+              variant="solo"
+              flat
+              single-line
+              hide-details
+              bg-color="background"
             ></v-select>
+            </v-card>
 
+            <v-card class="flex-grow-1 ma-1" max-width="150px">
             <v-number-input
               v-model="recipe.customIngredients[index].amount"
               :label="`${$t('amount')}`"
-              outlined
-              class="flex-grow-1"
               type="number"
-              max-width="150px"
               color="primary"
               control-variant="stacked"
               min=0
-              variant="outlined"
+              variant="solo"
+              flat
+              single-line
+              hide-details
+              bg-color="background"
             >
             </v-number-input>
+            </v-card>
 
             <div>
               <v-btn
                 @click="removeCustomIngredient(index)"
                 icon="mdi-delete"
                 color="primary"
-                class="rounded-lg ml-4 mb-5"
+                class="ml-4"
               ></v-btn>
             </div>
 
@@ -290,7 +303,6 @@
         prepend-icon="mdi-plus-circle-outline"
         color="primary"
         flat
-        rounded
         class="mb-10"
       >{{$t("ingredients_add_new")}}</v-btn>
 
@@ -302,9 +314,8 @@
             v-bind="props"
             @click="addCustomIngredient"
             prepend-icon="mdi-plus-circle-outline"
-            color="primary"
+            color="black"
             flat
-            rounded
             class="mb-10 ml-8"
             variant="outlined"
           >{{$t("ingredients_add_custom")}}</v-btn>
@@ -346,7 +357,7 @@
               @click="removeStep(index)"
               icon="mdi-delete"
               color="primary"
-              class="rounded-lg ml-4"
+              class="ml-4"
               tabindex="-1"
             ></v-btn>
           </div>
@@ -359,7 +370,6 @@
         prepend-icon="mdi-plus-circle-outline"
         color="primary"
         flat
-        rounded
         class="mb-10"
       >{{$t("steps_add_new")}}</v-btn>
 

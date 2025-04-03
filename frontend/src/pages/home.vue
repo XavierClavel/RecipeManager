@@ -1,6 +1,12 @@
 <template>
   <v-layout class="rounded rounded-md">
-        <v-timeline class="ma-2" align="center" side="end" line-color="black" line-thickness="3px" density="comfortable" >
+    <v-card class="pa-4 d-flex flex-column" color="transparent" style="border:0">
+    <v-card-title
+      class="text-black text-left text-h2 font-weight-bold "
+      style="justify-content: flex-start;"
+    >{{$t("welcome")}}, {{username}}!</v-card-title>
+    <v-card-text class="text-h3 mb-8 mt-n6 font-weight-thin">{{$t("welcome_subtext")}}</v-card-text>
+        <v-timeline class="my-2" align="center" side="end" line-color="black" line-thickness="3px" density="comfortable" >
           <v-timeline-item
             v-for="(timelineRecipe, date) in timelineRecipes"
             :key="date"
@@ -25,6 +31,7 @@
 
           </v-timeline-item>
         </v-timeline>
+    </v-card>
   </v-layout>
 </template>
 
@@ -32,11 +39,15 @@
 
 import {listRecipes} from "@/scripts/recipes";
 import {useAuthStore} from "@/stores/auth";
+import {useI18n} from "vue-i18n";
 
 const recipes = ref([])
 const timelineRecipes = ref()
 const authStore = useAuthStore()
 const userId = authStore.id
+const username = authStore.username
+
+const { t } = useI18n()
 
 listRecipes(`?user=${userId}&followedBy=${userId}&sort=DATE_DESCENDING`).then(
   function (response) {
