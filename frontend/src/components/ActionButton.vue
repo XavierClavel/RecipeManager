@@ -35,7 +35,7 @@ async function handleClick() {
     :prepend-icon="icon"
     color="primary"
     flat
-    rounded
+    rounded="lg"
     class="text-h6 px-10 mx-3"
     min-height="70px"
     min-width="200px"

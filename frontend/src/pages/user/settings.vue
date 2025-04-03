@@ -8,18 +8,25 @@
 
 
       <form @submit.prevent="submit">
-        <v-card-title class="text-primary text-h3">
+        <v-card-title class="text-black text-h2 font-weight-bold" >
           {{$t("settings")}}
         </v-card-title>
         <error :error="errorMessage"></error>
-        <v-select
-        v-model="locale"
-        prepend-icon="mdi-translate"
-        class="mx-auto px-3"
-        :items="locales"
-        item-title="label"
-        item-value="value"
-        ></v-select>
+        <v-card class="my-2">
+          <v-select
+          v-model="locale"
+          prepend-inner-icon="mdi-translate"
+          :items="locales"
+          item-title="label"
+          item-value="value"
+          variant="solo"
+          flat
+          single-line
+          hide-details
+          bg-color="background"
+          ></v-select>
+        </v-card>
+
         <v-container>
           <v-row
             class="d-flex align-center justify-center mb-2 gx-16"

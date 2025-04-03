@@ -35,7 +35,7 @@
       ></v-img>
       <v-container>
         <v-card-title
-          class="mx-auto px-3 text-primary text-h3"
+          class="mx-auto px-3 mt-n8 text-black text-h2 font-weight-bold"
         >{{ user.username }}</v-card-title>
         <v-card-text
           class="mx-auto px-3"

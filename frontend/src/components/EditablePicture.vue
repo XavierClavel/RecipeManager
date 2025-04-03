@@ -19,6 +19,7 @@
          fill-height
          fluid
          @click="triggerFileInput"
+         style="border: 4px solid #0d1821 !important;"
   >
     <v-container :class="`image-overlay d-flex flex-row ${buttonsSpacing}`"  >
       <v-btn

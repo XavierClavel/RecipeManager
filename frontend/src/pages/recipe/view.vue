@@ -16,7 +16,7 @@
   v-if="!displayError"
   >
     <v-card-title
-      class="mx-auto px-3 text-primary text-h3"
+      class="mx-auto px-3 text-black text-h2 font-weight-bold"
     >{{ recipe.title }}</v-card-title>
 
     <v-card-text
@@ -62,14 +62,13 @@
       <v-btn
         v-if="recipeLiked != null"
         :icon="recipeLiked ? 'mdi-heart' : 'mdi-heart-outline' "
-        color="primary"
+        color="background"
         flat
-        rounded="circle"
         class="mb-10 text-h6"
         min-height="70px"
         min-width="70px"
         @click="onLikeButtonClick"
-        variant="outlined"
+        elevation="2"
       ></v-btn>
 
       <v-menu class="mt-n16"
@@ -77,19 +76,17 @@
       >
         <template v-slot:activator="{ props }">
           <v-btn
-            color="primary"
+            color="background"
             :icon="userCookbooks.some((it) => it.hasRecipe) ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
             height="70px"
             width="70px"
-            rounded="circle"
             v-bind="props"
             class="mt-n10 text-h6"
-            variant="outlined"
           ></v-btn>
         </template>
 
         <v-card>
-          <v-list density="compact">
+          <v-list density="compact" bg-color="menu">
           <v-list-item
             prepend-icon="mdi-plus"
             rounded="xl"
@@ -110,20 +107,17 @@
           ></v-list-item>
         </v-list>
         </v-card>
-
-
       </v-menu>
 
       <v-btn
         icon="mdi-share-variant"
-        color="primary"
+        color="background"
         flat
-        rounded="circle"
         class="mb-10 text-h6"
         min-height="70px"
         min-width="70px"
         @click="onShareButtonClick"
-        variant="outlined"
+        elevation="2"
       ></v-btn>
     </span>
 

@@ -24,6 +24,7 @@ const customTheme: ThemeDefinition = {
     success: '#4CAF50',
     warning: '#FB8C00',
     'on-surface': "#000000", // Default text color
+    'menu': "#0476a3"
   },
   variables: {
     fontFamily: 'Geologica, sans-serif',
@@ -47,6 +48,11 @@ export default createVuetify({
     },
     VNavigationDrawer: {
       rounded: 'lg',
+    },
+    VNumberInput: {
+      VBtn: {
+        rounded: 0,
+      },
     },
   },
   components: {

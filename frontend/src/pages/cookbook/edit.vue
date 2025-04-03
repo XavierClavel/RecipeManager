@@ -5,31 +5,48 @@
   >
 
     <form @submit.prevent="submit" class="mx-auto">
-      <v-text-field
-        v-model="cookbook.title"
-        :label="`${$t('title')}`"
-        class="mx-auto px-3"
-        color="primary"
-      ></v-text-field>
 
-      <v-textarea
-        v-model="cookbook.description"
-        :label="`${$t('description')}`"
-        class="mx-auto px-3"
-        color="primary"
-      ></v-textarea>
+      <v-card class="my-2">
+        <v-text-field
+          v-model="cookbook.title"
+          :label="`${$t('title')}`"
+          color="primary"
+          variant="solo"
+          flat
+          single-line
+          hide-details
+          bg-color="background"
+        ></v-text-field>
+      </v-card>
+
+      <v-card class="my-2">
+        <v-textarea
+          v-model="cookbook.description"
+          :label="`${$t('description')}`"
+          color="primary"
+          variant="solo"
+          flat
+          single-line
+          hide-details
+          bg-color="background"
+        ></v-textarea>
+      </v-card>
 
 
+      <v-card class="my-2 flex-grow-1" max-width="200px">
       <v-select
         v-model="cookbook.visibility"
         label="Visibility"
         outlined
-        class="flex-grow-1 mx-2"
         :items="['PRIVATE','PROTECTED','PUBLIC']"
-        variant="outlined"
-        max-width="200px"
         color="primary"
+        variant="solo"
+        flat
+        single-line
+        hide-details
+        bg-color="background"
       ></v-select>
+      </v-card>
 
       <v-icon>
         <v-tooltip

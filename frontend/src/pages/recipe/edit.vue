@@ -2,34 +2,48 @@
   <v-card
   class="mx-auto pa-5 ma-auto my-5"
   max-width="1000px"
+  style="border: 4px solid #0d1821 !important;"
   >
 
 
     <form @submit.prevent="submit" class="mx-auto">
+      <v-card class="my-2">
       <v-text-field
         v-model="recipe.title"
         :label="`${$t('title')}`"
-        class="mx-auto px-3"
+        class="mx-auto"
         color="primary"
         bg-color="background"
         :rules="[rules.max100]"
+        variant="solo"
+        flat
+        single-line
+        hide-details
       ></v-text-field>
+      </v-card>
 
+      <v-card class="my-2">
       <v-textarea
         v-model="recipe.description"
         :label="`${$t('description')}`"
-        class="mx-auto px-3"
+        class="mx-auto"
         color="primary"
         :rules="[rules.max]"
-        variant="outlined"
+        variant="solo"
+        flat
+        hide-details
+        bg-color="background"
       ></v-textarea>
+      </v-card>
 
       <v-col class="py-2" cols="12">
 
         <v-btn-toggle
           v-model="recipe.dishClass"
           color="primary"
-          rounded="xl"
+          bg-color="background"
+          base-color="background"
+          rounded="lg"
           group
           mandatory
         >
@@ -52,48 +66,69 @@
        ></editable-picture>
 
 
+      <v-card class="my-2">
       <v-number-input
         v-model="recipe.yield"
         :label="`${$t('yield')}`"
-        class="mx-auto px-3"
         type="number"
         color="primary"
         :min=1
-        variant="outlined"
+        variant="solo"
+        flat
+        single-line
+        hide-details
+        bg-color="background"
       ></v-number-input>
+      </v-card>
 
+      <v-card class="my-2">
       <v-number-input
         v-model="recipe.preparationTime"
         :label="`${$t('time_preparation')}`"
-        class="mx-auto px-3"
         type="number"
         color="primary"
         :step="5"
         :min=0
-        variant="outlined"
+        variant="solo"
+        flat
+        single-line
+        hide-details
+        bg-color="background"
       ></v-number-input>
+      </v-card>
 
+      <v-card class="my-2">
       <v-number-input
         v-model="recipe.cookingTime"
         :label="`${$t('time_cooking')}`"
-        class="mx-auto px-3"
         type="number"
         color="primary"
         :step="5"
         :min=0
-        variant="outlined"
+        variant="solo"
+        flat
+        single-line
+        hide-details
+        bg-color="background"
       ></v-number-input>
+      </v-card>
 
+      <v-card class="my-2">
       <v-number-input
         v-model="recipe.cookingTemperature"
         :label="`${$t('cooking_temperature')}`"
-        class="mx-auto px-3"
         type="number"
         color="primary"
         :step="5"
         :min=0
-        variant="outlined"
-      ></v-number-input>
+        variant="solo"
+        flat
+        single-line
+        hide-details
+        bg-color="background"
+      >
+      </v-number-input>
+      </v-card>
 
       <!-- Ingredients -->
       <h2 class="my-3" >{{$t("ingredients")}}</h2>
@@ -102,15 +137,15 @@
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
             <v-icon
-              class="mr-2 drag-handle mb-5"
+              class="mr-2 drag-handle"
               color="primary"
               small
             >mdi-drag</v-icon>
 
+            <v-card class="ma-1 flex-grow-1">
             <v-autocomplete
               v-model="recipe.ingredients[index].ingredient"
               :label="`${$t('ingredient')} ${index + 1}`"
-              class="flex-grow-1"
               color="primary"
               :items="autocompleteList[index]"
               item-color="primary"
@@ -119,50 +154,66 @@
               @update:search="(query) => onIngredientAutocompleteChange(query, index)"
               :key="index"
               return-object
-              variant="outlined"
+              variant="solo"
+              flat
+              single-line
+              hide-details
+              bg-color="background"
             ></v-autocomplete>
+            </v-card>
 
+            <v-card class="ma-1 flex-grow-1" max-width="200px">
             <v-select
               v-model="recipe.ingredients[index].unit"
               :label="`${$t('unit')}`"
-              outlined
-              class="flex-grow-1 mx-2"
               :items="units"
-              variant="outlined"
-              max-width="200px"
               color="primary"
               item-title="unit"
               return-object
+              variant="solo"
+              flat
+              single-line
+              hide-details
+              bg-color="background"
             ></v-select>
+            </v-card>
 
+            <v-card class="ma-1 flex-grow-1" max-width="150px">
             <v-number-input
               v-model="recipe.ingredients[index].amount"
               :label="`${$t('amount')}`"
-              outlined
-              class="flex-grow-1"
               type="number"
-              max-width="150px"
               color="primary"
               control-variant="stacked"
               min=0
               item-title="amount"
               return-object
-              variant="outlined"
+              variant="solo"
+              flat
+              single-line
+              hide-details
+              bg-color="background"
             ></v-number-input>
+            </v-card>
 
+            <v-card class="ma-1 flex-grow-1">
             <v-text-field
               v-model="recipe.ingredients[index].complement"
-              class="flex-grow-1 mx-2"
               :label="`${$t('complement')}`"
-              variant="outlined"
+              variant="solo"
+              flat
+              single-line
+              hide-details
+              bg-color="background"
             ></v-text-field>
+            </v-card>
 
             <div>
               <v-btn
                 @click="removeIngredient(index)"
                 icon="mdi-delete"
                 color="primary"
-                class="rounded-lg ml-4 mb-5"
+                class="rounded-lg ml-4"
               ></v-btn>
             </div>
 
@@ -216,7 +267,8 @@
               control-variant="stacked"
               min=0
               variant="outlined"
-            ></v-number-input>
+            >
+            </v-number-input>
 
             <div>
               <v-btn
@@ -267,30 +319,34 @@
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
             <v-icon
-              class="mr-2 drag-handle mb-5"
+              class="mr-2 drag-handle"
               color="primary"
               small
             >mdi-drag</v-icon>
 
             <!-- Editable text field -->
+            <v-card class="my-2 flex-grow-1">
             <v-text-field
-
               v-model="recipe.steps[index]"
               :label="`${$t('step')} ${index + 1}`"
-              class="flex-grow-1"
               color="primary"
               :id="`step_${index}`"
               :rules="[rules.max]"
               @keyup.enter="addStepAt(index)"
               @keyup.delete="deleteStepAt(index)"
-              variant="outlined"
+              variant="solo"
+              flat
+              single-line
+              hide-details
+              bg-color="background"
             ></v-text-field>
+            </v-card>
 
             <v-btn
               @click="removeStep(index)"
               icon="mdi-delete"
               color="primary"
-              class="rounded-lg ml-4 mb-5"
+              class="rounded-lg ml-4"
               tabindex="-1"
             ></v-btn>
           </div>

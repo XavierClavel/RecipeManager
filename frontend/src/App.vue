@@ -10,13 +10,13 @@
       width="250"
       variant="elevated"
       color="#4f4193"
+      style="border: 4px solid #0d1821 !important;"
     >
       <v-list>
         <v-img src="/src/assets/logo.png" class="mx-12 my-8"></v-img>
         <v-list-item class="d-flex justify-center">
           <v-btn
             prepend-icon="mdi-pencil"
-            rounded="pill"
             min-height="50px"
             min-width="200px"
             class="elevation-0"
@@ -26,11 +26,11 @@
             {{$t("new_recipe")}}
           </v-btn>
         </v-list-item>
-        <v-list-item :prepend-icon="ICON_HOME" rounded="xl" link :title="`${$t('home')}`" @click="toHome"></v-list-item>
-        <v-list-item :prepend-icon="ICON_RECIPE" rounded="xl" link :title="`${$t('recipes')}`" @click="toListRecipe(`?user=${userId}&likedBy=${userId}`)"></v-list-item>
-        <v-list-item :prepend-icon="ICON_INGREDIENT" rounded="xl" link :title="`${$t('ingredients')}`" @click="toListIngredient"></v-list-item>
-        <v-list-item :prepend-icon="ICON_COOKBOOK" rounded="xl" link :title="`${$t('cookbooks')}`" @click="toMyCookbooks"></v-list-item>
-        <v-list-item :prepend-icon="ICON_ADMIN" rounded="xl" link :title="`${$t('admin')}`" @click="toUsers"></v-list-item>
+        <v-list-item :prepend-icon="ICON_HOME" link :title="`${$t('home')}`" @click="toHome"></v-list-item>
+        <v-list-item :prepend-icon="ICON_RECIPE" link :title="`${$t('recipes')}`" @click="toListRecipe(`?user=${userId}&likedBy=${userId}`)"></v-list-item>
+        <v-list-item :prepend-icon="ICON_INGREDIENT" link :title="`${$t('ingredients')}`" @click="toListIngredient"></v-list-item>
+        <v-list-item :prepend-icon="ICON_COOKBOOK" link :title="`${$t('cookbooks')}`" @click="toMyCookbooks"></v-list-item>
+        <v-list-item :prepend-icon="ICON_ADMIN" link :title="`${$t('admin')}`" @click="toUsers"></v-list-item>
 
       </v-list>
       <template v-slot:append>
@@ -65,7 +65,7 @@
             </v-avatar>
           </template>
 
-          <v-list base-color="black" bg-color="#0476a3" style="border: 3px solid #0d1821 !important;">
+          <v-list base-color="black" bg-color="menu" style="border: 3px solid #0d1821 !important;">
             <v-list-item prepend-icon="mdi-account-circle" rounded="xl" link :title="`${$t('profile')}`" @click="toMyProfile" ></v-list-item>
             <v-list-item prepend-icon="mdi-cog" rounded="xl" link :title="`${$t('settings')}`" @click="toSettings" ></v-list-item>
             <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link :title="`${$t('about')}`" @click="toHome"></v-list-item>

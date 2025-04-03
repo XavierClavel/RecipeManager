@@ -111,6 +111,7 @@ const updateUrl = () => {
 <template>
   <v-card
     class="ma-2 mr-0 py-2 px-4"
+    style="border: 3px solid #0d1821 !important;"
   >
 
     <v-row class="d-flex justify-space-between align-start">
@@ -121,13 +122,11 @@ const updateUrl = () => {
         <chip-row :values="dishOptions" :action="updateUrl"></chip-row>
 
 
+        <v-card class="my-2 flex-grow-1 ma-1" max-width="400px">
         <v-combobox
           v-model="selectedIngredients"
-          class="flex-grow-1 ma-1"
           color="primary"
-          bg-color="background"
           :items="autocompleteList"
-          item-color="primary"
           item-title="name"
           item-value="id"
           @update:search="(query) => onIngredientAutocompleteChange(query)"
@@ -138,13 +137,17 @@ const updateUrl = () => {
           clearable
           @update:modelValue="updateUrl"
           :label="`${$t('ingredients')}`"
-          max-width="400px"
-          variant="solo-filled"
-          rounded="lg"
+          variant="solo"
+          flat
+          single-line
+          hide-details
+          bg-color="background"
+          base-color="menu"
         >
           <template v-slot:selection="data">
             <v-chip
               size="small"
+              class="text-primary"
               color="primary"
               variant="flat"
             >
@@ -152,6 +155,7 @@ const updateUrl = () => {
             </v-chip>
           </template>
         </v-combobox>
+        </v-card>
 
       </v-col>
 

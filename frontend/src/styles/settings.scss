@@ -35,14 +35,7 @@ $body-font-family: 'Geologica', Comic Sans MS !default;
   border: 3px solid #0d1821 !important;
 }
 
-.v-btn {
+.v-btn:not(.v-number-input button) {
   border: 3px solid #0d1821 !important;
 }
 
-.v-combobox {
-  border: 3px solid #0d1821 !important;
-}
-
-.v-text-field {
-  border: 3px solid #0d1821 !important;
-}

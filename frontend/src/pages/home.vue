@@ -8,11 +8,9 @@
             side="end"
             fill-dot
             dot-color="black"
-            class="mb-8"
-            style="padding-bottom: 50px;"
           >
           <template v-slot:icon>
-            <v-avatar color="primary text-black">
+            <v-avatar color="primary text-black" size="38">
               {{timelineRecipe.length}}
             </v-avatar>
           </template>
