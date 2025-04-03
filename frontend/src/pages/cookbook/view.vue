@@ -1,7 +1,7 @@
 <template>
 
   <v-card
-    class="rounded-xl pa-5 ma-5"
+    class="pa-5 ma-5"
   >
     <v-container class="d-flex flex-row">
       <v-img
@@ -16,7 +16,7 @@
       class="px-3 mx-auto"
       >
         <v-card-title
-          class="text-primary text-h3"
+          class="text-black text-h2 font-weight-bold my-n8"
         >{{ cookbook.title }}</v-card-title>
         <v-card-text>
           {{cookbook.description}}

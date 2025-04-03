@@ -16,7 +16,7 @@ defineProps({
 
 <template>
   <span class="d-flex row align-center justify-center mx-auto">
-    <v-btn class="d-flex pa-8" variant="flat" @click="action">
+    <v-btn class="d-flex pa-8" variant="flat" @click="action" color="background">
     <v-icon
       class="mx-auto px-3 text-h3"
       color="primary"

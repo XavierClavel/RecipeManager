@@ -25,7 +25,7 @@
               <v-card-text>{{date}}</v-card-text>
             </v-card>
           </template>
-            <v-row>
+            <v-row class="my-4">
               <recipe :recipe="recipe" v-for="recipe in timelineRecipe"></recipe>
             </v-row>
 

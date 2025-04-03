@@ -118,7 +118,7 @@ async function login(user) {
       navigateTo(redirectPath)
       deleteCookie("redirectedFrom")
     } else {
-      navigateTo(`/home`)
+      toHome()
     }
     const authStore = useAuthStore();
     authStore.login()

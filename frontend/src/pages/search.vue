@@ -51,9 +51,12 @@ updateSearch()
 <template>
   <v-card
     class="ma-5"
+    color="transparent"
+    style="border:0"
+    variant="flat"
   >
     <v-card-title
-      class="text-primary text-h3"
+      class="text-black text-h2 font-weight-bold"
     >{{$t("users")}}</v-card-title>
   </v-card>
 
@@ -62,9 +65,13 @@ updateSearch()
     </v-row>
   <v-card
     class="ma-5"
+    color="transparent"
+    style="border:0"
+    variant="flat"
+    v-if="recipes?.length"
   >
     <v-card-title
-      class="text-primary text-h3"
+      class="text-black text-h2 font-weight-bold"
     >{{$t("recipes")}}</v-card-title>
   </v-card>
     <v-row class="mx-5">
@@ -72,9 +79,13 @@ updateSearch()
     </v-row>
   <v-card
     class="ma-5"
+    color="transparent"
+    style="border:0"
+    variant="flat"
+    v-if="ingredients?.length"
   >
     <v-card-title
-      class="text-primary text-h3"
+      class="text-black text-h2 font-weight-bold"
     >{{$t("ingredients")}}</v-card-title>
   </v-card>
 

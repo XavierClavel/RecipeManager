@@ -23,7 +23,7 @@ defineProps({
           :src="getCookbookIconUrl(cookbook.id)"
           cover
         ></v-img>
-        <v-card-title class="text-primary">{{ cookbook.title }}</v-card-title>
+        <v-card-title class="text-black">{{ cookbook.title }}</v-card-title>
         <v-row class="px-6 pt-2 pb-5">
           <v-avatar start size="30">
             <v-img :src="getUserIconUrl(cookbook.members[0].id)"></v-img>
