@@ -15,6 +15,7 @@ declare module 'vue' {
     Error: typeof import('./components/Error.vue')['default']
     FollowerDisplay: typeof import('./components/FollowerDisplay.vue')['default']
     FollowersDisplay: typeof import('./components/FollowersDisplay.vue')['default']
+    Ingredient: typeof import('./components/Ingredient.vue')['default']
     InteractiblePictoInfo: typeof import('./components/InteractiblePictoInfo.vue')['default']
     PictoInfo: typeof import('./components/PictoInfo.vue')['default']
     Recipe: typeof import('./components/Recipe.vue')['default']

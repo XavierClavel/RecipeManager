@@ -64,9 +64,16 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.listCookbooks() = get {
         val userId = getIdQueryParam("user")
         val recipeId = getIdQueryParam("recipe")
+        val search = call.request.queryParameters["search"]
         val paging = getPaging()
         val sort = getSort()
-        val cookbook = cookbookService.listCookbooks(paging, sort, userId)
+        val cookbook = cookbookService.listCookbooks(
+            paging,
+            sort,
+            user = userId,
+            recipe = recipeId,
+            search = search,
+        )
         call.respond(cookbook)
     }
 

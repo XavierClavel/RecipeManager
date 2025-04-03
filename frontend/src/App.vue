@@ -10,7 +10,7 @@
       width="250"
       variant="elevated"
       color="#4f4193"
-      style="border: 4px solid #0d1821 !important;"
+      style="border: 3.5px solid #0d1821 !important;"
     >
       <v-list>
         <v-img src="/src/assets/logo.png" class="mx-12 my-8"></v-img>

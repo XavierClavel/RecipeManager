@@ -11,6 +11,7 @@
         height="200px"
         width="200px"
         cover
+        style="border: 3px solid #0d1821 !important;"
       ></v-img>
       <v-container
       class="px-3 mx-auto"

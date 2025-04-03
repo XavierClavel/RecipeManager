@@ -44,12 +44,14 @@ class CookbookService: KoinComponent {
 
     fun getCookbook(id: Long): CookbookInfo = getEntityById(id).toInfo()
 
-    fun listCookbooks(paging: Paging, sort:Sort, user: Long?) : List<CookbookInfo> =
+    fun listCookbooks(paging: Paging, sort:Sort, user: Long?, recipe: Long?, search: String?) : List<CookbookInfo> =
         QCookbook()
             .fetch("users", FetchConfig.ofLazy())
             //.fetch(QCookbook.Alias.users.toString(), "count(*)", FetchConfig.ofLazy())
             //.having().raw("count(users.user.id) >= 0")
             .filterByUser(user)
+            .filterByRecipe(recipe)
+            .filterBySearch(search)
             .findList()
             .map { it.toInfo() }
 
@@ -142,6 +144,9 @@ class CookbookService: KoinComponent {
 
     private fun QCookbook.filterByRecipe(recipeId: Long?) =
         if (recipeId == null) this else this.where().recipes.recipe.id.eq(recipeId)
+
+    private fun QCookbook.filterBySearch(searchString: String?) =
+        if (searchString == null) this else this.title.like("%$searchString%")
 
     fun isMemberOfCookbook(cookbookId: Long, userId: Long): Boolean =
         QCookbookUser()

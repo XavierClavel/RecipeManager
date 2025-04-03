@@ -4,21 +4,29 @@ import {searchUsers, updateUser} from "@/scripts/users";
 import {listRecipes} from "@/scripts/recipes";
 import {useAuthStore} from "@/stores/auth";
 import {searchIngredients} from "@/scripts/ingredients";
+import {searchCookbooks} from "@/scripts/cookbooks";
 
 const route = useRoute()
 const searchQuery = ref(route.query.search || '')
 const users = ref([])
 const recipes = ref([])
 const ingredients = ref([])
+const cookbooks = ref([])
 
 const authStore = useAuthStore()
 const userId = authStore.id
 
 async function updateSearch() {
   console.log(searchQuery.value)
-  updateUsers()
-  updateRecipes()
-  updateIngredients()
+  await updateUsers()
+  await updateRecipes()
+  await updateIngredients()
+  await updateCookbooks()
+}
+
+async function updateCookbooks() {
+  const response = await searchCookbooks(searchQuery.value, 0, 20);
+  cookbooks.value = response.data
 }
 
 async function updateUsers() {
@@ -49,11 +57,16 @@ updateSearch()
 
 </script>
 <template>
+  <v-card-title
+    v-if="!ingredients?.length && !users?.length && !recipes?.length && !cookbooks?.length"
+    class="text-black text-h2 font-weight-bold my-8"
+  >{{$t("no_result")}}</v-card-title>
   <v-card
-    class="ma-5"
+    class="my-5"
     color="transparent"
     style="border:0"
     variant="flat"
+    v-if="users?.length"
   >
     <v-card-title
       class="text-black text-h2 font-weight-bold"
@@ -64,7 +77,7 @@ updateSearch()
       <user v-for="user in users" :user="user"></user>
     </v-row>
   <v-card
-    class="ma-5"
+    class="my-5 mt-16"
     color="transparent"
     style="border:0"
     variant="flat"
@@ -78,7 +91,7 @@ updateSearch()
       <recipe v-for="recipe in recipes" :recipe="recipe"></recipe>
     </v-row>
   <v-card
-    class="ma-5"
+    class="my-5 mt-16"
     color="transparent"
     style="border:0"
     variant="flat"
@@ -88,5 +101,26 @@ updateSearch()
       class="text-black text-h2 font-weight-bold"
     >{{$t("ingredients")}}</v-card-title>
   </v-card>
+
+  <v-row class="mx-5">
+    <ingredient v-for="ingredient in ingredients" :ingredient="ingredient"></ingredient>
+  </v-row>
+
+  <v-card
+    class="my-5 mt-16"
+    color="transparent"
+    style="border:0"
+    variant="flat"
+    v-if="cookbooks?.length"
+  >
+    <v-card-title
+      class="text-black text-h2 font-weight-bold"
+    >{{$t("cookbooks")}}
+    </v-card-title>
+  </v-card>
+
+  <v-row class="mx-5 mb-16">
+    <cookbook v-for="cookbook in cookbooks" :cookbook="cookbook"></cookbook>
+  </v-row>
 
 </template>

@@ -88,5 +88,6 @@ export default {
   nothing_to_display: "Rien à afficher",
 
   welcome: "Bienvenue",
-  welcome_subtext: "Qu'est-ce que tu mijotes aujourd'hui ?"
+  welcome_subtext: "Qu'est-ce que tu mijotes aujourd'hui ?",
+  no_result: "Pas de résultat",
 };

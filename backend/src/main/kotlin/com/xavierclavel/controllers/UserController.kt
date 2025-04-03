@@ -54,8 +54,8 @@ object UserController: Controller(USER_URL) {
     }
 
     private fun Route.listUsers() = get {
-        val searchString = call.request.queryParameters["search"]
-            ?: return@get call.respond(userService.listUsers())
+            val searchString = call.request.queryParameters["search"]
+                ?: return@get call.respond(userService.listUsers())
         call.respond(userService.search(searchString, getPaging()))
     }
 

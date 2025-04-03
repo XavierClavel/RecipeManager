@@ -83,5 +83,6 @@ export default {
   nothing_to_display: "Nothing to display",
 
   welcome: "Welcome",
-  welcome_subtext: "What's cooking, good looking ?"
+  welcome_subtext: "What's cooking, good looking ?",
+  no_result: "No result",
 };

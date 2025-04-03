@@ -148,7 +148,7 @@ const updateUrl = () => {
             <v-chip
               size="small"
               class="text-primary"
-              color="primary"
+                color="primary"
               variant="flat"
             >
               {{ data.item.title }}

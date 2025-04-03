@@ -32,6 +32,7 @@
         height="200px"
         width="200px"
         cover
+        style="border: 3px solid #0d1821;"
       ></v-img>
       <v-container>
         <v-card-title
