@@ -39,7 +39,7 @@
           class="mx-auto px-3 mt-n8 text-black text-h2 font-weight-bold"
         >{{ user.username }}</v-card-title>
         <v-card-text
-          class="mx-auto px-3"
+          class="mx-auto px-3 mt-n4 text-h6 font-weight-light"
         > {{user.bio}} </v-card-text>
         <span class="d-flex flex-row">
           <interactible-picto-info :value="user.recipesCount" :icon="`${ICON_USER_RECIPES}`" :action="redirectRecipesOwned"></interactible-picto-info>

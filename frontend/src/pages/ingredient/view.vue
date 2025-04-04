@@ -1,23 +1,22 @@
 <template>
 
   <v-card
-    class="rounded-xl pa-5 ma-5"
+    class="pa-5 ma-5"
   >
     <v-container class="d-flex flex-row">
 
-      <v-icon
+      <v-img
         color="primary"
-        :src="imageUrl"
         rounded="lg"
         height="200px"
         width="200px"
         cover
-      >{{getIngredientIcon(ingredient.type)}} </v-icon>
+        style="border: 3px solid #0d1821 !important;"
+      ></v-img>
       <v-container
       class="px-3 mx-auto"
       >
         <v-card-title
-          class="text-primary text-h3"
         >{{ ingredient.name }}</v-card-title>
         <v-row class="d-flex flex-row mx-4">
           <v-col class="d-inline-flex" cols="auto">

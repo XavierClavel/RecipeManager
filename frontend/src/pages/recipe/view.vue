@@ -143,6 +143,7 @@
             color="surface"
             icon="mdi-information"
             variant="text"
+            style="border: 0 !important;"
             @click="toViewIngredient(ingredient.id)"
           ></v-btn>
         </template>
@@ -152,7 +153,7 @@
     </v-list>
 
     <v-list v-for="(ingredient, index) in recipe.customIngredients">
-      <v-card color="background">
+      <v-card color="background" class="py-1">
         <v-list-item
           :key="index"
           :subtitle="`${ingredient.amount ? ingredient.amount : ''}${unitToReadable(ingredient.unit)}`"

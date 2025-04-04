@@ -3,7 +3,7 @@
 
     <v-main class="d-flex align-center justify-center" style="min-height: 300px;" >
       <v-card width="100%" max-width="1500px"  class="ma-5">
-        <v-card-title class="text-primary">
+        <v-card-title>
           Ingredients
         </v-card-title>
         <v-btn prepend-icon="mdi-plus-box-outline" color="primary" rounded="lg" flat class="ml-8" @click="newIngredient">New ingredient</v-btn>

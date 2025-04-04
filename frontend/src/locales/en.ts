@@ -52,6 +52,11 @@ export default {
   step: "Step",
   steps_add_new: "Add step",
 
+  users: "Users",
+  user: "User",
+  users_add_new: "Add new user",
+  role: "Role",
+
   cancel: "Cancel",
   save: "Save",
   edit: "Edit",

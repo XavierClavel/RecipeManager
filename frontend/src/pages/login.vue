@@ -8,31 +8,44 @@
 
 
       <form @submit.prevent="submit">
-        <v-card-title class="text-primary text-h3">
+        <v-card-title>
           {{$t("login")}}
         </v-card-title>
         <error :error="errorMessage"></error>
-        <v-text-field
-          v-model="user.username"
-          prepend-icon="mdi-account"
-          :label="`${$t('username')}`"
-          class="mx-auto px-3"
-          color="primary"
-          :rules="[rules.required]"
-        ></v-text-field>
 
-        <v-text-field
-          v-model="user.password"
-          prepend-icon="mdi-lock-outline"
-          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required]"
-          :type="show1 ? 'text' : 'password'"
-          :label="`${$t('password')}`"
-          counter
-          @click:append="show1 = !show1"
-          class="mx-3"
-          @keyup.enter="submit"
-        ></v-text-field>
+        <v-card class="my-2">
+          <v-text-field
+            v-model="user.username"
+            prepend-inner-icon="mdi-account"
+            :label="`${$t('username')}`"
+            color="primary"
+            :rules="[rules.required]"
+            variant="solo"
+            flat
+            single-line
+            hide-details
+            bg-color="background"
+          ></v-text-field>
+        </v-card>
+
+        <v-card class="my-2">
+          <v-text-field
+            v-model="user.password"
+            prepend-inner-icon="mdi-lock-outline"
+            :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="[rules.required]"
+            :type="show1 ? 'text' : 'password'"
+            :label="`${$t('password')}`"
+            counter
+            @click:append-inner="show1 = !show1"
+            @keyup.enter="submit"
+            variant="solo"
+            flat
+            single-line
+            hide-details
+            bg-color="background"
+          ></v-text-field>
+        </v-card>
 
         <v-container>
           <v-row

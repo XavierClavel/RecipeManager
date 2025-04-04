@@ -331,7 +331,7 @@
             <!-- Add a handle for dragging -->
             <v-icon
               class="mr-2 drag-handle"
-              color="primary"
+              color="black"
               small
             >mdi-drag</v-icon>
 

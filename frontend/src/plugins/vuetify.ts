@@ -19,7 +19,7 @@ const customTheme: ThemeDefinition = {
     surface: '#629677',
     primary: '#ff6f59',
     secondary: '#f4b634',
-    error: '#e5d352',
+    error: '#ff6f59',
     info: '#2196F3',
     success: '#4CAF50',
     warning: '#FB8C00',
@@ -40,6 +40,9 @@ export default createVuetify({
     }
   },
   defaults: {
+    VCardTitle: {
+      class: "text-black text-h2 font-weight-bold !important",
+    },
     VCard: {
       rounded: 'lg',
     },

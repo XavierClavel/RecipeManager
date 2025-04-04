@@ -124,6 +124,7 @@ const updateUrl = () => {
 
         <v-card class="my-2 flex-grow-1 ma-1" max-width="400px">
         <v-combobox
+          delimiters=";,"
           v-model="selectedIngredients"
           color="primary"
           :items="autocompleteList"

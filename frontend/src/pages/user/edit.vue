@@ -1,6 +1,6 @@
 <template>
   <v-card
-  class="mx-auto rounded-xl pa-5 ma-auto my-5"
+  class="mx-auto pa-5 ma-auto my-5"
   max-width="1000px"
   >
     <v-container class="d-flex flex-row">
@@ -18,7 +18,7 @@
       ></editable-picture>
       <v-container>
         <v-card-title
-          class="mx-auto px-3 text-primary text-h3"
+          class="mx-auto px-3 text-black text-h2 font-weight-bold"
         >{{ user.username }}</v-card-title>
       </v-container>
 
@@ -26,12 +26,18 @@
 
     <error :error="errorMessage"></error>
 
+    <v-card>
     <v-textarea
         v-model="user.bio"
         label="Description"
-        class="mx-auto px-3"
         color="primary"
+        variant="solo"
+        flat
+        single-line
+        hide-details
+        bg-color="background"
     ></v-textarea>
+    </v-card>
 
     <span class="d-flex align-center justify-center mb-6 mt-6 ga-16" >
       <action-button

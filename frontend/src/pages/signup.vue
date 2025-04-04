@@ -5,53 +5,78 @@
   max-width="1000px"
   >
     <form @submit.prevent="submit" class="mx-auto">
-      <v-card-title class="text-primary text-h3">
+      <v-card-title>
         {{$t("signup")}}
       </v-card-title>
       <error :error="errorMessage"></error>
+
+      <v-card class="my-2">
       <v-text-field
         v-model="user.username"
-        prepend-icon="mdi-account"
+        prepend-inner-icon="mdi-account"
         :label="`${$t('username')}`"
-        class="mx-auto px-3"
         color="primary"
         :rules="[rules.required]"
+        variant="solo"
+        flat
+        hide-details
+        single-line
+        bg-color="background"
       ></v-text-field>
+      </v-card>
 
+      <v-card class="my-2">
       <v-text-field
         v-model="user.mail"
-        prepend-icon="mdi-email-outline"
+        prepend-inner-icon="mdi-email-outline"
         :label="`${$t('mail')}`"
-        class="mx-auto px-3"
         color="primary"
         :rules="[rules.required]"
+        variant="solo"
+        flat
+        hide-details
+        single-line
+        bg-color="background"
       ></v-text-field>
+      </v-card>
 
+      <v-card class="my-2">
       <v-text-field
         v-model="user.password"
-        prepend-icon="mdi-lock-outline"
-        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+        prepend-inner-icon="mdi-lock-outline"
+        :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
         :rules="[rules.required, rules.min]"
         :type="show1 ? 'text' : 'password'"
         hint="At least 8 characters"
         :label="`${$t('password')}`"
         counter
-        @click:append="show1 = !show1"
-        class="mx-3"
+        @click:append-inner="show1 = !show1"
+        variant="solo"
+        flat
+        hide-details
+        single-line
+        bg-color="background"
       ></v-text-field>
+      </v-card>
 
+      <v-card class="my-2">
       <v-text-field
         v-model="password2"
-        prepend-icon="mdi-lock-check-outline"
-        :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+        prepend-inner-icon="mdi-lock-check-outline"
+        :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
         :rules="[rules.required, rules.passwordMatch]"
         :type="show2 ? 'text' : 'password'"
         hint="Passwords must match"
         :label="`${$t('password_confirm')}`"
         counter
-        @click:append="show2 = !show2"
-        class="mx-3"
+        @click:append-inner="show2 = !show2"
+        variant="solo"
+        flat
+        hide-details
+        single-line
+        bg-color="background"
       ></v-text-field>
+      </v-card>
 
       <v-container>
         <v-row

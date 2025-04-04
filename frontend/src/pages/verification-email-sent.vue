@@ -8,7 +8,7 @@
 
 
       <form @submit.prevent="submit">
-        <v-card-title class="text-primary text-h3">
+        <v-card-title>
           {{$t("verification_email_sent_title")}}
         </v-card-title>
         <v-card-text class="my-4">

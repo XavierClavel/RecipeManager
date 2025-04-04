@@ -7,7 +7,7 @@
 
 
     <form @submit.prevent="submit" class="mx-auto">
-      <v-card-title class="text-primary text-h3">
+      <v-card-title>
         Logout
       </v-card-title>
       <v-card-text>

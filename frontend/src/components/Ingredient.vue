@@ -17,14 +17,14 @@ defineProps({
         @click="toViewIngredient(ingredient.id)"
       >
           <v-img
-            color="surface-variant"
+            color="primary"
             height="150px"
             class="mt-n2"
             rounded="t-lg"
             :src="getIngredientIcon(ingredient.type)"
             cover
           ></v-img>
-        <v-card-title class="text-black justify-end">{{ingredient.name}}</v-card-title>
+        <v-card-title class="text-black text-h6 font-weight-regular justify-end">{{ingredient.name}}</v-card-title>
 
     </v-card>
 

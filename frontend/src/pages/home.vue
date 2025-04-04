@@ -1,6 +1,6 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <v-card class="pa-4 d-flex flex-column" color="transparent" style="border:0">
+    <v-card class="pa-4 d-flex flex-column" color="transparent" style="border:0" variant="flat">
     <v-card-title
       class="text-black text-left text-h2 font-weight-bold "
       style="justify-content: flex-start;"

@@ -66,10 +66,10 @@
           </template>
 
           <v-list base-color="black" bg-color="menu" style="border: 3px solid #0d1821 !important;">
-            <v-list-item prepend-icon="mdi-account-circle" rounded="xl" link :title="`${$t('profile')}`" @click="toMyProfile" ></v-list-item>
-            <v-list-item prepend-icon="mdi-cog" rounded="xl" link :title="`${$t('settings')}`" @click="toSettings" ></v-list-item>
-            <v-list-item prepend-icon="mdi-information-slab-circle-outline" rounded="xl" link :title="`${$t('about')}`" @click="toHome"></v-list-item>
-            <v-list-item prepend-icon="mdi-logout" rounded="xl" link :title="`${$t('log_out')}`" @click="logout" ></v-list-item>
+            <v-list-item prepend-icon="mdi-account-circle" link :title="`${$t('profile')}`" @click="toMyProfile" ></v-list-item>
+            <v-list-item prepend-icon="mdi-cog" link :title="`${$t('settings')}`" @click="toSettings" ></v-list-item>
+            <v-list-item prepend-icon="mdi-information-slab-circle-outline" link :title="`${$t('about')}`" @click="toHome"></v-list-item>
+            <v-list-item prepend-icon="mdi-logout" link :title="`${$t('log_out')}`" @click="logout" ></v-list-item>
           </v-list>
         </v-menu>
       </template>

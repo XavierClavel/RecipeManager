@@ -1,18 +1,23 @@
 <template>
   <v-layout class="rounded rounded-md d-flex flex-wrap  justify-space-evenly mt-6">
+    <v-card class="d-flex flex-column pa-0 ma-0" width="100%" color="transparent" variant="flat" style="border:0 !important">
+    <v-card-title>{{$t("cookbooks")}}</v-card-title>
+      <v-card class="d-flex pa-0 ma-0" color="transparent" variant="flat" style="border:0 !important">
     <span v-for="cookbook in cookbooks" class="justify-start ">
       <cookbook :cookbook="cookbook"></cookbook>
     </span>
     <v-btn
-      color="surface"
-      class="ma-4 text-h1 text-primary"
+      color="black"
+      class="ma-4 text-h1 text-black"
       rounded="lg"
-      min-height="300px"
-      width="300px"
+      height="324px"
+      width="250px"
       @click="toCreateCookbook()"
       icon="mdi-plus"
       variant="outlined"
     ></v-btn>
+      </v-card>
+    </v-card>
 
 
   </v-layout>
