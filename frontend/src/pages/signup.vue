@@ -17,11 +17,6 @@
         :label="`${$t('username')}`"
         color="primary"
         :rules="[rules.required]"
-        variant="solo"
-        flat
-        hide-details
-        single-line
-        bg-color="background"
       ></v-text-field>
       </v-card>
 
@@ -32,11 +27,6 @@
         :label="`${$t('mail')}`"
         color="primary"
         :rules="[rules.required]"
-        variant="solo"
-        flat
-        hide-details
-        single-line
-        bg-color="background"
       ></v-text-field>
       </v-card>
 
@@ -51,11 +41,6 @@
         :label="`${$t('password')}`"
         counter
         @click:append-inner="show1 = !show1"
-        variant="solo"
-        flat
-        hide-details
-        single-line
-        bg-color="background"
       ></v-text-field>
       </v-card>
 
@@ -70,11 +55,6 @@
         :label="`${$t('password_confirm')}`"
         counter
         @click:append-inner="show2 = !show2"
-        variant="solo"
-        flat
-        hide-details
-        single-line
-        bg-color="background"
       ></v-text-field>
       </v-card>
 

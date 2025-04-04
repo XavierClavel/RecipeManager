@@ -12,37 +12,28 @@
             <v-btn icon @click="isPanelOpen = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-card-title
-              class="text-primary"
-            >
+            <v-card-title>
               {{ action }}
             </v-card-title>
             <v-text-field
               v-model="selectedIngredient.name"
               label="Name"
-              class="mx-auto px-3"
-              color="primary"
             ></v-text-field>
             <v-select
               v-model="selectedIngredient.type"
               label="Type"
-              class="mx-auto px-3"
-              color="primary"
               :items="ingredientTypes"
             ></v-select>
             <v-number-input
               v-model="selectedIngredient.calories"
               label="Calories"
-              class="mx-auto px-3"
               type="number"
-              color="primary"
               :min=0
               :step="10"
             ></v-number-input>
             <v-number-input
               v-model="selectedIngredient.glucids"
               label="Glucids"
-              class="mx-auto px-3"
               type="number"
               color="primary"
               :min=0
@@ -51,7 +42,6 @@
             <v-number-input
               v-model="selectedIngredient.lipids"
               label="Lipids"
-              class="mx-auto px-3"
               type="number"
               color="primary"
               :min=0
@@ -60,7 +50,6 @@
             <v-number-input
               v-model="selectedIngredient.fibers"
               label="Fibers"
-              class="mx-auto px-3"
               type="number"
               color="primary"
               :min=0
@@ -69,7 +58,6 @@
             <v-number-input
               v-model="selectedIngredient.cholesterol"
               label="Cholesterol"
-              class="mx-auto px-3"
               type="number"
               color="primary"
               :min=0
@@ -78,7 +66,6 @@
             <v-number-input
               v-model="selectedIngredient.sodium"
               label="Sodium"
-              class="mx-auto px-3"
               type="number"
               color="primary"
               :min=0

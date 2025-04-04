@@ -53,10 +53,50 @@ export default createVuetify({
       rounded: 'lg',
     },
     VNumberInput: {
+      variant:"solo",
+      flat: true,
+      hideDetails: true,
+      bgColor: "background",
+      color: "primary",
       VBtn: {
         rounded: 0,
       },
     },
+    VTextField: {
+      variant:"solo",
+      flat: true,
+      hideDetails: true,
+      bgColor: "background",
+      color: "primary",
+    },
+    VTextarea: {
+      variant:"solo",
+      flat: true,
+      hideDetails: true,
+      bgColor: "background",
+      color: "primary",
+    },
+    VSelect: {
+      variant:"solo",
+      flat: true,
+      hideDetails: true,
+      bgColor: "background",
+      color: "primary",
+    },
+    VCombobox: {
+      variant:"solo",
+      flat: true,
+      hideDetails: true,
+      bgColor: "background",
+      color: "primary",
+    },
+    VAutocomplete: {
+      variant:"solo",
+      flat: true,
+      hideDetails: true,
+      bgColor: "background",
+      color: "primary",
+    }
   },
   components: {
     VNumberInput,

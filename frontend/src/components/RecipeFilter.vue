@@ -110,7 +110,7 @@ const updateUrl = () => {
 
 <template>
   <v-card
-    class="ma-2 mr-0 py-2 px-4"
+    class=" py-2 px-4"
     style="border: 3px solid #0d1821 !important;"
   >
 
@@ -126,7 +126,6 @@ const updateUrl = () => {
         <v-combobox
           delimiters=";,"
           v-model="selectedIngredients"
-          color="primary"
           :items="autocompleteList"
           item-title="name"
           item-value="id"
@@ -138,12 +137,6 @@ const updateUrl = () => {
           clearable
           @update:modelValue="updateUrl"
           :label="`${$t('ingredients')}`"
-          variant="solo"
-          flat
-          single-line
-          hide-details
-          bg-color="background"
-          base-color="menu"
         >
           <template v-slot:selection="data">
             <v-chip

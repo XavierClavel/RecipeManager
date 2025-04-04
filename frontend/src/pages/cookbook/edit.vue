@@ -1,6 +1,6 @@
 <template>
   <v-card
-  class="mx-auto rounded-xl pa-5 ma-auto my-5"
+  class="mx-auto pa-5 ma-auto my-5"
   max-width="1000px"
   >
 
@@ -10,12 +10,7 @@
         <v-text-field
           v-model="cookbook.title"
           :label="`${$t('title')}`"
-          color="primary"
-          variant="solo"
-          flat
           single-line
-          hide-details
-          bg-color="background"
         ></v-text-field>
       </v-card>
 
@@ -23,12 +18,7 @@
         <v-textarea
           v-model="cookbook.description"
           :label="`${$t('description')}`"
-          color="primary"
-          variant="solo"
-          flat
           single-line
-          hide-details
-          bg-color="background"
         ></v-textarea>
       </v-card>
 
@@ -37,14 +27,7 @@
       <v-select
         v-model="cookbook.visibility"
         label="Visibility"
-        outlined
         :items="['PRIVATE','PROTECTED','PUBLIC']"
-        color="primary"
-        variant="solo"
-        flat
-        single-line
-        hide-details
-        bg-color="background"
       ></v-select>
       </v-card>
 
@@ -107,7 +90,7 @@
                 @click="removeUser(index)"
                 icon="mdi-delete"
                 color="primary"
-                class="rounded-lg ml-4 mb-5"
+                class="ml-4 mb-5"
               ></v-btn>
             </div>
 
@@ -122,7 +105,6 @@
         prepend-icon="mdi-plus-circle-outline"
         color="primary"
         flat
-        rounded
         class="mb-10"
       >{{$t("users_add_new")}}</v-btn>
 

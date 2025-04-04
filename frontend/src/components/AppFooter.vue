@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="">
-  <v-footer height="40" class="ml-n2 mb-n4" rounded="lg" style="width: 120%; max-width: calc(100% + 24px);" >
+  <v-footer height="40" class="ml-n4 mb-n4" rounded="lg" style="width: 120%; max-width: calc(100% + 24px);" >
     <a
       v-for="item in items"
       :key="item.title"

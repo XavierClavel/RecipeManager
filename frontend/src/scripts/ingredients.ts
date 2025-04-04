@@ -1,6 +1,7 @@
 import apiClient from '@/plugins/axios.js';
 
 export{
+  getIngredient,
   searchIngredients,
   deleteIngredient,
   getCount,
@@ -8,7 +9,9 @@ export{
   updateIngredient,
 }
 
-
+async function getIngredient(id) {
+  return await apiClient.get(`/ingredient/${id}`)
+}
 
 async function searchIngredients(query, page, size) {
   return await apiClient.get(`/ingredient?search=${query}&page=${page}&size=${size}`)

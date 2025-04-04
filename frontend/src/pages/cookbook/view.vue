@@ -1,7 +1,7 @@
 <template>
 
   <v-card
-    class="pa-5 ma-5"
+    class="pa-5"
   >
     <v-container class="d-flex flex-row">
       <v-img

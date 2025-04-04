@@ -19,11 +19,6 @@
           :items="locales"
           item-title="label"
           item-value="value"
-          variant="solo"
-          flat
-          single-line
-          hide-details
-          bg-color="background"
           ></v-select>
         </v-card>
 

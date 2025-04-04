@@ -30,12 +30,6 @@
     <v-textarea
         v-model="user.bio"
         label="Description"
-        color="primary"
-        variant="solo"
-        flat
-        single-line
-        hide-details
-        bg-color="background"
     ></v-textarea>
     </v-card>
 

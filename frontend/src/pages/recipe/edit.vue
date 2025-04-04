@@ -11,14 +11,7 @@
       <v-text-field
         v-model="recipe.title"
         :label="`${$t('title')}`"
-        class="mx-auto"
-        color="primary"
-        bg-color="background"
         :rules="[rules.max100]"
-        variant="solo"
-        flat
-        single-line
-        hide-details
       ></v-text-field>
       </v-card>
 
@@ -26,13 +19,7 @@
       <v-textarea
         v-model="recipe.description"
         :label="`${$t('description')}`"
-        class="mx-auto"
-        color="primary"
         :rules="[rules.max]"
-        variant="solo"
-        flat
-        hide-details
-        bg-color="background"
       ></v-textarea>
       </v-card>
 
@@ -74,11 +61,6 @@
         type="number"
         color="primary"
         :min=1
-        variant="solo"
-        flat
-        single-line
-        hide-details
-        bg-color="background"
       ></v-number-input>
       </v-card>
 
@@ -87,14 +69,8 @@
         v-model="recipe.preparationTime"
         :label="`${$t('time_preparation')}`"
         type="number"
-        color="primary"
         :step="5"
         :min=0
-        variant="solo"
-        flat
-        single-line
-        hide-details
-        bg-color="background"
       ></v-number-input>
       </v-card>
 
@@ -103,14 +79,8 @@
         v-model="recipe.cookingTime"
         :label="`${$t('time_cooking')}`"
         type="number"
-        color="primary"
         :step="5"
         :min=0
-        variant="solo"
-        flat
-        single-line
-        hide-details
-        bg-color="background"
       ></v-number-input>
       </v-card>
 
@@ -119,14 +89,8 @@
         v-model="recipe.cookingTemperature"
         :label="`${$t('cooking_temperature')}`"
         type="number"
-        color="primary"
         :step="5"
         :min=0
-        variant="solo"
-        flat
-        single-line
-        hide-details
-        bg-color="background"
       >
       </v-number-input>
       </v-card>
@@ -155,11 +119,6 @@
               @update:search="(query) => onIngredientAutocompleteChange(query, index)"
               :key="index"
               return-object
-              variant="solo"
-              flat
-              single-line
-              hide-details
-              bg-color="background"
             ></v-autocomplete>
             </v-card>
 
@@ -171,11 +130,6 @@
               color="primary"
               item-title="unit"
               return-object
-              variant="solo"
-              flat
-              single-line
-              hide-details
-              bg-color="background"
             ></v-select>
             </v-card>
 
@@ -189,11 +143,6 @@
               min=0
               item-title="amount"
               return-object
-              variant="solo"
-              flat
-              single-line
-              hide-details
-              bg-color="background"
             ></v-number-input>
             </v-card>
 
@@ -201,11 +150,6 @@
             <v-text-field
               v-model="recipe.ingredients[index].complement"
               :label="`${$t('complement')}`"
-              variant="solo"
-              flat
-              single-line
-              hide-details
-              bg-color="background"
             ></v-text-field>
             </v-card>
 
@@ -243,11 +187,6 @@
               item-color="primary"
               :key="index"
               :rules="[rules.max50]"
-              variant="solo"
-              flat
-              single-line
-              hide-details
-              bg-color="background"
             ></v-text-field>
             </v-card>
 
@@ -257,12 +196,6 @@
               :label="`${$t('unit')}`"
               outlined
               :items="units"
-              color="primary"
-              variant="solo"
-              flat
-              single-line
-              hide-details
-              bg-color="background"
             ></v-select>
             </v-card>
 
@@ -274,11 +207,6 @@
               color="primary"
               control-variant="stacked"
               min=0
-              variant="solo"
-              flat
-              single-line
-              hide-details
-              bg-color="background"
             >
             </v-number-input>
             </v-card>
@@ -340,16 +268,10 @@
             <v-text-field
               v-model="recipe.steps[index]"
               :label="`${$t('step')} ${index + 1}`"
-              color="primary"
               :id="`step_${index}`"
               :rules="[rules.max]"
               @keyup.enter="addStepAt(index)"
               @keyup.delete="deleteStepAt(index)"
-              variant="solo"
-              flat
-              single-line
-              hide-details
-              bg-color="background"
             ></v-text-field>
             </v-card>
 

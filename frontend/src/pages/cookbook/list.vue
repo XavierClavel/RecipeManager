@@ -15,6 +15,7 @@
       @click="toCreateCookbook()"
       icon="mdi-plus"
       variant="outlined"
+      style="border: 4px solid #0d1821 !important;"
     ></v-btn>
       </v-card>
     </v-card>

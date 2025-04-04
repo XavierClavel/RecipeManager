@@ -108,7 +108,7 @@
     </v-container>
     </v-main>
 
-    <v-main class="ma-2 ml-6 mr-4 mt-0">
+    <v-main class="ma-2 ml-8 mr-4 mt-2">
       <router-view />
     </v-main>
 

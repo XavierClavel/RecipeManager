@@ -121,7 +121,7 @@
       ></v-btn>
     </span>
 
-    <v-container>
+    <v-container v-if="recipe?.ingredients?.length || recipe?.customIngredients?.length">
 
       <h2 class="my-3" >Ingredients</h2>
 
@@ -172,7 +172,7 @@
 
     </v-container>
 
-      <v-container v-if="recipe.steps.length > 0">
+      <v-container v-if="recipe?.steps?.length">
 
       <h2 class="my-3" >Steps</h2>
 

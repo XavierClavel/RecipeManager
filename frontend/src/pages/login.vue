@@ -18,13 +18,7 @@
             v-model="user.username"
             prepend-inner-icon="mdi-account"
             :label="`${$t('username')}`"
-            color="primary"
             :rules="[rules.required]"
-            variant="solo"
-            flat
-            single-line
-            hide-details
-            bg-color="background"
           ></v-text-field>
         </v-card>
 
@@ -39,11 +33,7 @@
             counter
             @click:append-inner="show1 = !show1"
             @keyup.enter="submit"
-            variant="solo"
-            flat
             single-line
-            hide-details
-            bg-color="background"
           ></v-text-field>
         </v-card>
 

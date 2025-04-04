@@ -20,7 +20,7 @@
   </v-card>
 
   <v-card
-  class="mx-auto pa-5 ma-auto my-5"
+  class="mx-auto pa-5"
   max-width="1000px"
   v-if="!displayError"
   >
