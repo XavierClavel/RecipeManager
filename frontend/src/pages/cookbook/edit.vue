@@ -27,19 +27,10 @@
       <v-select
         v-model="cookbook.visibility"
         label="Visibility"
-        :items="['PRIVATE','PROTECTED','PUBLIC']"
+        :item-props="true"
+        :items="visibilityOptions"
       ></v-select>
       </v-card>
-
-      <v-icon>
-        <v-tooltip
-          activator="parent"
-          location="end"
-        >Tooltip</v-tooltip>
-        mdi-information
-      </v-icon>
-
-
 
        <editable-picture
          path="image/cookbooks"
@@ -47,6 +38,7 @@
          ref="editablePicture"
          width="600px"
          height="600px"
+         class="my-2"
        ></editable-picture>
 
       <!-- Ingredients -->
@@ -142,6 +134,7 @@ import {getUserIconUrl, toViewCookbook} from "@/scripts/common";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {searchUsers} from "@/scripts/users";
 import {addRecipeToCookbook, createCookbook, editCookbook, getCookbook, getCookbookUsers} from "@/scripts/cookbooks";
+import {ICON_VISIBILITY_PRIVATE, ICON_VISIBILITY_PROTECTED, ICON_VISIBILITY_PUBLIC} from "@/scripts/icons";
 
 
 
@@ -150,6 +143,23 @@ const route = useRoute();
 let cookbookId = ref(route.query.cookbook)
 let addRecipeId = route.query.addRecipe
 const editablePicture = ref(null)
+const visibilityOptions = ref([
+  {
+    title: 'Private',
+    prependIcon: ICON_VISIBILITY_PRIVATE,
+    slim: true,
+  },
+  {
+    title: 'Protected',
+    prependIcon: ICON_VISIBILITY_PROTECTED,
+    slim: true,
+  },
+  {
+    title: 'Public',
+    prependIcon: ICON_VISIBILITY_PUBLIC,
+    slim: true,
+  },
+])
 
 
 const autocompleteList = ref([])

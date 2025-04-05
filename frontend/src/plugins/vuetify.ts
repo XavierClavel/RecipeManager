@@ -86,6 +86,7 @@ export default createVuetify({
       menuProps: {
         contentClass: 'custom-select-menu'
       },
+      class: "custom-list",
     },
     VCombobox: {
       variant:"solo",

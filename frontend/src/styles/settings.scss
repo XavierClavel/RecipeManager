@@ -43,3 +43,13 @@ $body-font-family: 'Geologica', Comic Sans MS !default;
   background-color: black;
   color: white;
 }
+
+.v-overlay__content .v-list {
+  background-color: #f0f4ef !important;
+  border: 3px solid #0d1821 !important;
+}
+
+.v-list .v-list-item--active {
+  background-color: #ff6f59 !important;
+  color: white !important;
+}

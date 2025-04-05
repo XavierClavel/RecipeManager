@@ -37,6 +37,9 @@ export {
 
   ICON_LOCALIZATION,
 
+  ICON_VISIBILITY_PRIVATE,
+  ICON_VISIBILITY_PROTECTED,
+  ICON_VISIBILITY_PUBLIC,
 
   getIngredientIcon,
 }
@@ -82,6 +85,10 @@ const ICON_DENY = "mdi-close"
 const ICON_LOCALIZATION = "mdi-translate"
 
 const ICON_INTEGRATION = "mdi-xml"
+
+const ICON_VISIBILITY_PRIVATE = "mdi-lock"
+const ICON_VISIBILITY_PROTECTED = "mdi-account-group"
+const ICON_VISIBILITY_PUBLIC = "mdi-eye"
 
 const getIngredientIcon = (ingredientType) => {
   switch (ingredientType) {
