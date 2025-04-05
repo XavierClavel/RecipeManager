@@ -15,12 +15,29 @@
         <v-card class="my-2">
           <v-select
           v-model="locale"
-          prepend-inner-icon="mdi-translate"
+          :prepend-inner-icon="ICON_LOCALIZATION"
           :items="locales"
           item-title="label"
           item-value="value"
           ></v-select>
         </v-card>
+
+        <v-checkbox
+          prepend-icon="mdi-eye"
+          label="Is account public"
+          color="primary"
+          base-color="black"
+          bg-color="background"
+          variant="elevated"
+        ></v-checkbox>
+
+        <v-checkbox
+          prepend-icon="mdi-translate"
+          label="Auto accept follow requests"
+          color="primary"
+          base-color="black"
+          variant="elevated"
+        ></v-checkbox>
 
         <v-container>
           <v-row
@@ -51,7 +68,7 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import {login, toSignup} from '@/scripts/common'
 import {useI18n} from "vue-i18n";
-import {ICON_SAVE} from "@/scripts/icons";
+import {ICON_LOCALIZATION, ICON_SAVE} from "@/scripts/icons";
 import {forceLocale, getLocale} from "@/scripts/localization";
 
 // Get the route object

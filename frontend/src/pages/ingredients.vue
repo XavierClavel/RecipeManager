@@ -3,7 +3,7 @@
 
     <v-main class="d-flex align-center justify-center" style="min-height: 300px;" >
       <v-card width="100%" max-width="1500px"  class="ma-5">
-        <v-card-title>
+        <v-card-title class="text-h7">
           Ingredients
         </v-card-title>
         <v-btn prepend-icon="mdi-plus-box-outline" color="primary" rounded="lg" flat class="ml-8" @click="newIngredient">New ingredient</v-btn>
@@ -15,15 +15,22 @@
             <v-card-title>
               {{ action }}
             </v-card-title>
+            <v-card class="my-2">
             <v-text-field
               v-model="selectedIngredient.name"
               label="Name"
             ></v-text-field>
+            </v-card>
+
+            <v-card class="my-2">
             <v-select
               v-model="selectedIngredient.type"
               label="Type"
               :items="ingredientTypes"
             ></v-select>
+            </v-card>
+
+            <v-card class="my-2">
             <v-number-input
               v-model="selectedIngredient.calories"
               label="Calories"
@@ -31,6 +38,9 @@
               :min=0
               :step="10"
             ></v-number-input>
+            </v-card>
+
+            <v-card class="my-2">
             <v-number-input
               v-model="selectedIngredient.glucids"
               label="Glucids"
@@ -39,6 +49,9 @@
               :min=0
               :step="1"
             ></v-number-input>
+            </v-card>
+
+            <v-card class="my-2">
             <v-number-input
               v-model="selectedIngredient.lipids"
               label="Lipids"
@@ -47,6 +60,9 @@
               :min=0
               :step="1"
             ></v-number-input>
+            </v-card>
+
+            <v-card class="my-2">
             <v-number-input
               v-model="selectedIngredient.fibers"
               label="Fibers"
@@ -55,6 +71,9 @@
               :min=0
               :step="1"
             ></v-number-input>
+            </v-card>
+
+            <v-card class="my-2">
             <v-number-input
               v-model="selectedIngredient.cholesterol"
               label="Cholesterol"
@@ -63,6 +82,9 @@
               :min=0
               :step="1"
             ></v-number-input>
+            </v-card>
+
+            <v-card class="my-2">
             <v-number-input
               v-model="selectedIngredient.sodium"
               label="Sodium"
@@ -71,6 +93,7 @@
               :min=0
               :step="1"
             ></v-number-input>
+            </v-card>
             <span class="d-flex flex-row align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
           icon="mdi-close-circle-outline"

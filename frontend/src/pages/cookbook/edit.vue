@@ -51,46 +51,53 @@
 
       <!-- Ingredients -->
       <h2 class="my-3" >{{$t("users")}}</h2>
-      <draggable v-model="cookbook.users" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
+      <draggable v-model="members" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
             <!-- Add a handle for dragging -->
             <v-icon
-              class="mr-2 drag-handle mb-5"
-              color="primary"
+              class="mr-2 drag-handle"
+              color="black"
               small
             >mdi-drag</v-icon>
 
+            <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;" class="mr-2">
+              <v-img
+                color="surface-variant"
+                :src="getUserIconUrl(members[index].id)"
+                cover
+                v-bind="props"
+                class="clickable_image"
+              ></v-img>
+            </v-avatar>
+
+            <v-card class="flex-grow-1 mr-2">
             <v-autocomplete
-              v-model="cookbook.users[index].username"
+              v-model="members[index].id"
               :label="`${$t('user')} ${index + 1}`"
-              class="flex-grow-1"
-              color="primary"
               :items="autocompleteList[index]"
               item-color="primary"
               item-title="username"
               item-value="id"
-              @update:search="(query) => onIngredientAutocompleteChange(query, index)"
+              @update:search="(query) => onAutocompleteChange(query, index)"
               :key="index"
             ></v-autocomplete>
+            </v-card>
 
+            <v-card class="flex-grow-1" max-width="200px">
             <v-select
-              v-model="cookbook.users[index].role"
+              v-model="members[index].role"
               :label="`${$t('role')}`"
-              outlined
-              class="flex-grow-1 mx-2"
-              :items="['READER','WRITER','OWNER']"
-              variant="outlined"
-              max-width="200px"
-              color="primary"
+              :items="['USER','ADMIN']"
             ></v-select>
+            </v-card>
 
             <div>
               <v-btn
                 @click="removeUser(index)"
                 icon="mdi-delete"
                 color="primary"
-                class="ml-4 mb-5"
+                class="ml-4"
               ></v-btn>
             </div>
 
@@ -130,10 +137,10 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
-import {toViewCookbook} from "@/scripts/common";
+import {getUserIconUrl, toViewCookbook} from "@/scripts/common";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {searchUsers} from "@/scripts/users";
-import {addRecipeToCookbook, createCookbook, editCookbook, getCookbook} from "@/scripts/cookbooks";
+import {addRecipeToCookbook, createCookbook, editCookbook, getCookbook, getCookbookUsers} from "@/scripts/cookbooks";
 
 
 
@@ -146,7 +153,7 @@ const editablePicture = ref(null)
 
 const autocompleteList = ref([])
 
-const onIngredientAutocompleteChange = async (query, index) => {
+const onAutocompleteChange = async (query, index) => {
   const response = await searchUsers(query, 0, 20);
   autocompleteList.value[index] = response.data;
 }
@@ -155,22 +162,24 @@ const onIngredientAutocompleteChange = async (query, index) => {
 const cookbook = ref<object>({
   title: "",
   description: "",
-  users: [],
 })
+
+const members = ref([])
 
 
 
 const addUser = () => {
-  cookbook.value.users.push({});
+  members.value.push({username: "",role: "USER"});
 }
 
 
 const removeUser = (index) => {
-  cookbook.value.users.splice(index,1);
+  members.value.splice(index,1);
 }
 
 
 async function submit() {
+  console.log(members.value)
   const submitted = {}
   submitted["title"] = cookbook.value.title
   submitted["description"] = cookbook.value.description
@@ -202,6 +211,12 @@ if (cookbookId.value != null) {
   }).finally(function () {
     // always executed
   });
+
+  getCookbookUsers(cookbookId.value).then(
+    function (response) {
+      members.value = response.data
+    }
+  )
 }
 
 

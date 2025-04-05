@@ -24,7 +24,8 @@ const customTheme: ThemeDefinition = {
     success: '#4CAF50',
     warning: '#FB8C00',
     'on-surface': "#000000", // Default text color
-    'menu': "#0476a3"
+    'menu': "#0476a3",
+    'border': "#0d1821",
   },
   variables: {
     fontFamily: 'Geologica, sans-serif',
@@ -82,6 +83,9 @@ export default createVuetify({
       hideDetails: true,
       bgColor: "background",
       color: "primary",
+      menuProps: {
+        contentClass: 'custom-select-menu'
+      },
     },
     VCombobox: {
       variant:"solo",

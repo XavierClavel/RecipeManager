@@ -10,6 +10,8 @@ export {
 
   addRecipeToCookbook,
   removeRecipeFromCookbook,
+
+  getCookbookUsers,
 }
 
 async function getCookbook(id) {
@@ -42,4 +44,8 @@ async function removeRecipeFromCookbook(cookbookId, recipeId) {
 
 async function searchCookbooks(search) {
   return await apiClient.get(`cookbook?search=${search}`)
+}
+
+async function getCookbookUsers(cookbookId) {
+  return await apiClient.get(`/cookbook/${cookbookId}/users`)
 }

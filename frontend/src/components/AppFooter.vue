@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="">
-  <v-footer height="40" class="ml-n4 mb-n4" rounded="lg" style="width: 120%; max-width: calc(100% + 24px);" >
+  <v-footer height="40" class="ml-n4 mb-n2" rounded="lg" style="width: 120%; max-width: calc(100% + 30px);" >
     <a
       v-for="item in items"
       :key="item.title"
@@ -20,7 +20,7 @@
       class="text-caption text-disabled"
       style="position: absolute; right: 16px;"
     >
-      &copy; {{ (new Date()).getFullYear() }} <span class="d-none d-sm-inline-block">Xavier Clavel</span>
+      &copy; {{ (new Date()).getFullYear() }} <span class="d-none d-sm-inline-block">Xavier Clavel / Léo Duclos</span>
       —
       <a
         class="text-decoration-none on-surface"

@@ -255,7 +255,7 @@
       <h2 class="my-3" >{{$t("steps")}}</h2>
       <draggable v-model="recipe.steps" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
-          <div class="d-flex align-center mb-2">
+          <div class="d-flex align-center">
             <!-- Add a handle for dragging -->
             <v-icon
               class="mr-2 drag-handle"
@@ -292,7 +292,7 @@
         prepend-icon="mdi-plus-circle-outline"
         color="primary"
         flat
-        class="mb-10"
+        class="mb-10 mt-2"
       >{{$t("steps_add_new")}}</v-btn>
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >

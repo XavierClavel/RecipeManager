@@ -35,6 +35,8 @@ export {
   ICON_ACCEPT,
   ICON_DENY,
 
+  ICON_LOCALIZATION,
+
 
   getIngredientIcon,
 }
@@ -76,6 +78,8 @@ const ICON_NOTIFICATION_NEW = "mdi-bell-badge"
 const ICON_REMOVE = "mdi-delete"
 const ICON_ACCEPT = "mdi-check"
 const ICON_DENY = "mdi-close"
+
+const ICON_LOCALIZATION = "mdi-translate"
 
 const ICON_INTEGRATION = "mdi-xml"
 
