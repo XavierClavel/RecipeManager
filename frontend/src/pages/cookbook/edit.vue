@@ -73,7 +73,7 @@
 
             <v-card class="flex-grow-1 mr-2">
             <v-autocomplete
-              v-model="members[index].id"
+              v-model="members[index]"
               :label="`${$t('user')} ${index + 1}`"
               :items="autocompleteList[index]"
               item-color="primary"
@@ -81,6 +81,7 @@
               item-value="id"
               @update:search="(query) => onAutocompleteChange(query, index)"
               :key="index"
+              return-object
             ></v-autocomplete>
             </v-card>
 
@@ -156,6 +157,7 @@ const autocompleteList = ref([])
 const onAutocompleteChange = async (query, index) => {
   const response = await searchUsers(query, 0, 20);
   autocompleteList.value[index] = response.data;
+  console.log(response.data)
 }
 
 
