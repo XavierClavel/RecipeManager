@@ -149,9 +149,8 @@ class RecipeVisibilityTest: ApplicationTest() {
         recipeId!!
         followService.createFollow(userService.getUserByUsername("user3")!!.id, userService.getUserByUsername(USER1)!!.id)
         runAsUser1 {
-            client.listRecipesRaw(user = userService.getUserByUsername("user3")!!.id).apply {
-                assertEquals(HttpStatusCode.Forbidden, status)
-            }
+            val result = client.listRecipes(user = userService.getUserByUsername("user3")!!.id)
+            assertEquals(0, result.size)
         }
     }
 
@@ -194,9 +193,8 @@ class RecipeVisibilityTest: ApplicationTest() {
             recipeId = client.createRecipe(recipeDTO).id
         }
         runAsUser1 {
-            client.listRecipesRaw(user = userService.getUserByUsername("user3")!!.id).apply {
-                assertEquals(HttpStatusCode.Forbidden, status)
-            }
+            val result = client.listRecipes(user = userService.getUserByUsername("user3")!!.id)
+            assertEquals(0, result.size)
         }
     }
 
@@ -219,9 +217,8 @@ class RecipeVisibilityTest: ApplicationTest() {
         runAs("user3") {
             recipeId = client.createRecipe(recipeDTO).id
         }
-        client.listRecipesRaw(user = userService.getUserByUsername("user3")!!.id).apply {
-            assertEquals(HttpStatusCode.Forbidden, status)
-        }
+            val result = client.listRecipes(user = userService.getUserByUsername("user3")!!.id)
+            assertEquals(0, result.size)
     }
 
     //TODO: cookbook recipes visibility/rights

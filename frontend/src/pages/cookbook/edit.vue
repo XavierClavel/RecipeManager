@@ -156,19 +156,16 @@ const visibilityOptions = ref([
     title: 'Private',
     value: 'PRIVATE',
     prependIcon: ICON_VISIBILITY_PRIVATE,
-    slim: true,
   },
   {
     title: 'Protected',
     value: 'PROTECTED',
     prependIcon: ICON_VISIBILITY_PROTECTED,
-    slim: true,
   },
   {
     title: 'Public',
     value: 'PUBLIC',
     prependIcon: ICON_VISIBILITY_PUBLIC,
-    slim: true,
   },
 ])
 
@@ -226,7 +223,7 @@ async function submit() {
     await editCookbook(cookbookId.value, submitted)
   }
 
-  const membersInput = members.value.map(item => ({ id: item.id, isAdmin: item.role == "ADMIN" }))
+  const membersInput = members.value.filter(item => item.id != null).map(item => ({ id: item.id, isAdmin: item.role == "ADMIN" }))
   await setCookbookUsers(cookbookId.value, membersInput)
 
   await editablePicture.value.submitImage()

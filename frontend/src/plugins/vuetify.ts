@@ -101,6 +101,12 @@ export default createVuetify({
       hideDetails: true,
       bgColor: "background",
       color: "primary",
+    },
+    VListItem: {
+      slim: true,
+    },
+    VList: {
+      slim: true,
     }
   },
   components: {

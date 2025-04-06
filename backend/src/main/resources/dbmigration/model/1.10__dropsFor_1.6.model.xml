@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply" dropsFor="1.6">
+        <dropColumn columnName="is_public" tableName="cookbooks"/>
+        <dropColumn columnName="pending" tableName="cookbook_users"/>
+    </changeSet>
+</migration>

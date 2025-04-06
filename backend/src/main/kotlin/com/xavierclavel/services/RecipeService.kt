@@ -41,29 +41,13 @@ class RecipeService: KoinComponent {
         sort: Sort,
         recipeFilter: RecipeFilter,
     ) : List<RecipeInfo> {
-        if (recipeFilter.user != null && !QUser()
-                .id.eq(recipeFilter.user)
-                .or()
-                .isAccountPublic.isTrue // Public recipe
-                .apply {
-                    if (requestorId != null) {
-                        id.eq(requestorId) // Owner can see
-                        .and()
-                            .followers.follower.id.eq(requestorId)
-                            .followers.pending.isFalse //Requestor follows owner
-                        endAnd()
-                    }
-                }
-                .endOr()
-                .exists()) {
-            throw ForbiddenException(ForbiddenCause.NOT_ALLOWED_TO_SEE_USER)
-        }
 
         return QRecipe()
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
-            .having().raw("count(likes.id) >= 0") // Ensure recipes with no likes are included
             .filter(recipeFilter)
             .filterOutDeletion(requestorId)
+            .filterByVisibility(requestorId)
+            .having().raw("count(likes.id) >= 0") // Ensure recipes with no likes are included
             .setPaging(paging)
             .sort(sort)
             .findList()
@@ -85,20 +69,30 @@ class RecipeService: KoinComponent {
             .exists()
 
     fun QRecipe.filterByVisibility(userId: Long?): QRecipe {
+        val q = this.fetch("owner")
+
         if (userId == null) {
-            return QRecipe().owner.isAccountPublic.isTrue.endOr() // Only return public recipes
+            // Anonymous users: only public recipes
+            return q.where().owner.isAccountPublic.isTrue
         }
 
-        return this
-            .or()
-            .owner.isAccountPublic.isTrue // Public recipe
-            .owner.id.eq(userId) // Owner can see
-            .and()
-                .owner.followers.follower.id.eq(userId)
-                .owner.followers.pending.isFalse
-            .endAnd() //Requestor follows owner
-            .likes.user.id.eq(userId) // User liked the recipe
-            .cookbooks.cookbook.users.user.id.eq(userId) // User has access via a cookbook
+        return q.where().or()
+            .owner.id.eq(userId) // Owner
+            .owner.isAccountPublic.isTrue // Public
+            .and() // Follower (accepted)
+            .owner.followers.follower.id.eq(userId)
+            .owner.followers.pending.isFalse
+            .endAnd()
+            .exists("select 1 from likes l where l.recipe_id = t0.id and l.user_id = ?", userId)
+            .exists("""
+                select 1 
+                from cookbook_recipes cr
+                join cookbooks c on c.id = cr.cookbook_id
+                join cookbook_users cu on cu.cookbook_id = c.id
+                where cr.recipe_id = t0.id
+                and cu.user_id = ?
+                """.trimIndent(), userId
+            )
             .endOr()
     }
 
@@ -212,7 +206,7 @@ class RecipeService: KoinComponent {
             .where().raw("""
                 EXISTS (
                     SELECT 1 FROM cookbook_recipes cr 
-                    WHERE cr.recipe_id = t0.id 
+                    WHERE cr.recipe_id = ${QRecipe.Alias.id}
                     AND cr.cookbook_id = ?
                 )""".trimIndent(), cookbookId)
             //.where().cookbooks.cookbook.id.eq(cookbookId)
@@ -225,7 +219,7 @@ class RecipeService: KoinComponent {
                 FROM cookbook_recipes cr
                 JOIN cookbooks c ON cr.cookbook_id = c.id
                 JOIN cookbook_users cu ON cu.cookbook_id = c.id
-                WHERE cr.recipe_id = t0.id
+                WHERE cr.recipe_id = ${QRecipe.Alias.id}
                 AND cu.user_id = ?
             )""".trimIndent(), userId)
 
@@ -256,7 +250,7 @@ class RecipeService: KoinComponent {
                 SELECT 1
                 FROM recipe_ingredients ri
                 JOIN ingredients i ON ri.ingredient_id = i.id
-                WHERE ri.recipe_id = t0.id
+                WHERE ri.recipe_id = ${QRecipe.Alias.id}
                 AND i.id = ANY(?)
                 GROUP BY ri.recipe_id
                 HAVING COUNT(DISTINCT i.id) = ?
