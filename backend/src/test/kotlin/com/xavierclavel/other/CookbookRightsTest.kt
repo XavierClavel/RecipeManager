@@ -54,15 +54,39 @@ class CookbookRightsTest: ApplicationTest() {
     }
 
     @Test
-    fun `user member of cookbook can remove recipe`() = runTest{
+    fun `user member of cookbook who added recipe can remove recipe`() = runTest{
         var recipe: RecipeInfo? = null
         var cookbook: CookbookInfo? = null
+        runAsAdmin {
+            cookbook = client.createCookbook()
+            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER1)!!.id, false)
+            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+        }
         runAsUser1 {
             recipe = client.createRecipe(recipeDTO)
-            cookbook = client.createCookbook()
-            client.addCookbookRecipe(cookbook.id, recipe.id)
+            client.addCookbookRecipe(cookbook!!.id, recipe.id)
             client.deleteCookbookRecipe(cookbook.id, recipe.id).apply {
-                assertEquals(status, HttpStatusCode.OK)
+                assertEquals(HttpStatusCode.OK, status)
+            }
+        }
+    }
+
+    @Test
+    fun `user member of cookbook who did not add recipe cannot remove recipe`() = runTest{
+        var recipe: RecipeInfo? = null
+        var cookbook: CookbookInfo? = null
+        runAsAdmin {
+            cookbook = client.createCookbook()
+            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER1)!!.id, false)
+            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+        }
+        runAsUser1 {
+            recipe = client.createRecipe(recipeDTO)
+            client.addCookbookRecipe(cookbook!!.id, recipe.id)
+        }
+        runAsUser2 {
+            client.deleteCookbookRecipe(cookbook!!.id, recipe!!.id).apply {
+                assertEquals(HttpStatusCode.Forbidden, status)
             }
         }
     }

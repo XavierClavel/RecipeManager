@@ -214,4 +214,12 @@ class CookbookService: KoinComponent {
             .user.id.eq(userId)
             .isAdmin.isTrue
             .exists()
+
+    fun getCookbookRecipeAdder(cookbookId: Long, recipeId: Long) =
+        QCookbookRecipe()
+            .cookbook.id.eq(cookbookId)
+            .recipe.id.eq(recipeId)
+            .findOne()
+            ?.addedBy?.id
+            ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
 }

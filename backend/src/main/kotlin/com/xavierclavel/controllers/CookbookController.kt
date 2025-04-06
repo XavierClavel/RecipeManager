@@ -166,6 +166,9 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val recipeId = getIdPathVariable("recipe") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
         val userId = getSessionUserId()
         if (!cookbookService.isMemberOfCookbook(cookbookId, userId)) throw ForbiddenException(ForbiddenCause.NOT_MEMBER_OF_COOKBOOK)
+        if (!cookbookService.isAdminOfCookbook(cookbookId, userId) && cookbookService.getCookbookRecipeAdder(cookbookId, recipeId) != userId) {
+            throw ForbiddenException(ForbiddenCause.NOT_ALLOWED_TO_REMOVE_RECIPE)
+        }
         handleDeletion(cookbookService.removeRecipeFromCookbook(cookbookId, recipeId))
     }
 
