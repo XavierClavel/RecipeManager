@@ -14,6 +14,7 @@ import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.Extensions.page
 import common.dto.CookbookDTO
+import common.dto.CookbookUserDTO
 import common.enums.Sort
 import common.infodto.CookbookInfo
 import common.infodto.CookbookRecipeInfo
@@ -98,6 +99,30 @@ class CookbookService: KoinComponent {
 
     fun deleteCookbook(id: Long): Boolean =
         getEntityById(id).delete()
+
+    fun setCookbookUsers(cookbookId: Long, userInput: List<CookbookUserDTO>) {
+        val currentUsers = getEntityById(cookbookId).users
+        currentUsers.forEach{ current ->
+            val newUser = userInput.find { it.id == current.user.id }
+            if (newUser == null) { current.delete() }
+            else if (newUser.isAdmin != current.isAdmin) {
+                current
+                    .apply { isAdmin = newUser.isAdmin }
+                    .update()
+            }
+        }
+        userInput.forEach { new ->
+            val currentUser = currentUsers.find { new.id == it.user.id }
+            if (currentUser == null) {
+                CookbookUser(
+                    user = userService.getEntityById(new.id),
+                    cookbook = getEntityById(cookbookId),
+                    isAdmin = new.isAdmin,
+                ).insert()
+            }
+
+        }
+    }
 
     fun addUserToCookbook(cookbookId: Long, userId: Long, isAdmin: Boolean) {
         val cookbook = getEntityById(cookbookId)

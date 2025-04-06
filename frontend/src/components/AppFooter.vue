@@ -20,7 +20,7 @@
       class="text-caption text-disabled"
       style="position: absolute; right: 16px;"
     >
-      &copy; {{ (new Date()).getFullYear() }} <span class="d-none d-sm-inline-block">Xavier Clavel / Léo Duclos</span>
+      &copy; {{ (new Date()).getFullYear() }} <span class="d-none d-sm-inline-block">Xavier Clavel • Léo Duclos</span>
       —
       <a
         class="text-decoration-none on-surface"

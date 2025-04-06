@@ -19,6 +19,7 @@ import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.handleDeletion
 import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
+import common.dto.CookbookUserDTO
 import common.utils.Filepath.COOKBOOKS_IMG_PATH
 import common.utils.URL.COOKBOOK_URL
 import io.ktor.http.HttpStatusCode
@@ -44,6 +45,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
         addCookbookUser()
         getCookbookUsers()
+        setCookbookUsers()
         deleteCookbookUser()
 
         addCookbookRecipe()
@@ -124,6 +126,14 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val userId = getIdPathVariable("user") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
         val role = getBooleanQueryParam("role") ?: false
         cookbookService.addUserToCookbook(cookbookId, userId, role)
+        call.respond(HttpStatusCode.OK)
+    }
+
+    private fun Route.setCookbookUsers() = put("/{id}/users") {
+        val cookbookId = getPathId()
+        checkIfAdminOfCookbook(cookbookId)
+        val userInput = call.receive<List<CookbookUserDTO>>() ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
+        cookbookService.setCookbookUsers(cookbookId, userInput)
         call.respond(HttpStatusCode.OK)
     }
 

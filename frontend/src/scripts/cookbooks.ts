@@ -12,6 +12,7 @@ export {
   removeRecipeFromCookbook,
 
   getCookbookUsers,
+  setCookbookUsers,
 }
 
 async function getCookbook(id) {
@@ -48,4 +49,8 @@ async function searchCookbooks(search) {
 
 async function getCookbookUsers(cookbookId) {
   return await apiClient.get(`/cookbook/${cookbookId}/users`)
+}
+
+async function setCookbookUsers(cookbookId, input) {
+  return await apiClient.put(`/cookbook/${cookbookId}/users`, input)
 }

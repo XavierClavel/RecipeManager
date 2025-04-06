@@ -28,8 +28,6 @@ class CookbookUser (
 
     var isAdmin: Boolean = false,
 
-    var pending: Boolean = false,
-
     var joinDate: Long = Instant.now().epochSecond,
 
 ): Model() {

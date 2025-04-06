@@ -53,7 +53,7 @@
               small
             >mdi-drag</v-icon>
 
-            <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;" class="mr-2">
+            <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;" class="mr-3">
               <v-img
                 color="surface-variant"
                 :src="getUserIconUrl(members[index].id)"
@@ -133,8 +133,16 @@ import { useRoute } from 'vue-router';
 import {getUserIconUrl, toViewCookbook} from "@/scripts/common";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {searchUsers} from "@/scripts/users";
-import {addRecipeToCookbook, createCookbook, editCookbook, getCookbook, getCookbookUsers} from "@/scripts/cookbooks";
+import {
+  addRecipeToCookbook,
+  createCookbook,
+  editCookbook,
+  getCookbook,
+  getCookbookUsers,
+  setCookbookUsers
+} from "@/scripts/cookbooks";
 import {ICON_VISIBILITY_PRIVATE, ICON_VISIBILITY_PROTECTED, ICON_VISIBILITY_PUBLIC} from "@/scripts/icons";
+import {useAuthStore} from "@/stores/auth";
 
 
 
@@ -175,9 +183,16 @@ const cookbook = ref<object>({
   title: "",
   description: "",
 })
+const authStore = useAuthStore()
 
 const members = ref([])
-
+if (cookbookId.value == null) {
+  members.value.push({
+    id: authStore.id,
+    username: authStore.username,
+    role: "ADMIN",
+  })
+}
 
 
 const addUser = () => {
@@ -207,6 +222,9 @@ async function submit() {
     await editCookbook(cookbookId.value, submitted)
   }
 
+  const membersInput = members.value.map(item => ({ id: item.id, isAdmin: item.role == "ADMIN" }))
+  await setCookbookUsers(cookbookId.value, membersInput)
+
   await editablePicture.value.submitImage()
 
   toViewCookbook(cookbookId.value)
@@ -226,7 +244,7 @@ if (cookbookId.value != null) {
 
   getCookbookUsers(cookbookId.value).then(
     function (response) {
-      members.value = response.data
+      members.value = response.data.map(item => ({id: item.id, username: item.username, role: item.isAdmin ? "ADMIN" : "USER"}))
     }
   )
 }

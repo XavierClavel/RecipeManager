@@ -4,7 +4,7 @@
     <v-card-title
       class="text-black text-left text-h2 font-weight-bold "
       style="justify-content: flex-start;"
-    >{{$t("welcome")}}, {{username}}!</v-card-title>
+    >{{$t("welcome")}}, {{username}}! ✨</v-card-title>
     <v-card-text class="text-h3 mb-8 mt-n6 font-weight-thin">{{$t("welcome_subtext")}}</v-card-text>
         <v-timeline class="my-2" align="center" side="end" line-color="black" line-thickness="3px" density="comfortable" >
           <v-timeline-item
