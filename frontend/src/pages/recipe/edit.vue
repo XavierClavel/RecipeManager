@@ -33,9 +33,9 @@
           rounded="lg"
           group
           mandatory
-          class="ga-2"
+          class="ga-2 ml-n3"
         >
-          <v-btn :value="dishClass.value" v-for="dishClass in dishClasses">{{$t(dishClass.title)}}</v-btn>
+          <v-btn :value="dishClass.value" v-for="dishClass in dishOptions">{{$t(dishClass.label)}}</v-btn>
         </v-btn-toggle>
       </v-col>
 
@@ -314,6 +314,7 @@ import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRec
 import {dishClasses, toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
+import {dishOptions} from "@/scripts/values";
 
 
 

@@ -56,8 +56,8 @@ onUnmounted(() => {
     class="pa-5 ma-5 d-flex flex-row"
     v-if="noRecipes"
   >
-    <v-icon color="primary" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
-    <v-card-title prepend-icon="mdi-alert" class="text-primary text-h4">
+    <v-icon color="black" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
+    <v-card-title prepend-icon="mdi-alert" class="text-black text-h4">
       No recipes to display
     </v-card-title>
   </v-card>
