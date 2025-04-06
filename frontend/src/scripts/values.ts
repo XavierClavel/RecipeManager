@@ -1,13 +1,13 @@
 import {ICON_ALPHABETICAL, ICON_DATE, ICON_LIKES, ICON_RANDOM} from "@/scripts/icons";
 
 export {
-  dishClasses,
+  dishOptions,
   sourceOptions,
   sortOptions,
 }
 
 
-const dishClasses = [
+const dishOptions = [
   {
     value: "ENTREE",
     label: "entree",

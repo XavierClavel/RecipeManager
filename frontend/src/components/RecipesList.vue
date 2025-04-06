@@ -15,6 +15,7 @@ const router = useRouter()
 const routesToCheck = ["/recipe/list", "/ingredient/view", "/cookbook/recipes"]
 
 const updateGrid = (query) => {
+  console.log("updated recipe list")
   listRecipes(query).then(
     function (response) {
       console.log(`recipes from ${router.currentRoute.value.name}`, response)

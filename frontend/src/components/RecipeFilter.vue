@@ -4,20 +4,28 @@ import router from "@/router";
 import {useAuthStore} from "@/stores/auth";
 import {useI18n} from "vue-i18n";
 import ChipRow from "@/components/ChipRow.vue";
-import {dishClasses, sortOptions, sourceOptions} from "@/scripts/values";
+import {dishOptions, sortOptions, sourceOptions} from "@/scripts/values";
+import {useRoute} from "vue-router";
 const autocompleteList = ref([])
 
 const selectedDishType = ref([0, 1, 2])
 const selectedSource = ref([0,1])
 const selectedIngredients = ref([])
+const selectedSort = ref(null); // Stores the selected sort field
+const sortOrder = ref("desc"); // Default order is descending
+
 const { t } = useI18n();
 
 const authStore = useAuthStore()
 const comboboxRef = ref()
 
+const route = useRoute();
+const userId = route.query.user
 
-const selectedSort = ref(null); // Stores the selected sort field
-const sortOrder = ref("desc"); // Default order is descending
+selectedSort.value = route.query.sort?.split('_')[0]
+sortOrder.value = route.query.sort?.split('_')[1] == "ASCENDING" ? "asc" : "desc"
+
+
 
 const selectDishClass = (index) => {
   if (selectedDishType.value.includes(index)) {
@@ -32,6 +40,7 @@ function onComboUpdate(newVal) {
   selectedIngredients.value = newVal.filter(item =>
     typeof item === 'object'
   )
+  updateUrl()
 }
 
 
@@ -46,11 +55,13 @@ function selectFirstMatch() {
   }
 
   comboboxRef.value.search = '' // clear the search text
+
+  updateUrl()
 }
 
 const toggleSort = (field) => {
 
-  if (selectedSort.value === "RANDOM" && sortOrder.value === "desc") {
+  if (selectedSort.value === "RANDOM" && sortOrder.value === "desc" && field === "RANDOM") {
     selectedSort.value = null;
   } else if (selectedSort.value === field) {
     if (sortOrder.value === "desc") {
@@ -85,6 +96,7 @@ const onIngredientAutocompleteChange = async (query) => {
 }
 
 const updateUrl = () => {
+  console.log("updating url")
   const route = router.currentRoute
   let selectedSortOrder = sortOrder.value == "asc" ? "_ASCENDING" : "_DESCENDING"
   if (selectedSort.value == "RANDOM") {
@@ -100,7 +112,7 @@ const updateUrl = () => {
         likedBy: selectedSource.value.includes(1) ? authStore.id : undefined,
         cookbookUser: selectedSource.value.includes(2) ? authStore.id : undefined,
         followedBy: selectedSource.value.includes(3) ? authStore.id : undefined,
-        dishClasses: selectedDishType.value.length > 0 ? selectedDishType.value.map(it => dishClasses.value[it].value).join(",") : undefined,
+        dishClasses: selectedDishType.value.length > 0 ? selectedDishType.value.map(it => dishOptions[it].value).join(",") : undefined,
         ingredient: selectedIngredients.value.length > 0 ? selectedIngredients.value.map(it => it.id).join(",") : undefined,
         sort: selectedSort.value != null ? selectedSort.value + selectedSortOrder  : undefined
       }).filter(([_, value]) => value !== undefined) // Remove undefined values
@@ -119,7 +131,7 @@ const updateUrl = () => {
       <v-col class="d-flex flex-column">
 
         <chip-row :values="sourceOptions"  :action="updateUrl" :selected="selectedSource"></chip-row>
-        <chip-row :values="dishClasses" :action="updateUrl"></chip-row>
+        <chip-row :values="dishOptions" :action="updateUrl"></chip-row>
 
 
         <v-card class="my-2 flex-grow-1 ma-1" max-width="400px">
