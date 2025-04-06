@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {searchIngredients} from "@/scripts/ingredients";
+import {getIngredient, searchIngredients} from "@/scripts/ingredients";
 import router from "@/router";
 import {useAuthStore} from "@/stores/auth";
 import {useI18n} from "vue-i18n";
@@ -24,7 +24,11 @@ const userId = route.query.user
 
 selectedSort.value = route.query.sort?.split('_')[0]
 sortOrder.value = route.query.sort?.split('_')[1] == "ASCENDING" ? "asc" : "desc"
-
+const ingredients = route.query.ingredient?.split(',')
+console.log(ingredients)
+if (ingredients) {
+  ingredients.forEach(it => getIngredient(it).then(response => selectedIngredients.value.push(response.data)))
+}
 
 
 const selectDishClass = (index) => {
