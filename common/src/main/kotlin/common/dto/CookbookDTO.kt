@@ -1,12 +1,13 @@
 package common.dto
 
-import common.enums.UserRole
+import common.enums.Visibility
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CookbookDTO(
     val title: String,
     val description: String = "",
+    val visibility: Visibility = Visibility.PUBLIC,
 )
 
 @Serializable

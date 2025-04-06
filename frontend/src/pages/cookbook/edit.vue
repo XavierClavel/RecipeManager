@@ -154,16 +154,19 @@ const editablePicture = ref(null)
 const visibilityOptions = ref([
   {
     title: 'Private',
+    value: 'PRIVATE',
     prependIcon: ICON_VISIBILITY_PRIVATE,
     slim: true,
   },
   {
     title: 'Protected',
+    value: 'PROTECTED',
     prependIcon: ICON_VISIBILITY_PROTECTED,
     slim: true,
   },
   {
     title: 'Public',
+    value: 'PUBLIC',
     prependIcon: ICON_VISIBILITY_PUBLIC,
     slim: true,
   },
@@ -210,6 +213,7 @@ async function submit() {
   const submitted = {}
   submitted["title"] = cookbook.value.title
   submitted["description"] = cookbook.value.description
+  submitted['visibility'] = cookbook.value.visibility
   console.log(submitted)
   if (cookbookId.value == null) {
     const response = await createCookbook(submitted)
@@ -235,6 +239,7 @@ if (cookbookId.value != null) {
     function (response) {
       cookbook.value.title = response.data.title
       cookbook.value.description = response.data.description
+      cookbook.value.visibility = response.data.visibility
       console.log(response.data)
     }).catch(function (error) {
     console.log(error);

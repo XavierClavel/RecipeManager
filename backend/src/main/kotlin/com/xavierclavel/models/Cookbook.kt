@@ -3,10 +3,12 @@ package com.xavierclavel.models
 import com.xavierclavel.models.jointables.CookbookRecipe
 import com.xavierclavel.models.jointables.CookbookUser
 import common.dto.CookbookDTO
+import common.enums.Visibility
 import common.infodto.CookbookInfo
 import common.overviewdto.CookbookOverview
 import common.overviewdto.CookbookRecipeOverview
 import io.ebean.Model
+import io.ebean.annotation.DbDefault
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -36,23 +38,28 @@ class Cookbook (
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     var users: MutableSet<CookbookUser> = mutableSetOf(),
 
-    var isPublic: Boolean = false,
+    @DbDefault("1")
+    var visibility: Visibility = Visibility.PUBLIC,
+
 ): Model() {
     companion object {
         fun from(cookbookDTO: CookbookDTO)= Cookbook(
             title = cookbookDTO.title,
             description = cookbookDTO.description,
+            visibility = cookbookDTO.visibility,
         )
     }
 
     fun merge(cookbookDTO: CookbookDTO) = this.apply {
         this.title = cookbookDTO.title
         this.description = cookbookDTO.description
+        this.visibility = cookbookDTO.visibility
     }
 
     fun toInfo() = CookbookInfo(
         id = this.id,
         title = this.title,
+        visibility = this.visibility,
         description = this.description,
         recipesCount = this.recipes.size,
         usersCount = this.users.size,

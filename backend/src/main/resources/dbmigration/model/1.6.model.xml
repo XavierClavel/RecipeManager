@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <addColumn tableName="cookbooks">
+            <column name="visibility" type="integer" defaultValue="1" notnull="true" checkConstraint="check ( visibility in (0,1,2))" checkConstraintName="ck_cookbooks_visibility"/>
+        </addColumn>
+    </changeSet>
+    <changeSet type="pendingDrops">
+        <dropColumn columnName="is_public" tableName="cookbooks"/>
+        <dropColumn columnName="pending" tableName="cookbook_users"/>
+    </changeSet>
+</migration>
