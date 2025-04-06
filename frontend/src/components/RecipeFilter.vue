@@ -8,8 +8,8 @@ import {dishOptions, sortOptions, sourceOptions} from "@/scripts/values";
 import {useRoute} from "vue-router";
 const autocompleteList = ref([])
 
-const selectedDishType = ref([0, 1, 2])
-const selectedSource = ref([0,1])
+const selectedDishType = ref([])
+const selectedSource = ref([])
 const selectedIngredients = ref([])
 const selectedSort = ref(null); // Stores the selected sort field
 const sortOrder = ref("desc"); // Default order is descending
@@ -22,10 +22,25 @@ const comboboxRef = ref()
 const route = useRoute();
 const userId = route.query.user
 
+if(route.query.user) {
+  selectedSource.value.push(0)
+}
+if (route.query.likedBy) {
+  selectedSource.value.push(1)
+}
+if (route.query.cookbookUser) {
+  selectedSource.value.push(2)
+}
+if (route.query.followedBy) {
+  selectedSource.value.push(3)
+}
+
+console.log(route.query)
+selectedDishType.value = route.query.dishClasses?.split(',')?.map(it => dishOptions.findIndex(dish => dish.value == it)) || []
+
 selectedSort.value = route.query.sort?.split('_')[0]
 sortOrder.value = route.query.sort?.split('_')[1] == "ASCENDING" ? "asc" : "desc"
 const ingredients = route.query.ingredient?.split(',')
-console.log(ingredients)
 if (ingredients) {
   ingredients.forEach(it => getIngredient(it).then(response => selectedIngredients.value.push(response.data)))
 }
@@ -100,13 +115,12 @@ const onIngredientAutocompleteChange = async (query) => {
 }
 
 const updateUrl = () => {
-  console.log("updating url")
+  console.log(selectedDishType.value)
   const route = router.currentRoute
   let selectedSortOrder = sortOrder.value == "asc" ? "_ASCENDING" : "_DESCENDING"
   if (selectedSort.value == "RANDOM") {
     selectedSortOrder = ""
   }
-  console.log(selectedSort.value)
   router.push({
     path: route.path, // Keep the current path
     query: Object.fromEntries(
@@ -116,7 +130,7 @@ const updateUrl = () => {
         likedBy: selectedSource.value.includes(1) ? authStore.id : undefined,
         cookbookUser: selectedSource.value.includes(2) ? authStore.id : undefined,
         followedBy: selectedSource.value.includes(3) ? authStore.id : undefined,
-        dishClasses: selectedDishType.value.length > 0 ? selectedDishType.value.map(it => dishOptions[it].value).join(",") : undefined,
+        dishClasses: selectedDishType.value?.length ? selectedDishType.value.map(it => dishOptions[it].value).join(",") : undefined,
         ingredient: selectedIngredients.value.length > 0 ? selectedIngredients.value.map(it => it.id).join(",") : undefined,
         sort: selectedSort.value != null ? selectedSort.value + selectedSortOrder  : undefined
       }).filter(([_, value]) => value !== undefined) // Remove undefined values
@@ -135,7 +149,7 @@ const updateUrl = () => {
       <v-col class="d-flex flex-column">
 
         <chip-row :values="sourceOptions"  :action="updateUrl" :selected="selectedSource"></chip-row>
-        <chip-row :values="dishOptions" :action="updateUrl"></chip-row>
+        <chip-row :values="dishOptions" :action="updateUrl" :selected="selectedDishType"></chip-row>
 
 
         <v-card class="my-2 flex-grow-1 ma-1" max-width="400px">

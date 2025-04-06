@@ -22,6 +22,7 @@ const { t } = useI18n();
 
 // Create a local copy of the prop
 const selectedItems = ref([]);
+selectedItems.value = props.selected
 
 // Watch for external prop changes and update local state
 watch(() => props.selected, (newValue) => {
