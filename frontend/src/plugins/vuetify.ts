@@ -107,7 +107,11 @@ export default createVuetify({
     },
     VList: {
       slim: true,
-    }
+    },
+    VChip: {
+      variant: "elevated",
+      color: "primary"
+    },
   },
   components: {
     VNumberInput,

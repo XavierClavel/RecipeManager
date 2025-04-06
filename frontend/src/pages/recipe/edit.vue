@@ -35,13 +35,7 @@
           mandatory
           class="ga-2"
         >
-          <v-btn value="ENTREE">{{$t("entree")}}</v-btn>
-
-          <v-btn value="MAIN_DISH">{{$t("plat")}}</v-btn>
-
-          <v-btn value="DESERT">{{$t("desert")}}</v-btn>
-
-          <v-btn value="OTHER">{{$t("other")}}</v-btn>
+          <v-btn :value="dishClass.value" v-for="dishClass in dishClasses">{{$t(dishClass.title)}}</v-btn>
         </v-btn-toggle>
       </v-col>
 
@@ -317,7 +311,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRecipe} from "@/scripts/recipes";
-import {toViewRecipe} from "@/scripts/common";
+import {dishClasses, toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
 
@@ -342,7 +336,6 @@ const rules = {
   max100: v => v.length <= 100 || 'Max 100 characters',
   max50: v => v.length <= 50 || 'Max 50 characters',
 }
-
 
 
 

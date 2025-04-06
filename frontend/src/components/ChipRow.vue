@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {useI18n} from "vue-i18n";
+
 const props = defineProps({
     action: {
       type: Function,
@@ -15,6 +17,8 @@ const props = defineProps({
     }
   }
 )
+
+const { t } = useI18n();
 
 // Create a local copy of the prop
 const selectedItems = ref([]);
@@ -46,14 +50,13 @@ const selectItem = (index) => {
   <v-row class="d-flex flex-row ma-1">
     <v-chip
       v-for="(item, index) in values"
-      :text="item.label"
       filter
       class="mx-1"
       :color="selectedItems.includes(index) ? 'primary' : 'background'"
       variant="elevated"
       @click="selectItem(index)"
       :prepend-icon="selectedItems.includes(index) ? 'mdi-check' : undefined"
-    ></v-chip>
+    > {{$t(item.label)}}</v-chip>
   </v-row>
 </template>
 

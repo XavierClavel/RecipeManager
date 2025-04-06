@@ -19,7 +19,7 @@
             prepend-icon="mdi-pencil"
             min-height="50px"
             min-width="200px"
-            class="elevation-0"
+            class="elevation-0 mb-6"
             color="primary"
             @click="toCreateRecipe"
           >

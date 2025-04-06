@@ -3,8 +3,8 @@ import {searchIngredients} from "@/scripts/ingredients";
 import router from "@/router";
 import {useAuthStore} from "@/stores/auth";
 import {useI18n} from "vue-i18n";
-import {ICON_ALPHABETICAL, ICON_DATE, ICON_LIKES, ICON_RANDOM} from "@/scripts/icons";
 import ChipRow from "@/components/ChipRow.vue";
+import {dishClasses, sortOptions, sourceOptions} from "@/scripts/values";
 const autocompleteList = ref([])
 
 const selectedDishType = ref([0, 1, 2])
@@ -13,27 +13,8 @@ const selectedIngredients = ref([])
 const { t } = useI18n();
 
 const authStore = useAuthStore()
+const comboboxRef = ref()
 
-const dishOptions = ref([
-  {label: t('entree'), value: "ENTREE"},
-  {label: t('plat'), value: "MAIN_DISH"},
-  {label: t('desert'), value: "DESERT"},
-  {label: t('other'), value: "OTHER"},
-])
-
-const sourceOptions = ref([
-  {label: t('my_recipes'), value: "user"},
-  {label: t('likes'), value: "likedBy"},
-  {label: t('cookbooks'), value: "userCookbooks"},
-  {label: t('follows'), value: "followedBy"},
-])
-
-const sortOptions = ref([
-  { label: t('alphabetical'), value: "NAME", icon:ICON_ALPHABETICAL, ordered: true },
-  { label: t('random'), value: "RANDOM", icon:ICON_RANDOM, ordered: false },
-  { label: t('likes'), value: "LIKES", icon:ICON_LIKES, ordered: true },
-  { label: t('date'), value: "DATE", icon:ICON_DATE, ordered: true },
-]);
 
 const selectedSort = ref(null); // Stores the selected sort field
 const sortOrder = ref("desc"); // Default order is descending
@@ -45,6 +26,26 @@ const selectDishClass = (index) => {
     selectedDishType.value.push(index)
   }
   updateUrl()
+}
+
+function onComboUpdate(newVal) {
+  selectedIngredients.value = newVal.filter(item =>
+    typeof item === 'object'
+  )
+}
+
+
+function selectFirstMatch() {
+  const query = comboboxRef.value?.search
+  const match = autocompleteList.value.find(opt =>
+    opt.name.toLowerCase().includes(query?.toLowerCase())
+  )
+
+  if (match && !selectedIngredients.value.some(sel => sel.id === match.id)) {
+    selectedIngredients.value.push(match)
+  }
+
+  comboboxRef.value.search = '' // clear the search text
 }
 
 const toggleSort = (field) => {
@@ -99,7 +100,7 @@ const updateUrl = () => {
         likedBy: selectedSource.value.includes(1) ? authStore.id : undefined,
         cookbookUser: selectedSource.value.includes(2) ? authStore.id : undefined,
         followedBy: selectedSource.value.includes(3) ? authStore.id : undefined,
-        dishClasses: selectedDishType.value.length > 0 ? selectedDishType.value.map(it => dishOptions.value[it].value).join(",") : undefined,
+        dishClasses: selectedDishType.value.length > 0 ? selectedDishType.value.map(it => dishClasses.value[it].value).join(",") : undefined,
         ingredient: selectedIngredients.value.length > 0 ? selectedIngredients.value.map(it => it.id).join(",") : undefined,
         sort: selectedSort.value != null ? selectedSort.value + selectedSortOrder  : undefined
       }).filter(([_, value]) => value !== undefined) // Remove undefined values
@@ -111,7 +112,6 @@ const updateUrl = () => {
 <template>
   <v-card
     class=" py-2 px-4"
-    style="border: 3px solid #0d1821 !important;"
   >
 
     <v-row class="d-flex justify-space-between align-start">
@@ -119,36 +119,37 @@ const updateUrl = () => {
       <v-col class="d-flex flex-column">
 
         <chip-row :values="sourceOptions"  :action="updateUrl" :selected="selectedSource"></chip-row>
-        <chip-row :values="dishOptions" :action="updateUrl"></chip-row>
+        <chip-row :values="dishClasses" :action="updateUrl"></chip-row>
 
 
         <v-card class="my-2 flex-grow-1 ma-1" max-width="400px">
-        <v-combobox
-          delimiters=";,"
-          v-model="selectedIngredients"
-          :items="autocompleteList"
-          item-title="name"
-          item-value="id"
-          @update:search="(query) => onIngredientAutocompleteChange(query)"
-          return-object
-          multiple
-          chips
-          closable-chips
-          clearable
-          @update:modelValue="updateUrl"
-          :label="`${$t('ingredients')}`"
-        >
-          <template v-slot:selection="data">
-            <v-chip
-              size="small"
-              class="text-primary"
+          <v-combobox
+            ref="comboboxRef"
+            v-model="selectedIngredients"
+            :items="autocompleteList"
+            item-title="name"
+            item-value="id"
+            return-object
+            multiple
+            chips
+            closable-chips
+            clearable
+            :label="$t('ingredients')"
+            @update:search="(query) => onIngredientAutocompleteChange(query)"
+            @keydown.enter.prevent="selectFirstMatch"
+            @update:modelValue="onComboUpdate"
+          >
+            <template v-slot:selection="data">
+              <v-chip
+                size="small"
+                class="text-primary"
                 color="primary"
-              variant="flat"
-            >
-              {{ data.item.title }}
-            </v-chip>
-          </template>
-        </v-combobox>
+                variant="elevated"
+              >
+                {{ data.item.name }}
+              </v-chip>
+            </template>
+          </v-combobox>
         </v-card>
 
       </v-col>
@@ -164,7 +165,7 @@ const updateUrl = () => {
           :prepend-icon="option.icon"
           class="ma-1"
         >
-          {{ option.label }}
+          {{$t(option.label)}}
           <v-icon v-if="selectedSort === option.value && option.ordered">
             {{ sortOrder === 'desc' ? 'mdi-arrow-down' : 'mdi-arrow-up' }}
           </v-icon>

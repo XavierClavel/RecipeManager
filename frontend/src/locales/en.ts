@@ -69,7 +69,8 @@ export default {
   entree: "Entree",
   plat: "Main Dish",
   desert: "Desert",
-  other: "Other",
+  snacks: "Snacks",
+  breakfast: "Breakfast",
 
   alphabetical: "Alphabetical",
   likes: "Likes",

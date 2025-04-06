@@ -14,11 +14,9 @@ import App from './App.vue'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia';
 import router from "@/router";
-import { createI18n } from 'vue-i18n';
-import en from './locales/en';
-import fr from './locales/fr';
 import VueCookies from 'vue-cookies'
 import i18n from "@/plugins/i18n";
+import './styles/global.scss'
 
 
 const pinia = createPinia();
