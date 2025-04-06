@@ -2,6 +2,8 @@ package com.xavierclavel.services
 
 import com.xavierclavel.exceptions.BadRequestCause
 import com.xavierclavel.exceptions.BadRequestException
+import com.xavierclavel.exceptions.ForbiddenCause
+import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.exceptions.NotFoundCause
 import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.Cookbook
@@ -10,18 +12,21 @@ import com.xavierclavel.models.jointables.CookbookUser
 import com.xavierclavel.models.jointables.query.QCookbookRecipe
 import com.xavierclavel.models.jointables.query.QCookbookUser
 import com.xavierclavel.models.query.QCookbook
+import com.xavierclavel.models.query.QRecipe
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.Extensions.page
 import common.dto.CookbookDTO
 import common.dto.CookbookUserDTO
 import common.enums.Sort
+import common.enums.Visibility
 import common.infodto.CookbookInfo
 import common.infodto.CookbookRecipeInfo
 import common.infodto.CookbookUserInfo
 import common.overviewdto.CookbookRecipeOverview
 import io.ebean.FetchConfig
 import io.ebean.Paging
+import io.ktor.http.CacheControl
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -33,6 +38,8 @@ class CookbookService: KoinComponent {
     fun countAll() =
         QCookbook().findCount()
 
+    fun existsById(id: Long) = QCookbook().id.eq(id).exists()
+
     fun findEntityById(id: Long) : Cookbook? =
         QCookbook().id.eq(id).findOne()
 
@@ -43,9 +50,18 @@ class CookbookService: KoinComponent {
     fun createCookbook(cookbookDTO: CookbookDTO): CookbookInfo =
         Cookbook.from(cookbookDTO).insertAndGet().toInfo()
 
-    fun getCookbook(id: Long): CookbookInfo = getEntityById(id).toInfo()
+    fun getCookbook(cookbookId: Long, currentUserId: Long?): CookbookInfo {
+        if (!existsById(cookbookId)) throw NotFoundException(NotFoundCause.COOKBOOK_NOT_FOUND)
+        if (!QCookbook()
+                .id.eq(cookbookId)
+                .filterByVisibility(currentUserId)
+                .exists()) {
+            throw ForbiddenException(ForbiddenCause.NOT_ALLOWED_TO_SEE_COOKBOOK)
+        }
+        return getEntityById(cookbookId).toInfo()
+    }
 
-    fun listCookbooks(paging: Paging, sort:Sort, user: Long?, recipe: Long?, search: String?) : List<CookbookInfo> =
+    fun listCookbooks(paging: Paging, sort:Sort, user: Long?, recipe: Long?, search: String?, currentUser: Long?) : List<CookbookInfo> =
         QCookbook()
             .fetch("users", FetchConfig.ofLazy())
             //.fetch(QCookbook.Alias.users.toString(), "count(*)", FetchConfig.ofLazy())
@@ -53,6 +69,7 @@ class CookbookService: KoinComponent {
             .filterByUser(user)
             .filterByRecipe(recipe)
             .filterBySearch(search)
+            .filterByVisibility(currentUser)
             .findList()
             .map { it.toInfo() }
 
@@ -166,6 +183,18 @@ class CookbookService: KoinComponent {
 
     private fun QCookbook.filterByUser(userId: Long?) =
         if (userId == null) this else this.where().users.user.id.eq(userId)
+
+    private fun QCookbook.filterByVisibility(currentUserId: Long?) =
+        if (currentUserId == null) this.where().visibility.eq(Visibility.PUBLIC)
+        else this.or()
+            .visibility.eq(Visibility.PUBLIC)
+            .users.user.id.eq(currentUserId)
+            .and()
+            .visibility.eq(Visibility.PROTECTED)
+            .users.user.followers.follower.id.eq(currentUserId)
+            .users.user.followers.pending.eq(false)
+            .endAnd()
+            .endOr()
 
     private fun QCookbook.filterByRecipe(recipeId: Long?) =
         if (recipeId == null) this else this.where().recipes.recipe.id.eq(recipeId)

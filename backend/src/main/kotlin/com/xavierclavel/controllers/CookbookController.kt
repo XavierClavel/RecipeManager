@@ -1,5 +1,6 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.AuthController.getOptionalSessionId
 import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.controllers.UserController.imageService
@@ -23,6 +24,7 @@ import common.dto.CookbookUserDTO
 import common.utils.Filepath.COOKBOOKS_IMG_PATH
 import common.utils.URL.COOKBOOK_URL
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -37,21 +39,25 @@ object CookbookController: Controller(COOKBOOK_URL) {
     val cookbookService : CookbookService by inject(CookbookService::class.java)
 
     override fun Route.routes() {
-        createCookbook()
         getCookbook()
         listCookbooks()
-        updateCookbook()
-        deleteCookbook()
 
-        addCookbookUser()
-        getCookbookUsers()
-        setCookbookUsers()
-        deleteCookbookUser()
+        authenticate("auth-session") {
+            createCookbook()
 
-        addCookbookRecipe()
-        getCookbookRecipes()
-        deleteCookbookRecipe()
-        getRecipeStatusInUserCookbooks()
+            updateCookbook()
+            deleteCookbook()
+
+            addCookbookRecipe()
+            getCookbookRecipes()
+            deleteCookbookRecipe()
+            getRecipeStatusInUserCookbooks()
+
+            addCookbookUser()
+            getCookbookUsers()
+            setCookbookUsers()
+            deleteCookbookUser()
+        }
     }
 
     private fun Route.createCookbook() = post {
@@ -75,6 +81,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
             user = userId,
             recipe = recipeId,
             search = search,
+            currentUser = getOptionalSessionId()
         )
         call.respond(cookbook)
     }
@@ -88,7 +95,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
     private fun Route.getCookbook() = get("/{id}") {
         val id = getPathId()
-        val cookbook = cookbookService.getCookbook(id)
+        val cookbook = cookbookService.getCookbook(id, getOptionalSessionId())
         call.respond(cookbook)
     }
 

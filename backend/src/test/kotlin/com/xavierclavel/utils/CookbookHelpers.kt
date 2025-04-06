@@ -38,8 +38,11 @@ suspend fun HttpClient.createCookbook(cookbookDto: CookbookDTO = sampleCookbookD
     }
 }
 
-suspend fun HttpClient.getCookbook(id: Long): CookbookInfo {
+suspend fun HttpClient.getCookbookRaw(id: Long) =
     this.get("$COOKBOOK_URL/$id")
+
+suspend fun HttpClient.getCookbook(id: Long): CookbookInfo {
+    this.getCookbookRaw(id)
         .apply {
             assertEquals(HttpStatusCode.OK, status)
             return Json.decodeFromString<CookbookInfo>(bodyAsText())

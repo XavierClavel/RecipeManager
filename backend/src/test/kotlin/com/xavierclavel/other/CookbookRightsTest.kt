@@ -1,6 +1,8 @@
 package main.com.xavierclavel.other
 
 import com.xavierclavel.ApplicationTest
+import common.dto.CookbookDTO
+import common.enums.Visibility
 import common.infodto.CookbookInfo
 import common.infodto.RecipeInfo
 import io.ktor.http.HttpStatusCode
@@ -12,8 +14,13 @@ import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.deleteCookbookRecipe
 import main.com.xavierclavel.utils.deleteCookbookUser
 import main.com.xavierclavel.utils.deleteCookbookUserRaw
+import main.com.xavierclavel.utils.follow
+import main.com.xavierclavel.utils.getCookbook
+import main.com.xavierclavel.utils.getCookbookRaw
+import main.com.xavierclavel.utils.listCookbooks
 import main.com.xavierclavel.utils.recipeDTO
 import org.junit.jupiter.api.Test
+import org.koin.core.component.get
 import kotlin.test.assertEquals
 
 class CookbookRightsTest: ApplicationTest() {
@@ -99,6 +106,135 @@ class CookbookRightsTest: ApplicationTest() {
             client.deleteCookbookUserRaw(cookbook.id, userService.getUserByUsername(USER2)!!.id).apply {
                 assertEquals(status, HttpStatusCode.Forbidden)
             }
+        }
+    }
+
+    @Test
+    fun `non members of cookbook can see public cookbook`() = runTest{
+        var cookbook: CookbookInfo? = null
+        runAsUser1 {
+            cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PUBLIC))
+        }
+        runAsUser2 {
+            client.getCookbook(cookbook!!.id)
+            val result = client.listCookbooks()
+            assertEquals(1, result.size)
+        }
+    }
+
+    @Test
+    fun `non members of cookbook cannot see protected cookbook`() = runTest{
+        var cookbook: CookbookInfo? = null
+        runAsUser1 {
+            cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PROTECTED))
+        }
+        runAsUser2 {
+            client.getCookbookRaw(cookbook!!.id).apply {
+                assertEquals(HttpStatusCode.Forbidden, status)
+            }
+            val result = client.listCookbooks()
+            assertEquals(0, result.size)
+        }
+    }
+
+    @Test
+    fun `non members of cookbook cannot see private cookbook`() = runTest{
+        var cookbook: CookbookInfo? = null
+        runAsUser1 {
+            cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PRIVATE))
+        }
+        runAsUser2 {
+            client.getCookbookRaw(cookbook!!.id).apply {
+                assertEquals(HttpStatusCode.Forbidden, status)
+            }
+            val result = client.listCookbooks()
+            assertEquals(0, result.size)
+        }
+    }
+
+    @Test
+    fun `followers of cookbook members can see public cookbook`() = runTest{
+        var cookbook: CookbookInfo? = null
+        runAsUser1 {
+            cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PUBLIC))
+        }
+        runAsUser2 {
+            client.follow(userService.getUserByUsername(USER1)!!.id)
+            client.getCookbook(cookbook!!.id)
+            val result = client.listCookbooks()
+            assertEquals(1, result.size)
+        }
+    }
+
+    @Test
+    fun `followers of cookbook members can see protected cookbook`() = runTest{
+        var cookbook: CookbookInfo? = null
+        runAsUser1 {
+            cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PROTECTED))
+        }
+        runAsUser2 {
+            client.follow(userService.getUserByUsername(USER1)!!.id)
+            client.getCookbook(cookbook!!.id)
+            val result = client.listCookbooks()
+            assertEquals(1, result.size)
+        }
+    }
+
+    @Test
+    fun `followers of cookbook members cannot see private cookbook`() = runTest{
+        var cookbook: CookbookInfo? = null
+        runAsUser1 {
+            cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PRIVATE))
+        }
+        runAsUser2 {
+            client.follow(userService.getUserByUsername(USER1)!!.id)
+            client.getCookbookRaw(cookbook!!.id).apply {
+                assertEquals(HttpStatusCode.Forbidden, status)
+            }
+            val result = client.listCookbooks()
+            assertEquals(0, result.size)
+        }
+    }
+
+    @Test
+    fun `members of cookbook can see public cookbook`() = runTest{
+        var cookbook: CookbookInfo? = null
+        runAsUser1 {
+            cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PUBLIC))
+            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+        }
+        runAsUser2 {
+            client.getCookbook(cookbook!!.id)
+            val result = client.listCookbooks()
+            assertEquals(1, result.size)
+        }
+    }
+
+    @Test
+    fun `members of cookbook can see protected cookbook`() = runTest{
+        var cookbook: CookbookInfo? = null
+        runAsUser1 {
+            cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PROTECTED))
+            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+        }
+        runAsUser2 {
+            client.getCookbook(cookbook!!.id)
+            val result = client.listCookbooks()
+            assertEquals(1, result.size)
+        }
+    }
+
+    @Test
+    fun `members of cookbook can see private cookbook`() = runTest{
+        var cookbook: CookbookInfo? = null
+        runAsUser1 {
+            cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PRIVATE))
+            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+        }
+        runAsUser2 {
+            client.getCookbook(cookbook!!.id)
+            val result = client.listCookbooks()
+            assertEquals(1, result.size)
         }
     }
 
