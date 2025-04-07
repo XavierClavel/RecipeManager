@@ -34,6 +34,8 @@ services:
       - "80:80"
     networks:
       - frontend-network
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:80" ]
       interval: 10s
