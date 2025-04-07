@@ -105,6 +105,7 @@
             <v-autocomplete
               v-model="recipe.ingredients[index].ingredient"
               :label="`${$t('ingredient')} ${index + 1}`"
+              v-model:search="queryList[index]"
               color="primary"
               :items="autocompleteList[index]"
               item-color="primary"
@@ -113,6 +114,7 @@
               @update:search="(query) => onIngredientAutocompleteChange(query, index)"
               :key="index"
               return-object
+              @keydown.enter.prevent="selectFirstMatch(index)"
             ></v-autocomplete>
             </v-card>
 
@@ -344,7 +346,7 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
-import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRecipe} from "@/scripts/recipes";
+import {getRecipe, createRecipe, updateRecipe} from "@/scripts/recipes";
 import {toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
@@ -357,16 +359,31 @@ const {t} = useI18n()
 const route = useRoute();
 let recipeId = ref(route.query.id)
 const editablePicture = ref(null)
+const autocompleteRefs = ref([])
 
 const autocompleteList = ref([])
+const queryList = ref([])
 
 function getLocalizedLabel(item: any) {
   return t(item.label)
 }
 
 const onIngredientAutocompleteChange = async (query, index) => {
+  queryList.value[index] = query
   const response = await searchIngredients(query, 0, 20);
   autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: item.name }));
+}
+
+function selectFirstMatch(index) {
+  const query = queryList.value[index]
+  const match = autocompleteList.value[index].find(opt =>
+    opt.name.toLowerCase().includes(query?.toLowerCase())
+  )
+
+  if (match) {
+    recipe.value.ingredients[index].ingredient = match
+    queryList.value[index] = match.name // Update displayed input text
+  }
 }
 
 const rules = {
@@ -385,7 +402,6 @@ const recipe = ref<object>({
   ingredients: [],
   customIngredients: [],
 })
-
 
 
 // Function to add a new item
@@ -440,7 +456,7 @@ async function submit() {
     .map(item => ({
     id: item.ingredient.id,
     amount: item.amount,
-    unit: item.unit,
+    unit: item.unit.value,
     complement: item.complement}))
   submitted.customIngredients = submitted.customIngredients.filter((it) => "name" in it)
   submitted.steps = submitted.steps.filter((it) => it)
@@ -470,7 +486,7 @@ if (recipeId.value != null) {
           name: item.name
         },
         amount: item.amount,
-        unit: item.unit
+        unit: unitOptions.value.find(it => it.value == item.unit)
       }))
       recipe.value.customIngredients = response.data.customIngredients
       recipe.value.yield = response.data.yield
@@ -490,11 +506,6 @@ if (recipeId.value != null) {
 </script>
 
 <style scoped>
-.ghost {
-  opacity: 0.5;
-}
-
-
 
 .drag-handle {
   cursor: grab;

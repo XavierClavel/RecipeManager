@@ -46,15 +46,6 @@ if (ingredients) {
 }
 
 
-const selectDishClass = (index) => {
-  if (selectedDishType.value.includes(index)) {
-    selectedDishType.value.splice(selectedDishType.value.indexOf(index),1)
-  } else {
-    selectedDishType.value.push(index)
-  }
-  updateUrl()
-}
-
 function onComboUpdate(newVal) {
   selectedIngredients.value = newVal.filter(item =>
     typeof item === 'object'

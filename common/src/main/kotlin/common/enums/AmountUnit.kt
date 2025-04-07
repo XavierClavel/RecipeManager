@@ -4,8 +4,9 @@ enum class AmountUnit {
     NONE,
     UNIT,
     GRAM,
-    CUP,
     POUND,
+    MILLILITERS,
     TEASPOON,
-    TABLESPOON
+    TABLESPOON,
+    CUP,
 }

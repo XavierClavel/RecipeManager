@@ -70,6 +70,7 @@ export default {
   desert: "Desert",
   snacks: "Snacks",
   breakfast: "Breakfast",
+  drinks: "Drinks",
 
   alphabetical: "Alphabetical",
   likes: "Likes",
@@ -90,6 +91,7 @@ export default {
   welcome: "Welcome",
   welcome_subtext: "What's cooking, good looking ?",
   no_result: "No result",
+  visibility: "Visibility",
 
   unit: "Unit",
   gram: "Gram",

@@ -37,7 +37,11 @@ const dishOptions = [
   {
     value: "BREAKFAST",
     label: "breakfast",
-  }
+  },
+  {
+    value: "DRINKS",
+    label: "drinks",
+  },
 ]
 
 
