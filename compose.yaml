@@ -31,7 +31,7 @@ services:
     build:
       context: frontend
     ports:
-      - "80:80"
+      - "443:80"
     networks:
       - frontend-network
     volumes:
