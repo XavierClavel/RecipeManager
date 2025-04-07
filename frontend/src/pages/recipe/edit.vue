@@ -120,14 +120,30 @@
             <v-select
               v-model="recipe.ingredients[index].unit"
               :label="`${$t('unit')}`"
-              :items="units"
+              :items="unitOptions"
               color="primary"
-              item-title="unit"
+              :item-title="getLocalizedLabel"
+              item-value="value"
               return-object
-            ></v-select>
+            >
+              <!-- Customize how items appear in the dropdown -->
+              <template v-slot:item="{ props, item }">
+                <v-list-item v-bind="props">
+                  <template #prepend>
+                    <v-icon>{{ item.raw.icon }}</v-icon>
+                  </template>
+                </v-list-item>
+              </template>
+
+              <!-- Customize how selected item appears -->
+              <template v-slot:selection="{ item }">
+                <v-icon start class="mr-2">{{ item.raw.icon }}</v-icon>
+                {{ $t(item.raw.label) }}
+              </template>
+            </v-select>
             </v-card>
 
-            <v-card class="ma-1 flex-grow-1" max-width="150px">
+            <v-card class="ma-1 flex-grow-1" max-width="150px" v-if="recipe.ingredients[index].unit?.value != 'NONE'">
             <v-number-input
               v-model="recipe.ingredients[index].amount"
               :label="`${$t('amount')}`"
@@ -188,12 +204,30 @@
             <v-select
               v-model="recipe.customIngredients[index].unit"
               :label="`${$t('unit')}`"
-              outlined
-              :items="units"
-            ></v-select>
+              :items="unitOptions"
+              color="primary"
+              :item-title="getLocalizedLabel"
+              item-value="value"
+              return-object
+            >
+              <!-- Customize how items appear in the dropdown -->
+              <template v-slot:item="{ props, item }">
+                <v-list-item v-bind="props">
+                  <template #prepend>
+                    <v-icon>{{ item.raw.icon }}</v-icon>
+                  </template>
+                </v-list-item>
+              </template>
+
+              <!-- Customize how selected item appears -->
+              <template v-slot:selection="{ item }">
+                <v-icon start class="mr-2">{{ item.raw.icon }}</v-icon>
+                {{ $t(item.raw.label) }}
+              </template>
+            </v-select>
             </v-card>
 
-            <v-card class="flex-grow-1 ma-1" max-width="150px">
+            <v-card class="flex-grow-1 ma-1" max-width="150px" v-if="recipe.customIngredients[index].unit?.value != 'NONE'">
             <v-number-input
               v-model="recipe.customIngredients[index].amount"
               :label="`${$t('amount')}`"
@@ -311,20 +345,24 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, uploadRecipeImage, deleteRecipeImage, updateRecipe} from "@/scripts/recipes";
-import {dishClasses, toViewRecipe} from "@/scripts/common";
+import {toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
-import {dishOptions} from "@/scripts/values";
-
+import {dishOptions, unitOptions} from "@/scripts/values";
+import {useI18n} from "vue-i18n";
+const {t} = useI18n()
 
 
 // Get the route object
 const route = useRoute();
 let recipeId = ref(route.query.id)
 const editablePicture = ref(null)
-const units = ref(['UNIT','GRAM','lb','teaspoon', 'sugarspoon', 'cup'])
 
 const autocompleteList = ref([])
+
+function getLocalizedLabel(item: any) {
+  return t(item.label)
+}
 
 const onIngredientAutocompleteChange = async (query, index) => {
   const response = await searchIngredients(query, 0, 20);

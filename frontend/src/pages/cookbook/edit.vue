@@ -26,10 +26,26 @@
       <v-card class="my-2 flex-grow-1" max-width="200px">
       <v-select
         v-model="cookbook.visibility"
-        label="Visibility"
-        :item-props="true"
+        :label="`${$t('visibility')}`"
+        item-title="label"
+        item-value="value"
         :items="visibilityOptions"
-      ></v-select>
+      >
+        <!-- Customize how items appear in the dropdown -->
+        <template v-slot:item="{ props, item }">
+          <v-list-item v-bind="props">
+            <template #prepend>
+              <v-icon>{{ $t(item.raw.icon) }}</v-icon>
+            </template>
+          </v-list-item>
+        </template>
+
+        <!-- Customize how selected item appears -->
+        <template v-slot:selection="{ item }">
+          <v-icon start class="mr-2">{{ item.raw.icon }}</v-icon>
+          {{ item.raw.label }}
+        </template>
+      </v-select>
       </v-card>
 
        <editable-picture
@@ -141,8 +157,8 @@ import {
   getCookbookUsers,
   setCookbookUsers
 } from "@/scripts/cookbooks";
-import {ICON_VISIBILITY_PRIVATE, ICON_VISIBILITY_PROTECTED, ICON_VISIBILITY_PUBLIC} from "@/scripts/icons";
 import {useAuthStore} from "@/stores/auth";
+import {visibilityOptions} from "@/scripts/values";
 
 
 
@@ -151,23 +167,6 @@ const route = useRoute();
 let cookbookId = ref(route.query.cookbook)
 let addRecipeId = route.query.addRecipe
 const editablePicture = ref(null)
-const visibilityOptions = ref([
-  {
-    title: 'Private',
-    value: 'PRIVATE',
-    prependIcon: ICON_VISIBILITY_PRIVATE,
-  },
-  {
-    title: 'Protected',
-    value: 'PROTECTED',
-    prependIcon: ICON_VISIBILITY_PROTECTED,
-  },
-  {
-    title: 'Public',
-    value: 'PUBLIC',
-    prependIcon: ICON_VISIBILITY_PUBLIC,
-  },
-])
 
 
 const autocompleteList = ref([])

@@ -41,6 +41,11 @@ export {
   ICON_VISIBILITY_PROTECTED,
   ICON_VISIBILITY_PUBLIC,
 
+  ICON_WEIGHT,
+  ICON_AMOUNT,
+  ICON_VOLUME,
+  ICON_NONE,
+
   getIngredientIcon,
 }
 
@@ -89,6 +94,11 @@ const ICON_INTEGRATION = "mdi-xml"
 const ICON_VISIBILITY_PRIVATE = "mdi-lock"
 const ICON_VISIBILITY_PROTECTED = "mdi-account-group"
 const ICON_VISIBILITY_PUBLIC = "mdi-eye"
+
+const ICON_WEIGHT = "mdi-weight"
+const ICON_AMOUNT = "mdi-tally-mark-5"
+const ICON_VOLUME = "mdi-cup"
+const ICON_NONE = "mdi-minus"
 
 const getIngredientIcon = (ingredientType) => {
   switch (ingredientType) {

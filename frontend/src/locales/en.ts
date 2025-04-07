@@ -41,7 +41,6 @@ export default {
 
   ingredients: "Ingredients",
   ingredient: "Ingredient",
-  unit: "Unit",
   amount: "Amount",
   complement: "Complement",
   custom_ingredient: "Custom ingredient",
@@ -91,4 +90,13 @@ export default {
   welcome: "Welcome",
   welcome_subtext: "What's cooking, good looking ?",
   no_result: "No result",
+
+  unit: "Unit",
+  gram: "Gram",
+  none: "Unspecified",
+  pound: "Pound",
+  milliliters: "Milliliters",
+  teaspoon: "Teaspoon",
+  tablespoon: "Tablespoon",
+  cup: "Cup",
 };

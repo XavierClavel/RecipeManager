@@ -41,7 +41,6 @@ export default {
 
   ingredients: "Ingrédients",
   ingredient: "Ingrédient",
-  unit: "Unité",
   amount: "Quantité",
   complement: "Complément",
   custom_ingredient: "Ingrédient personnalisé",
@@ -91,4 +90,13 @@ export default {
   welcome: "Bienvenue",
   welcome_subtext: "Qu'est-ce que tu mijotes aujourd'hui ?",
   no_result: "Pas de résultat",
+
+  unit: "Unité",
+  gram: "Grammes",
+  none: "Non spécifié",
+  pound: "Livres",
+  milliliters: "Millilitres",
+  teaspoon: "Cuillère à sucre",
+  tablespoon: "Cuillère à soupe",
+  cup: "Tasse",
 };
