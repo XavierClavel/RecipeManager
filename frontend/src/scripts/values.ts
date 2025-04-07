@@ -31,12 +31,12 @@ const dishOptions = [
     label: "desert",
   },
   {
-    value: "SNACKS",
-    label: "snacks",
+    value: "SALTY_SNACKS",
+    label: "salty_snacks",
   },
   {
-    value: "BREAKFAST",
-    label: "breakfast",
+    value: "SUGARY_SNACKS",
+    label: "sugary_snacks",
   },
   {
     value: "DRINKS",
