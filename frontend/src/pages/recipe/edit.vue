@@ -359,7 +359,6 @@ const {t} = useI18n()
 const route = useRoute();
 let recipeId = ref(route.query.id)
 const editablePicture = ref(null)
-const autocompleteRefs = ref([])
 
 const autocompleteList = ref([])
 const queryList = ref([])

@@ -22,34 +22,25 @@ const comboboxRef = ref()
 
 const route = useRoute();
 
-const cookie = getCookie('recipeQuery')
-console.log("cookie", cookie)
-console.log(route.query)
-if (Object.keys(route.query).length) {
-  console.log("query")
-} else {
-  console.log("no query")
-}
-const query = Object.keys(route.query).length ? route.query : cookie
 
-if(query.user) {
+if(route.query.user) {
   selectedSource.value.push(0)
 }
-if (query.likedBy) {
+if (route.query.likedBy) {
   selectedSource.value.push(1)
 }
-if (query.cookbookUser) {
+if (route.query.cookbookUser) {
   selectedSource.value.push(2)
 }
-if (query.followedBy) {
+if (route.query.followedBy) {
   selectedSource.value.push(3)
 }
 
-selectedDishType.value = query.dishClasses?.split(',')?.map(it => dishOptions.findIndex(dish => dish.value == it)) || []
+selectedDishType.value = route.query.dishClasses?.split(',')?.map(it => dishOptions.findIndex(dish => dish.value == it)) || []
 
-selectedSort.value = query.sort?.split('_')[0]
-sortOrder.value = query.sort?.split('_')[1] == "ASCENDING" ? "asc" : "desc"
-const ingredients = query.ingredient?.split(',')
+selectedSort.value = route.query.sort?.split('_')[0]
+sortOrder.value = route.query.sort?.split('_')[1] == "ASCENDING" ? "asc" : "desc"
+const ingredients = route.query.ingredient?.split(',')
 if (ingredients) {
   ingredients.forEach(it => getIngredient(it).then(response => selectedIngredients.value.push(response.data)))
 }
@@ -142,7 +133,6 @@ const updateUrl = () => {
   setCookie('recipeQuery',query)
 }
 
-updateUrl()
 </script>
 
 <template>
