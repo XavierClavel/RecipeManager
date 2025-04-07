@@ -6,6 +6,7 @@ import {useI18n} from "vue-i18n";
 import ChipRow from "@/components/ChipRow.vue";
 import {dishOptions, sortOptions, sourceOptions} from "@/scripts/values";
 import {useRoute} from "vue-router";
+import {getCookie, setCookie} from "@/scripts/cookies";
 const autocompleteList = ref([])
 
 const selectedDishType = ref([])
@@ -20,30 +21,39 @@ const authStore = useAuthStore()
 const comboboxRef = ref()
 
 const route = useRoute();
-const userId = route.query.user
 
-if(route.query.user) {
+const cookie = getCookie('recipeQuery')
+console.log("cookie", cookie)
+console.log(route.query)
+if (Object.keys(route.query).length) {
+  console.log("query")
+} else {
+  console.log("no query")
+}
+const query = Object.keys(route.query).length ? route.query : cookie
+
+if(query.user) {
   selectedSource.value.push(0)
 }
-if (route.query.likedBy) {
+if (query.likedBy) {
   selectedSource.value.push(1)
 }
-if (route.query.cookbookUser) {
+if (query.cookbookUser) {
   selectedSource.value.push(2)
 }
-if (route.query.followedBy) {
+if (query.followedBy) {
   selectedSource.value.push(3)
 }
 
-console.log(route.query)
-selectedDishType.value = route.query.dishClasses?.split(',')?.map(it => dishOptions.findIndex(dish => dish.value == it)) || []
+selectedDishType.value = query.dishClasses?.split(',')?.map(it => dishOptions.findIndex(dish => dish.value == it)) || []
 
-selectedSort.value = route.query.sort?.split('_')[0]
-sortOrder.value = route.query.sort?.split('_')[1] == "ASCENDING" ? "asc" : "desc"
-const ingredients = route.query.ingredient?.split(',')
+selectedSort.value = query.sort?.split('_')[0]
+sortOrder.value = query.sort?.split('_')[1] == "ASCENDING" ? "asc" : "desc"
+const ingredients = query.ingredient?.split(',')
 if (ingredients) {
   ingredients.forEach(it => getIngredient(it).then(response => selectedIngredients.value.push(response.data)))
 }
+
 
 
 function onComboUpdate(newVal) {
@@ -112,22 +122,27 @@ const updateUrl = () => {
   if (selectedSort.value == "RANDOM") {
     selectedSortOrder = ""
   }
+  const query = Object.fromEntries(
+    Object.entries({
+      ...route.query,
+      user: selectedSource.value.includes(0) ? authStore.id : undefined,
+      likedBy: selectedSource.value.includes(1) ? authStore.id : undefined,
+      cookbookUser: selectedSource.value.includes(2) ? authStore.id : undefined,
+      followedBy: selectedSource.value.includes(3) ? authStore.id : undefined,
+      dishClasses: selectedDishType.value?.length ? selectedDishType.value.map(it => dishOptions[it].value).join(",") : undefined,
+      ingredient: selectedIngredients.value?.length ? selectedIngredients.value.map(it => it.id).join(",") : undefined,
+      sort: selectedSort.value != null ? selectedSort.value + selectedSortOrder  : undefined
+    }).filter(([_, value]) => value !== undefined) // Remove undefined values
+  )
   router.push({
-    path: route.path, // Keep the current path
-    query: Object.fromEntries(
-      Object.entries({
-        ...route.query,
-        user: selectedSource.value.includes(0) ? authStore.id : undefined,
-        likedBy: selectedSource.value.includes(1) ? authStore.id : undefined,
-        cookbookUser: selectedSource.value.includes(2) ? authStore.id : undefined,
-        followedBy: selectedSource.value.includes(3) ? authStore.id : undefined,
-        dishClasses: selectedDishType.value?.length ? selectedDishType.value.map(it => dishOptions[it].value).join(",") : undefined,
-        ingredient: selectedIngredients.value.length > 0 ? selectedIngredients.value.map(it => it.id).join(",") : undefined,
-        sort: selectedSort.value != null ? selectedSort.value + selectedSortOrder  : undefined
-      }).filter(([_, value]) => value !== undefined) // Remove undefined values
-    ),
+    path: '/recipe/list', // Keep the current path
+    query: query,
   })
+  console.log(query)
+  setCookie('recipeQuery',query)
 }
+
+updateUrl()
 </script>
 
 <template>

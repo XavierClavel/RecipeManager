@@ -27,7 +27,7 @@
           </v-btn>
         </v-list-item>
         <v-list-item :prepend-icon="ICON_HOME" link :title="`${$t('home')}`" @click="toHome"></v-list-item>
-        <v-list-item :prepend-icon="ICON_RECIPE" link :title="`${$t('recipes')}`" @click="toListRecipe(`?user=${userId}&likedBy=${userId}`)"></v-list-item>
+        <v-list-item :prepend-icon="ICON_RECIPE" link :title="`${$t('recipes')}`" @click="toListRecipe('')"></v-list-item>
         <v-list-item :prepend-icon="ICON_INGREDIENT" link :title="`${$t('ingredients')}`" @click="toListIngredient"></v-list-item>
         <v-list-item :prepend-icon="ICON_COOKBOOK" link :title="`${$t('cookbooks')}`" @click="toMyCookbooks"></v-list-item>
         <v-list-item :prepend-icon="ICON_ADMIN" link :title="`${$t('admin')}`" @click="toUsers"></v-list-item>
