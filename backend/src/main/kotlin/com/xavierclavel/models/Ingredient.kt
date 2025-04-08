@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import io.ebean.Model
+import io.ebean.annotation.DbDefault
 import jakarta.persistence.GenerationType
 
 @Entity
@@ -28,6 +29,21 @@ class Ingredient (
     var fibers: Float = 0f,
     var proteins: Float = 0f,
     var sodium: Float = 0f,
+
+    @DbDefault(value = "true")
+    var allowAmount: Boolean = true,
+
+    @DbDefault(value = "true")
+    var allowWeight: Boolean = true,
+
+    @DbDefault(value = "true")
+    var allowVolume: Boolean = true,
+
+    @DbDefault(value = "1f")
+    var volumicMass: Float = 1f,
+
+    @DbDefault(value = "1f")
+    var weightPerUnit: Float = 1f,
 ): Model() {
 
     fun mergeDTO(ingredientDTO: IngredientDTO): Ingredient {
@@ -42,6 +58,12 @@ class Ingredient (
         this.proteins = ingredientDTO.proteins
         this.sodium = ingredientDTO.sodium
 
+        this.allowAmount = ingredientDTO.allowAmount
+        this.allowVolume = ingredientDTO.allowVolume
+        this.allowVolume = ingredientDTO.allowVolume
+        this.volumicMass = ingredientDTO.volumicMass
+        this.weightPerUnit = ingredientDTO.weightPerUnit
+
         return this
     }
 
@@ -49,5 +71,21 @@ class Ingredient (
         id = this.id,
         name = this.name,
         type = this.type,
+
+        calories = this.calories,
+        glucids = this.glucids,
+        cholesterol = this.cholesterol,
+        lipids = this.lipids,
+        fibers = this.fibers,
+        proteins = this.proteins,
+        sodium = this.sodium,
+        allowAmount = this.allowAmount,
+        allowWeight = this.allowWeight,
+        allowVolume = this.allowVolume,
+        volumicMass = this.volumicMass,
+        weightPerUnit = this.weightPerUnit,
+
+
+
     )
 }

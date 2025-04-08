@@ -1,12 +1,24 @@
 <template>
-  <v-layout>
+  <v-layout class="mt-6">
 
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px;" >
-      <v-card width="100%" max-width="1500px"  class="ma-5">
+      <v-card class="d-flex flex-column pa-0 ma-0" width="100%" color="transparent" variant="flat" style="border:0 !important">
         <v-card-title class="text-h7">
           Ingredients
+          <v-btn
+            color="black"
+            class="ma-4 ml-6 text-h2 text-black"
+            rounded="lg"
+            height="100px"
+            width="100px"
+            @click="newIngredient"
+            icon="mdi-plus"
+            variant="outlined"
+            style="border: 5px solid #0d1821 !important;"
+          ></v-btn>
         </v-card-title>
-        <v-btn prepend-icon="mdi-plus-box-outline" color="primary" rounded="lg" flat class="ml-8" @click="newIngredient">New ingredient</v-btn>
+
+      <v-card width="100%" max-width="1500px"  class="ma-5">
+
         <v-slide-x-reverse-transition v-show="isPanelOpen">
           <v-sheet class="pa-4 right-panel" elevation="3" z-index="50" style='z-index:20001;'>
             <v-btn icon @click="isPanelOpen = false">
@@ -180,8 +192,7 @@
           </v-row>
         </v-container>
       </v-card>
-
-    </v-main>
+      </v-card>
   </v-layout>
 </template>
 
@@ -189,6 +200,7 @@
 import {createIngredient, deleteIngredient, getCount, searchIngredients, updateIngredient} from "@/scripts/ingredients";
 import { useTheme } from 'vuetify'
 import {ICON_DELETE} from "@/scripts/icons";
+import {toCreateCookbook} from "@/scripts/common";
 
 const theme = useTheme()
 

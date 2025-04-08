@@ -67,7 +67,7 @@ const toMyProfile = () => {
 const toEditUser = (id) => navigateTo(`/user/edit?user=${id}`)
 const toSettings = () => navigateTo(`/user/settings`)
 
-const toListIngredient = () => navigateTo(`/ingredients`)
+const toListIngredient = () => navigateTo(`/ingredient/list`)
 const toViewIngredient = (id) => navigateTo(`/ingredient/view?ingredient=${id}`)
 
 const toCreateCookbook = () => navigateTo(`/cookbook/edit`)

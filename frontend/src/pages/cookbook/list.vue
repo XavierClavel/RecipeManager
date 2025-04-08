@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="rounded rounded-md d-flex flex-wrap  justify-space-evenly mt-6">
+  <v-layout class="d-flex flex-wrap  justify-space-evenly mt-6">
     <v-card class="d-flex flex-column pa-0 ma-0" width="100%" color="transparent" variant="flat" style="border:0 !important">
     <v-card-title>{{$t("cookbooks")}}
       <v-btn
