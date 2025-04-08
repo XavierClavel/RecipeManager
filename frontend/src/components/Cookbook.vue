@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import {getCookbookIconUrl, getUserIconUrl, toViewCookbook} from "@/scripts/common";
 
-defineProps({
+const props = defineProps({
   cookbook: {
     type: Object,
     required: true,
   },
 })
+
+console.log(props.cookbook.members.length)
+
+for (i in props.cookbook.members.length) {
+  console.log(i)
+}
 </script>
 
 <template>
@@ -25,8 +31,19 @@ defineProps({
         ></v-img>
         <v-card-title class="text-black text-h6 font-weight-regular">{{ cookbook.title }}</v-card-title>
         <v-row class="px-6 pt-2 pb-5">
-          <v-avatar start size="30">
-            <v-img :src="getUserIconUrl(cookbook.members[0].id)"></v-img>
+          <v-avatar
+            start
+            size="30"
+            class="mx-n1"
+            v-for="index in cookbook.members.length"
+            style="border: 3px solid #0d1821 !important;"
+            color="surface"
+          >
+            <v-img
+              v-if="index < 10 || cookbook.members.length <= 10"
+              :src="getUserIconUrl(cookbook.members[(index - 1)].id)"
+            ></v-img>
+            <v-icon v-else>mdi-dots-horizontal</v-icon>
           </v-avatar>
         </v-row>
 

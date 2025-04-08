@@ -25,18 +25,6 @@
 
     <user-info :user="recipe.owner" class="mt-n8 mb-4"></user-info>
 
-
-
-<!--
-    <v-card-text
-      class="mx-auto px-3"
-    > Created on : {{new Date(recipe.creationDate * 1000).toLocaleDateString()}} </v-card-text>
-
-    <v-card-text
-      class="mx-auto px-3"
-    > Last edited on : {{new Date(recipe.editionDate * 1000).toLocaleDateString()}} </v-card-text>
--->
-
     <v-img
       style="border: 3px solid #0d1821 !important;"
       color="surface-variant"
@@ -51,7 +39,6 @@
 
       <span class="d-flex flex-row">
         <picto-info :value="recipe.yield" icon="mdi-silverware-fork-knife" v-if="recipe.yield"></picto-info>
-        <picto-info :value="recipe.conservationTime" icon="mdi-fridge" v-if="recipe.conservationTime"></picto-info>
         <picto-info :value="`${recipe.preparationTime} min`" icon="mdi-chef-hat" v-if="recipe.preparationTime"></picto-info>
         <picto-info :value="`${recipe.cookingTime} min`" icon="mdi-stove" v-if="recipe.cookingTime"></picto-info>
         <picto-info :value="`${recipe.cookingTemperature} °C`" icon="mdi-thermometer" v-if="recipe.cookingTemperature"></picto-info>
@@ -60,7 +47,7 @@
 
     <span class="d-flex align-center justify-center mb-2 my-5 ga-10">
       <v-btn
-        v-if="recipeLiked != null"
+        v-if="recipeLiked"
         :icon="recipeLiked ? 'mdi-heart' : 'mdi-heart-outline' "
         color="background"
         flat
