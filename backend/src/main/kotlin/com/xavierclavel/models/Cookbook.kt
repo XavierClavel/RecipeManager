@@ -63,7 +63,7 @@ class Cookbook (
         description = this.description,
         recipesCount = this.recipes.size,
         usersCount = this.users.size,
-        members = this.users.take(5).map { it.user.toOverview() }
+        members = this.users.take(10).map { it.user.toOverview() }
     ,
     )
     fun toOverview() = CookbookOverview(
