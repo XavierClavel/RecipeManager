@@ -39,10 +39,10 @@ class Ingredient (
     @DbDefault(value = "true")
     var allowVolume: Boolean = true,
 
-    @DbDefault(value = "1f")
+    @DbDefault(value = "1.0")
     var volumicMass: Float = 1f,
 
-    @DbDefault(value = "1f")
+    @DbDefault(value = "1.0")
     var weightPerUnit: Float = 1f,
 ): Model() {
 

@@ -5,8 +5,8 @@
             <column name="allow_amount" type="boolean" defaultValue="true" notnull="true"/>
             <column name="allow_weight" type="boolean" defaultValue="true" notnull="true"/>
             <column name="allow_volume" type="boolean" defaultValue="true" notnull="true"/>
-            <column name="volumic_mass" type="float" defaultValue="1f" notnull="true"/>
-            <column name="weight_per_unit" type="float" defaultValue="1f" notnull="true"/>
+            <column name="volumic_mass" type="float" defaultValue="1.0" notnull="true"/>
+            <column name="weight_per_unit" type="float" defaultValue="1.0" notnull="true"/>
         </addColumn>
     </changeSet>
 </migration>

@@ -26,10 +26,15 @@ object HealthController: Controller(HEALTH_URL) {
     }
 
     private fun Route.getHealth() = get {
-        val versionProperties = Properties()
-        versionProperties.load(this.javaClass.getResourceAsStream("/version.properties"))
-        val version = versionProperties.getProperty("version") ?: "no version"
-        call.respond(HealthDto(true, version))
+        try {
+            val versionProperties = Properties()
+            versionProperties.load(this.javaClass.getResourceAsStream("/version.properties"))
+            val version = versionProperties.getProperty("version") ?: "no version"
+            call.respond(HealthDto(true, version))
+        } catch(e: Exception) {
+            call.respond(HealthDto(false, "dev"))
+        }
+
     }
 }
 
