@@ -35,7 +35,6 @@ export {
   toMaintenance,
 
   toMyProfile,
-  whoami,
   toSettings,
 
   uploadImage,
@@ -148,19 +147,6 @@ async function logout() {
     authStore.logout()
   }
   return result
-}
-
-async function whoami() {
-  const result = await apiClient.get(`/auth/me`).then( function (response) {
-    authStore.login({ username: 'test_user' });
-    }
-  ).catch (function (error) {
-    console.log(error)
-    const authStore = useAuthStore();
-    authStore.logout()
-    toLogin()
-  })
-
 }
 
 async function uploadImage(id, file, path) {

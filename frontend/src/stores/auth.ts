@@ -15,7 +15,6 @@ export const useAuthStore = defineStore('auth', {
     },
     login() {
       this.checkAuth()
-      this.isAuthenticated = true
     },
     async checkAuth() {
       if (this.isAuthenticated) return
