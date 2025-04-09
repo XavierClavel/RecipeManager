@@ -1,4 +1,5 @@
 import apiClient from '@/plugins/axios.js';
+import {getLocale} from "@/scripts/localization";
 
 export {
   getRecipe,
@@ -12,12 +13,12 @@ export {
 }
 
 async function getRecipe(id) {
-  return await apiClient.get(`/recipe/${id}`)
+  return await apiClient.get(`/recipe/${id}?locale=${getLocale()}`)
 }
 
 async function listRecipes(query) {
   const list = query.replace("?", "").split("&")
-  return await apiClient.get(`/recipe${query}`)
+  return await apiClient.get(`/recipe${query}&locale=${getLocale()}`)
 }
 
 async function createRecipe(recipe) {

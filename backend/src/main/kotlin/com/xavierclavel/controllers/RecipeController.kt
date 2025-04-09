@@ -13,6 +13,7 @@ import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.checkRecipeEditionRights
 import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getIdPathVariableSet
+import com.xavierclavel.utils.getLocale
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSort
@@ -20,6 +21,7 @@ import com.xavierclavel.utils.logger
 import common.RecipeFilter
 import common.dto.RecipeDTO
 import common.enums.DishClass
+import common.enums.Locale
 import common.infodto.RecipeInfo
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
@@ -53,7 +55,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.getRecipe() = get("/{id}") {
         val recipeId = getPathId()
-        val recipe = recipeService.getById(getOptionalSessionId(),recipeId)
+        val recipe = recipeService.getById(getOptionalSessionId(),recipeId, getLocale())
         call.respond(recipe)
     }
 
@@ -78,6 +80,7 @@ object RecipeController: Controller(RECIPE_URL) {
             paging = paging,
             sort = sort,
             recipeFilter = recipeFilter,
+            locale = getLocale(),
         )
 
         call.respond(result)
@@ -90,7 +93,7 @@ object RecipeController: Controller(RECIPE_URL) {
             val recipe = recipeService.createRecipe(recipeDto, user)
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
             customIngredientService.updateCustomIngredients(recipe.id, recipeDto)
-            val recipeInfo = recipeService.getRawById(recipe.id, getSessionUserId())
+            val recipeInfo = recipeService.getRawById(recipe.id, getSessionUserId(), Locale.EN)
             call.respond(HttpStatusCode.Created, recipeInfo)
         } catch (e: Exception) {
             logger.error {e.message}
@@ -101,7 +104,7 @@ object RecipeController: Controller(RECIPE_URL) {
     private fun Route.updateRecipe() = put("/{id}") {
         try {
             val recipeId = getPathId()
-            val recipe = recipeService.getRawById(recipeId, getSessionUserId())
+            val recipe = recipeService.getRawById(recipeId, getSessionUserId(), Locale.EN)
             checkRecipeEditionRights(recipe.owner!!.id)
             val recipeDto = call.receive<RecipeDTO>()
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
@@ -115,7 +118,7 @@ object RecipeController: Controller(RECIPE_URL) {
 
     private fun Route.deleteRecipe() = delete("/{id}") {
         val recipeId = getPathId()
-        val recipe = recipeService.getRawById(recipeId, getSessionUserId())
+        val recipe = recipeService.getRawById(recipeId, getSessionUserId(), Locale.EN)
         checkRecipeEditionRights(recipe.owner!!.id)
         recipeService.tagRecipeForDeletion(recipeId)
         recipeService.tryDelete(recipeId)

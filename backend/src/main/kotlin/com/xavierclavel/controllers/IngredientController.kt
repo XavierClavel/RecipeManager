@@ -2,10 +2,11 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.services.IngredientService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getLocale
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getPaging
+import com.xavierclavel.utils.getSearch
 import common.dto.IngredientDTO
-import common.infodto.IngredientInfo
 import common.utils.URL.INGREDIENT_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
@@ -62,8 +63,8 @@ object IngredientController: Controller(INGREDIENT_URL) {
     }
 
     private fun Route.searchIngredients() = get {
-        val searchString = call.request.queryParameters["search"] ?: ""
-        call.respond(ingredientService.search(searchString, getPaging()))
+        val searchString = getSearch()
+        call.respond(ingredientService.search(searchString, getPaging(), getLocale()))
     }
 
     private fun Route.getIngredient() = get("/{id}") {

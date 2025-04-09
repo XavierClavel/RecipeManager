@@ -16,6 +16,7 @@ import com.xavierclavel.utils.logger
 import common.RecipeFilter
 import common.dto.RecipeDTO
 import common.enums.DishClass
+import common.enums.Locale
 import common.enums.Sort
 import common.infodto.RecipeInfo
 import common.utils.Filepath.RECIPES_IMG_PATH
@@ -40,6 +41,7 @@ class RecipeService: KoinComponent {
         paging: Paging,
         sort: Sort,
         recipeFilter: RecipeFilter,
+        locale: Locale
     ) : List<RecipeInfo> {
 
         return QRecipe()
@@ -51,7 +53,7 @@ class RecipeService: KoinComponent {
             .setPaging(paging)
             .sort(sort)
             .findList()
-            .map { it.toInfo() }
+            .map { it.toInfo(locale) }
     }
 
 
@@ -96,15 +98,15 @@ class RecipeService: KoinComponent {
             .endOr()
     }
 
-    fun getRawById(recipeId: Long, userId: Long?): RecipeInfo =
+    fun getRawById(recipeId: Long, userId: Long?, locale: Locale): RecipeInfo =
         QRecipe()
             .id.eq(recipeId)
             .filterOutDeletion(userId)
             .findOne()
-            ?.toInfo()
+            ?.toInfo(locale)
             ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
 
-    fun getById(userId: Long?, recipeId: Long) : RecipeInfo {
+    fun getById(userId: Long?, recipeId: Long, locale: Locale) : RecipeInfo {
         if (!existsById(recipeId, userId)) throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
         if (!QRecipe()
             .id.eq(recipeId)
@@ -112,7 +114,7 @@ class RecipeService: KoinComponent {
             .exists()) {
             throw ForbiddenException(ForbiddenCause.NOT_ALLOWED_TO_SEE_RECIPE)
         }
-        return getRawById(recipeId, userId)
+        return getRawById(recipeId, userId, locale)
     }
 
     fun deleteById(recipeId: Long) {
@@ -129,11 +131,11 @@ class RecipeService: KoinComponent {
             .mergeDTO(recipeDTO)
             .setOwner(owner)
             .insertAndGet()
-            .toInfo()
+            .toInfo(Locale.EN)
 
 
     fun updateRecipe(id: Long, recipeDTO: RecipeDTO): RecipeInfo =
-        getEntityById(id).mergeDTO(recipeDTO).updateAndGet().toInfo()
+        getEntityById(id).mergeDTO(recipeDTO).updateAndGet().toInfo(Locale.EN)
 
 
     fun deleteRecipe(id: Long) {
@@ -146,7 +148,7 @@ class RecipeService: KoinComponent {
 
     fun tryDelete(id: Long) {
         val recipe = getEntityById(id)
-        val recipeInfo = recipe.toInfo()
+        val recipeInfo = recipe.toInfo(Locale.EN)
         logger.info {recipe}
         logger.info {"Has references: ${recipeInfo.likesCount > 0 || QCookbookRecipe().recipe.id.eq(recipe.id).exists()}"}
         if (recipeInfo.likesCount > 0 || QCookbookRecipe().recipe.id.eq(recipe.id).exists()) return

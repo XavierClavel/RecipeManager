@@ -6,6 +6,7 @@ import com.xavierclavel.models.jointables.RecipeIngredient
 import com.xavierclavel.models.jointables.CustomIngredient
 import common.dto.RecipeDTO
 import common.enums.DishClass
+import common.enums.Locale
 import common.infodto.RecipeInfo
 import jakarta.persistence.CascadeType
 import jakarta.persistence.ElementCollection
@@ -87,13 +88,13 @@ class Recipe (
         this.owner = user
     }
 
-    fun toInfo() = RecipeInfo(
+    fun toInfo(locale: Locale) = RecipeInfo(
         id = this.id,
         title = title,
         description = description,
         dishClass = dishClass,
         steps = steps,
-        ingredients = ingredients.map { it.toInfo() },
+        ingredients = ingredients.map { it.toInfo(locale) },
         customIngredients = customIngredients.map {it.toInfo()},
 
         owner = this.owner!!.toOverview(),

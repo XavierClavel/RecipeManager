@@ -8,6 +8,7 @@ import org.koin.core.component.KoinComponent
 import com.xavierclavel.utils.DbTransaction.deleteAndGet
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
+import common.enums.Locale
 import common.infodto.IngredientInfo
 
 class IngredientService: KoinComponent {
@@ -39,9 +40,14 @@ class IngredientService: KoinComponent {
         QIngredient().id.eq(ingredientId).findOne()?.deleteAndGet() != null
 
 
-    fun search(searchString: String, paging: Paging): List<IngredientInfo> =
+    fun search(searchString: String, paging: Paging, locale: Locale): List<IngredientInfo> =
         QIngredient()
-            .name.like("%$searchString%")
+            .apply {
+                when(locale) {
+                    Locale.EN -> this.name_en.like("%$searchString%")
+                    Locale.FR -> this.name_fr.like("%$searchString%")
+                }
+            }
             .setPaging(paging)
             .findList()
             .map{it.toInfo()}

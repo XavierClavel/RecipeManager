@@ -21,7 +21,7 @@ import kotlinx.serialization.json.Json
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-val ingredientDTO = IngredientDTO(name = "", type = IngredientType.VEGETABLE, calories = 1)
+val ingredientDTO = IngredientDTO(type = IngredientType.VEGETABLE, calories = 1)
 
 suspend fun HttpClient.createIngredient(ingredient: IngredientDTO = ingredientDTO) : IngredientInfo {
     this.post(INGREDIENT_URL){

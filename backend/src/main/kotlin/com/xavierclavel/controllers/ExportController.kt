@@ -3,6 +3,7 @@ package com.xavierclavel.controllers
 import com.xavierclavel.services.ExportService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.getLocale
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.logger
 import com.xavierclavel.utils.respondPDF
@@ -23,7 +24,7 @@ object ExportController: Controller(EXPORT_URL) {
 
     private fun Route.exportRecipe() = get("/recipe/{id}") {
         val id = getPathId()
-        val recipe = recipeService.getEntityById(id).toInfo()
+        val recipe = recipeService.getEntityById(id).toInfo(getLocale())
         try {
             val pdfFile = exportService.generatePDF(recipe)
             call.respondPDF("example.pdf", pdfFile)

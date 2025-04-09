@@ -29,9 +29,16 @@
             </v-card-title>
             <v-card class="my-2">
             <v-text-field
-              v-model="selectedIngredient.name"
-              label="Name"
+              v-model="selectedIngredient.name_fr"
+              label="Name FR"
             ></v-text-field>
+            </v-card>
+
+            <v-card class="my-2">
+              <v-text-field
+                v-model="selectedIngredient.name_en"
+                label="Name EN"
+              ></v-text-field>
             </v-card>
 
             <v-card class="my-2">
@@ -170,7 +177,7 @@
                 backgroundColor: isPanelOpen && ingredient && ingredient.id === selectedIngredient.id ? theme.current.value.colors.secondary : '',
               }"
             >
-              <td>{{ ingredient.name }}</td>
+              <td>{{ ingredient.name_en }}</td>
               <td>{{ ingredient.type }}</td>
               <td>{{ ingredient.calories }}</td>
             </tr>
@@ -251,7 +258,7 @@ const editIngredient = (ingredientToEdit) => {
   } else {
     isPanelOpen.value = true
     selectedIngredient.value = ingredientToEdit
-    action.value = `Edit ingredient "${ingredientToEdit.name}"`
+    action.value = `Edit ingredient "${ingredientToEdit.name_en}"`
   }
 
 }

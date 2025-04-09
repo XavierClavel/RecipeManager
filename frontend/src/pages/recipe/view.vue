@@ -4,8 +4,8 @@
     max-width="1000px"
     v-if="displayError"
   >
-    <v-icon color="primary" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
-    <v-card-title prepend-icon="mdi-alert" class="text-primary text-h4">
+    <v-icon color="black" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
+    <v-card-title prepend-icon="mdi-alert" class="text-h4">
       {{ errorMessage }}
     </v-card-title>
   </v-card>
@@ -253,7 +253,6 @@ const snackbar = ref(false)
 
 const userCookbooks = ref([])
 const authStore = useAuthStore()
-const userId = computed(() => authStore.id)
 const {t} = useI18n()
 
 const recipe = ref<object>({
@@ -266,8 +265,7 @@ getRecipe(recipeId).then (
   function (response) {
     recipe.value = response.data
     console.log("Recipe", recipe.value)
-    const authStore = useAuthStore()
-    isOwner.value = response.data.owner.id == authStore.getId()
+    isOwner.value = response.data.owner.id == authStore.id
     console.log("Recipe owner", recipe.value.owner)
   }).catch(function (error) {
     displayError.value = true
@@ -286,7 +284,7 @@ isLiked(recipeId).then (
 
 
 const updateCookbook = () => {
-  getStatusInCookbooks(userId, recipeId).then(
+  getStatusInCookbooks(recipeId).then(
     function (response) {
       userCookbooks.value = [...response.data]
       console.log("status in cookbooks",response.data)

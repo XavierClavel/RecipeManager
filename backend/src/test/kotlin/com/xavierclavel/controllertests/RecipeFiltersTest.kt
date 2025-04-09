@@ -182,8 +182,8 @@ class RecipeFiltersTest : ApplicationTest() {
     fun `filter recipes by ingredient`() = runTestAsAdmin {
         val adminUser = client.getMe()
 
-        val ingredientDTO1 = IngredientDTO("")
-        val ingredientDTO2 = IngredientDTO("")
+        val ingredientDTO1 = IngredientDTO()
+        val ingredientDTO2 = IngredientDTO()
 
         val ingredient1 = client.createIngredient(ingredientDTO1)
         val ingredient2 = client.createIngredient(ingredientDTO2)

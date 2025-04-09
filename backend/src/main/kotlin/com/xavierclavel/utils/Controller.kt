@@ -5,6 +5,7 @@ import com.xavierclavel.exceptions.BadRequestCause
 import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.exceptions.ForbiddenCause
 import com.xavierclavel.exceptions.ForbiddenException
+import common.enums.Locale
 import common.enums.Sort
 import io.ebean.Paging
 import io.ktor.http.ContentType
@@ -49,6 +50,13 @@ fun RoutingContext.getSort(): Sort =
     Sort.valueOf(call.request.queryParameters["sort"] ?: "NONE")
 
 fun RoutingContext.getPathId(): Long = getIdPathVariable("id") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
+fun RoutingContext.getSearch(): String = call.request.queryParameters["search"] ?: ""
+fun RoutingContext.getLocale(): Locale = call.request.queryParameters["locale"]?.let { enumValueOfIgnoreCase<Locale>(it) } ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
+
+inline fun <reified T : Enum<T>> enumValueOfIgnoreCase(key: String): T =
+    enumValues<T>().find { it.name.equals(key, ignoreCase = true) }
+        ?: throw IllegalArgumentException("no value for key $key")
+
 
 fun RoutingContext.getIdPathVariable(value: String): Long? = call.parameters[value]?.toLongOrNull()
 fun RoutingContext.getPathVariable(value: String): String? = call.parameters[value]

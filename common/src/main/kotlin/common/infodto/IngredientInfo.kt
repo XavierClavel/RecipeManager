@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class IngredientInfo(
     val id: Long,
-    val name: String,
+    val name_en: String,
+    val name_fr: String,
     val type: IngredientType,
 
     val calories: Int = 0,
@@ -26,6 +27,5 @@ data class IngredientInfo(
     val weightPerUnit: Float = 1f,
 ) {
     fun compareToDTO(ingredientDTO: IngredientDTO): Boolean =
-        this.name == ingredientDTO.name &&
         this.type == ingredientDTO.type
 }

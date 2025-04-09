@@ -26,7 +26,8 @@ class IngredientControllerTest : ApplicationTest() {
     @Test
     fun `create ingredient`() = runTestAsAdmin {
         val ingredientDTO = IngredientDTO(
-            name = "My ingredient",
+            name_en = "My ingredient",
+            name_fr = "mon ingrédient",
             type = IngredientType.CHEESE,
             calories = 10,
         )
@@ -37,7 +38,6 @@ class IngredientControllerTest : ApplicationTest() {
     @Test
     fun `get ingredient`() = runTestAsAdmin {
         val ingredientDTO = IngredientDTO(
-            name = "My ingredient",
             type = IngredientType.CHEESE,
             calories = 10,
         )
@@ -49,13 +49,13 @@ class IngredientControllerTest : ApplicationTest() {
     @Test
     fun `update ingredient`() = runTestAsAdmin {
         val ingredientDTO = IngredientDTO(
-            name = "My ingredient",
+            name_en = "My ingredient",
             type = IngredientType.CHEESE,
             calories = 10,
         )
         val response = client.createIngredient(ingredientDTO)
         val ingredientDTO2 = IngredientDTO(
-            name = "My better ingredient",
+            name_en = "My better ingredient",
             type = IngredientType.VEGETABLE,
             calories = 10,
         )
@@ -67,7 +67,6 @@ class IngredientControllerTest : ApplicationTest() {
     @Test
     fun `updating unexisting ingredient returns NotFound`() = runTestAsAdmin {
         val ingredientDTO = IngredientDTO(
-            name = "My ingredient",
             type = IngredientType.CHEESE,
             calories = 10,
         )
@@ -83,7 +82,6 @@ class IngredientControllerTest : ApplicationTest() {
     @Test
     fun `delete ingredient`() = runTestAsAdmin {
         val ingredientDTO = IngredientDTO(
-            name = "My ingredient",
             type = IngredientType.CHEESE,
             calories = 10,
         )

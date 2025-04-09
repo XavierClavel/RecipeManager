@@ -16,6 +16,7 @@ import com.xavierclavel.utils.getIdQueryParam
 import com.xavierclavel.utils.getMandatoryIdQueryParam
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
+import com.xavierclavel.utils.getSearch
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.handleDeletion
 import com.xavierclavel.utils.logger
@@ -72,7 +73,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.listCookbooks() = get {
         val userId = getIdQueryParam("user")
         val recipeId = getIdQueryParam("recipe")
-        val search = call.request.queryParameters["search"]
+        val search = getSearch()
         val paging = getPaging()
         val sort = getSort()
         val cookbook = cookbookService.listCookbooks(

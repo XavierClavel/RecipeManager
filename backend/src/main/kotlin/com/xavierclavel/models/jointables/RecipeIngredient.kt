@@ -13,6 +13,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
+import common.enums.Locale
 
 @Entity
 @Table(name = "recipe_ingredients")
@@ -39,9 +40,12 @@ class RecipeIngredient (
         this.complement = recipeIngredientDTO.complement
     }
 
-    fun toInfo() = RecipeIngredientInfo(
+    fun toInfo(locale: Locale) = RecipeIngredientInfo(
         id = ingredient!!.id,
-        name = ingredient!!.name,
+        name = when(locale) {
+            Locale.EN -> ingredient!!.toInfo().name_en
+            Locale.FR -> ingredient!!.toInfo().name_fr
+        },
         type = ingredient!!.type,
         amount = amount,
         unit = unit,

@@ -352,6 +352,7 @@ import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {dishOptions, unitOptions} from "@/scripts/values";
 import {useI18n} from "vue-i18n";
+import {getLocale} from "@/scripts/localization";
 const {t} = useI18n()
 
 
@@ -370,7 +371,7 @@ function getLocalizedLabel(item: any) {
 const onIngredientAutocompleteChange = async (query, index) => {
   queryList.value[index] = query
   const response = await searchIngredients(query, 0, 20);
-  autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: item.name }));
+  autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: getLocale() == 'fr' ? item.name_fr : item.name_en }));
 }
 
 function selectFirstMatch(index) {
