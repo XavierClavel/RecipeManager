@@ -44,8 +44,8 @@ import {useI18n} from "vue-i18n";
 const recipes = ref([])
 const timelineRecipes = ref()
 const authStore = useAuthStore()
-const userId = authStore.id
-const username = authStore.username
+const userId = computed(() => authStore.id)
+const username = computed(() => authStore.username)
 
 const { t } = useI18n()
 

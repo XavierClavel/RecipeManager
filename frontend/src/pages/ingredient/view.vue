@@ -78,7 +78,7 @@ const ingredient = ref<object>({
 })
 
 const authStore = useAuthStore()
-const userId = authStore.id
+const userId = computed(() => authStore.id)
 
 
 getIngredient(ingredientId.value).then((response) => {

@@ -163,6 +163,7 @@ if (!version.value) {
   getHealth().then((response) => {
     version.value = response.data.version
   })
+  authStore.checkAuth()
 }
 
 </script>

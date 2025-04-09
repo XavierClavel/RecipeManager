@@ -18,7 +18,7 @@ const { t } = useI18n();
 const route = useRoute();
 const userId = route.query.user
 const authStore = useAuthStore()
-const currentUser = authStore.id
+const currentUser = acomputed(() => authStore.id)
 
 const forMyself = currentUser == userId
 

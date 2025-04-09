@@ -14,7 +14,7 @@ const ingredients = ref([])
 const cookbooks = ref([])
 
 const authStore = useAuthStore()
-const userId = authStore.id
+const userId = computed(() => authStore.id)
 
 async function updateSearch() {
   console.log(searchQuery.value)

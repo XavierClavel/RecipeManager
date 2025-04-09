@@ -87,7 +87,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     }
 
     private fun Route.getRecipeStatusInUserCookbooks() = get("/recipeStatus") {
-        val userId = getMandatoryIdQueryParam("user")
+        val userId = getSessionUserId()
         val recipeId = getMandatoryIdQueryParam("recipe")
         val cookbook = cookbookService.getRecipeStatusInUserCookbooks(userId, recipeId)
         call.respond(cookbook)

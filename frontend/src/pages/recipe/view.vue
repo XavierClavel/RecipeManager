@@ -253,7 +253,7 @@ const snackbar = ref(false)
 
 const userCookbooks = ref([])
 const authStore = useAuthStore()
-const userId = authStore.id
+const userId = computed(() => authStore.id)
 const {t} = useI18n()
 
 const recipe = ref<object>({
@@ -267,7 +267,7 @@ getRecipe(recipeId).then (
     recipe.value = response.data
     console.log("Recipe", recipe.value)
     const authStore = useAuthStore()
-    isOwner.value = response.data.owner.id == authStore.id
+    isOwner.value = response.data.owner.id == authStore.getId()
     console.log("Recipe owner", recipe.value.owner)
   }).catch(function (error) {
     displayError.value = true

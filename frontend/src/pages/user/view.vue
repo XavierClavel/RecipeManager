@@ -90,7 +90,7 @@ const route = useRoute();
 const userId = route.query.user
 const errorMessage = ref(null)
 const authStore = useAuthStore();
-const currentUserId = authStore.id
+const currentUserId = computed(() => authStore.id)
 
 const user = ref<object>({})
 const followsUser = ref(null)
