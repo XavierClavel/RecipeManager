@@ -1,27 +1,27 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <v-card class="pa-4 d-flex flex-column" color="transparent" style="border:0" variant="flat">
+    <v-card class="pa-4 d-flex flex-column" color="transparent" style="border:0 solid" variant="flat">
     <v-card-title
       class="text-black text-left text-h2 font-weight-bold "
       style="justify-content: flex-start;"
     >{{$t("welcome")}}, {{username}}! ✨</v-card-title>
-    <v-card-text class="text-h3 mb-8 mt-n6 font-weight-thin">{{$t("welcome_subtext")}}</v-card-text>
-        <v-timeline class="my-2" align="center" side="end" line-color="black" line-thickness="3px" density="comfortable" >
+    <v-card-text class="text-h3 mb-8 mt-n6 font-weight-thin" >{{$t("welcome_subtext")}}</v-card-text>
+        <v-timeline class="my-2" align="center" side="end" line-color="black" line-thickness="2px" density="comfortable" >
           <v-timeline-item
             v-for="(timelineRecipe, date) in timelineRecipes"
             :key="date"
             size="large"
             side="end"
+            dot-color="background"
             fill-dot
-            dot-color="black"
           >
           <template v-slot:icon>
-            <v-avatar color="primary text-black" size="38">
+            <v-avatar color="primary text-black" size="46" style="border: 3px solid #0d1821 !important;" >
               {{timelineRecipe.length}}
             </v-avatar>
           </template>
           <template v-slot:opposite>
-            <v-card color="surface" rounded="xl">
+            <v-card color="surface">
               <v-card-text>{{date}}</v-card-text>
             </v-card>
           </template>
