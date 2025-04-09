@@ -487,6 +487,7 @@ if (recipeId.value != null) {
       recipe.value.preparationTime = response.data.preparationTime
       recipe.value.cookingTime = response.data.cookingTime
       recipe.value.cookingTemperature = response.data.cookingTemperature
+      recipe.value.tips = response.data.tips
       console.log(recipe.value)
     }).catch(function (error) {
     console.log(error);
