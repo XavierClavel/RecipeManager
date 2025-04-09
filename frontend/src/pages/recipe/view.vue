@@ -179,6 +179,11 @@
 
       </v-container>
 
+    <v-card-text
+      v-if="recipe.tips"
+      class="mx-auto px-3"
+    > {{recipe.tips}} </v-card-text>
+
       <span class="d-flex align-center justify-center mb-10 mt-16 ga-16" >
         <action-button
           icon="mdi-delete"

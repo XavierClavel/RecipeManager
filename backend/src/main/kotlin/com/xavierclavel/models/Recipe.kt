@@ -88,7 +88,7 @@ class Recipe (
         this.cookingTime = recipeDTO.cookingTime
         this.cookingTemperature = recipeDTO.cookingTemperature
 
-        this.tips = tips;
+        this.tips = recipeDTO.tips
     }
 
     fun setOwner(user: User): Recipe = apply {

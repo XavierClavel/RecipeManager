@@ -104,7 +104,7 @@ object RecipeController: Controller(RECIPE_URL) {
         try {
             val recipeId = getPathId()
             val recipe = recipeService.getRawById(recipeId, getSessionUserId(), Locale.EN)
-            checkRecipeEditionRights(recipe.owner!!.id)
+            checkRecipeEditionRights(recipe.owner.id)
             val recipeDto = call.receive<RecipeDTO>()
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
             customIngredientService.updateCustomIngredients(recipe.id, recipeDto)

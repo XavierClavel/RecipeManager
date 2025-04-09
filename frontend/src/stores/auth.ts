@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: false,
     username: null,
     id: null,
+    isAdmin: false,
   }),
   actions: {
     logout() {
@@ -26,6 +27,7 @@ export const useAuthStore = defineStore('auth', {
         this.isAuthenticated = response.status === 200;
         this.username = response.data.username
         this.id = response.data.id
+        this.isAdmin = response.data.role == 'ADMIN'
       } catch {
         this.isAuthenticated = false;
       }
