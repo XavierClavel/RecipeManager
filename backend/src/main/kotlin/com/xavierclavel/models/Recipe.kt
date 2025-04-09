@@ -20,7 +20,9 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import io.ebean.Model
+import io.ebean.annotation.DbDefault
 import io.ebean.annotation.NotNull
+import jakarta.persistence.Column
 import java.time.Instant
 
 @Entity
@@ -40,7 +42,9 @@ class Recipe (
 
     var modificationDate: Long = Instant.now().epochSecond,
 
-    var tips: List<String> = listOf(),
+    @DbDefault("")
+    @Column(length = 511)
+    var tips: String = "",
 
     //metadata
     var yield: Int? = null,
@@ -83,6 +87,8 @@ class Recipe (
         this.preparationTime = recipeDTO.preparationTime
         this.cookingTime = recipeDTO.cookingTime
         this.cookingTemperature = recipeDTO.cookingTemperature
+
+        this.tips = tips;
     }
 
     fun setOwner(user: User): Recipe = apply {
@@ -102,6 +108,7 @@ class Recipe (
         creationDate = this.creationDate,
         editionDate = this.modificationDate,
         likesCount = this.likes.size,
+        tips = this.tips,
 
         yield = this.yield,
         preparationTime = this.preparationTime,

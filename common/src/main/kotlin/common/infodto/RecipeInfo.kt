@@ -21,12 +21,12 @@ data class RecipeInfo (
     val ingredients: List<RecipeIngredientInfo> = listOf(),
     val customIngredients: List<CustomIngredientInfo> = listOf(),
     val steps: List<String> = listOf(),
-    val tips: List<String> = listOf(),
+    val tips: String = "",
 
-    var creationDate: Long = 0,
-    var editionDate: Long? = null,
+    val creationDate: Long = 0,
+    val editionDate: Long? = null,
 
-    var likesCount: Int,
+    val likesCount: Int,
 
     ) {
     fun compareToDTO(dto: RecipeDTO): Boolean {

@@ -19,6 +19,8 @@ data class RecipeDTO (
     val ingredients: MutableList<RecipeIngredientDTO> = mutableListOf(),
     val customIngredients: MutableList<CustomIngredientDTO> = mutableListOf(),
     val steps: MutableList<String> = mutableListOf(),
+
+    val tips: String = "",
 ) {
     @Serializable
     data class RecipeIngredientDTO (
