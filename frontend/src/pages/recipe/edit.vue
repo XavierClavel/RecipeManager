@@ -7,21 +7,18 @@
 
 
     <form @submit.prevent="submit" class="mx-auto">
-      <v-card class="my-2">
+
       <v-text-field
         v-model="recipe.title"
         :label="`${$t('title')}`"
         :rules="[rules.max100]"
       ></v-text-field>
-      </v-card>
 
-      <v-card class="my-2">
       <v-textarea
         v-model="recipe.description"
         :label="`${$t('description')}`"
         :rules="[rules.max]"
       ></v-textarea>
-      </v-card>
 
       <v-col class="py-2" cols="12">
 
@@ -48,7 +45,6 @@
        ></editable-picture>
 
 
-      <v-card class="my-2">
       <v-number-input
         v-model="recipe.yield"
         :label="`${$t('yield')}`"
@@ -56,9 +52,7 @@
         color="primary"
         :min=1
       ></v-number-input>
-      </v-card>
 
-      <v-card class="my-2">
       <v-number-input
         v-model="recipe.preparationTime"
         :label="`${$t('time_preparation')}`"
@@ -66,9 +60,7 @@
         :step="5"
         :min=0
       ></v-number-input>
-      </v-card>
 
-      <v-card class="my-2">
       <v-number-input
         v-model="recipe.cookingTime"
         :label="`${$t('time_cooking')}`"
@@ -76,9 +68,7 @@
         :step="5"
         :min=0
       ></v-number-input>
-      </v-card>
 
-      <v-card class="my-2">
       <v-number-input
         v-model="recipe.cookingTemperature"
         :label="`${$t('cooking_temperature')}`"
@@ -87,7 +77,6 @@
         :min=0
       >
       </v-number-input>
-      </v-card>
 
       <!-- Ingredients -->
       <h2 class="my-3 mt-12" >{{$t("ingredients")}}</h2>
@@ -293,8 +282,6 @@
               small
             >mdi-drag</v-icon>
 
-            <!-- Editable text field -->
-            <v-card class="my-2 flex-grow-1">
             <v-text-field
               v-model="recipe.steps[index]"
               :label="`${$t('step')} ${index + 1}`"
@@ -303,7 +290,6 @@
               @keyup.enter="addStepAt(index)"
               @keyup.delete="deleteStepAt(index)"
             ></v-text-field>
-            </v-card>
 
             <v-btn
               @click="removeStep(index)"
@@ -324,6 +310,13 @@
         flat
         class="mb-10 mt-2"
       >{{$t("steps_add_new")}}</v-btn>
+
+        <v-textarea
+          v-model="recipe.tips"
+          :label="`${$t('tips')}`"
+          :rules="[rules.max500]"
+          hide-details="false"
+        ></v-textarea>
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
         <action-button
@@ -388,6 +381,7 @@ function selectFirstMatch(index) {
 
 const rules = {
   required: value => !!value || 'Required.',
+  max500: v => v.length <= 500 || 'Max 500 characters',
   max: v => v.length <= 200 || 'Max 200 characters',
   max100: v => v.length <= 100 || 'Max 100 characters',
   max50: v => v.length <= 50 || 'Max 50 characters',

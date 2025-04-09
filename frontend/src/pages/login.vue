@@ -13,16 +13,13 @@
         </v-card-title>
         <error :error="errorMessage"></error>
 
-        <v-card class="my-2">
           <v-text-field
             v-model="user.username"
             prepend-inner-icon="mdi-account"
             :label="`${$t('username')}`"
             :rules="[rules.required]"
           ></v-text-field>
-        </v-card>
 
-        <v-card class="my-2">
           <v-text-field
             v-model="user.password"
             prepend-inner-icon="mdi-lock-outline"
@@ -33,9 +30,7 @@
             counter
             @click:append-inner="show1 = !show1"
             @keyup.enter="submit"
-            single-line
           ></v-text-field>
-        </v-card>
 
         <v-container>
           <v-row
@@ -79,6 +74,8 @@ const route = useRoute();
 const show1 = ref<boolean>(false)
 const errorMessage = ref(null)
 const { t } = useI18n();
+const value = ref(null)
+const errors = ref([])
 
 console.log(import.meta.env.VITE_API_URL)
 
@@ -107,3 +104,24 @@ const submit = () => {
 
 
 </script>
+
+<style>
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.custom-text-field {
+  margin-bottom: 0;
+}
+
+.field-error-text {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #b00020;
+  padding-left: 12px;
+}
+
+
+</style>

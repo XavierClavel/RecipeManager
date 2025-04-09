@@ -142,9 +142,8 @@ const updateUrl = () => {
         <chip-row :values="sourceOptions"  :action="updateUrl" :selected="selectedSource"></chip-row>
         <chip-row :values="dishOptions" :action="updateUrl" :selected="selectedDishType"></chip-row>
 
-
-        <v-card class="my-2 flex-grow-1 ma-1" max-width="400px">
           <v-combobox
+            class="my-2 flex-grow-1 ma-1" max-width="400px"
             ref="comboboxRef"
             v-model="selectedIngredients"
             :items="autocompleteList"
@@ -171,7 +170,6 @@ const updateUrl = () => {
               </v-chip>
             </template>
           </v-combobox>
-        </v-card>
 
       </v-col>
 

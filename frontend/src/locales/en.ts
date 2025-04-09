@@ -105,4 +105,5 @@ export default {
   cup: "Cup",
 
   successfully_copied: "Link successfully copied!",
+  tips: "Tips",
 };

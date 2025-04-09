@@ -26,12 +26,10 @@
 
     <error :error="errorMessage"></error>
 
-    <v-card>
     <v-textarea
         v-model="user.bio"
         label="Description"
     ></v-textarea>
-    </v-card>
 
     <span class="d-flex align-center justify-center mb-6 mt-6 ga-16" >
       <action-button

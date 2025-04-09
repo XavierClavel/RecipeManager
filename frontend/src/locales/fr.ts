@@ -105,4 +105,5 @@ export default {
   cup: "Tasse",
 
   successfully_copied: "Lien copié avec succès !",
+  tips: "Conseils",
 };

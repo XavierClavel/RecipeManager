@@ -69,6 +69,7 @@ export default createVuetify({
       hideDetails: true,
       bgColor: "background",
       color: "primary",
+      class: "my-2"
     },
     VTextarea: {
       variant:"solo",

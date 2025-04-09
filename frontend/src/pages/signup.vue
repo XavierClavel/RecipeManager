@@ -9,8 +9,6 @@
         {{$t("signup")}}
       </v-card-title>
       <error :error="errorMessage"></error>
-
-      <v-card class="my-2">
       <v-text-field
         v-model="user.username"
         prepend-inner-icon="mdi-account"
@@ -18,9 +16,7 @@
         color="primary"
         :rules="[rules.required]"
       ></v-text-field>
-      </v-card>
 
-      <v-card class="my-2">
       <v-text-field
         v-model="user.mail"
         prepend-inner-icon="mdi-email-outline"
@@ -28,9 +24,7 @@
         color="primary"
         :rules="[rules.required]"
       ></v-text-field>
-      </v-card>
 
-      <v-card class="my-2">
       <v-text-field
         v-model="user.password"
         prepend-inner-icon="mdi-lock-outline"
@@ -42,9 +36,7 @@
         counter
         @click:append-inner="show1 = !show1"
       ></v-text-field>
-      </v-card>
 
-      <v-card class="my-2">
       <v-text-field
         v-model="password2"
         prepend-inner-icon="mdi-lock-check-outline"
@@ -56,7 +48,6 @@
         counter
         @click:append-inner="show2 = !show2"
       ></v-text-field>
-      </v-card>
 
       <v-container>
         <v-row

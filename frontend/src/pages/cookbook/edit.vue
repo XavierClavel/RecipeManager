@@ -6,25 +6,22 @@
 
     <form @submit.prevent="submit" class="mx-auto">
 
-      <v-card class="my-2">
         <v-text-field
           v-model="cookbook.title"
           :label="`${$t('title')}`"
           single-line
         ></v-text-field>
-      </v-card>
 
-      <v-card class="my-2">
+
         <v-textarea
           v-model="cookbook.description"
           :label="`${$t('description')}`"
           single-line
         ></v-textarea>
-      </v-card>
 
 
-      <v-card class="my-2 flex-grow-1" max-width="200px">
       <v-select
+        max-width="200px"
         v-model="cookbook.visibility"
         :label="`${$t('visibility')}`"
         item-title="label"
@@ -46,7 +43,6 @@
           {{ item.raw.label }}
         </template>
       </v-select>
-      </v-card>
 
        <editable-picture
          path="image/cookbooks"
@@ -79,7 +75,6 @@
               ></v-img>
             </v-avatar>
 
-            <v-card class="flex-grow-1 mr-2">
             <v-autocomplete
               v-model="members[index]"
               :label="`${$t('user')} ${index + 1}`"
@@ -90,16 +85,15 @@
               @update:search="(query) => onAutocompleteChange(query, index)"
               :key="index"
               return-object
+              class="mr-2"
             ></v-autocomplete>
-            </v-card>
 
-            <v-card class="flex-grow-1" max-width="200px">
             <v-select
+              max-width="200px"
               v-model="members[index].role"
               :label="`${$t('role')}`"
               :items="['USER','ADMIN']"
             ></v-select>
-            </v-card>
 
             <div>
               <v-btn

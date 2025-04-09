@@ -12,15 +12,13 @@
           {{$t("settings")}}
         </v-card-title>
         <error :error="errorMessage"></error>
-        <v-card class="my-2">
-          <v-select
-          v-model="locale"
-          :prepend-inner-icon="ICON_LOCALIZATION"
-          :items="locales"
-          item-title="label"
-          item-value="value"
-          ></v-select>
-        </v-card>
+        <v-select
+        v-model="locale"
+        :prepend-inner-icon="ICON_LOCALIZATION"
+        :items="locales"
+        item-title="label"
+        item-value="value"
+        ></v-select>
 
         <v-checkbox
           prepend-icon="mdi-eye"
