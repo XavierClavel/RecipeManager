@@ -103,4 +103,6 @@ export default {
   teaspoon: "Cuillère à sucre",
   tablespoon: "Cuillère à soupe",
   cup: "Tasse",
+
+  successfully_copied: "Lien copié avec succès !",
 };

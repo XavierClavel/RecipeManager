@@ -202,15 +202,19 @@
     <v-snackbar
       v-model="snackbar"
       :timeout="2000"
+      height="60px"
     >
-      Link successfully copied !
+      {{$t('successfully_copied')}}
       <template v-slot:actions>
         <v-btn
-          color="surface"
-          variant="text"
+          variant="flat"
+          color="primary"
           @click="snackbar = false"
+          icon="mdi-close"
+          height="40px"
+          width="40px"
         >
-          Close
+
         </v-btn>
       </template>
     </v-snackbar>
@@ -236,6 +240,7 @@ import {useAuthStore} from "@/stores/auth";
 import {addLike, isLiked, removeLike} from "@/scripts/likes";
 import {addRecipeToCookbook, getStatusInCookbooks, listCookbooks, removeRecipeFromCookbook} from "@/scripts/cookbooks";
 import {getIngredientIcon} from "../../scripts/icons";
+import {useI18n} from "vue-i18n";
 
 // Get the route object
 const route = useRoute();
@@ -249,6 +254,7 @@ const snackbar = ref(false)
 const userCookbooks = ref([])
 const authStore = useAuthStore()
 const userId = authStore.id
+const {t} = useI18n()
 
 const recipe = ref<object>({
   steps: [''],

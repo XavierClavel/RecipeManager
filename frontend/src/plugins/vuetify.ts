@@ -112,6 +112,9 @@ export default createVuetify({
       variant: "elevated",
       color: "primary"
     },
+    VSnackbar: {
+      color: "surface",
+    }
   },
   components: {
     VNumberInput,

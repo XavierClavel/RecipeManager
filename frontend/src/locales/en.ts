@@ -103,4 +103,6 @@ export default {
   teaspoon: "Teaspoon",
   tablespoon: "Tablespoon",
   cup: "Cup",
+
+  successfully_copied: "Link successfully copied!",
 };
