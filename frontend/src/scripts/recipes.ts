@@ -18,7 +18,7 @@ async function getRecipe(id) {
 
 async function listRecipes(query) {
   const list = query.replace("?", "").split("&")
-  return await apiClient.get(`/recipe${query}&locale=${getLocale()}`)
+  return await apiClient.get(`/recipe${query}`)
 }
 
 async function createRecipe(recipe) {

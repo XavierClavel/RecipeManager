@@ -19,6 +19,7 @@ import common.enums.DishClass
 import common.enums.Locale
 import common.enums.Sort
 import common.infodto.RecipeInfo
+import common.overviewdto.RecipeOverview
 import common.utils.Filepath.RECIPES_IMG_PATH
 import common.utils.Filepath.RECIPES_THUMBNAIL_PATH
 import io.ebean.FetchConfig
@@ -41,8 +42,7 @@ class RecipeService: KoinComponent {
         paging: Paging,
         sort: Sort,
         recipeFilter: RecipeFilter,
-        locale: Locale
-    ) : List<RecipeInfo> {
+    ) : List<RecipeOverview> {
 
         return QRecipe()
             .fetch(QRecipe.Alias.likes.toString(), "count(*)", FetchConfig.ofLazy()) // Aggregate likes
@@ -53,7 +53,7 @@ class RecipeService: KoinComponent {
             .setPaging(paging)
             .sort(sort)
             .findList()
-            .map { it.toInfo(locale) }
+            .map { it.toOverview() }
     }
 
 

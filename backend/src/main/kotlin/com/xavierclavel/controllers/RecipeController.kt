@@ -80,7 +80,6 @@ object RecipeController: Controller(RECIPE_URL) {
             paging = paging,
             sort = sort,
             recipeFilter = recipeFilter,
-            locale = getLocale(),
         )
 
         call.respond(result)

@@ -49,7 +49,7 @@ const username = computed(() => authStore.username)
 
 const { t } = useI18n()
 
-listRecipes(`?user=${userId}&followedBy=${userId}&sort=DATE_DESCENDING`).then(
+listRecipes(`?user=${userId.value}&followedBy=${userId.value}&sort=DATE_DESCENDING`).then(
   function (response) {
     console.log(response)
     recipes.value = response.data

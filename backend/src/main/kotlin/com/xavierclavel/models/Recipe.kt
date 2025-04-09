@@ -8,6 +8,7 @@ import common.dto.RecipeDTO
 import common.enums.DishClass
 import common.enums.Locale
 import common.infodto.RecipeInfo
+import common.overviewdto.RecipeOverview
 import jakarta.persistence.CascadeType
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
@@ -106,6 +107,15 @@ class Recipe (
         preparationTime = this.preparationTime,
         cookingTime = this.cookingTime,
         cookingTemperature = this.cookingTemperature,
+    )
+
+    fun toOverview() = RecipeOverview(
+        id = this.id,
+        title = title,
+        dishClass = dishClass,
+        owner = this.owner!!.toOverview(),
+        likesCount = this.likes.size,
+        creationDate = this.creationDate,
     )
 
     fun tagForDeletion(): Recipe = this.apply {

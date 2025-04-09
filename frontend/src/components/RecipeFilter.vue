@@ -7,6 +7,7 @@ import ChipRow from "@/components/ChipRow.vue";
 import {dishOptions, sortOptions, sourceOptions} from "@/scripts/values";
 import {useRoute} from "vue-router";
 import {getCookie, setCookie} from "@/scripts/cookies";
+import {getLocale} from "@/scripts/localization";
 const autocompleteList = ref([])
 
 const selectedDishType = ref([])
@@ -94,16 +95,10 @@ const getChipColor = (field) => {
   return "background"; // Default color when unselected
 };
 
-const getDishClassChipColor = (index) => {
-  if (selectedDishType.value.includes(index)) {
-    return "primary";
-  }
-  return "background"; // Default color when unselected
-};
 
 const onIngredientAutocompleteChange = async (query) => {
   const response = await searchIngredients(query, 0, 20);
-  autocompleteList.value = response.data.map(item => ({ id: item.id, name: item.name }));
+  autocompleteList.value = response.data.map(item => ({ id: item.id, name: getLocale() == 'fr' ? item.name_fr : item.name_en }));
 }
 
 const updateUrl = () => {
