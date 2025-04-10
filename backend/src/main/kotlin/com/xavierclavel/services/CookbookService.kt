@@ -180,7 +180,6 @@ class CookbookService: KoinComponent {
             .findOne()
             ?.delete()
 
-
     private fun QCookbook.filterByUser(userId: Long?) =
         if (userId == null) this else this.where().users.user.id.eq(userId)
 

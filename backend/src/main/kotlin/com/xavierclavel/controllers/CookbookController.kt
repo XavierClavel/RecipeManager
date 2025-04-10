@@ -42,6 +42,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     override fun Route.routes() {
         getCookbook()
         listCookbooks()
+        isAdminOfCookbook()
 
         authenticate("auth-session") {
             createCookbook()
@@ -92,6 +93,12 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val recipeId = getMandatoryIdQueryParam("recipe")
         val cookbook = cookbookService.getRecipeStatusInUserCookbooks(userId, recipeId)
         call.respond(cookbook)
+    }
+
+    private fun Route.isAdminOfCookbook() = get("/{id}/userStatus") {
+        val id = getPathId()
+        val userId = getOptionalSessionId() ?: return@get call.respond(false)
+        call.respond(cookbookService.isAdminOfCookbook(id, userId))
     }
 
     private fun Route.getCookbook() = get("/{id}") {

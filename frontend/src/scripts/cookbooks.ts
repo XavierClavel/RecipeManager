@@ -13,6 +13,7 @@ export {
 
   getCookbookUsers,
   setCookbookUsers,
+  isAdminOfCookbook,
 }
 
 async function getCookbook(id) {
@@ -53,4 +54,8 @@ async function getCookbookUsers(cookbookId) {
 
 async function setCookbookUsers(cookbookId, input) {
   return await apiClient.put(`/cookbook/${cookbookId}/users`, input)
+}
+
+async function isAdminOfCookbook(cookbookId) {
+  return await apiClient.get(`/cookbook/${cookbookId}/userStatus`)
 }

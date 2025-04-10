@@ -30,7 +30,7 @@
             <picto-info :icon="`${ICON_COOKBOOK_USERS}`" :value="cookbook.usersCount" icon-size="text-h4" value-size="text-h5"></picto-info>
           </v-col>
         </v-row>
-        <v-row class="px-3">
+        <v-row class="px-3" v-if="isAdmin">
           <action-button
             icon="mdi-cog"
             :text="`${$t('edit')}`"
@@ -47,14 +47,13 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
 import {ref} from "vue";
-import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {toEditCookbook, toEditUser} from "@/scripts/common";
-import {getCookbook} from "@/scripts/cookbooks";
+import {getCookbook, isAdminOfCookbook} from "@/scripts/cookbooks";
 import {ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS} from "@/scripts/icons";
 const route = useRoute();
 let cookbookId = ref(route.query.cookbook)
 const imageUrl = computed(() => `${import.meta.env.VITE_API_URL}/image/cookbooks/${cookbookId.value}.webp`);
-
+const isAdmin = ref(false)
 const cookbook = ref<object>({
   title: "",
   description: "",
@@ -77,6 +76,11 @@ if (cookbookId.value != null) {
   }).finally(function () {
     // always executed
   });
+  isAdminOfCookbook(cookbookId.value).then(
+    function (response) {
+      isAdmin.value = response.data
+    }
+  )
 }
 
 </script>
