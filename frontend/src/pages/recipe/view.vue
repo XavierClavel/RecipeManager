@@ -198,6 +198,7 @@
           v-if="isOwner"
         ></action-button>
         <action-button
+          v-if="false"
           icon="mdi-tray-arrow-down"
           :text="`${$t('download')}`"
           :action="() => downloadRecipe(recipeId)"

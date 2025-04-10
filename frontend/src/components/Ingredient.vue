@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {getRecipeThumbnailUrl, toViewIngredient, toViewRecipe} from "@/scripts/common";
 import {getIngredientIcon} from "../scripts/icons";
+import {getLocale} from "@/scripts/localization";
 
 defineProps({
   ingredient: {
@@ -24,7 +25,7 @@ defineProps({
             :src="getIngredientIcon(ingredient.type)"
             cover
           ></v-img>
-        <v-card-title class="text-black text-h6 font-weight-regular justify-end">{{ingredient.name}}</v-card-title>
+        <v-card-title class="text-black text-h6 font-weight-regular justify-end">{{getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en}}</v-card-title>
 
     </v-card>
 
