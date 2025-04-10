@@ -33,10 +33,15 @@ router.beforeEach(async (to, from) => {
     return { name: `/login` }
   }
   //Keep last query when listing recipes without query
-  if (from.name != '/recipe/list' && to.name == '/recipe/list' && !Object.keys(to.query)?.length && getCookie('recipeQuery')) {
-    return {
-      name: `/recipe/list`,
-      query: getCookie('recipeQuery')}
+  if (from.name != '/recipe/list' && to.name == '/recipe/list' && !Object.keys(to.query)?.length) {
+    const lastQuery = getCookie('recipeQuery')
+    // Only redirect if there's a stored query and it's not already applied
+    if (lastQuery && Object.keys(lastQuery).length > 0) {
+      return {
+        name: '/recipe/list',
+        query: lastQuery
+      }
+    }
   }
 })
 

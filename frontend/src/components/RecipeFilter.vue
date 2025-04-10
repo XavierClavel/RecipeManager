@@ -120,7 +120,7 @@ const updateUrl = () => {
       sort: selectedSort.value != null ? selectedSort.value + selectedSortOrder  : undefined
     }).filter(([_, value]) => value !== undefined) // Remove undefined values
   )
-  router.push({
+  router.replace({
     path: '/recipe/list', // Keep the current path
     query: query,
   })
