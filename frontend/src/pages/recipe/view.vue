@@ -72,11 +72,10 @@
           ></v-btn>
         </template>
 
-        <v-card>
-          <v-list density="compact" bg-color="menu">
+        <v-card >
+          <v-list density="compact" style="border: 0 solid !important;">
           <v-list-item
             prepend-icon="mdi-plus"
-            rounded="xl"
             link
             title="New cookbook"
             @click="toCreateCookbookAddRecipe(recipeId)"
@@ -87,7 +86,6 @@
             :key="cookbook.id"
             density="compact"
             :prepend-icon="cookbook.hasRecipe ? 'mdi-check-circle' : 'mdi-plus-circle-outline'"
-            rounded="xl"
             link
             :title="cookbook.title"
             @click="onSelectCookbook(cookbook)"
@@ -245,7 +243,7 @@ import {
 import {useAuthStore} from "@/stores/auth";
 import {addLike, isLiked, removeLike} from "@/scripts/likes";
 import {addRecipeToCookbook, getStatusInCookbooks, listCookbooks, removeRecipeFromCookbook} from "@/scripts/cookbooks";
-import {getIngredientIcon} from "../../scripts/icons";
+import {getIngredientIcon} from "@/scripts/icons";
 import {useI18n} from "vue-i18n";
 
 // Get the route object
