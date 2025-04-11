@@ -20,10 +20,6 @@ export default {
   current_password: "Mot de passe actuel",
   confirm_new_password: "Confirmer nouveau mot de passe",
 
-  required: "Champs obligatoire.",
-  passwords_must_match: "Les mots de passe doivent être identiques",
-  min_8_characters: "Minimum 8 charactères",
-
   search_recipe: "Rechercher une recette",
 
   profile: "Profil",
@@ -114,4 +110,13 @@ export default {
   forgotten_password: "Mot de passe oublié ?",
   reset_password_email_sent_title: "Mail de réinitialisation du mot de passe envoyé !",
   reset_password_email_sent_text: "Si l'adresse mail saisie est valide, un mail a été envoyé. Cliques sur le ien dans les prochaines 24h pour réinitialiser ton mot de passe !",
+
+  //Input form verification
+  required: "Champs obligatoire.",
+  passwords_must_match: "Les mots de passe doivent être identiques.",
+  min_8_characters: "Minimum 8 charactères.",
+  max_500_characters: "Maximum 500 charactères.",
+  max_200_characters: "Maximum 200 charactères.",
+  max_100_characters: "Maximum 100 charactères.",
+  max_50_characters: "Maximum 50 charactères.",
 };

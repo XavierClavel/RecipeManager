@@ -20,10 +20,6 @@ export default {
   current_password: "Current password",
   confirm_new_password: "Confirm new password",
 
-  required: "Required.",
-  passwords_must_match: "Passwords do not match.",
-  min_8_characters: "At least 8 characters",
-
   search_recipe: "Search a recipe",
 
   profile: "Profile",
@@ -115,4 +111,13 @@ export default {
   forgotten_password: "Forgotten password?",
   reset_password_email_sent_title: "Reset password mail sent!",
   reset_password_email_sent_description: "If the email address inputted is valid, a link has been sent. Click the link in the next 24h to reset your password",
+
+  //Input verification
+  required: "Required.",
+  passwords_must_match: "Passwords do not match.",
+  min_8_characters: "At least 8 characters.",
+  max_500_characters: "At most 500 characters.",
+  max_200_characters: "At most 200 characters.",
+  max_100_characters: "At most 100 characters.",
+  max_50_characters: "At most 50 characters.",
 };
