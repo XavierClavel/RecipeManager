@@ -5,7 +5,7 @@
   max-width="1000px"
   >
 
-    <form @submit.prevent="submit" class="mx-auto">
+    <v-form @submit.prevent="submit" class="mx-auto" ref="form">
       <v-card-title class="text-primary text-h3">
         {{$t("update_password")}}
       </v-card-title>
@@ -68,7 +68,7 @@
         </v-row>
       </v-container>
 
-    </form>
+    </v-form>
 
   </v-card>
 
@@ -92,8 +92,13 @@ const newPassword2 = ref(null)
 
 const errorMessage = ref(null)
 const { t } = useI18n()
+const form = ref(null)
 
 const submit = () => {
+  const {valid, errors} = await form.value.validate()
+  if (!valid) {
+    return
+  }
   updatePassword(currentPassword.value, newPassword1.value)
     .then(function (response) {
       toMyProfile()
