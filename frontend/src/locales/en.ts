@@ -95,6 +95,7 @@ export default {
   no_result: "No result",
   visibility: "Visibility",
 
+//Units
   unit: "Unit",
   gram: "Gram",
   none: "Unspecified",
@@ -106,4 +107,12 @@ export default {
 
   successfully_copied: "Link successfully copied!",
   tips: "Tips",
+
+  //Password reset
+  reset_password: "Reset password",
+  reset_password_text: "You will receive a link to reset your password at the email address inputted!",
+  send: "Send",
+  forgotten_password: "Forgotten password?",
+  reset_password_email_sent_title: "Reset password mail sent!",
+  reset_password_email_sent_description: "If the email address inputted is valid, a link has been sent. Click the link in the next 24h to reset your password",
 };

@@ -40,6 +40,11 @@
             <v-col cols="12" sm="auto" class="mx-5">
               <action-button
                 icon="mdi-close-circle-outline"
+                :text="`${$t('forgotten_password')}`"
+                :action="toResetPassword"
+              ></action-button>
+              <action-button
+                icon="mdi-close-circle-outline"
                 :text="`${$t('sign_up')}`"
                 :action="toSignup"
               ></action-button>
@@ -66,7 +71,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {login, toSignup} from '@/scripts/common'
+import {login, toResetPassword, toSignup} from '@/scripts/common'
 import {useI18n} from "vue-i18n";
 import {requiredRule} from "@/scripts/rules";
 

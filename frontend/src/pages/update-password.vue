@@ -31,7 +31,6 @@
       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
       :rules="[requiredRule, min8Rule]"
       :type="show1 ? 'text' : 'password'"
-      hint="At least 8 characters"
       :label="`${$t('new_password')}`"
       counter
       @click:append="show1 = !show1"
@@ -44,7 +43,6 @@
       :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
       :rules="[requiredRule, passwordRule(password1, password2)]"
       :type="show2 ? 'text' : 'password'"
-      hint="Passwords must match"
       :label="`${$t('confirm_new_password')}`"
       counter
       @click:append="show2 = !show2"

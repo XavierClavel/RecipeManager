@@ -9,6 +9,8 @@ export {
   logout,
   signup,
   verifyEmail,
+  resetPassword,
+  toResetPasswordEmailSent,
 
   toCreateRecipe,
   toCreateCookbookAddRecipe,
@@ -27,6 +29,9 @@ export {
   toListCookbooks,
   toMyCookbooks,
   toViewCookbook,
+
+  toResetPassword,
+  toUpdatePassword,
 
   toHome,
   toUsers,
@@ -86,6 +91,9 @@ const toUsers = () => navigateTo('/users')
 const toLogin = () => navigateTo('/login')
 const toSignup = () => navigateTo('/signup')
 const toMaintenance = () => navigateTo('/maintenance')
+const toResetPassword = () => navigateTo('/reset-password')
+const toUpdatePassword = () => navigateTo('/update-password')
+const toResetPasswordEmailSent = () => navigateTo('/reset-password-email-sent')
 
 function navigateTo(path) {
   nextTick(() => {
@@ -93,8 +101,19 @@ function navigateTo(path) {
   })
 }
 
-const noLoginRedirect = ['/login', '/logout', '/signup', '/user/verify', '/maintenance', '/verification-email-sent']
-const noLoginRedirectStartsWith = ['/recipe/view']
+const noLoginRedirect = [
+  '/login',
+  '/logout',
+  '/signup',
+  '/user/verify',
+  '/maintenance',
+  '/verification-email-sent',
+  '/reset-password-email-sent',
+  '/reset-password',
+]
+const noLoginRedirectStartsWith = [
+  '/recipe/view',
+]
 
 
 const getUserIconUrl = (id) => id ? `${import.meta.env.VITE_API_URL}/image/users/${id}.webp` : `/image/users/placeholder.webp`
@@ -135,6 +154,10 @@ async function signup(user) {
 
 async function verifyEmail(token) {
   return await apiClient.post(`/auth/verify?token=${token}`)
+}
+
+async function resetPassword(mail) {
+  return await apiClient.get(`/auth/reset-password/${mail}`)
 }
 
 async function logout() {
