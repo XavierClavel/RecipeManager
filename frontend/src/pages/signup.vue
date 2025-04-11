@@ -4,7 +4,7 @@
   class="pa-5 ma-5"
   max-width="1000px"
   >
-    <form @submit.prevent="submit" class="mx-auto">
+    <v-form @submit.prevent="submit" class="mx-auto" ref="loginForm" >
       <v-card-title>
         {{$t("signup")}}
       </v-card-title>
@@ -14,7 +14,7 @@
         prepend-inner-icon="mdi-account"
         :label="`${$t('username')}`"
         color="primary"
-        :rules="[rules.required]"
+        :rules="[requiredRule]"
       ></v-text-field>
 
       <v-text-field
@@ -22,16 +22,15 @@
         prepend-inner-icon="mdi-email-outline"
         :label="`${$t('mail')}`"
         color="primary"
-        :rules="[rules.required]"
+        :rules="[requiredRule]"
       ></v-text-field>
 
       <v-text-field
         v-model="user.password"
         prepend-inner-icon="mdi-lock-outline"
         :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-        :rules="[rules.required, rules.min]"
+        :rules="[requiredRule, min8Rule]"
         :type="show1 ? 'text' : 'password'"
-        hint="At least 8 characters"
         :label="`${$t('password')}`"
         counter
         @click:append-inner="show1 = !show1"
@@ -41,9 +40,8 @@
         v-model="password2"
         prepend-inner-icon="mdi-lock-check-outline"
         :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-        :rules="[rules.required, rules.passwordMatch]"
+        :rules="[requiredRule, passwordRule(user.password, password2)]"
         :type="show2 ? 'text' : 'password'"
-        hint="Passwords must match"
         :label="`${$t('password_confirm')}`"
         counter
         @click:append-inner="show2 = !show2"
@@ -71,7 +69,7 @@
         </v-row>
       </v-container>
 
-    </form>
+    </v-form>
   </v-card>
   </v-container>
 
@@ -79,26 +77,19 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
-import {getRecipe, createRecipe} from "@/scripts/recipes";
-import {login, signup, toLogin} from "@/scripts/common";
+import {signup, toLogin} from "@/scripts/common";
 import {useI18n} from "vue-i18n";
+import {min8Rule, passwordRule, requiredRule} from "@/scripts/rules";
 
 // Get the route object
 const route = useRoute();
-const recipeId = route.query.id
 const show1 = ref<boolean>(false)
 const show2 = ref<boolean>(false)
 const password2 = ref<string>('')
 const { t } = useI18n();
 const errorMessage = ref(null)
-
-const rules = {
-    required: value => !!value || t('required'),
-    min: v => v.length >= 8 || t('min_8_characters'),
-    passwordMatch: () => user.value.password == password2.value || t('passwords_must_match'),
-  }
+const loginForm = ref(null)
 
 const user = ref<object>({
   username: '',
@@ -107,31 +98,16 @@ const user = ref<object>({
 })
 
 
-
-const submit = () => {
+const submit = async() => {
   errorMessage.value = null
+  const {valid, errors} = await loginForm.value.validate()
+  if (!valid) {
+    return
+  }
   signup(user.value).catch(function (error) {
     errorMessage.value = error.response.data
     console.log(error);
   })
 }
-
-if (recipeId != undefined) {
-  getRecipe(recipeId).then (
-    function (response) {
-      recipe.value.title = response.data.title
-      recipe.value.description = response.data.description
-      recipe.value.servings = response.data.portions
-      recipe.value.ingredients = response.data.ingredients
-      recipe.value.steps = response.data.steps
-      console.log(recipe.value)
-    }).catch(function (error) {
-    console.log(error);
-  }).finally(function () {
-    // always executed
-  });
-}
-
-
 
 </script>

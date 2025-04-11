@@ -16,7 +16,7 @@
         v-model="currentPassword"
         prepend-icon="mdi-lock-outline"
         :append-icon="showOld ? 'mdi-eye' : 'mdi-eye-off'"
-        :rules="[rules.required, rules.min]"
+        :rules="[requiredRule, min8Rule]"
         :type="show1 ? 'text' : 'password'"
         hint="At least 8 characters"
         :label="`${$t('current_password')}`"
@@ -29,7 +29,7 @@
       v-model="newPassword1"
       prepend-icon="mdi-lock-outline"
       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-      :rules="[rules.required, rules.min]"
+      :rules="[requiredRule, min8Rule]"
       :type="show1 ? 'text' : 'password'"
       hint="At least 8 characters"
       :label="`${$t('new_password')}`"
@@ -42,7 +42,7 @@
       v-model="newPassword2"
       prepend-icon="mdi-lock-check-outline"
       :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-      :rules="[rules.required, rules.passwordMatch]"
+      :rules="[requiredRule, passwordRule(password1, password2)]"
       :type="show2 ? 'text' : 'password'"
       hint="Passwords must match"
       :label="`${$t('confirm_new_password')}`"
@@ -80,6 +80,7 @@ import {useI18n} from "vue-i18n";
 import {ICON_SAVE} from "@/scripts/icons";
 import {toMyProfile} from "@/scripts/common";
 import {updatePassword} from "@/scripts/users";
+import {min8Rule, passwordRule, requiredRule} from "@/scripts/rules";
 
 const showOld = ref(false)
 const show1 = ref<boolean>(false)
@@ -91,13 +92,6 @@ const newPassword2 = ref(null)
 
 const errorMessage = ref(null)
 const { t } = useI18n()
-
-
-const rules = {
-  required: value => !!value || t('required'),
-  min: v => v.length >= 8 || t('min_8_characters'),
-  passwordMatch: () => password1.value == password2.value || t('passwords_must_match'),
-}
 
 const submit = () => {
   updatePassword(currentPassword.value, newPassword1.value)

@@ -90,7 +90,7 @@
           class="d-flex align-center"
         >
           <v-text-field
-            class="mx-auto"
+            class="mx-auto no-border"
             prepend-inner-icon="mdi-magnify"
             single-line
             variant="solo"
@@ -99,7 +99,7 @@
             :label="`${$t('search_recipe')}`"
             bg-color="primary"
             @update:modelValue="toSearch"
-            style="border:0px solid"
+
           ></v-text-field>
         </v-card>
       </div>

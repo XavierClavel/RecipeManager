@@ -4,9 +4,36 @@
   border: 3px solid #0d1821;
 }
 
-.v-text-field {
-  border: 3px solid #0d1821;
+
+
+
+.v-text-field .v-input__control {
+  border: 3px solid #0d1821 !important;
   border-radius: 6px;
+}
+
+.v-text-field.no-border .v-input__control {
+  border: 0 solid #0d1821 !important;
+  border-radius: 0;
+}
+
+.v-text-field--solo {
+  background-color: var(--v-theme-background) !important;
+  border: 0 solid;
+}
+
+.v-text-field.v-input--error .v-input__control .v-input__slot input  {
+  //border-color: #ff6f59 !important; // example error color
+  color: red !important;
+}
+
+.v-text-field.v-input--error .v-field__prepend-inner .v-icon,
+.v-text-field.v-input--error .v-field__append-inner .v-icon {
+  color: #ff6f59 !important;
+}
+
+.v-text-field.v-input--is-invalid .v-input__control .v-input__slot input {
+  color: red !important; /* Invalid text color */
 }
 
 .v-chip {

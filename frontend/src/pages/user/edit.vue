@@ -29,6 +29,7 @@
     <v-textarea
         v-model="user.bio"
         label="Description"
+        :rules="[max255]"
     ></v-textarea>
 
     <span class="d-flex align-center justify-center mb-6 mt-6 ga-16" >
@@ -56,6 +57,7 @@ import {ref} from "vue";
 import {toViewUser} from "@/scripts/common";
 import {getUser, updateUser} from "@/scripts/users";
 import EditablePicture from "@/components/EditablePicture.vue";
+import {max255} from "@/scripts/rules";
 
 // Get the route object
 const route = useRoute();

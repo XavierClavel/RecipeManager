@@ -19,7 +19,7 @@ const customTheme: ThemeDefinition = {
     surface: '#629677',
     primary: '#ff6f59',
     secondary: '#f4b634',
-    error: '#ff6f59',
+    error: '#000000',
     info: '#2196F3',
     success: '#4CAF50',
     warning: '#FB8C00',
@@ -66,7 +66,7 @@ export default createVuetify({
     VTextField: {
       variant:"solo",
       flat: true,
-      hideDetails: true,
+      hideDetails: 'auto',
       bgColor: "background",
       color: "primary",
       class: "my-2"
@@ -74,7 +74,7 @@ export default createVuetify({
     VTextarea: {
       variant:"solo",
       flat: true,
-      hideDetails: true,
+      hideDetails: 'auto',
       bgColor: "background",
       color: "primary",
     },

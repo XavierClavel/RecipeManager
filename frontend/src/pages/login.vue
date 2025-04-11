@@ -7,7 +7,7 @@
     >
 
 
-      <form @submit.prevent="submit">
+      <v-form @submit.prevent="submit" ref="form">
         <v-card-title>
           {{$t("login")}}
         </v-card-title>
@@ -17,14 +17,14 @@
             v-model="user.username"
             prepend-inner-icon="mdi-account"
             :label="`${$t('username')}`"
-            :rules="[rules.required]"
+            :rules="[requiredRule]"
           ></v-text-field>
 
           <v-text-field
             v-model="user.password"
             prepend-inner-icon="mdi-lock-outline"
             :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required]"
+            :rules="[requiredRule]"
             :type="show1 ? 'text' : 'password'"
             :label="`${$t('password')}`"
             counter
@@ -57,7 +57,7 @@
 
 
 
-      </form>
+      </v-form>
     </v-card>
   </v-container>
 
@@ -68,6 +68,7 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import {login, toSignup} from '@/scripts/common'
 import {useI18n} from "vue-i18n";
+import {requiredRule} from "@/scripts/rules";
 
 // Get the route object
 const route = useRoute();
@@ -75,15 +76,9 @@ const show1 = ref<boolean>(false)
 const errorMessage = ref(null)
 const { t } = useI18n();
 const value = ref(null)
-const errors = ref([])
+const form = ref(null)
 
 console.log(import.meta.env.VITE_API_URL)
-
-const rules = {
-  required: value => !!value || t('required'),
-  min: v => v.length >= 8 || t('min_8_characters'),
-  passwordMatch: () => user.value.password == password2.value || t('passwords_must_match'),
-}
 
 const user = ref<object>({
   username: '',
@@ -92,8 +87,12 @@ const user = ref<object>({
 
 
 
-const submit = () => {
+const submit = async() => {
   errorMessage.value = null
+  const {valid, errors} = await form.value.validate()
+  if (!valid) {
+    return
+  }
   login(user.value).catch(function (error) {
     errorMessage.value = error.response.data
     console.log(error);
@@ -104,24 +103,3 @@ const submit = () => {
 
 
 </script>
-
-<style>
-.field-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.custom-text-field {
-  margin-bottom: 0;
-}
-
-.field-error-text {
-  margin-top: 4px;
-  font-size: 12px;
-  color: #b00020;
-  padding-left: 12px;
-}
-
-
-</style>

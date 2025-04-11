@@ -4,12 +4,12 @@
   max-width="1000px"
   >
 
-    <form @submit.prevent="submit" class="mx-auto">
+    <v-form @submit.prevent="submit" class="mx-auto" ref="form">
 
         <v-text-field
           v-model="cookbook.title"
           :label="`${$t('title')}`"
-          single-line
+          :rules="[requiredRule, max50]"
         ></v-text-field>
 
 
@@ -17,6 +17,7 @@
           v-model="cookbook.description"
           :label="`${$t('description')}`"
           single-line
+          :rules="[max255]"
         ></v-textarea>
 
 
@@ -131,7 +132,7 @@
           :action="submit"
         ></action-button>
       </span>
-    </form>
+    </v-form>
   </v-card>
 
 </template>
@@ -153,6 +154,7 @@ import {
 } from "@/scripts/cookbooks";
 import {useAuthStore} from "@/stores/auth";
 import {visibilityOptions} from "@/scripts/values";
+import {max255, max50, requiredRule} from "@/scripts/rules";
 
 
 
@@ -161,6 +163,7 @@ const route = useRoute();
 let cookbookId = ref(route.query.cookbook)
 let addRecipeId = route.query.addRecipe
 const editablePicture = ref(null)
+const form = ref(null)
 
 
 const autocompleteList = ref([])
@@ -175,6 +178,7 @@ const onAutocompleteChange = async (query, index) => {
 const cookbook = ref<object>({
   title: "",
   description: "",
+  visibility: "PUBLIC"
 })
 const authStore = useAuthStore()
 
@@ -199,6 +203,10 @@ const removeUser = (index) => {
 
 
 async function submit() {
+  const {valid, errors} = await form.value.validate()
+  if (!valid) {
+    return
+  }
   console.log(members.value)
   const submitted = {}
   submitted["title"] = cookbook.value.title

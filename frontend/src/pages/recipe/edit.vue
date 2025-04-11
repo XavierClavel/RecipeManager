@@ -6,18 +6,18 @@
   >
 
 
-    <form @submit.prevent="submit" class="mx-auto">
+    <v-form @submit.prevent="submit" class="mx-auto" ref="form">
 
       <v-text-field
         v-model="recipe.title"
         :label="`${$t('title')}`"
-        :rules="[rules.max100]"
+        :rules="[requiredRule, max100]"
       ></v-text-field>
 
       <v-textarea
         v-model="recipe.description"
         :label="`${$t('description')}`"
-        :rules="[rules.max]"
+        :rules="[max255]"
       ></v-textarea>
 
       <v-col class="py-2" cols="12">
@@ -151,6 +151,7 @@
             <v-text-field
               v-model="recipe.ingredients[index].complement"
               :label="`${$t('complement')}`"
+              :rules="[max50]"
             ></v-text-field>
             </v-card>
 
@@ -187,7 +188,7 @@
               color="primary"
               item-color="primary"
               :key="index"
-              :rules="[rules.max50]"
+              :rules="[max50]"
             ></v-text-field>
             </v-card>
 
@@ -286,7 +287,7 @@
               v-model="recipe.steps[index]"
               :label="`${$t('step')} ${index + 1}`"
               :id="`step_${index}`"
-              :rules="[rules.max]"
+              :rules="[max255]"
               @keyup.enter="addStepAt(index)"
               @keyup.delete="deleteStepAt(index)"
             ></v-text-field>
@@ -314,8 +315,7 @@
         <v-textarea
           v-model="recipe.tips"
           :label="`${$t('tips')}`"
-          :rules="[rules.max500]"
-          hide-details="false"
+          :rules="[max511]"
         ></v-textarea>
 
       <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
@@ -330,7 +330,7 @@
           :action="submit"
         ></action-button>
       </span>
-    </form>
+    </v-form>
   </v-card>
 
 </template>
@@ -346,7 +346,9 @@ import EditablePicture from "@/components/EditablePicture.vue";
 import {dishOptions, unitOptions} from "@/scripts/values";
 import {useI18n} from "vue-i18n";
 import {getLocale} from "@/scripts/localization";
+import {max100, max255, max50, max511, requiredRule} from "@/scripts/rules";
 const {t} = useI18n()
+const form = ref(null)
 
 
 // Get the route object
@@ -379,22 +381,16 @@ function selectFirstMatch(index) {
   }
 }
 
-const rules = {
-  required: value => !!value || 'Required.',
-  max500: v => v.length <= 500 || 'Max 500 characters',
-  max: v => v.length <= 200 || 'Max 200 characters',
-  max100: v => v.length <= 100 || 'Max 100 characters',
-  max50: v => v.length <= 50 || 'Max 50 characters',
-}
-
 
 
 const recipe = ref<object>({
+  title: "",
   description: "",
   steps: [''],
   dishClass: "MAIN_DISH",
   ingredients: [],
   customIngredients: [],
+  tips: "",
 })
 
 
@@ -443,6 +439,10 @@ const removeCustomIngredient = (index) => {
 }
 
 async function submit() {
+  const {valid, errors} = await form.value.validate()
+  if (!valid) {
+    return
+  }
   console.log(recipe.value)
   const submitted = JSON.parse(JSON.stringify(recipe.value))
   submitted.ingredients = recipe.value.ingredients
