@@ -12,7 +12,6 @@
           :rules="[requiredRule, max50]"
         ></v-text-field>
 
-
         <v-textarea
           v-model="cookbook.description"
           :label="`${$t('description')}`"
@@ -56,20 +55,12 @@
 
       <!-- Ingredients -->
       <h2 class="my-3" >{{$t("users")}}</h2>
-      <draggable v-model="members" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
-        <template #item="{ element, index }">
-          <div class="d-flex align-center mb-2">
-            <!-- Add a handle for dragging -->
-            <v-icon
-              class="mr-2 drag-handle"
-              color="black"
-              small
-            >mdi-drag</v-icon>
+          <div class="d-flex align-center mb-2" v-for="index in members.length">
 
             <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;" class="mr-3">
               <v-img
                 color="surface-variant"
-                :src="getUserIconUrl(members[index].id)"
+                :src="getUserIconUrl(members[index-1].id)"
                 cover
                 v-bind="props"
                 class="clickable_image"
@@ -77,13 +68,13 @@
             </v-avatar>
 
             <v-autocomplete
-              v-model="members[index]"
-              :label="`${$t('user')} ${index + 1}`"
-              :items="autocompleteList[index]"
+              v-model="members[index-1]"
+              :label="`${$t('user')} ${index}`"
+              :items="autocompleteList[index-1]"
               item-color="primary"
               item-title="username"
               item-value="id"
-              @update:search="(query) => onAutocompleteChange(query, index)"
+              @update:search="(query) => onAutocompleteChange(query, index-1)"
               :key="index"
               return-object
               class="mr-2"
@@ -91,14 +82,14 @@
 
             <v-select
               max-width="200px"
-              v-model="members[index].role"
+              v-model="members[index-1].role"
               :label="`${$t('role')}`"
               :items="['USER','ADMIN']"
             ></v-select>
 
             <div>
               <v-btn
-                @click="removeUser(index)"
+                @click="removeUser(index-1)"
                 icon="mdi-delete"
                 color="primary"
                 class="ml-4"
@@ -107,8 +98,6 @@
 
 
           </div>
-        </template>
-      </draggable>
 
       <!-- Button to add ingredient -->
       <v-btn
@@ -231,6 +220,7 @@ async function submit() {
 
   toViewCookbook(cookbookId.value)
 }
+
 
 if (cookbookId.value != null) {
   getCookbook(cookbookId.value).then (
