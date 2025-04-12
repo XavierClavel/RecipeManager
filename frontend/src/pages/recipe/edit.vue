@@ -91,7 +91,6 @@
               small
             >mdi-drag</v-icon>
 
-            <v-card class="ma-1 flex-grow-1">
             <v-autocomplete
               v-model="recipe.ingredients[index].ingredient"
               :label="`${$t('ingredient')} ${index + 1}`"
@@ -105,10 +104,9 @@
               :key="index"
               return-object
               @keydown.enter.prevent="selectFirstMatch(index)"
+              class="ma-1"
             ></v-autocomplete>
-            </v-card>
 
-            <v-card class="ma-1 flex-grow-1" max-width="200px">
             <v-select
               v-model="recipe.ingredients[index].unit"
               :label="`${$t('unit')}`"
@@ -117,6 +115,8 @@
               :item-title="getLocalizedLabel"
               item-value="value"
               return-object
+              max-width="200px"
+              class="ma-1"
             >
               <!-- Customize how items appear in the dropdown -->
               <template v-slot:item="{ props, item }">
@@ -133,9 +133,7 @@
                 {{ $t(item.raw.label) }}
               </template>
             </v-select>
-            </v-card>
 
-            <v-card class="ma-1 flex-grow-1" max-width="150px" v-if="recipe.ingredients[index].unit?.value != 'NONE'">
             <v-number-input
               v-model="recipe.ingredients[index].amount"
               :label="`${$t('amount')}`"
@@ -145,16 +143,17 @@
               min=0
               item-title="amount"
               return-object
+              class="ma-1"
+              max-width="150px"
+              v-if="recipe.ingredients[index].unit?.value != 'NONE'"
             ></v-number-input>
-            </v-card>
 
-            <v-card class="ma-1 flex-grow-1">
             <v-text-field
               v-model="recipe.ingredients[index].complement"
               :label="`${$t('complement')}`"
               :rules="[max50]"
+              class="ma-1"
             ></v-text-field>
-            </v-card>
 
             <div>
               <v-btn
@@ -182,7 +181,6 @@
               small
             >mdi-drag</v-icon>
 
-            <v-card class="flex-grow-1 ma-1">
             <v-text-field
               v-model="recipe.customIngredients[index].name"
               :label="`${$t('custom_ingredient')} ${index + 1}`"
@@ -190,10 +188,9 @@
               item-color="primary"
               :key="index"
               :rules="[max50]"
+              class="ma-1"
             ></v-text-field>
-            </v-card>
 
-            <v-card class="flex-grow-1 ma-1" max-width="200px">
             <v-select
               v-model="recipe.customIngredients[index].unit"
               :label="`${$t('unit')}`"
@@ -202,6 +199,8 @@
               :item-title="getLocalizedLabel"
               item-value="value"
               return-object
+              class="ma-1"
+              max-width="200px"
             >
               <!-- Customize how items appear in the dropdown -->
               <template v-slot:item="{ props, item }">
@@ -218,9 +217,7 @@
                 {{ $t(item.raw.label) }}
               </template>
             </v-select>
-            </v-card>
 
-            <v-card class="flex-grow-1 ma-1" max-width="150px" v-if="recipe.customIngredients[index].unit?.value != 'NONE'">
             <v-number-input
               v-model="recipe.customIngredients[index].amount"
               :label="`${$t('amount')}`"
@@ -228,9 +225,11 @@
               color="primary"
               control-variant="stacked"
               min=0
+              class="ma-1"
+              max-width="150px"
+              v-if="recipe.customIngredients[index].unit?.value != 'NONE'"
             >
             </v-number-input>
-            </v-card>
 
             <div>
               <v-btn
