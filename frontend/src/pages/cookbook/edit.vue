@@ -128,7 +128,6 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getUserIconUrl, toViewCookbook} from "@/scripts/common";
 import EditablePicture from "@/components/EditablePicture.vue";

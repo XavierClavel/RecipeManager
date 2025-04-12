@@ -32,17 +32,20 @@
             @keyup.enter="submit"
           ></v-text-field>
 
+
+        <a
+          class="text-black"
+          href="/reset-password"
+        >
+          {{$t('forgotten_password')}}
+        </a>
+
         <v-container>
           <v-row
             class="d-flex align-center justify-center mb-2 gx-16"
             dense
           >
             <v-col cols="12" sm="auto" class="mx-5">
-              <action-button
-                icon="mdi-close-circle-outline"
-                :text="`${$t('forgotten_password')}`"
-                :action="toResetPassword"
-              ></action-button>
               <action-button
                 icon="mdi-close-circle-outline"
                 :text="`${$t('sign_up')}`"
