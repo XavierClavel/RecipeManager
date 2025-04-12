@@ -102,6 +102,7 @@ export default {
 
   successfully_copied: "Lien copié avec succès !",
   tips: "Conseils",
+  leave: "Partir",
 
   //Password reset
   reset_password: "Réinitialiser son mot de passe",

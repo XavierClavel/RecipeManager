@@ -7,6 +7,7 @@ export {
   createCookbook,
   editCookbook,
   searchCookbooks,
+  leaveCookbook,
 
   addRecipeToCookbook,
   removeRecipeFromCookbook,
@@ -54,6 +55,10 @@ async function getCookbookUsers(cookbookId) {
 
 async function setCookbookUsers(cookbookId, input) {
   return await apiClient.put(`/cookbook/${cookbookId}/users`, input)
+}
+
+async function leaveCookbook(cookbookId) {
+  return await apiClient.delete(`/cookbook/${cookbookId}/leave`)
 }
 
 async function isAdminOfCookbook(cookbookId) {

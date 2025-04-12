@@ -36,6 +36,11 @@
             :text="`${$t('edit')}`"
             :action="() => toEditCookbook(cookbookId)"
           ></action-button>
+          <action-button
+            icon="mdi-door-open"
+            :text="`${$t('leave')}`"
+            :action="() => leave()"
+          ></action-button>
         </v-row>
       </v-container>
 
@@ -47,9 +52,10 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
 import {ref} from "vue";
-import {toEditCookbook, toEditUser} from "@/scripts/common";
-import {getCookbook, isAdminOfCookbook} from "@/scripts/cookbooks";
+import {toEditCookbook, toEditUser, toListCookbooks, toViewIngredient} from "@/scripts/common";
+import {getCookbook, isAdminOfCookbook, leaveCookbook} from "@/scripts/cookbooks";
 import {ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS} from "@/scripts/icons";
+import {useAuthStore} from "@/stores/auth";
 const route = useRoute();
 let cookbookId = ref(route.query.cookbook)
 const imageUrl = computed(() => `${import.meta.env.VITE_API_URL}/image/cookbooks/${cookbookId.value}.webp`);
@@ -83,4 +89,9 @@ if (cookbookId.value != null) {
   )
 }
 
+async function leave() {
+  await leaveCookbook(cookbookId.value)
+  const authStore = useAuthStore()
+  toListCookbooks(authStore.id)
+}
 </script>

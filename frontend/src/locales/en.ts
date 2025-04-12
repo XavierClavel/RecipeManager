@@ -103,6 +103,7 @@ export default {
 
   successfully_copied: "Link successfully copied!",
   tips: "Tips",
+  leave: "Leave",
 
   //Password reset
   reset_password: "Reset password",

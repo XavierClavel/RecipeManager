@@ -59,6 +59,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
             getCookbookUsers()
             setCookbookUsers()
             deleteCookbookUser()
+            leaveCookbook()
         }
     }
 
@@ -154,9 +155,14 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
     private fun Route.deleteCookbookUser() = delete("/{id}/user/{user}") {
         val cookbookId = getPathId()
-        checkIfAdminOfCookbook(cookbookId)
         val userId = getIdPathVariable("user") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
+        checkIfAdminOfCookbook(cookbookId)
         handleDeletion(cookbookService.removeUserFromCookbook(cookbookId, userId))
+    }
+
+    private fun Route.leaveCookbook() = delete("/{id}/leave") {
+        val cookbookId = getPathId()
+        handleDeletion(cookbookService.removeUserFromCookbook(cookbookId, getSessionUserId()))
     }
 
     private fun Route.addCookbookRecipe() = post("/{id}/recipe/{recipe}") {
