@@ -37,13 +37,6 @@
       cover
     ></v-img>
 
-      <span class="d-flex flex-row">
-        <picto-info :value="recipe.yield" icon="mdi-silverware-fork-knife" v-if="recipe.yield"></picto-info>
-        <picto-info :value="`${recipe.preparationTime} min`" icon="mdi-chef-hat" v-if="recipe.preparationTime"></picto-info>
-        <picto-info :value="`${recipe.cookingTime} min`" icon="mdi-stove" v-if="recipe.cookingTime"></picto-info>
-        <picto-info :value="`${recipe.cookingTemperature} °C`" icon="mdi-thermometer" v-if="recipe.cookingTemperature"></picto-info>
-      </span>
-
 
     <span class="d-flex align-center justify-center mb-2 my-5 ga-10">
       <v-btn
@@ -106,6 +99,21 @@
       ></v-btn>
     </span>
 
+    <span class="d-flex flex-row">
+        <picto-info :value="`${recipe.preparationTime} min`" icon="mdi-chef-hat" v-if="recipe.preparationTime"></picto-info>
+        <picto-info :value="`${recipe.cookingTime} min`" icon="mdi-stove" v-if="recipe.cookingTime"></picto-info>
+        <picto-info :value="`${recipe.cookingTemperature} °C`" icon="mdi-thermometer" v-if="recipe.cookingTemperature"></picto-info>
+      </span>
+
+    <v-number-input
+      v-model="selectedYield"
+      min="1"
+      max-width="200px"
+      class="mx-auto"
+      control-variant="split"
+      precision="0"
+    ></v-number-input>
+
     <v-container v-if="recipe?.ingredients?.length || recipe?.customIngredients?.length">
 
       <h2 class="my-3" >Ingredients</h2>
@@ -114,7 +122,7 @@
       <v-card color="background" rounded="lg">
       <v-list-item
         :key="index"
-        :subtitle="`${ingredient.amount ? ingredient.amount : ''}${unitToReadable(ingredient.unit)}`"
+        :subtitle="`${ingredient.amount ? (ingredient.amount * coefficient).toFixed(2).replace(/[.,]00$/, '') : ''}${unitToReadable(ingredient.unit)}`"
         :title="`${ingredient.name} ${ingredient.complement ? '(' + ingredient.complement + ')' : ''}`"
       >
         <template v-slot:prepend>
@@ -141,7 +149,7 @@
       <v-card color="background" class="py-1">
         <v-list-item
           :key="index"
-          :subtitle="`${ingredient.amount ? ingredient.amount : ''}${unitToReadable(ingredient.unit)}`"
+          :subtitle="`${ingredient.amount ? (ingredient.amount * coefficient).toFixed(2).replace(/[.,]00$/, '') : ''}${unitToReadable(ingredient.unit)}`"
           :title="ingredient.name"
         >
           <template v-slot:prepend>
@@ -258,6 +266,11 @@ const snackbar = ref(false)
 const userCookbooks = ref([])
 const authStore = useAuthStore()
 const {t} = useI18n()
+const selectedYield = ref(null)
+
+const scaledAmount = computed((amount) => (amount * coefficient).toFixed(2).replace(/[.,]00$/, ''))
+
+const coefficient = computed(() =>  selectedYield.value / recipe.value.yield)
 
 const recipe = ref<object>({
   steps: [''],
@@ -268,6 +281,7 @@ const recipe = ref<object>({
 getRecipe(recipeId).then (
   function (response) {
     recipe.value = response.data
+    selectedYield.value = recipe.value.yield
     console.log("Recipe", recipe.value)
     isOwner.value = response.data.owner.id == authStore.id
     console.log("Recipe owner", recipe.value.owner)
