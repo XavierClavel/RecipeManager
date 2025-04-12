@@ -103,6 +103,7 @@ export default {
   successfully_copied: "Lien copié avec succès !",
   tips: "Conseils",
   leave: "Partir",
+  no_recipe_to_display: "Aucune recette à afficher",
 
   //Password reset
   reset_password: "Réinitialiser son mot de passe",

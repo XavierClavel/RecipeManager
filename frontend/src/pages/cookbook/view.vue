@@ -1,6 +1,8 @@
 <template>
 
+  <error :error="errors"></error>
   <v-card
+    v-if="!errors"
     class="pa-5"
   >
     <v-container class="d-flex flex-row">
@@ -46,7 +48,7 @@
 
     </v-container>
   </v-card>
-  <recipes-list></recipes-list>
+  <recipes-list v-if="!errors"></recipes-list>
 </template>
 
 <script lang="ts" setup>
@@ -67,6 +69,7 @@ const cookbook = ref<object>({
   recipesCount: null,
   usersCount: null,
 })
+const errors = ref(null)
 
 
 if (cookbookId.value != null) {
@@ -78,10 +81,9 @@ if (cookbookId.value != null) {
       cookbook.value.usersCount = response.data.usersCount
       console.log(response.data)
     }).catch(function (error) {
-    console.log(error);
-  }).finally(function () {
-    // always executed
-  });
+      console.log(error);
+      errors.value = error.response.data;
+  })
   isAdminOfCookbook(cookbookId.value).then(
     function (response) {
       isAdmin.value = response.data

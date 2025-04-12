@@ -139,6 +139,7 @@ class CookbookService: KoinComponent {
             }
 
         }
+        deleteIfNoMembers(cookbookId)
     }
 
     fun addUserToCookbook(cookbookId: Long, userId: Long, isAdmin: Boolean) {
@@ -179,6 +180,7 @@ class CookbookService: KoinComponent {
             .cookbook.id.eq(cookbookId)
             .findOne()
             ?.delete()
+            ?.apply { deleteIfNoMembers(cookbookId) }
 
     private fun QCookbook.filterByUser(userId: Long?) =
         if (userId == null) this else this.where().users.user.id.eq(userId)
@@ -221,4 +223,11 @@ class CookbookService: KoinComponent {
             .findOne()
             ?.addedBy?.id
             ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
+
+    fun deleteIfNoMembers(cookbookId: Long) {
+        if(getEntityById(cookbookId).users.isNotEmpty()) {
+            return
+        }
+        deleteCookbook(cookbookId)
+    }
 }

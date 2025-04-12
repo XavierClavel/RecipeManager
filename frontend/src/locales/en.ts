@@ -104,6 +104,7 @@ export default {
   successfully_copied: "Link successfully copied!",
   tips: "Tips",
   leave: "Leave",
+  no_recipe_to_display: "No recipe to display",
 
   //Password reset
   reset_password: "Reset password",

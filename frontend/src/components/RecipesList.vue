@@ -58,7 +58,7 @@ onUnmounted(() => {
   >
     <v-icon color="black" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
     <v-card-title prepend-icon="mdi-alert" class="text-black text-h4">
-      No recipes to display
+      {{$t('no_recipe_to_display')}}
     </v-card-title>
   </v-card>
 
