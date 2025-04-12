@@ -51,6 +51,7 @@
         type="number"
         color="primary"
         :min=1
+        :rules="[requiredRule]"
       ></v-number-input>
 
       <v-number-input

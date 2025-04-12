@@ -56,7 +56,7 @@ export default createVuetify({
     VNumberInput: {
       variant:"solo",
       flat: true,
-      hideDetails: true,
+      hideDetails: 'auto',
       bgColor: "background",
       color: "primary",
       VBtn: {
