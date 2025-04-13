@@ -13,7 +13,6 @@ async function getUser(id) {
   return await apiClient.get(`/user/${id}`)
 }
 
-
 async function updateUser(user) {
   return await apiClient.put(`/user`, user)
 }

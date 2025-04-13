@@ -9,4 +9,5 @@ data class DashboardReport(
     val recipesCount: Int,
     val cookbooksCount: Int,
     val likesCount: Int,
+    val followsCount: Int,
 )

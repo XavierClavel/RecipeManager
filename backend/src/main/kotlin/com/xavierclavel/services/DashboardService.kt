@@ -9,6 +9,7 @@ class DashboardService: KoinComponent {
     val userService: UserService by inject()
     val cookbookService: CookbookService by inject()
     val likeService: LikeService by inject()
+    val followService: FollowService by inject()
 
 
     fun buildGeneralReport() = DashboardReport(
@@ -17,5 +18,6 @@ class DashboardService: KoinComponent {
         recipesCount = recipeService.countAll(),
         cookbooksCount = cookbookService.countAll(),
         likesCount = likeService.countAll(),
+        followsCount = followService.countAll(),
     )
 }
