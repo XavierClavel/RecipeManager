@@ -20,6 +20,9 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from) => {
+  if (!to.name) {
+    return {name: '/home'}
+  }
   if (noLoginRedirect.includes(to.name) || noLoginRedirectStartsWith.some((it) => to.name.startsWith(it))) {
     return
   }
