@@ -92,7 +92,7 @@ const errorMessage = ref(null)
 const { t } = useI18n()
 const form = ref(null)
 
-const submit = () => {
+const submit = async() => {
   const {valid, errors} = await form.value.validate()
   if (!valid) {
     return
