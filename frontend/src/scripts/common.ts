@@ -91,9 +91,9 @@ const toUsers = () => navigateTo('/users')
 const toLogin = () => navigateTo('/login')
 const toSignup = () => navigateTo('/signup')
 const toMaintenance = () => navigateTo('/maintenance')
-const toResetPassword = () => navigateTo('/reset-password')
-const toUpdatePassword = () => navigateTo('/update-password')
-const toResetPasswordEmailSent = () => navigateTo('/reset-password-email-sent')
+const toResetPassword = () => navigateTo('/password/reset')
+const toUpdatePassword = () => navigateTo('/password/update')
+const toResetPasswordEmailSent = () => navigateTo('/password/reset/email')
 
 function navigateTo(path) {
   nextTick(() => {
@@ -108,11 +108,12 @@ const noLoginRedirect = [
   '/user/verify',
   '/maintenance',
   '/verification-email-sent',
-  '/reset-password-email-sent',
-  '/reset-password',
+  '/password/reset/email',
+  '/password/reset/',
 ]
 const noLoginRedirectStartsWith = [
   '/recipe/view',
+  '/password/reset',
 ]
 
 

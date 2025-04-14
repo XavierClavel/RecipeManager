@@ -35,7 +35,7 @@
 
         <a
           class="text-black"
-          href="/reset-password"
+          href="/password/reset"
         >
           {{$t('forgotten_password')}}
         </a>

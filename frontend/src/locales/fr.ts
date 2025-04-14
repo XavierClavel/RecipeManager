@@ -110,8 +110,8 @@ export default {
   reset_password_text: "Tu vas recevoir un mail à l'adresse mail saisie pour réinitialiser ton mot de passe !",
   send: "Envoyer",
   forgotten_password: "Mot de passe oublié ?",
-  reset_password_email_sent_title: "Mail de réinitialisation du mot de passe envoyé !",
-  reset_password_email_sent_text: "Si l'adresse mail saisie est valide, un mail a été envoyé. Cliques sur le ien dans les prochaines 24h pour réinitialiser ton mot de passe !",
+  reset_password_email_sent_title: "Mail de réinitialisation envoyé !",
+  reset_password_email_sent_description: "Si l'adresse mail saisie est valide, un mail a été envoyé. Cliques sur le ien dans les prochaines 24h pour réinitialiser ton mot de passe !",
 
   //Input form verification
   required: "Champs obligatoire.",
