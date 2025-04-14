@@ -47,6 +47,7 @@ export {
 
   noLoginRedirect,
   noLoginRedirectStartsWith,
+  allowNoLoginStartsWith,
 
   unitToReadable,
 
@@ -108,12 +109,13 @@ const noLoginRedirect = [
   '/user/verify',
   '/maintenance',
   '/verification-email-sent',
-  '/password/reset/email',
-  '/password/reset/',
 ]
 const noLoginRedirectStartsWith = [
+  '/password/reset'
+]
+
+const allowNoLoginStartsWith = [
   '/recipe/view',
-  '/password/reset',
 ]
 
 

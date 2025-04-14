@@ -119,10 +119,11 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import {
+  allowNoLoginStartsWith,
   getHealth,
   getUserIconUrl,
   logout,
-  noLoginRedirect,
+  noLoginRedirect, noLoginRedirectStartsWith,
   toCreateRecipe,
   toHome,
   toListIngredient,
@@ -150,7 +151,11 @@ const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
 
-const showSidebar = computed(() => !noLoginRedirect.includes(route.name));
+const showSidebar = computed(() =>
+  !noLoginRedirect.includes(route.name) &&
+  !noLoginRedirectStartsWith.some((it) => route.name.startsWith(it)) &&
+  authStore.isAuthenticated
+);
 
 const toSearch = debounce((query) => {
   if (!query) return; // Avoid empty redirects

@@ -12,19 +12,6 @@
 
       <error :error="errorMessage"></error>
 
-      <v-text-field
-        v-model="currentPassword"
-        prepend-icon="mdi-lock-outline"
-        :append-icon="showOld ? 'mdi-eye' : 'mdi-eye-off'"
-        :rules="[requiredRule, min8Rule]"
-        :type="show1 ? 'text' : 'password'"
-        hint="At least 8 characters"
-        :label="`${$t('current_password')}`"
-        counter
-        @click:append="show1 = !show1"
-        class="mx-3"
-      ></v-text-field>
-
     <v-text-field
       v-model="newPassword1"
       prepend-icon="mdi-lock-outline"
@@ -76,15 +63,13 @@
 import {ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {ICON_SAVE} from "@/scripts/icons";
-import {toMyProfile} from "@/scripts/common";
+import {resetPassword, toLogin, toMyProfile} from "@/scripts/common";
 import {updatePassword} from "@/scripts/users";
 import {min8Rule, passwordRule, requiredRule} from "@/scripts/rules";
 
-const showOld = ref(false)
 const show1 = ref<boolean>(false)
 const show2 = ref<boolean>(false)
 
-const currentPassword = ref(null)
 const newPassword1 = ref(null)
 const newPassword2 = ref(null)
 
@@ -97,9 +82,9 @@ const submit = async() => {
   if (!valid) {
     return
   }
-  updatePassword(currentPassword.value, newPassword1.value)
+  resetPassword(newPassword1.value)
     .then(function (response) {
-      toMyProfile()
+      toLogin()
     })
     .catch(function (error) {
     errorMessage.value = error.response.data

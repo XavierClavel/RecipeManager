@@ -31,6 +31,8 @@ declare module 'vue-router/auto-routes' {
     '/maintenance': RouteRecordInfo<'/maintenance', '/maintenance', Record<never, never>, Record<never, never>>,
     '/password/reset/': RouteRecordInfo<'/password/reset/', '/password/reset', Record<never, never>, Record<never, never>>,
     '/password/reset/email': RouteRecordInfo<'/password/reset/email', '/password/reset/email', Record<never, never>, Record<never, never>>,
+    '/password/reset/new': RouteRecordInfo<'/password/reset/new', '/password/reset/new', Record<never, never>, Record<never, never>>,
+    '/password/reset/success': RouteRecordInfo<'/password/reset/success', '/password/reset/success', Record<never, never>, Record<never, never>>,
     '/password/update/': RouteRecordInfo<'/password/update/', '/password/update', Record<never, never>, Record<never, never>>,
     '/recipe/edit': RouteRecordInfo<'/recipe/edit', '/recipe/edit', Record<never, never>, Record<never, never>>,
     '/recipe/list': RouteRecordInfo<'/recipe/list', '/recipe/list', Record<never, never>, Record<never, never>>,

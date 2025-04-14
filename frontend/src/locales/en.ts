@@ -113,6 +113,8 @@ export default {
   forgotten_password: "Forgotten password?",
   reset_password_email_sent_title: "Reset password mail sent!",
   reset_password_email_sent_description: "If the email address inputted is valid, a link has been sent. Click the link in the next 24h to reset your password",
+  reset_password_success_title: "Password successfully reset",
+  reset_password_success_description: "You can now log in using your new password!",
 
   //Input verification
   required: "Required.",
