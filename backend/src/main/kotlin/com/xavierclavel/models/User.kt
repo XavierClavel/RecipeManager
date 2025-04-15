@@ -17,9 +17,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
-import org.bouncycastle.cms.RecipientId.password
-import java.time.Instant
-import java.util.UUID
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Entity
 @Table(name = "users")
@@ -43,15 +42,15 @@ class User (
     //Validation
     @Column(unique = true)
     var token: String = "",
-    var tokenEndValidity: Long = Instant.now().epochSecond,
+    var tokenEndValidity: LocalDateTime = LocalDateTime.now().plusDays(1),
     var isVerified: Boolean = false,
 
     //Privacy
     var isAccountPublic: Boolean = true,
     var autoAcceptFollowRequests : Boolean = false,
 
-    var joinDate: Long = Instant.now().epochSecond,
-    var lastActivityDate: Long = Instant.now().epochSecond,
+    var joinDate: LocalDateTime = LocalDateTime.now(),
+    var lastActivityDate: LocalDateTime = LocalDateTime.now(),
 
     @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL], orphanRemoval = true)
     var recipes: Set<Recipe> = setOf(),
@@ -89,7 +88,7 @@ class User (
 
     fun registerNewActivity() =
         this.apply {
-            lastActivityDate = Instant.now().epochSecond
+            lastActivityDate = LocalDateTime.now()
         }
 
     fun toInfo() =
@@ -97,7 +96,7 @@ class User (
             id = this.id,
             username = this.username,
             role = this.role,
-            joinDate = this.joinDate,
+            joinDate = this.joinDate.toEpochSecond(ZoneOffset.UTC),
             bio = this.bio,
             recipesCount = this.recipes.size,
             likesCount = this.likes.size,
@@ -116,7 +115,7 @@ class User (
         bio = userDTO.bio
     }
 
-    fun validate() = this.apply {
+    fun verify() = this.apply {
         isVerified = true
     }
 
@@ -124,12 +123,22 @@ class User (
         passwordHash = BCrypt.withDefaults().hashToString(12, password.toCharArray())
     }
 
-    fun updateToken(token: String) = this.apply {
-        this.token = token
-    }
-
     fun updateSettings(userSettingsDTO: UserSettingsDTO) = this.apply {
         autoAcceptFollowRequests = userSettingsDTO.autoAcceptFollowRequests
         isAccountPublic = userSettingsDTO.isAccountPublic
+    }
+
+    fun useToken() {
+        this.apply { tokenEndValidity = LocalDateTime.MIN }.update()
+    }
+
+    fun isTokenValid(): Boolean {
+        return LocalDateTime.now() < this.tokenEndValidity
+    }
+
+    fun updateToken(token:String) {
+        this.token = token
+        this.tokenEndValidity = LocalDateTime.now().plusDays(1)
+        update()
     }
 }

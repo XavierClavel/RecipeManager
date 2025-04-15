@@ -160,7 +160,7 @@ async function verifyEmail(token) {
 }
 
 async function resetPassword(mail) {
-  return await apiClient.get(`/auth/reset-password/${mail}`)
+  return await apiClient.get(`/auth/password/reset/${mail}`)
 }
 
 async function logout() {

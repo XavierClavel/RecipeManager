@@ -46,6 +46,7 @@ object AuthController: Controller(AUTH_URL) {
         logout()
         verifyUser()
         signup()
+        requestPasswordReset()
         resetPassword()
     }
 
@@ -93,14 +94,21 @@ object AuthController: Controller(AUTH_URL) {
     }
 
     //TODO: send mail to user with verification code to send through another endpoint to chose a new password
-    private fun Route.resetPassword() = get("/reset-password/{mail}") {
+    private fun Route.requestPasswordReset() = get("/password/reset/{mail}") {
         val mail = call.parameters["mail"] ?: throw BadRequestException(BadRequestCause.MAIL_MISSING)
         try {
-            val user = userService.findByMail(mail).toInfo()
+            val user = userService.requestPasswordReset(mail)
             call.respond(HttpStatusCode.OK)
         } catch (e: NotFoundException) {
             call.respond(HttpStatusCode.OK)
         }
+    }
+
+    private fun Route.resetPassword() = post("/password/reset/{token}") {
+        val token = call.parameters["token"] ?: throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
+        val password = call.queryParameters["password"] ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
+        userService.resetPassword(token, password)
+
     }
 
     @OptIn(ExperimentalLettuceCoroutinesApi::class)

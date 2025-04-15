@@ -17,7 +17,9 @@ import common.enums.UserRole
 import common.overviewdto.UserOverview
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
-import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.util.UUID
 
 class UserService: KoinComponent {
     fun countAll() =
@@ -26,7 +28,7 @@ class UserService: KoinComponent {
     //Defined as users who logged in in the last 30 days
     fun countActiveUsers() =
         QUser()
-            .where().lastActivityDate.gt(Instant.now().minusSeconds(60 * 60 * 24 * 30).epochSecond)
+            .where().lastActivityDate.gt(LocalDateTime.now(ZoneOffset.UTC).minusMonths(1))
             .findCount()
 
     fun getEntityById(userId: Long) : User =
@@ -39,19 +41,31 @@ class UserService: KoinComponent {
         return QUser().mail.eq(mail).findOne() ?: throw NotFoundException(NotFoundCause.MAIL_NOT_FOUND)
     }
 
+
     fun listAllTokens() {
         QUser().findList().forEach {logger.info {"'${it.token}'"}}
     }
 
+    fun requestPasswordReset(mail: String): String {
+        val user = findByMail(mail)
+        val token = generateToken()
+        user.updateToken(token)
+        return token
+    }
+
+    fun generateToken(): String {
+        var token = UUID.randomUUID().toString()
+        while (isTokenUsed(token)) {
+            token = UUID.randomUUID().toString()
+        }
+        return token
+    }
+
+    fun isTokenUsed(token: String): Boolean =
+        QUser().token.eq(token).exists()
 
     fun findByToken(token: String) : User =
         QUser().token.eq(token).findOne() ?: throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
-
-    fun isTokenValid(token: String) : Boolean {
-        val currentEpoch = Instant.now().epochSecond
-        val user = findByToken(token)
-        return user.tokenEndValidity > currentEpoch
-    }
 
 
     fun existsById(id: Long) = QUser().id.eq(id).exists()
@@ -95,7 +109,8 @@ class UserService: KoinComponent {
 
     fun verifyUser(token:String): UserInfo {
         val user = findByToken(token)
-        return user.validate().updateAndGet().toInfo()
+        if (!user.isTokenValid()) throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
+        return user.verify().updateAndGet().toInfo()
     }
 
     fun isPasswordValid(id: Long, password: String): Boolean =
@@ -107,14 +122,19 @@ class UserService: KoinComponent {
     fun updatePassword(id: Long, password: String) =
         getEntityById(id).updatePassword(password).updateAndGet().toInfo()
 
-    fun resetPassword(token: String, password: String) =
-        findByToken(token).updatePassword(password).updateAndGet().toInfo()
+    fun resetPassword(token: String, password: String) {
+        val user = findByToken(token)
+        if (!user.isTokenValid()) throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
+        user.useToken()
+        user.updatePassword(password)
+    }
+
 
     fun updateToken(mail: String, token: String) =
-        findByMail(mail).updateToken(token).updateAndGet().toInfo()
+        findByMail(mail).updateToken(token)
 
     fun validateUser(id: Long) =
-        getEntityById(id).validate().updateAndGet()
+        getEntityById(id).verify().updateAndGet()
 
     fun updateSettings(id: Long, userSettingsDTO: UserSettingsDTO) =
         getEntityById(id).updateSettings(userSettingsDTO).updateAndGet().toInfo()
