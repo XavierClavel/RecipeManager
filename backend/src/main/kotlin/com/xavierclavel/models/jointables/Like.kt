@@ -14,6 +14,7 @@ import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Entity
 @Table(name = "likes")
@@ -29,7 +30,7 @@ class Like (
     @ManyToOne
     var recipe: Recipe,
 
-    var creationDate: Long = Instant.now().epochSecond,
+    var creationDate: LocalDateTime = LocalDateTime.now(),
 
 ) : Model() {
     fun toInfo() = LikeInfo(
@@ -41,6 +42,6 @@ class Like (
             this.recipe.id,
             this.recipe.title,
         ),
-        creationDate = this.creationDate,
+        creationDate = this.creationDate.toEpochSecond(ZoneOffset.UTC),
     )
 }

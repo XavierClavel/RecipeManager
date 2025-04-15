@@ -13,6 +13,8 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Entity
 @Table(name = "cookbook_recipes")
@@ -31,7 +33,7 @@ class CookbookRecipe (
     @ManyToOne
     var cookbook: Cookbook,
 
-    var additionDate: Long = Instant.now().epochSecond,
+    var additionDate: LocalDateTime = LocalDateTime.now(),
 
 ): Model() {
     fun toInfo() = CookbookRecipeInfo(
@@ -39,6 +41,6 @@ class CookbookRecipe (
         title = recipe.title,
         addedById = addedBy.id,
         addedByUsername = addedBy.username,
-        additionDate = additionDate
+        additionDate = additionDate.toEpochSecond(ZoneOffset.UTC),
     )
 }

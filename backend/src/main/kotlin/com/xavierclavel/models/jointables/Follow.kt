@@ -12,6 +12,7 @@ import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Entity
 @Table(name = "follows")
@@ -28,22 +29,22 @@ class Follow (
 
     var pending: Boolean = true,
 
-    var followedSince: Long = Instant.now().epochSecond,
+    var followedSince: LocalDateTime = LocalDateTime.now(),
 ): Model() {
     fun toFollowersInfo() = FollowInfo(
         user = this.follower!!.toOverview(),
-        followedSince = this.followedSince,
+        followedSince = this.followedSince.toEpochSecond(ZoneOffset.UTC),
         pending = this.pending,
     )
 
     fun toFollowsInfo() = FollowInfo(
         user = this.user!!.toOverview(),
-        followedSince = this.followedSince,
+        followedSince = this.followedSince.toEpochSecond(ZoneOffset.UTC),
         pending = this.pending,
     )
 
     fun acceptRequest() = this.apply {
         pending = false;
-        followedSince = Instant.now().epochSecond
+        followedSince = LocalDateTime.now()
     }
 }

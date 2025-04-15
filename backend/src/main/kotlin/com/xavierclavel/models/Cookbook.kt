@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToMany
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import java.time.Instant
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "cookbooks")
@@ -30,7 +31,7 @@ class Cookbook (
 
     var description: String = "",
 
-    var creationDate: Long = Instant.now().epochSecond,
+    var creationDate: LocalDateTime = LocalDateTime.now(),
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     var recipes: MutableSet<CookbookRecipe> = mutableSetOf(),

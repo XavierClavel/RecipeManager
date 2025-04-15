@@ -24,6 +24,8 @@ import io.ebean.annotation.DbDefault
 import io.ebean.annotation.NotNull
 import jakarta.persistence.Column
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Entity
 @Table(name = "recipes")
@@ -38,9 +40,9 @@ class Recipe (
 
     var dishClass: DishClass = DishClass.MAIN_DISH,
 
-    var creationDate: Long = Instant.now().epochSecond,
+    var creationDate: LocalDateTime = LocalDateTime.now(),
 
-    var modificationDate: Long = Instant.now().epochSecond,
+    var modificationDate: LocalDateTime = LocalDateTime.now(),
 
     @DbDefault("")
     @Column(length = 511)
@@ -81,7 +83,7 @@ class Recipe (
         this.dishClass = recipeDTO.dishClass
 
         this.steps = recipeDTO.steps
-        this.modificationDate = Instant.now().epochSecond
+        this.modificationDate = LocalDateTime.now()
 
         this.yield = recipeDTO.yield
         this.preparationTime = recipeDTO.preparationTime
@@ -105,8 +107,8 @@ class Recipe (
         customIngredients = customIngredients.map {it.toInfo()},
 
         owner = this.owner!!.toOverview(),
-        creationDate = this.creationDate,
-        editionDate = this.modificationDate,
+        creationDate = this.creationDate.toEpochSecond(ZoneOffset.UTC),
+        editionDate = this.modificationDate.toEpochSecond(ZoneOffset.UTC),
         likesCount = this.likes.size,
         tips = this.tips,
 
@@ -122,7 +124,7 @@ class Recipe (
         dishClass = dishClass,
         owner = this.owner!!.toOverview(),
         likesCount = this.likes.size,
-        creationDate = this.creationDate,
+        creationDate = this.creationDate.toEpochSecond(ZoneOffset.UTC),
     )
 
     fun tagForDeletion(): Recipe = this.apply {

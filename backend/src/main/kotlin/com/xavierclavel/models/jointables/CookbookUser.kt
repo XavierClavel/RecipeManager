@@ -11,6 +11,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Entity
 @Table(name = "cookbook_users")
@@ -28,7 +30,7 @@ class CookbookUser (
 
     var isAdmin: Boolean = false,
 
-    var joinDate: Long = Instant.now().epochSecond,
+    var joinDate: LocalDateTime = LocalDateTime.now(),
 
 ): Model() {
 
@@ -36,6 +38,6 @@ class CookbookUser (
         id = user.id,
         username = user.username,
         isAdmin = isAdmin,
-        joinDate = joinDate,
+        joinDate = joinDate.toEpochSecond(ZoneOffset.UTC),
     )
 }

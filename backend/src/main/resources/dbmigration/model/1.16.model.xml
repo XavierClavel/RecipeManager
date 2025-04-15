@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <alterColumn columnName="creation_date" tableName="cookbooks" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+        <alterColumn columnName="addition_date" tableName="cookbook_recipes" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+        <alterColumn columnName="join_date" tableName="cookbook_users" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+        <alterColumn columnName="followed_since" tableName="follows" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+        <alterColumn columnName="creation_date" tableName="likes" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+        <alterColumn columnName="creation_date" tableName="recipes" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+        <alterColumn columnName="modification_date" tableName="recipes" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+        <alterColumn columnName="token_end_validity" tableName="users" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+        <alterColumn columnName="join_date" tableName="users" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+        <alterColumn columnName="last_activity_date" tableName="users" type="localdatetime" currentType="bigint" currentNotnull="true"/>
+    </changeSet>
+</migration>

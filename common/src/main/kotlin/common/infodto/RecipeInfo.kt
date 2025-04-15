@@ -2,6 +2,7 @@ package common.infodto
 
 import common.dto.RecipeDTO
 import common.enums.DishClass
+import common.overviewdto.RecipeOverview
 import common.overviewdto.UserOverview
 import kotlinx.serialization.*
 
@@ -38,4 +39,13 @@ data class RecipeInfo (
                 cookingTemperature == dto.cookingTemperature &&
                 steps == dto.steps
     }
+
+    fun toOverview() = RecipeOverview(
+        id = this.id,
+        title = this.title,
+        dishClass = this.dishClass,
+        owner = this.owner,
+        likesCount = this.likesCount,
+        creationDate = this.creationDate,
+    )
 }
