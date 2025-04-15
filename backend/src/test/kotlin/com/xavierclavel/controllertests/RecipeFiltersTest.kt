@@ -121,7 +121,7 @@ class RecipeFiltersTest : ApplicationTest() {
         runAs(user!!.username) {
             val response1 = client.listRecipes(cookbookUser = user.id)
             assertEquals(2, response1.size)
-            assertEquals(setOf(recipe1, recipe2), response1.toSet())
+            assertEquals(setOf(recipe1!!.toOverview(), recipe2!!.toOverview()), response1.toSet())
         }
 
     }
@@ -138,19 +138,19 @@ class RecipeFiltersTest : ApplicationTest() {
         val recipe3 = client.createRecipe(recipeDTO3)
 
         val response1 = client.listRecipes(user = adminUser.id, dishClasses = setOf(DishClass.ENTREE))
-        assertEquals(setOf(recipe1), response1.toSet())
+        assertEquals(setOf(recipe1.toOverview()), response1.toSet())
 
         val response2 = client.listRecipes(user = adminUser.id, dishClasses = setOf(DishClass.MAIN_DISH))
-        assertEquals(setOf(recipe2), response2.toSet())
+        assertEquals(setOf(recipe2.toOverview()), response2.toSet())
 
         val response3 = client.listRecipes(user = adminUser.id, dishClasses = setOf(DishClass.DESERT))
-        assertEquals(setOf(recipe3), response3.toSet())
+        assertEquals(setOf(recipe3.toOverview()), response3.toSet())
 
         val response4 = client.listRecipes(user = adminUser.id, dishClasses = setOf(DishClass.ENTREE, DishClass.MAIN_DISH))
-        assertEquals(setOf(recipe1, recipe2), response4.toSet())
+        assertEquals(setOf(recipe1.toOverview(), recipe2.toOverview()), response4.toSet())
 
         val response5 = client.listRecipes(user = adminUser.id, dishClasses = setOf(DishClass.ENTREE, DishClass.MAIN_DISH, DishClass.DESERT))
-        assertEquals(setOf(recipe1, recipe2, recipe3), response5.toSet())
+        assertEquals(setOf(recipe1.toOverview(), recipe2.toOverview(), recipe3.toOverview()), response5.toSet())
 
     }
 
@@ -171,10 +171,10 @@ class RecipeFiltersTest : ApplicationTest() {
 
 
         val response1 = client.listRecipes(user = adminUser.id, dishClasses = setOf(DishClass.MAIN_DISH))
-        assertEquals(setOf(recipe1Updated, recipe2), response1.toSet())
+        assertEquals(setOf(recipe1Updated.toOverview(), recipe2.toOverview()), response1.toSet())
 
         val response2 = client.listRecipes(likedBy = adminUser.id, dishClasses = setOf(DishClass.MAIN_DISH))
-        assertEquals(setOf(recipe1Updated), response2.toSet())
+        assertEquals(setOf(recipe1Updated.toOverview()), response2.toSet())
 
     }
 
@@ -200,13 +200,13 @@ class RecipeFiltersTest : ApplicationTest() {
         val recipe3 = client.createRecipe(recipeDTO3)
 
         val response1 = client.listRecipes(user = adminUser.id, ingredient = setOf(ingredient1.id))
-        assertEquals(setOf(recipe1, recipe3), response1.toSet())
+        assertEquals(setOf(recipe1.toOverview(), recipe3.toOverview()), response1.toSet())
 
         val response2 = client.listRecipes(user = adminUser.id, ingredient = setOf(ingredient2.id))
-        assertEquals(setOf(recipe2, recipe3), response2.toSet())
+        assertEquals(setOf(recipe2.toOverview(), recipe3.toOverview()), response2.toSet())
 
         val response3 = client.listRecipes(user = adminUser.id, ingredient = setOf(ingredient1.id, ingredient2.id))
-        assertEquals(setOf(recipe3), response3.toSet())
+        assertEquals(setOf(recipe3.toOverview()), response3.toSet())
     }
 
     @Test
@@ -219,10 +219,10 @@ class RecipeFiltersTest : ApplicationTest() {
         val recipe2 = client.createRecipe(recipeDTO2)
 
         val response1 = client.listRecipes(user = adminUser.id, search = "champignons")
-        assertEquals(setOf(recipe1), response1.toSet())
+        assertEquals(setOf(recipe1.toOverview()), response1.toSet())
 
         val response2 = client.listRecipes(user = adminUser.id, search = "tarte")
-        assertEquals(setOf(recipe1,recipe2), response2.toSet())
+        assertEquals(setOf(recipe1.toOverview(), recipe2.toOverview()), response2.toSet())
     }
 
     @Test
@@ -255,15 +255,15 @@ class RecipeFiltersTest : ApplicationTest() {
         runAsAdmin {
             client.follow(user1!!.id)
             val response1 = client.listRecipes(followedBy = adminUser.id)
-            assertEquals(setOf(recipe11, recipe12), response1.toSet())
+            assertEquals(setOf(recipe11.toOverview(), recipe12.toOverview()), response1.toSet())
 
             client.follow(user2!!.id)
             val response2 = client.listRecipes(followedBy = adminUser.id)
-            assertEquals(setOf(recipe11, recipe12, recipe21), response2.toSet())
+            assertEquals(setOf(recipe11.toOverview(), recipe12.toOverview(), recipe21.toOverview()), response2.toSet())
 
             client.unfollow(user1!!.id)
             val response3 = client.listRecipes(followedBy = adminUser.id)
-            assertEquals(setOf(recipe21), response3.toSet())
+            assertEquals(setOf(recipe21.toOverview()), response3.toSet())
         }
     }
 }

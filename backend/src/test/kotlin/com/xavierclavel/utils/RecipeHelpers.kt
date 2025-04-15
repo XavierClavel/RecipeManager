@@ -5,6 +5,7 @@ import common.dto.RecipeDTO
 import common.enums.DishClass
 import common.enums.Sort
 import common.infodto.RecipeInfo
+import common.overviewdto.RecipeOverview
 import common.utils.URL.RECIPE_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
@@ -49,7 +50,7 @@ suspend fun HttpClient.createRecipe(recipe: RecipeDTO = recipeDTO) : RecipeInfo 
 }
 
 suspend fun HttpClient.getRecipeRaw(recipeId: Long) =
-    this.get("$RECIPE_URL/$recipeId")
+    this.get("$RECIPE_URL/$recipeId?locale=en")
 
 suspend fun HttpClient.getRecipe(recipeId: Long): RecipeInfo {
     this.getRecipeRaw(recipeId).apply {
@@ -69,7 +70,7 @@ suspend fun HttpClient.listRecipes(
     search: String? = null,
     ingredient: Set<Long> = setOf(),
     dishClasses: Set<DishClass> = setOf(),
-): List<RecipeInfo> {
+): List<RecipeOverview> {
     listRecipesRaw(
         user = user,
         sort = sort,
@@ -82,7 +83,7 @@ suspend fun HttpClient.listRecipes(
         dishClasses = dishClasses,
     ).apply {
         assertEquals(HttpStatusCode.OK, status)
-        val response = Json.decodeFromString<List<RecipeInfo>>(bodyAsText())
+        val response = Json.decodeFromString<List<RecipeOverview>>(bodyAsText())
         return response
     }
 }
@@ -109,6 +110,7 @@ suspend fun HttpClient.listRecipesRaw(
             search?.let { parameters.append("search", it.toString()) }
             ingredient.takeIf { it.isNotEmpty() }?.let { parameters.append("ingredient", it.joinToString(","))}
             dishClasses.takeIf { it.isNotEmpty() }?.let { parameters.append("dishClasses", it.joinToString(",")) }
+            parameters.append("locale", "en")
         }
     }
 
