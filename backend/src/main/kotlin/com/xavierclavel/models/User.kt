@@ -128,6 +128,11 @@ class User (
         isAccountPublic = userSettingsDTO.isAccountPublic
     }
 
+    fun getSettings() = UserSettingsDTO(
+        autoAcceptFollowRequests = this.autoAcceptFollowRequests,
+        isAccountPublic = this.isAccountPublic,
+    )
+
     fun useToken() {
         this.apply { tokenEndValidity = LocalDateTime.now().minusDays(1) }.update()
     }

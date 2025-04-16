@@ -20,22 +20,28 @@
         item-value="value"
         ></v-select>
 
-        <v-checkbox
-          prepend-icon="mdi-eye"
-          label="Is account public"
-          color="primary"
-          base-color="black"
-          bg-color="background"
-          variant="elevated"
-        ></v-checkbox>
+        <v-card color="background" class="mb-2">
+          <v-checkbox
+            v-model="settings.isAccountPublic"
+            label="Is account public"
+            color="black"
+            base-color="black"
+            bg-color="background"
+            variant="elevated"
+            class="mx-2 my-0 mb-n6"
+          ></v-checkbox>
+        </v-card>
 
-        <v-checkbox
-          prepend-icon="mdi-translate"
-          label="Auto accept follow requests"
-          color="primary"
-          base-color="black"
-          variant="elevated"
-        ></v-checkbox>
+        <v-card color="background" class="mb-2">
+          <v-checkbox
+            v-model="settings.autoAcceptFollowRequests"
+            label="Auto accept follow requests"
+            color="black"
+            base-color="black"
+            variant="elevated"
+            class="mx-2 my-0 mb-n6"
+          ></v-checkbox>
+        </v-card>
 
         <v-container>
           <v-row
@@ -69,10 +75,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {login, toSignup, toUpdatePassword} from '@/scripts/common'
+import {login, toMyProfile, toSignup, toUpdatePassword} from '@/scripts/common'
 import {useI18n} from "vue-i18n";
 import {ICON_LOCALIZATION, ICON_SAVE} from "@/scripts/icons";
 import {forceLocale, getLocale} from "@/scripts/localization";
+import {getSettings, updateSettings} from "@/scripts/settings";
 
 const errorMessage = ref(null)
 const { t } = useI18n();
@@ -84,21 +91,17 @@ const locales = [
   {label: "English", value: "en"},
 ]
 
+const settings = ref({})
 
-const rules = {
-  required: value => !!value || t('required'),
-  min: v => v.length >= 8 || t('min_8_characters'),
-  passwordMatch: () => user.value.password == password2.value || t('passwords_must_match'),
-}
-
-const user = ref<object>({
-  username: '',
-  password: '',
+getSettings().then(response => {
+  settings.value = response.data
 })
-
 
 const submit = () => {
   forceLocale(locale.value)
+  updateSettings(settings.value).then(response => {
+    toMyProfile()
+  })
 }
 
 

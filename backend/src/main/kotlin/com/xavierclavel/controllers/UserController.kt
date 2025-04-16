@@ -44,6 +44,7 @@ object UserController: Controller(USER_URL) {
 
             updatePassword()
 
+            getSettings()
             updateSettings()
         }
     }
@@ -84,6 +85,10 @@ object UserController: Controller(USER_URL) {
         userService.updatePassword(id, passwordDTO.new)
         call.sessions.clear<UserSession>()
         call.respond(HttpStatusCode.OK)
+    }
+
+    private fun Route.getSettings() = get("/settings") {
+        call.respond(userService.getSettings(getSessionUserId()))
     }
 
     private fun Route.updateSettings() = put("/settings") {

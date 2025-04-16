@@ -136,6 +136,9 @@ class UserService: KoinComponent {
     fun updateSettings(id: Long, userSettingsDTO: UserSettingsDTO) =
         getEntityById(id).updateSettings(userSettingsDTO).updateAndGet().toInfo()
 
+    fun getSettings(id: Long): UserSettingsDTO =
+        getEntityById(id).getSettings()
+
     fun search(searchString: String, paging: Paging): List<UserInfo> =
         QUser()
             .username.like("%$searchString%")
