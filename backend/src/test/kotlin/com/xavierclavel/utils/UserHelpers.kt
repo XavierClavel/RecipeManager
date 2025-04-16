@@ -27,7 +27,7 @@ import kotlin.test.assertEquals
 val userService: UserService by inject(UserService::class.java)
 
 suspend fun HttpClient.createUser(username: String = UUID.randomUUID().toString()): UserInfo  {
-    this.post("$AUTH_URL/signup"){
+    this.post("$AUTH_URL/signup?locale=EN"){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
         setBody(UserDTO(username = username, mail = UUID.randomUUID().toString()))

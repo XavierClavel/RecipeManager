@@ -11,6 +11,7 @@ import com.xavierclavel.plugins.RedisService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
+import com.xavierclavel.utils.getLocale
 import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.utils.URL.AUTH_URL
@@ -91,7 +92,7 @@ object AuthController: Controller(AUTH_URL) {
 
         val token = UUID.randomUUID().toString()
         val userCreated = UserController.userService.createUser(userDTO, token)
-        mailService.sendVerificationEmail(userCreated.mail, token)
+        mailService.sendVerificationEmail(userCreated.mail, token, getLocale())
         call.respond(HttpStatusCode.Created, userCreated.toInfo())
     }
 
@@ -100,7 +101,7 @@ object AuthController: Controller(AUTH_URL) {
         val mail = call.parameters["mail"] ?: throw BadRequestException(BadRequestCause.MAIL_MISSING)
         try {
             val token = userService.requestPasswordReset(mail)
-            mailService.sendPasswordResetEmail(mail, token)
+            mailService.sendPasswordResetEmail(mail, token, getLocale())
             call.respond(HttpStatusCode.OK)
         } catch (e: NotFoundException) {
             call.respond(HttpStatusCode.OK)

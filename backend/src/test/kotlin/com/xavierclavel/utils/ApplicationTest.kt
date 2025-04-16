@@ -56,8 +56,8 @@ abstract class ApplicationTest: KoinTest {
         @JvmStatic
         fun startKoin() {
             val mockMailService = mockk<MailService>()
-            every {mockMailService.sendVerificationEmail(any(),any())} answers {}
-            every {mockMailService.sendPasswordResetEmail(any(),any())} answers {}
+            every {mockMailService.sendVerificationEmail(any(),any(), any())} answers {}
+            every {mockMailService.sendPasswordResetEmail(any(),any(), any())} answers {}
 
             val testModules = module {
                 single { RecipeService() }

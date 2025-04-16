@@ -3,6 +3,7 @@ import router from "@/router";
 import apiClient from '@/plugins/axios.js';
 import {useAuthStore, declareLogin} from "@/stores/auth";
 import {deleteCookie, getCookie} from "@/scripts/cookies";
+import {getLocale} from "@/scripts/localization";
 
 export {
   login,
@@ -151,7 +152,7 @@ async function login(user) {
 }
 
 async function signup(user) {
-  const result = await apiClient.post(`/auth/signup`, user)
+  const result = await apiClient.post(`/auth/signup?locale=${getLocale()}`, user)
   if (result.status == 201) {
     navigateTo(`/verification-email-sent`)
   }
@@ -163,7 +164,7 @@ async function verifyEmail(token) {
 }
 
 async function requestPasswordReset(mail) {
-  return await apiClient.delete(`/auth/password/reset/${mail}`)
+  return await apiClient.delete(`/auth/password/reset/${mail}?locale=${getLocale()}`)
 }
 
 async function resetPassword(token: string, password: string) {

@@ -1,8 +1,5 @@
 package main.com.xavierclavel.utils
 
-import com.xavierclavel.services.UserService
-import com.xavierclavel.utils.log
-import com.xavierclavel.utils.logger
 import common.dto.PasswordDTO
 import common.dto.UserDTO
 import common.infodto.UserInfo
@@ -11,9 +8,7 @@ import common.utils.URL.USER_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.delete
-import io.ktor.client.request.get
 import io.ktor.client.request.header
-import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -23,14 +18,11 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
-import org.koin.java.KoinJavaComponent.inject
-import org.koin.test.inject
 import java.util.UUID
-import kotlin.getValue
 import kotlin.test.assertEquals
 
 suspend fun HttpClient.signup(username: String = UUID.randomUUID().toString(), password: String = UUID.randomUUID().toString()): UserInfo  {
-    this.post("$AUTH_URL/signup"){
+    this.post("$AUTH_URL/signup?locale=EN"){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
         setBody(UserDTO(username = username, mail = UUID.randomUUID().toString(), password = password))
@@ -69,7 +61,7 @@ suspend fun HttpClient.updatePassword(oldPassword: String, newPassword: String) 
     }
 
 suspend fun HttpClient.requestPasswordReset(mail: String) =
-    this.delete("$AUTH_URL/password/reset/${mail}").apply { assertEquals(HttpStatusCode.OK, status)  }
+    this.delete("$AUTH_URL/password/reset/${mail}?locale=EN").apply { assertEquals(HttpStatusCode.OK, status)  }
 
 suspend fun HttpClient.resetPassword(token: String, newPassword: String) =
     this.put("$AUTH_URL/password/reset/${token}?password=$newPassword").apply { assertEquals(HttpStatusCode.OK, status) }
