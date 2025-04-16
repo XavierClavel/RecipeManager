@@ -32,6 +32,7 @@ export {
   toViewCookbook,
 
   toResetPassword,
+  toResetPasswordSuccess,
   toUpdatePassword,
 
   toHome,
@@ -96,6 +97,7 @@ const toMaintenance = () => navigateTo('/maintenance')
 const toResetPassword = () => navigateTo('/password/reset')
 const toUpdatePassword = () => navigateTo('/password/update')
 const toResetPasswordEmailSent = () => navigateTo('/password/reset/email')
+const toResetPasswordSuccess = () => navigateTo('/password/reset/success')
 
 function navigateTo(path) {
   nextTick(() => {

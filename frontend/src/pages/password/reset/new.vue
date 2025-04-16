@@ -63,7 +63,7 @@
 import {ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {ICON_SAVE} from "@/scripts/icons";
-import {requestPasswordReset, resetPassword, toLogin, toMyProfile} from "@/scripts/common";
+import {requestPasswordReset, resetPassword, toLogin, toMyProfile, toResetPasswordSuccess} from "@/scripts/common";
 import {updatePassword} from "@/scripts/users";
 import {min8Rule, passwordRule, requiredRule} from "@/scripts/rules";
 
@@ -86,7 +86,7 @@ const submit = async() => {
   }
   resetPassword(token, newPassword1.value)
     .then(function (response) {
-      toLogin()
+      toResetPasswordSuccess()
     })
     .catch(function (error) {
     errorMessage.value = error.response.data

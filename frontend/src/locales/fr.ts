@@ -111,7 +111,7 @@ export default {
   send: "Envoyer",
   forgotten_password: "Mot de passe oublié ?",
   reset_password_email_sent_title: "Mail de réinitialisation envoyé !",
-  reset_password_email_sent_description: "Si l'adresse mail saisie est valide, un mail a été envoyé. Cliques sur le ien dans les prochaines 24h pour réinitialiser ton mot de passe !",
+  reset_password_email_sent_description: "Si l'adresse mail saisie est valide, un mail a été envoyé. Cliques sur le lien dans les prochaines 24h pour réinitialiser ton mot de passe !",
   reset_password_success_title: "Mot de passe réinitalisé",
   reset_password_success_description: "Tu peux maintenant te connecter avec ton nouveau mot de passe !",
 
