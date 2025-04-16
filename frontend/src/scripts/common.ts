@@ -161,11 +161,11 @@ async function verifyEmail(token) {
 }
 
 async function requestPasswordReset(mail) {
-  return await apiClient.get(`/auth/password/reset/${mail}`)
+  return await apiClient.delete(`/auth/password/reset/${mail}`)
 }
 
 async function resetPassword(token: string, password: string) {
-  return await apiClient.post(`/auth/password/reset/${token}?password=${password}`)
+  return await apiClient.put(`/auth/password/reset/${token}?password=${password}`)
 }
 
 async function logout() {

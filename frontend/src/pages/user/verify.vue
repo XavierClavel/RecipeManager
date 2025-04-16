@@ -8,7 +8,7 @@
 
 
     <form @submit.prevent="submit">
-      <v-card-title class="text-primary text-h3">
+      <v-card-title>
         Email verification
       </v-card-title>
       <error :error="errorMessage"></error>
