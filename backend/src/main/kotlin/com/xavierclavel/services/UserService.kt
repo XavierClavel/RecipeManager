@@ -130,10 +130,6 @@ class UserService: KoinComponent {
         user.update()
     }
 
-
-    fun updateToken(mail: String, token: String) =
-        findByMail(mail).updateToken(token)
-
     fun validateUser(id: Long) =
         getEntityById(id).verify().updateAndGet()
 

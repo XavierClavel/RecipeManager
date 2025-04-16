@@ -110,7 +110,6 @@ object AuthController: Controller(AUTH_URL) {
     private fun Route.resetPassword() = put("/password/reset/{token}") {
         val token = call.parameters["token"] ?: throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
         val password = call.queryParameters["password"] ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
-        logger.info {password}
         userService.resetPassword(token, password)
         call.respond(HttpStatusCode.OK)
     }

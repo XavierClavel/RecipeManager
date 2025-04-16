@@ -72,9 +72,7 @@ object RecipeController: Controller(RECIPE_URL) {
             dishClasses = call.parameters[RecipeFilter::dishClasses.name]?.split(",")?.map { DishClass.valueOf(it.trim()) }?.toSet() ?: setOf(),
             search = call.parameters[RecipeFilter::search.name],
         )
-        logger.info {"paging : $paging"}
-        logger.info {"sort : $sort"}
-        logger.info {"filter : $recipeFilter"}
+
         val result = recipeService.findList(
             requestorId = getOptionalSessionId(),
             paging = paging,

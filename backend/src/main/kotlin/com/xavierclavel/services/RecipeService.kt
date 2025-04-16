@@ -71,19 +71,18 @@ class RecipeService: KoinComponent {
             .exists()
 
     fun QRecipe.filterByVisibility(userId: Long?): QRecipe {
-        val q = this.fetch("owner")
 
         if (userId == null) {
             // Anonymous users: only public recipes
-            return q.where().owner.isAccountPublic.isTrue
+            return this.owner.isAccountPublic.isTrue
         }
 
-        return q.where().or()
+        return this.or()
             .owner.id.eq(userId) // Owner
             .owner.isAccountPublic.isTrue // Public
-            .and() // Follower (accepted)
-            .owner.followers.follower.id.eq(userId)
-            .owner.followers.pending.isFalse
+            .and() // Follower
+                .owner.followers.follower.id.eq(userId)
+                .owner.followers.pending.isFalse
             .endAnd()
             .exists("select 1 from likes l where l.recipe_id = t0.id and l.user_id = ?", userId)
             .exists("""
@@ -188,9 +187,11 @@ class RecipeService: KoinComponent {
 
     private fun QRecipe.filterOutDeletion(userId: Long?) =
         if (userId == null) this
-        else this.where().not()
-            .owner.id.eq(userId).and()
-            .taggedForDeletion.eq(true)
+        else this.where()
+            .and().not()
+                .owner.id.eq(userId)
+                .taggedForDeletion.eq(true)
+            .endNot().endAnd()
 
     private fun QRecipe.filterByDishClass(dishClasses: Set<DishClass>) =
         if (dishClasses.isEmpty()) this
