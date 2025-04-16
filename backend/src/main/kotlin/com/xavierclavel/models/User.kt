@@ -129,7 +129,7 @@ class User (
     }
 
     fun useToken() {
-        this.apply { tokenEndValidity = LocalDateTime.MIN }.update()
+        this.apply { tokenEndValidity = LocalDateTime.now().minusDays(1) }.update()
     }
 
     fun isTokenValid(): Boolean {

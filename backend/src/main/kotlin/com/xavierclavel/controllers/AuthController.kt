@@ -22,8 +22,10 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.RoutingContext
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.server.routing.put
 import io.ktor.server.sessions.clear
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
@@ -94,21 +96,23 @@ object AuthController: Controller(AUTH_URL) {
     }
 
     //TODO: send mail to user with verification code to send through another endpoint to chose a new password
-    private fun Route.requestPasswordReset() = get("/password/reset/{mail}") {
+    private fun Route.requestPasswordReset() = delete("/password/reset/{mail}") {
         val mail = call.parameters["mail"] ?: throw BadRequestException(BadRequestCause.MAIL_MISSING)
         try {
-            val user = userService.requestPasswordReset(mail)
+            val token = userService.requestPasswordReset(mail)
+            mailService.sendPasswordResetEmail(mail, token)
             call.respond(HttpStatusCode.OK)
         } catch (e: NotFoundException) {
             call.respond(HttpStatusCode.OK)
         }
     }
 
-    private fun Route.resetPassword() = post("/password/reset/{token}") {
+    private fun Route.resetPassword() = put("/password/reset/{token}") {
         val token = call.parameters["token"] ?: throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
         val password = call.queryParameters["password"] ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
+        logger.info {password}
         userService.resetPassword(token, password)
-
+        call.respond(HttpStatusCode.OK)
     }
 
     @OptIn(ExperimentalLettuceCoroutinesApi::class)

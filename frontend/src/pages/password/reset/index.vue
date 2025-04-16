@@ -51,7 +51,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {resetPassword, signup, toLogin, toResetPasswordEmailSent} from "@/scripts/common";
+import {requestPasswordReset, signup, toLogin, toResetPasswordEmailSent} from "@/scripts/common";
 import {useI18n} from "vue-i18n";
 import {min8Rule, passwordRule, requiredRule} from "@/scripts/rules";
 
@@ -70,7 +70,7 @@ const submit = async() => {
   if (!valid) {
     return
   }
-  resetPassword(mail.value)
+  requestPasswordReset(mail.value)
     .then(function (response) {
       toResetPasswordEmailSent()
     })

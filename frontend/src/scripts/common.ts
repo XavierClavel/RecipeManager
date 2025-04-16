@@ -9,6 +9,7 @@ export {
   logout,
   signup,
   verifyEmail,
+  requestPasswordReset,
   resetPassword,
   toResetPasswordEmailSent,
 
@@ -159,8 +160,12 @@ async function verifyEmail(token) {
   return await apiClient.post(`/auth/verify?token=${token}`)
 }
 
-async function resetPassword(mail) {
+async function requestPasswordReset(mail) {
   return await apiClient.get(`/auth/password/reset/${mail}`)
+}
+
+async function resetPassword(token: string, password: string) {
+  return await apiClient.post(`/auth/password/reset/${token}?password=${password}`)
 }
 
 async function logout() {

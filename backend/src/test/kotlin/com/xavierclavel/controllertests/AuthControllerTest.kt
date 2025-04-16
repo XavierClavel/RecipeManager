@@ -8,6 +8,8 @@ import io.ktor.http.HttpStatusCode
 import main.com.xavierclavel.utils.assertException
 import main.com.xavierclavel.utils.login
 import main.com.xavierclavel.utils.logout
+import main.com.xavierclavel.utils.requestPasswordReset
+import main.com.xavierclavel.utils.resetPassword
 import main.com.xavierclavel.utils.signup
 import main.com.xavierclavel.utils.updatePassword
 import main.com.xavierclavel.utils.verifyUser
@@ -82,6 +84,34 @@ class AuthControllerTest : ApplicationTest() {
         client.login(user.username, newPassword).apply {
             assertEquals(status, HttpStatusCode.Unauthorized)
             assertEquals(bodyAsText(), UnauthorizedCause.INVALID_PASSWORD.key)
+        }
+    }
+
+    @Test
+    fun `reset user password`() = runTest {
+        val oldPassword = UUID.randomUUID().toString()
+        val newPassword = UUID.randomUUID().toString()
+        val user = client.signup(password = oldPassword)
+        val token = userService.getEntityById(user.id).token
+        client.verifyUser(token)
+        println("login1")
+        client.login(user.username, oldPassword)
+        client.logout()
+
+        val mail = userService.getEntityById(user.id).mail
+        client.requestPasswordReset(mail)
+        val newToken = userService.getEntityById(user.id).token
+        client.resetPassword(newToken, newPassword)
+        println("login2")
+        client.login(user.username, newPassword).apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+        client.logout()
+
+        println("login3")
+        client.login(user.username, oldPassword).apply {
+            assertEquals(HttpStatusCode.Unauthorized, status)
+            assertEquals(UnauthorizedCause.INVALID_PASSWORD.key, bodyAsText())
         }
     }
 

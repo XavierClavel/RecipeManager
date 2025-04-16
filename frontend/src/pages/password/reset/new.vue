@@ -63,7 +63,7 @@
 import {ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {ICON_SAVE} from "@/scripts/icons";
-import {resetPassword, toLogin, toMyProfile} from "@/scripts/common";
+import {requestPasswordReset, resetPassword, toLogin, toMyProfile} from "@/scripts/common";
 import {updatePassword} from "@/scripts/users";
 import {min8Rule, passwordRule, requiredRule} from "@/scripts/rules";
 
@@ -76,13 +76,15 @@ const newPassword2 = ref(null)
 const errorMessage = ref(null)
 const { t } = useI18n()
 const form = ref(null)
+const route = useRoute()
+const token = route.query.token
 
 const submit = async() => {
   const {valid, errors} = await form.value.validate()
   if (!valid) {
     return
   }
-  resetPassword(newPassword1.value)
+  resetPassword(token, newPassword1.value)
     .then(function (response) {
       toLogin()
     })

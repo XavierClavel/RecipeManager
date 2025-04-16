@@ -40,8 +40,6 @@ object UserController: Controller(USER_URL) {
             deleteUser()
 
             updatePassword()
-            deletePassword()
-            resetPassword()
 
             updateSettings()
         }
@@ -81,21 +79,6 @@ object UserController: Controller(USER_URL) {
             throw UnauthorizedException(UnauthorizedCause.INVALID_PASSWORD)
         }
         userService.updatePassword(id, passwordDTO.new)
-        call.respond(HttpStatusCode.OK)
-    }
-
-    private fun Route.deletePassword() = delete("/password") {
-        val id = getSessionUserId()
-        val mail = userService.getEntityById(id).mail
-        val uuid = UUID.randomUUID().toString()
-        userService.updateToken(mail, uuid)
-        mailService.sendPasswordResetEmail(mail, uuid)
-        call.respond(HttpStatusCode.OK)
-    }
-
-    private fun Route.resetPassword() = post("/password") {
-        val passwordDTO = call.receive<PasswordDTO>()
-        userService.resetPassword(passwordDTO.old, passwordDTO.new)
         call.respond(HttpStatusCode.OK)
     }
 

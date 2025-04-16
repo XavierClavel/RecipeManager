@@ -127,6 +127,7 @@ class UserService: KoinComponent {
         if (!user.isTokenValid()) throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
         user.useToken()
         user.updatePassword(password)
+        user.update()
     }
 
 
