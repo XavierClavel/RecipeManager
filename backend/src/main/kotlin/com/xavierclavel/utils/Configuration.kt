@@ -3,8 +3,6 @@ package com.xavierclavel.utils
 import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.addFileSource
 import com.sksamuel.hoplite.addResourceSource
-import kotlin.io.path.Path
-import kotlin.io.path.readText
 
 data class Frontend(
     val url: String,
@@ -22,7 +20,6 @@ fun loadConfig(): Configuration {
         .addResourceSource("/application.yaml", true)
         .build()
         .loadConfigOrThrow<Configuration>()
-        .log { "configuration loaded successfully: $this" }
 }
 
 
