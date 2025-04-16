@@ -17,11 +17,11 @@
         prepend-icon="mdi-lock-outline"
         :append-icon="showOld ? 'mdi-eye' : 'mdi-eye-off'"
         :rules="[requiredRule, min8Rule]"
-        :type="show1 ? 'text' : 'password'"
+        :type="showOld ? 'text' : 'password'"
         hint="At least 8 characters"
         :label="`${$t('current_password')}`"
         counter
-        @click:append="show1 = !show1"
+        @click:append="showOld = !showOld"
         class="mx-3"
       ></v-text-field>
 
@@ -76,9 +76,11 @@
 import {ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {ICON_SAVE} from "@/scripts/icons";
-import {toMyProfile} from "@/scripts/common";
+import {logout, toMyProfile, toUpdatePasswordSuccess} from "@/scripts/common";
 import {updatePassword} from "@/scripts/users";
 import {min8Rule, passwordRule, requiredRule} from "@/scripts/rules";
+import apiClient from "@/plugins/axios";
+import {useAuthStore} from "@/stores/auth";
 
 const showOld = ref(false)
 const show1 = ref<boolean>(false)
@@ -97,9 +99,10 @@ const submit = async() => {
   if (!valid) {
     return
   }
+  errorMessage.value = null
   updatePassword(currentPassword.value, newPassword1.value)
     .then(function (response) {
-      toMyProfile()
+      toUpdatePasswordSuccess()
     })
     .catch(function (error) {
     errorMessage.value = error.response.data

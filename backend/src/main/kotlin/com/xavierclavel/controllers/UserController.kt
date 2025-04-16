@@ -7,6 +7,7 @@ import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.MailService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
+import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import common.dto.PasswordDTO
@@ -23,6 +24,8 @@ import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
+import io.ktor.server.sessions.clear
+import io.ktor.server.sessions.sessions
 import org.koin.java.KoinJavaComponent.inject
 import java.util.UUID
 
@@ -79,6 +82,7 @@ object UserController: Controller(USER_URL) {
             throw UnauthorizedException(UnauthorizedCause.INVALID_PASSWORD)
         }
         userService.updatePassword(id, passwordDTO.new)
+        call.sessions.clear<UserSession>()
         call.respond(HttpStatusCode.OK)
     }
 

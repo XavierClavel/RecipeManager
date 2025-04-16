@@ -44,6 +44,11 @@
           >
             <v-col sm="auto" class="mx-5">
               <action-button
+                icon="mdi-lock-reset"
+                :text="`${$t('update_password')}`"
+                :action="toUpdatePassword"
+              ></action-button>
+              <action-button
                 :icon="ICON_SAVE"
                 :text="`${$t('save')}`"
                 :action="submit"
@@ -64,14 +69,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {login, toSignup} from '@/scripts/common'
+import {login, toSignup, toUpdatePassword} from '@/scripts/common'
 import {useI18n} from "vue-i18n";
 import {ICON_LOCALIZATION, ICON_SAVE} from "@/scripts/icons";
 import {forceLocale, getLocale} from "@/scripts/localization";
 
-// Get the route object
-const route = useRoute();
-const show1 = ref<boolean>(false)
 const errorMessage = ref(null)
 const { t } = useI18n();
 

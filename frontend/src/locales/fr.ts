@@ -19,6 +19,8 @@ export default {
   new_password: "Nouveau mot de passe",
   current_password: "Mot de passe actuel",
   confirm_new_password: "Confirmer nouveau mot de passe",
+  update_password_success_title: "Mot de passe modifié",
+  update_password_success_description: "Tu peux maintenant te reconnecter avec ton nouveau mot de passe !",
 
   search_recipe: "Rechercher une recette",
 

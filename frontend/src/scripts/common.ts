@@ -35,6 +35,7 @@ export {
   toResetPassword,
   toResetPasswordSuccess,
   toUpdatePassword,
+  toUpdatePasswordSuccess,
 
   toHome,
   toUsers,
@@ -97,6 +98,7 @@ const toSignup = () => navigateTo('/signup')
 const toMaintenance = () => navigateTo('/maintenance')
 const toResetPassword = () => navigateTo('/password/reset')
 const toUpdatePassword = () => navigateTo('/password/update')
+const toUpdatePasswordSuccess = () => navigateTo('/password/update/success')
 const toResetPasswordEmailSent = () => navigateTo('/password/reset/email')
 const toResetPasswordSuccess = () => navigateTo('/password/reset/success')
 
@@ -113,6 +115,7 @@ const noLoginRedirect = [
   '/user/verify',
   '/maintenance',
   '/verification-email-sent',
+  '/password/update/success',
 ]
 const noLoginRedirectStartsWith = [
   '/password/reset'
