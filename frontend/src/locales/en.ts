@@ -161,4 +161,6 @@ export default {
   username_already_used: "Username already used",
   recipe_already_in_cookbook: "This recipe is already in this cookbook",
   recipe_not_in_cookbook: "This recipe is not in this cookbook",
+
+  custom_ingredients_warning: "Custom ingredients should only be used if an ingredient you want to add is not registered in the database.",
 };

@@ -255,7 +255,7 @@
       >{{$t("ingredients_add_new")}}</v-btn>
 
       <!-- Button to add custom ingredient -->
-      <v-tooltip text="Custom ingredients should only be used if an ingredient you want to add is not registered in the database."
+      <v-tooltip :text="`${$t('custom_ingredients_warning')}`"
       location="bottom">
         <template v-slot:activator="{ props }">
           <v-btn
