@@ -161,5 +161,17 @@ export default {
   recipe_already_in_cookbook: "Cette recette est déjà dans ce cookbook",
   recipe_not_in_cookbook: "Cette recette n'est pas dans ce cookbook",
 
-  custom_ingredients_warning: "Les ingrédients personnalisés ne doivent être utilisés que si l'ingrédient recherché n'est pas disponible dans la liste."
+  custom_ingredients_warning: "Les ingrédients personnalisés ne doivent être utilisés que si l'ingrédient recherché n'est pas disponible dans la liste.",
+
+  //Ingredients
+  calories: "Calories",
+  glucids: "Glucides",
+  cholesterol: "Cholesterol",
+  lipids: "Lipides",
+  fibers: "Fibres",
+  proteins: "Protéines",
+  sodium: "Sel",
+  allowAmount: "Autoriser quantité",
+  allowWeight: "Autoriser masse",
+  allowVolume: "Autoriser volume",
 };

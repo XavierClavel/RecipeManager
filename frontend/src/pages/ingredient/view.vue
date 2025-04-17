@@ -16,8 +16,8 @@
       <v-container
       class="px-3 mx-auto"
       >
-        <v-card-title
-        >{{ ingredient?.name }}</v-card-title>
+        <v-card-title class="mt-n8"
+        >{{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</v-card-title>
         <v-row class="d-flex flex-row mx-4">
           <v-col class="d-inline-flex" cols="auto">
             <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="ingredient.recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>
@@ -30,37 +30,13 @@
           @click="toEditCookbook(cookbookId)"
           ></v-btn>
         </v-row>
-        <v-table
-          min-height="300px"
-          fixed-header
-          class="rounded-0"
-        >
-          <tbody>
-          <tr>
-            <th class="text-left">
-              Calories
-            </th>
-            <th class="text-left">
-              {{ingredient.calories}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-left">
-              Glucids
-            </th>
-            <th class="text-left">
-              {{ingredient.glucids}}
-            </th>
-          </tr>
-
-          </tbody>
-        </v-table>
       </v-container>
+
+      <ingredient-nutrional-data :ingredient="ingredient" class="my-n6"></ingredient-nutrional-data>
 
     </v-container>
   </v-card>
-  <recipes-list :query="`?ingredient=${ingredientId}&user=${userId}&likedBy=${userId}&followedBy=${userId}&cookbookUser=${userId}`"></recipes-list>
+  <recipes-list :query="`?ingredient=${ingredientId}`"></recipes-list>
 </template>
 
 <script lang="ts" setup>
@@ -70,6 +46,8 @@ import {toEditCookbook} from "@/scripts/common";
 import {ICON_COOKBOOK_RECIPES} from "@/scripts/icons";
 import {getIngredient} from "@/scripts/ingredients";
 import {useAuthStore} from "@/stores/auth";
+import {getLocale} from "@/scripts/localization";
+import IngredientNutrionalData from "@/components/IngredientNutrionalData.vue";
 const route = useRoute();
 let ingredientId = ref(route.query.ingredient)
 const ingredient = ref<object>({
@@ -78,8 +56,8 @@ const ingredient = ref<object>({
 })
 
 const authStore = useAuthStore()
-const userId = computed(() => authStore.id)
 
+console.log(ingredientId.value)
 
 getIngredient(ingredientId.value).then((response) => {
   ingredient.value = response.data

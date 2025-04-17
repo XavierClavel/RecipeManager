@@ -11,7 +11,7 @@ export{
 }
 
 async function getIngredient(id) {
-  return await apiClient.get(`/ingredient/${id}}`)
+  return await apiClient.get(`/ingredient/${id}`)
 }
 
 async function searchIngredients(query, page, size) {

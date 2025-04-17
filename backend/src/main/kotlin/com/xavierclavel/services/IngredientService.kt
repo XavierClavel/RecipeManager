@@ -31,7 +31,6 @@ class IngredientService: KoinComponent {
             ?.toInfo()
 
 
-
     fun updateIngredient(ingredientDTO: IngredientDTO) {
 
     }

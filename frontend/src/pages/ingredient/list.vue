@@ -49,7 +49,7 @@
 
             <v-number-input
               v-model="selectedIngredient.calories"
-              label="Calories"
+              :label="`${$t('calories')}`"
               type="number"
               :min=0
               :step="10"
@@ -58,7 +58,7 @@
 
             <v-number-input
               v-model="selectedIngredient.glucids"
-              label="Glucids"
+              :label="`${$t('glucids')}`"
               type="number"
               color="primary"
               :min=0
@@ -68,7 +68,7 @@
 
             <v-number-input
               v-model="selectedIngredient.lipids"
-              label="Lipids"
+              :label="`${$t('lipids')}`"
               type="number"
               color="primary"
               :min=0
@@ -78,7 +78,7 @@
 
             <v-number-input
               v-model="selectedIngredient.fibers"
-              label="Fibers"
+              :label="`${$t('fibers')}`"
               type="number"
               color="primary"
               :min=0
@@ -88,7 +88,7 @@
 
             <v-number-input
               v-model="selectedIngredient.cholesterol"
-              label="Cholesterol"
+              :label="`${$t('cholesterol')}`"
               type="number"
               color="primary"
               :min=0
@@ -98,12 +98,48 @@
 
             <v-number-input
               v-model="selectedIngredient.sodium"
-              label="Sodium"
+              :label="`${$t('sodium')}`"
               type="number"
               color="primary"
               :min=0
               :step="1"
             ></v-number-input>
+
+            <v-card color="background" class="mb-2">
+              <v-checkbox
+                v-model="selectedIngredient.allowAmount"
+                :label="`${$t('allowAmount')}`"
+                color="black"
+                base-color="black"
+                bg-color="background"
+                variant="elevated"
+                class="mx-2 my-0 mb-n6"
+              ></v-checkbox>
+            </v-card>
+
+            <v-card color="background" class="mb-2">
+              <v-checkbox
+                v-model="selectedIngredient.allowWeight"
+                :label="`${$t('allowWeight')}`"
+                color="black"
+                base-color="black"
+                bg-color="background"
+                variant="elevated"
+                class="mx-2 my-0 mb-n6"
+              ></v-checkbox>
+            </v-card>
+
+            <v-card color="background" class="mb-2">
+              <v-checkbox
+                v-model="selectedIngredient.allowVolume"
+                :label="`${$t('allowVolume')}`"
+                color="black"
+                base-color="black"
+                bg-color="background"
+                variant="elevated"
+                class="mx-2 my-0 mb-n6"
+              ></v-checkbox>
+            </v-card>
 
             <span class="d-flex flex-row align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn

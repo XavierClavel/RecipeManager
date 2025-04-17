@@ -163,4 +163,16 @@ export default {
   recipe_not_in_cookbook: "This recipe is not in this cookbook",
 
   custom_ingredients_warning: "Custom ingredients should only be used if an ingredient you want to add is not registered in the database.",
+
+  //Ingredients
+  calories: "Calories",
+  glucids: "Glucids",
+  cholesterol: "Cholesterol",
+  lipids: "Lipids",
+  fibers: "Fibers",
+  proteins: "Proteins",
+  sodium: "Sodium",
+  allowAmount: "Allow amount",
+  allowWeight: "Allow weight",
+  allowVolume: "Allow volume",
 };

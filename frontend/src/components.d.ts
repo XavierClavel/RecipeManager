@@ -16,6 +16,7 @@ declare module 'vue' {
     FollowerDisplay: typeof import('./components/FollowerDisplay.vue')['default']
     FollowersDisplay: typeof import('./components/FollowersDisplay.vue')['default']
     Ingredient: typeof import('./components/Ingredient.vue')['default']
+    IngredientNutrionalData: typeof import('./components/IngredientNutrionalData.vue')['default']
     InteractiblePictoInfo: typeof import('./components/InteractiblePictoInfo.vue')['default']
     PictoInfo: typeof import('./components/PictoInfo.vue')['default']
     Recipe: typeof import('./components/Recipe.vue')['default']

@@ -49,6 +49,7 @@ class Ingredient (
 
     @DbDefault(value = "1.0")
     var weightPerUnit: Float = 1f,
+
 ): Model() {
 
     fun mergeDTO(ingredientDTO: IngredientDTO): Ingredient {
