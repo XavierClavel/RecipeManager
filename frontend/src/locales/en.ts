@@ -175,4 +175,6 @@ export default {
   allowAmount: "Allow amount",
   allowWeight: "Allow weight",
   allowVolume: "Allow volume",
+  weightPerUnit: "Weight per unit",
+  volumicMass: "Volumic mass",
 };

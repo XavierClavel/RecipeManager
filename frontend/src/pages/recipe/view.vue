@@ -126,7 +126,7 @@
         :title="`${ingredient.name} ${ingredient.complement ? '(' + ingredient.complement + ')' : ''}`"
       >
         <template v-slot:prepend>
-          <v-avatar color="surface">
+          <v-avatar color="surface" class="mr-4">
             <v-icon color="white">{{getIngredientIcon(ingredient.type)}}</v-icon>
           </v-avatar>
         </template>

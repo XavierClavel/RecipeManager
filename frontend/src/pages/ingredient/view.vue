@@ -6,7 +6,7 @@
     <v-container class="d-flex flex-row">
 
       <v-img
-        color="primary"
+        color="background"
         rounded="lg"
         height="200px"
         width="200px"
@@ -23,18 +23,14 @@
             <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="ingredient.recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>
           </v-col>
         </v-row>
-        <v-row class="px-3">
-          <v-btn
-          icon="mdi-cog"
-          flat
-          @click="toEditCookbook(cookbookId)"
-          ></v-btn>
-        </v-row>
       </v-container>
 
-      <ingredient-nutrional-data :ingredient="ingredient" class="my-n6"></ingredient-nutrional-data>
+
 
     </v-container>
+  </v-card>
+  <v-card class="pa-8 my-2">
+    <ingredient-nutrional-data :ingredient="ingredient" class="my-n6"></ingredient-nutrional-data>
   </v-card>
   <recipes-list :query="`?ingredient=${ingredientId}`"></recipes-list>
 </template>
@@ -42,12 +38,11 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
 import {ref} from "vue";
-import {toEditCookbook} from "@/scripts/common";
 import {ICON_COOKBOOK_RECIPES} from "@/scripts/icons";
 import {getIngredient} from "@/scripts/ingredients";
 import {useAuthStore} from "@/stores/auth";
 import {getLocale} from "@/scripts/localization";
-import IngredientNutrionalData from "@/components/IngredientNutrionalData.vue";
+import IngredientNutrionalData from "@/components/IngredientNutritionalData.vue";
 const route = useRoute();
 let ingredientId = ref(route.query.ingredient)
 const ingredient = ref<object>({

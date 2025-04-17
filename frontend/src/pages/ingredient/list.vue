@@ -141,6 +141,22 @@
               ></v-checkbox>
             </v-card>
 
+            <v-number-input
+              v-model="selectedIngredient.weightPerUnit"
+              :label="`${$t('weightPerUnit')}`"
+              type="number"
+              :min=0
+              :step="10"
+            ></v-number-input>
+
+            <v-number-input
+              v-model="selectedIngredient.volumicMass"
+              :label="`${$t('volumicMass')}`"
+              type="number"
+              :min=0
+              :step="10"
+            ></v-number-input>
+
             <span class="d-flex flex-row align-center justify-center mb-2 mt-16 ga-16" >
         <v-btn
           icon="mdi-close-circle-outline"

@@ -174,4 +174,6 @@ export default {
   allowAmount: "Autoriser quantité",
   allowWeight: "Autoriser masse",
   allowVolume: "Autoriser volume",
+  weightPerUnit: "Masse par unité",
+  volumicMass: "Masse volumique",
 };

@@ -401,7 +401,7 @@ const addStep = () => {
 };
 
 const addIngredient = () => {
-  recipe.value.ingredients.push({});
+  recipe.value.ingredients.push({complement: ""});
 }
 
 async function deleteStepAt(index) {

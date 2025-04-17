@@ -25,7 +25,7 @@ defineProps({
   <span class="d-flex row align-center justify-center mx-auto">
     <v-icon
       :class="`mx-auto px-3 ${iconSize}`"
-      color="primary"
+      color="black"
     > {{ icon }} </v-icon>
     <v-card-text
       :class="`mx-auto px-3  align-center ${valueSize}`"

@@ -43,9 +43,10 @@ selectedSort.value = route.query.sort?.split('_')[0]
 sortOrder.value = route.query.sort?.split('_')[1] == "ASCENDING" ? "asc" : "desc"
 const ingredients = route.query.ingredient?.split(',')
 if (ingredients) {
-  ingredients.forEach(it => getIngredient(it).then(response => selectedIngredients.value.push(response.data)))
+  ingredients.forEach(it =>
+    getIngredient(it).then(response => {selectedIngredients.value.push(response.data)
+  console.log(selectedIngredients.value)}))
 }
-
 
 
 function onComboUpdate(newVal) {
@@ -147,7 +148,7 @@ const updateUrl = () => {
             ref="comboboxRef"
             v-model="selectedIngredients"
             :items="autocompleteList"
-            item-title="name"
+            :item-title="`${getLocale() == 'fr' ? 'name_fr' : 'name_en'}`"
             item-value="id"
             return-object
             multiple
@@ -166,7 +167,7 @@ const updateUrl = () => {
                 color="primary"
                 variant="elevated"
               >
-                {{ data.item.name }}
+                {{ data.item.name}}
               </v-chip>
             </template>
           </v-combobox>
