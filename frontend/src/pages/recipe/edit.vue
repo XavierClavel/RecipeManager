@@ -110,7 +110,7 @@
             <v-select
               v-model="recipe.ingredients[index].unit"
               :label="`${$t('unit')}`"
-              :items="unitOptions"
+              :items="getUnitOptions(recipe.ingredients[index])"
               color="primary"
               :item-title="getLocalizedLabel"
               item-value="value"
@@ -366,7 +366,13 @@ function getLocalizedLabel(item: any) {
 const onIngredientAutocompleteChange = async (query, index) => {
   queryList.value[index] = query
   const response = await searchIngredients(query, 0, 20);
-  autocompleteList.value[index] = response.data.map(item => ({ id: item.id, name: getLocale() == 'fr' ? item.name_fr : item.name_en }));
+  autocompleteList.value[index] = response.data.map(item => ({
+    id: item.id,
+    name: getLocale() == 'fr' ? item.name_fr : item.name_en,
+    allowWeight: item.allowWeight,
+    allowVolume: item.allowVolume,
+    allowAmount: item.allowAmount,
+  }));
 }
 
 function selectFirstMatch(index) {
@@ -393,6 +399,17 @@ const recipe = ref<object>({
   tips: "",
 })
 
+const getUnitOptions = (v) => {
+  console.log(v)
+  if (v == null) return unitOptions
+  return unitOptions.value.filter(it =>
+    it.type == "NONE" ||
+    (v.ingredient.allowAmount && it.type == "AMOUNT") ||
+    (v.ingredient.allowWeight && it.type == "WEIGHT") ||
+    (v.ingredient.allowVolume && it.type == "VOLUME")
+  )
+}
+
 
 // Function to add a new item
 const addStep = () => {
@@ -401,7 +418,7 @@ const addStep = () => {
 };
 
 const addIngredient = () => {
-  recipe.value.ingredients.push({complement: ""});
+  recipe.value.ingredients.push({ingredient: '' ,complement: ""});
 }
 
 async function deleteStepAt(index) {
@@ -448,8 +465,8 @@ async function submit() {
     .filter((it) => it.ingredient )
     .map(item => ({
     id: item.ingredient.id,
-    amount: item.unit.value == "NONE" ? null : item.amount,
-    unit: item.unit.value,
+    amount: item.unit == null || item.unit.value == "NONE" ? null : item.amount,
+    unit: item.unit ? item.unit.value : "NONE",
     complement: item.complement}))
   submitted.customIngredients = submitted.customIngredients.filter((it) => "name" in it)
   submitted.steps = submitted.steps.filter((it) => it)
@@ -476,7 +493,10 @@ if (recipeId.value != null) {
       recipe.value.ingredients = response.data.ingredients.map(item => ({
         ingredient: {
           id: item.id,
-          name: item.name
+          name: item.name,
+          allowWeight: item.allowWeight,
+          allowVolume: item.allowVolume,
+          allowAmount: item.allowAmount,
         },
         amount: item.amount,
         unit: unitOptions.value.find(it => it.value == item.unit)

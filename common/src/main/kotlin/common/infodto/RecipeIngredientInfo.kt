@@ -12,4 +12,7 @@ data class RecipeIngredientInfo(
     val unit: AmountUnit,
     val complement : String?,
     val type: IngredientType,
+    val allowAmount: Boolean,
+    val allowWeight: Boolean,
+    val allowVolume: Boolean,
 )

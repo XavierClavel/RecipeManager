@@ -2,6 +2,7 @@ package com.xavierclavel.models.jointables
 
 import com.xavierclavel.models.Ingredient
 import com.xavierclavel.models.Recipe
+import com.xavierclavel.models.query.QIngredient.Alias.allowVolume
 import common.dto.RecipeDTO
 import common.enums.AmountUnit
 import common.infodto.RecipeIngredientInfo
@@ -43,13 +44,16 @@ class RecipeIngredient (
     fun toInfo(locale: Locale) = RecipeIngredientInfo(
         id = ingredient!!.id,
         name = when(locale) {
-            Locale.EN -> ingredient!!.toInfo().name_en
-            Locale.FR -> ingredient!!.toInfo().name_fr
+            Locale.EN -> ingredient!!.name_en
+            Locale.FR -> ingredient!!.name_fr
         },
         type = ingredient!!.type,
         amount = amount,
         unit = unit,
         complement = complement,
+        allowAmount = ingredient!!.allowAmount,
+        allowWeight = ingredient!!.allowWeight,
+        allowVolume = ingredient!!.allowVolume,
     )
 
     fun compareTo(dto: RecipeDTO.RecipeIngredientDTO): Boolean {

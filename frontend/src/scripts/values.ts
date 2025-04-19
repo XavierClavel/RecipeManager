@@ -60,14 +60,14 @@ const sortOptions = ref([
 ]);
 
 const unitOptions = ref([
-  { label: 'none', value: "NONE", icon: ICON_NONE},
-  { label: 'unit', value: "UNIT", icon: ICON_AMOUNT},
-  { label: 'gram', value: 'GRAM', icon: ICON_WEIGHT},
-  { label: 'pound', value: 'POUND', icon: ICON_WEIGHT},
-  { label: 'milliliters', value: 'MILLILITERS', icon: ICON_VOLUME},
-  { label: 'teaspoon', value: 'TEASPOON', icon: ICON_VOLUME},
-  { label: 'tablespoon', value: 'TABLESPOON', icon: ICON_VOLUME},
-  { label: 'cup', value: 'CUP', icon: ICON_VOLUME},
+  { label: 'none', value: "NONE", icon: ICON_NONE, type: "NONE"},
+  { label: 'unit', value: "UNIT", icon: ICON_AMOUNT, type: "AMOUNT"},
+  { label: 'gram', value: 'GRAM', icon: ICON_WEIGHT, type: "WEIGHT"},
+  { label: 'pound', value: 'POUND', icon: ICON_WEIGHT, type: "WEIGHT"},
+  { label: 'milliliters', value: 'MILLILITERS', icon: ICON_VOLUME, type: "VOLUME"},
+  { label: 'teaspoon', value: 'TEASPOON', icon: ICON_VOLUME, type: "VOLUME"},
+  { label: 'tablespoon', value: 'TABLESPOON', icon: ICON_VOLUME, type: "VOLUME"},
+  { label: 'cup', value: 'CUP', icon: ICON_VOLUME, type: "VOLUME"},
 ])
 
 const visibilityOptions = ref([
