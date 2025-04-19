@@ -6,6 +6,7 @@ export{
   searchIngredients,
   deleteIngredient,
   getCount,
+  getIngredientRecipesCount,
   createIngredient,
   updateIngredient,
 }
@@ -20,6 +21,10 @@ async function searchIngredients(query, page, size) {
 
 async function getCount() {
   return await apiClient.get(`/ingredient/count`)
+}
+
+async function getIngredientRecipesCount(id) {
+  return await apiClient.get(`/ingredient/count/recipes/${id}`)
 }
 
 async function deleteIngredient(username) {

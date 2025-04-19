@@ -20,7 +20,7 @@
         >{{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</v-card-title>
         <v-row class="d-flex flex-row mx-4">
           <v-col class="d-inline-flex" cols="auto">
-            <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="ingredient.recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>
+            <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>
           </v-col>
         </v-row>
       </v-container>
@@ -39,7 +39,7 @@
 import {useRoute} from "vue-router";
 import {ref} from "vue";
 import {ICON_COOKBOOK_RECIPES} from "@/scripts/icons";
-import {getIngredient} from "@/scripts/ingredients";
+import {getIngredient, getIngredientRecipesCount} from "@/scripts/ingredients";
 import {useAuthStore} from "@/stores/auth";
 import {getLocale} from "@/scripts/localization";
 import IngredientNutrionalData from "@/components/IngredientNutritionalData.vue";
@@ -47,8 +47,8 @@ const route = useRoute();
 let ingredientId = ref(route.query.ingredient)
 const ingredient = ref<object>({
   name: "",
-  recipesCount: 0,
 })
+const recipesCount = ref(null)
 
 const authStore = useAuthStore()
 
@@ -57,6 +57,10 @@ console.log(ingredientId.value)
 getIngredient(ingredientId.value).then((response) => {
   ingredient.value = response.data
   console.log(ingredient.value)
+})
+
+getIngredientRecipesCount(ingredientId.value).then(response => {
+  recipesCount.value = response.data
 })
 
 </script>

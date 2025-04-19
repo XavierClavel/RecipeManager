@@ -26,6 +26,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
         getIngredient()
         searchIngredients()
         getCount()
+        getRecipesCount()
 
         authenticate("auth-session") {
             createIngredient()
@@ -75,6 +76,10 @@ object IngredientController: Controller(INGREDIENT_URL) {
 
     private fun Route.getCount() = get("/count") {
         call.respond(ingredientService.countAll())
+    }
+
+    private fun Route.getRecipesCount() = get("/count/recipes/{id}") {
+        call.respond(ingredientService.countRecipes(getPathId()))
     }
 
 }

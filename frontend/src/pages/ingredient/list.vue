@@ -17,7 +17,7 @@
           ></v-btn>
         </v-card-title>
 
-      <v-card width="100%" max-width="1500px"  class="ma-5">
+      <v-card max-width="1500px"  class="ma-0">
 
         <v-slide-x-reverse-transition v-show="isPanelOpen">
           <v-sheet class="pa-4 right-panel" elevation="3" z-index="50" style='z-index:20001;'>
@@ -221,7 +221,7 @@
                 backgroundColor: isPanelOpen && ingredient && ingredient.id === selectedIngredient.id ? theme.current.value.colors.secondary : '',
               }"
             >
-              <td>{{ ingredient.name_en }}</td>
+              <td>{{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</td>
               <td>{{ ingredient.type }}</td>
               <td>{{ ingredient.calories }}</td>
             </tr>
@@ -253,6 +253,7 @@ import {createIngredient, deleteIngredient, getCount, searchIngredients, updateI
 import { useTheme } from 'vuetify'
 import {ICON_DELETE} from "@/scripts/icons";
 import {toCreateCookbook} from "@/scripts/common";
+import {getLocale} from "@/scripts/localization";
 
 const theme = useTheme()
 

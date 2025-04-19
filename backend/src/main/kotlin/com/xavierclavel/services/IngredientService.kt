@@ -1,6 +1,7 @@
 package com.xavierclavel.services
 
 import com.xavierclavel.models.Ingredient
+import com.xavierclavel.models.jointables.query.QRecipeIngredient
 import com.xavierclavel.models.query.QIngredient
 import common.dto.IngredientDTO
 import io.ebean.Paging
@@ -14,6 +15,9 @@ import common.infodto.IngredientInfo
 class IngredientService: KoinComponent {
     fun countAll() =
         QIngredient().findCount()
+
+    fun countRecipes(id: Long) =
+        QRecipeIngredient().ingredient.id.eq(id).findCount()
 
     fun findEntityById(ingredientId: Long) : Ingredient? =
         QIngredient().id.eq(ingredientId).findOne()

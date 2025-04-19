@@ -479,7 +479,7 @@ if (recipeId.value != null) {
           id: item.id,
           name: item.name
         },
-        amount: item.amount,
+        amount: item.unit == "NONE" ? null : item.amount,
         unit: unitOptions.value.find(it => it.value == item.unit)
       }))
       recipe.value.customIngredients = response.data.customIngredients
