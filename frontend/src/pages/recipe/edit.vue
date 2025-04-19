@@ -443,7 +443,6 @@ async function submit() {
   if (!valid) {
     return
   }
-  console.log(recipe.value)
   const submitted = JSON.parse(JSON.stringify(recipe.value))
   submitted.ingredients = recipe.value.ingredients
     .filter((it) => it.ingredient )
