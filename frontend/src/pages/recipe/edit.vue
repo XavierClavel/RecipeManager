@@ -449,7 +449,7 @@ async function submit() {
     .filter((it) => it.ingredient )
     .map(item => ({
     id: item.ingredient.id,
-    amount: item.amount,
+    amount: item.unit.value == "NONE" ? null : item.amount,
     unit: item.unit.value,
     complement: item.complement}))
   submitted.customIngredients = submitted.customIngredients.filter((it) => "name" in it)
@@ -479,7 +479,7 @@ if (recipeId.value != null) {
           id: item.id,
           name: item.name
         },
-        amount: item.unit == "NONE" ? null : item.amount,
+        amount: item.amount,
         unit: unitOptions.value.find(it => it.value == item.unit)
       }))
       recipe.value.customIngredients = response.data.customIngredients
