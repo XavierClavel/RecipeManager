@@ -261,9 +261,11 @@ class RecipeService: KoinComponent {
 
     private fun QRecipe.filterBySearch(search: String?) =
         if (search.isNullOrEmpty()) this
-        else this.title.ilike("%$search%")
-
-
+        else this.apply {
+            for (query in search.split(" ").filter { it.isNotEmpty() }) {
+                this.title.ilike("%$query%")
+            }
+        }
 
     private fun QRecipe.sort(sort: Sort) =
         when (sort) {
