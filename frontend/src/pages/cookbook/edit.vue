@@ -53,12 +53,13 @@
          class="my-2"
        ></editable-picture>
 
-      <!-- Ingredients -->
+      <!-- Cookbook users -->
       <h2 class="my-3" >{{$t("users")}}</h2>
           <div class="d-flex align-center mb-2" v-for="index in members.length">
 
             <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;" class="mr-3">
               <v-img
+                v-if="members[index - 1]"
                 color="surface-variant"
                 :src="getUserIconUrl(members[index-1].id)"
                 cover
@@ -75,6 +76,7 @@
               item-title="username"
               item-value="id"
               @update:search="(query) => onAutocompleteChange(query, index-1)"
+              @update:modelValue="value => updateMember(index - 1, value)"
               :key="index"
               return-object
               class="mr-2"
@@ -152,6 +154,7 @@ let cookbookId = ref(route.query.cookbook)
 let addRecipeId = route.query.addRecipe
 const editablePicture = ref(null)
 const form = ref(null)
+const members = ref<Array<{ id: number, username: string, role: string }>>([]);
 
 
 const autocompleteList = ref([])
@@ -159,7 +162,14 @@ const autocompleteList = ref([])
 const onAutocompleteChange = async (query, index) => {
   const response = await searchUsers(query, 0, 20);
   autocompleteList.value[index] = response.data;
-  console.log(response.data)
+}
+
+const updateMember = (index, value) => {
+  if (value) {
+    members.value[index] = { ...value, role: members.value[index]?.role ?? 'USER' };
+  } else {
+    members.value[index] = {role: "USER", username: ""};
+  }
 }
 
 
@@ -170,7 +180,7 @@ const cookbook = ref<object>({
 })
 const authStore = useAuthStore()
 
-const members = ref([])
+
 if (cookbookId.value == null) {
   members.value.push({
     id: authStore.id,
@@ -181,7 +191,7 @@ if (cookbookId.value == null) {
 
 
 const addUser = () => {
-  members.value.push({username: "",role: "USER"});
+  members.value.push({username: "",role: "USER", id: -1});
 }
 
 
@@ -227,12 +237,9 @@ if (cookbookId.value != null) {
       cookbook.value.title = response.data.title
       cookbook.value.description = response.data.description
       cookbook.value.visibility = response.data.visibility
-      console.log(response.data)
     }).catch(function (error) {
     console.log(error);
-  }).finally(function () {
-    // always executed
-  });
+  })
 
   getCookbookUsers(cookbookId.value).then(
     function (response) {
@@ -246,17 +253,4 @@ if (cookbookId.value != null) {
 </script>
 
 <style scoped>
-.ghost {
-  opacity: 0.5;
-}
-
-
-
-.drag-handle {
-  cursor: grab;
-  display:flex;
-  align-items: center;
-}
-
-
 </style>
