@@ -134,3 +134,7 @@ suspend fun HttpClient.getRecipeUserCookbooks(userId: Long, recipeId: Long) : Se
         return Json.decodeFromString<Set<CookbookRecipeOverview>>(bodyAsText())
     }
 }
+
+suspend fun HttpClient.leaveCookbook(cookbookId: Long) {
+    this.delete("$COOKBOOK_URL/$cookbookId/leave").apply { assertEquals(HttpStatusCode.OK, status) }
+}

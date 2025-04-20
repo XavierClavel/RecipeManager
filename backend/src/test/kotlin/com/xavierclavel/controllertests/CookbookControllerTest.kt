@@ -1,7 +1,11 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
+import com.xavierclavel.models.Cookbook
+import com.xavierclavel.models.Recipe
 import com.xavierclavel.utils.logger
+import common.infodto.CookbookInfo
+import common.infodto.RecipeInfo
 import io.ktor.http.HttpStatusCode
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser
@@ -14,9 +18,11 @@ import main.com.xavierclavel.utils.deleteCookbook
 import main.com.xavierclavel.utils.deleteCookbookRecipe
 import main.com.xavierclavel.utils.deleteCookbookUser
 import main.com.xavierclavel.utils.getCookbook
+import main.com.xavierclavel.utils.getCookbookRaw
 import main.com.xavierclavel.utils.getCookbookRecipes
 import main.com.xavierclavel.utils.getCookbookUsers
 import main.com.xavierclavel.utils.getRecipeUserCookbooks
+import main.com.xavierclavel.utils.leaveCookbook
 import main.com.xavierclavel.utils.listCookbooks
 import main.com.xavierclavel.utils.listRecipes
 import org.junit.jupiter.api.Test
@@ -254,6 +260,59 @@ class CookbookControllerTest : ApplicationTest() {
         client.deleteCookbookRecipe(cookbook.id, recipe.id).apply {
             assertEquals(HttpStatusCode.BadRequest, status)
         }
+    }
+
+    @Test
+    fun `empty cookbooks are deleted`() = runTestAsUser {
+        val cookbook = client.createCookbook()
+        val recipe = client.createRecipe()
+
+        client.addCookbookRecipe(cookbook.id, recipe.id).apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+
+        client.leaveCookbook(cookbook.id)
+
+        client.getCookbookRaw(cookbook.id).apply {
+            assertEquals(HttpStatusCode.NotFound, status)
+        }
+    }
+
+    @Test
+    fun `non empty cookbooks are not deleted`() = runTestAsUser {
+        val cookbook = client.createCookbook()
+        val recipe = client.createRecipe()
+
+        client.addCookbookRecipe(cookbook.id, recipe.id).apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+
+        client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+
+        client.leaveCookbook(cookbook.id)
+
+        client.getCookbookRaw(cookbook.id).apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+    }
+
+    @Test
+    fun `new cookook admin is assigned if no admin left`() = runTestAsUser {
+        val cookbook = client.createCookbook()
+        val recipe = client.createRecipe()
+
+        client.addCookbookRecipe(cookbook.id, recipe.id).apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+
+        client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+
+        client.leaveCookbook(cookbook.id)
+
+        val users = client.getCookbookUsers(cookbook.id)
+        assertEquals(1, users.size)
+        assertEquals(true, users.first().isAdmin)
+
     }
 
 }

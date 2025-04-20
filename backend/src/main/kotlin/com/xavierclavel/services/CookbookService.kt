@@ -225,9 +225,14 @@ class CookbookService: KoinComponent {
             ?: throw NotFoundException(NotFoundCause.RECIPE_NOT_FOUND)
 
     fun deleteIfNoMembers(cookbookId: Long) {
-        if(getEntityById(cookbookId).users.isNotEmpty()) {
-            return
+        val users = getEntityById(cookbookId).users
+        if (users.isEmpty()) {
+            deleteCookbook(cookbookId)
+        } else if (users.count { it.isAdmin } == 0) {
+            val oldestUser = users.minBy { it.joinDate }
+            oldestUser.isAdmin = true
+            oldestUser.update()
         }
-        deleteCookbook(cookbookId)
+
     }
 }
