@@ -176,4 +176,7 @@ export default {
   allowVolume: "Autoriser volume",
   weightPerUnit: "Masse par unité",
   volumicMass: "Masse volumique",
+
+  leaveCookbookTitle: "Quitter le carnet de recettes",
+  leaveCookbookDescription: "Es-tu sûr de vouloir quitter ce carnet de recettes ?"
 };

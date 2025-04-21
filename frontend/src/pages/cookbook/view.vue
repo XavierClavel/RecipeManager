@@ -38,11 +38,38 @@
             :text="`${$t('edit')}`"
             :action="() => toEditCookbook(cookbookId)"
           ></action-button>
-          <action-button
-            icon="mdi-door-open"
-            :text="`${$t('leave')}`"
-            :action="() => leave()"
-          ></action-button>
+
+          <v-dialog max-width="500">
+            <template v-slot:activator="{ props: activatorProps }">
+              <action-button
+                v-bind="activatorProps"
+                icon="mdi-door-open"
+                :text="`${$t('leave')}`"
+              ></action-button>
+            </template>
+
+            <template v-slot:default="{ isActive }">
+              <v-card>
+                <v-card-title class="text-h5">{{$t("leaveCookbookTitle")}}</v-card-title>
+                <v-card-text>
+                  {{$t("leaveCookbookDescription")}}
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+
+                  <v-btn
+                    :text="`${$t('cancel')}`"
+                    @click="isActive.value = false"
+                  ></v-btn>
+                  <v-btn
+                    :text="`${$t('leave')}`"
+                    @click="() => leave()"
+                  ></v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
         </v-row>
       </v-container>
 

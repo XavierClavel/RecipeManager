@@ -177,4 +177,7 @@ export default {
   allowVolume: "Allow volume",
   weightPerUnit: "Weight per unit",
   volumicMass: "Volumic mass",
+
+  leaveCookbookTitle: "Leave cookbook",
+  leaveCookbookDescription: "Are you sure you want to leave this cookbook ?"
 };
