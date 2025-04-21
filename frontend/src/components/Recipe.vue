@@ -11,7 +11,7 @@ defineProps({
 
 <template>
       <v-card
-        class="ma-3 pa-0"
+        class="ma-0 pa-0"
         width="240px"
         @click="toViewRecipe(recipe.id)"
       >

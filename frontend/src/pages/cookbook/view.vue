@@ -15,7 +15,7 @@
         cover
         style="border: 3px solid #0d1821 !important;"
       ></v-img>
-      <v-container
+      <v-containerc
       class="px-3 mx-auto"
       >
         <v-card-title
@@ -71,7 +71,7 @@
             </template>
           </v-dialog>
         </v-row>
-      </v-container>
+      </v-containerc>
 
     </v-container>
   </v-card>

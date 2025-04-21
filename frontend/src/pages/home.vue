@@ -33,7 +33,7 @@
           </v-card>
         </template>
           <v-row class="my-4">
-            <recipe :recipe="recipe" v-for="recipe in timelineRecipe"></recipe>
+            <recipe class="ma-2" :recipe="recipe" v-for="recipe in timelineRecipe"></recipe>
           </v-row>
 
         </v-timeline-item>
