@@ -16,9 +16,13 @@ async function getRecipe(id) {
   return await apiClient.get(`/recipe/${id}?locale=${getLocale()}`)
 }
 
-async function listRecipes(query) {
-  const list = query.replace("?", "").split("&")
-  return await apiClient.get(`/recipe${query}`)
+async function listRecipes(search, page, size) {
+  const query = new URLSearchParams(search)
+  console.log(query)
+  if (page != undefined) query.append('page', page)
+  if (size != undefined) query.append('limit', size)
+  console.log(query)
+  return await apiClient.get(`/recipe?${query.toString()}`)
 }
 
 async function createRecipe(recipe) {
