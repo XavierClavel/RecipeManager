@@ -20,9 +20,6 @@
         :rules="[max255]"
       ></v-textarea>
 
-      <v-col class="py-2" cols="12">
-
-        <div class="d-flex flex-wrap">
           <v-btn-toggle
             v-model="recipe.dishClass"
             color="primary"
@@ -31,23 +28,19 @@
             rounded="lg"
             group
             mandatory
-            class="ga-2 ml-n3 d-flex flex-wrap"
+            class="ga-1 my-1 ml-n3 flex-wrap"
             style="width: 100%;"
           >
-          <v-btn
-            v-for="dishClass in dishOptions"
-            :key="dishClass.value"
-            :value="dishClass.value"
-            height="45px"
-            class="ma-1"
-          >
-            {{$t(dishClass.label)}}
-          </v-btn>
+            <v-btn
+              v-for="dishClass in dishOptions"
+              :key="dishClass.value"
+              :value="dishClass.value"
+              height="45px"
+              class="ma-1"
+            >
+              {{$t(dishClass.label)}}
+            </v-btn>
           </v-btn-toggle>
-        </div>
-
-      </v-col>
-
        <editable-picture
          path="image/recipes"
          :id="recipeId"
@@ -264,8 +257,8 @@
         prepend-icon="mdi-plus-circle-outline"
         color="primary"
         flat
-        class="mb-10"
-      >{{$t("ingredients_add_new")}}</v-btn>
+        class="mb-2"
+      >{{$t("ingredient")}}</v-btn>
 
       <!-- Button to add custom ingredient -->
       <v-tooltip :text="`${$t('custom_ingredients_warning')}`"
@@ -277,9 +270,9 @@
             prepend-icon="mdi-plus-circle-outline"
             color="black"
             flat
-            class="mb-10 ml-8 text-wrap"
+            class="mb-10"
             variant="outlined"
-          >{{$t("ingredients_add_custom")}}</v-btn>
+          >{{$t("custom_ingredient")}}</v-btn>
         </template>
       </v-tooltip>
 
