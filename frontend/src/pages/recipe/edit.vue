@@ -257,7 +257,7 @@
         prepend-icon="mdi-plus-circle-outline"
         color="primary"
         flat
-        class="mb-2"
+        class="mb-2 mr-2"
       >{{$t("ingredient")}}</v-btn>
 
       <!-- Button to add custom ingredient -->
@@ -270,7 +270,7 @@
             prepend-icon="mdi-plus-circle-outline"
             color="black"
             flat
-            class="mb-10"
+            class="mb-2"
             variant="outlined"
           >{{$t("custom_ingredient")}}</v-btn>
         </template>
@@ -330,6 +330,7 @@
           dense
         >
             <action-button
+              v-if="recipeId"
               icon="mdi-close-circle-outline"
               :text="`${$t('cancel')}`"
               :action="() => toViewRecipe(recipeId)"
@@ -351,7 +352,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, updateRecipe} from "@/scripts/recipes";
-import {toSignup, toViewRecipe} from "@/scripts/common";
+import {toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {dishOptions, unitOptions} from "@/scripts/values";
