@@ -42,7 +42,7 @@ export default createVuetify({
   },
   defaults: {
     VCardTitle: {
-      class: "text-black text-h2 font-weight-bold !important",
+      class: "text-black text-wrap font-weight-bold text-h2 !important",
     },
     VCard: {
       rounded: 'lg',

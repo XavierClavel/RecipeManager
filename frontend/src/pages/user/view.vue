@@ -17,10 +17,7 @@
   >
     <v-container class="d-flex
       flex-wrap justify-center
-      flex-sm-nowrap
-      flex-md-nowrap
-      flex-xl-nowrap flex-xl-row
-     flex-lg-nowrap flex-lg-row !important">
+      flex-sm-nowrap">
       <v-img
         color="surface-variant"
         :src="getUserIconUrl(user.id)"
@@ -35,11 +32,11 @@
       <v-container class="justify-center align-content-center">
       <v-card-title
         class="mx-auto px-3 mt-n8 text-black text-h2 font-weight-bold
-        text-center text-sm-left text-md-left text-lg-left text-xl-left"
+        text-center text-sm-left"
       >{{ user.username }}</v-card-title>
       <v-card-text
         class="mx-auto px-3 mt-n4 text-h6 font-weight-light
-        text-center text-sm-left text-md-left text-lg-left text-xl-left"
+        text-center text-sm-left"
       > {{user.bio}} </v-card-text>
       </v-container>
     </v-container>

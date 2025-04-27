@@ -178,5 +178,6 @@ export default {
   volumicMass: "Masse volumique",
 
   leaveCookbookTitle: "Quitter le carnet de recettes",
-  leaveCookbookDescription: "Es-tu sûr de vouloir quitter ce carnet de recettes ?"
+  leaveCookbookDescription: "Es-tu sûr de vouloir quitter ce carnet de recettes ?",
+  custom_ingredients: "Ingrédients personnalisés",
 };

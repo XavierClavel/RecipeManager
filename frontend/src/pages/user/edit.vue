@@ -3,13 +3,15 @@
   class="mx-auto pa-5 ma-auto my-5"
   max-width="1000px"
   >
-    <v-container class="d-flex flex-row">
+    <v-container class="d-flex flex-row flex-sm-wrap">
       <editable-picture
         path="image/users"
         :id="userId"
         rounded="circle"
         height="200px"
         width="200px"
+        aspect-ratio="1/1"
+        max-width="200px"
         buttons-size="50px"
         buttons-icon-size="text-h7"
         buttons-spacing="ga-4"
@@ -32,18 +34,27 @@
         :rules="[max255]"
     ></v-textarea>
 
-    <span class="d-flex align-center justify-center mb-6 mt-6 ga-16" >
-      <action-button
-        icon="mdi-close-circle-outline"
-        :text="`${$t('cancel')}`"
-        :action="() => toViewUser(userId)"
-      ></action-button>
-      <action-button
-        icon="mdi-content-save"
-        :text="`${$t('save')}`"
-        :action="submit"
-      ></action-button>
-      </span>
+    <v-container>
+      <v-row
+        class="d-flex align-center justify-center align-content-center mb-2 gx-16"
+        dense
+      >
+        <v-col cols="12" sm="auto" class="mx-5">
+          <action-button
+            icon="mdi-close-circle-outline"
+            :text="`${$t('cancel')}`"
+            :action="() => toViewUser(userId)"
+          ></action-button>
+        </v-col>
+        <v-col sm="auto" class="mx-5">
+          <action-button
+            icon="mdi-content-save"
+            :text="`${$t('save')}`"
+            :action="submit"
+          ></action-button>
+        </v-col>
+      </v-row>
+    </v-container>
 
 
 
@@ -54,7 +65,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import {ref} from "vue";
-import {toViewUser} from "@/scripts/common";
+import {toEditUser, toViewUser} from "@/scripts/common";
 import {getUser, updateUser} from "@/scripts/users";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {max255} from "@/scripts/rules";

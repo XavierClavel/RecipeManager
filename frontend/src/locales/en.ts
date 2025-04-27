@@ -179,5 +179,7 @@ export default {
   volumicMass: "Volumic mass",
 
   leaveCookbookTitle: "Leave cookbook",
-  leaveCookbookDescription: "Are you sure you want to leave this cookbook ?"
+  leaveCookbookDescription: "Are you sure you want to leave this cookbook ?",
+
+  custom_ingredients: "Custom ingredients"
 };
