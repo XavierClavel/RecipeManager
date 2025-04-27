@@ -20,7 +20,7 @@
     >{{ recipe.title }}</v-card-title>
 
     <v-card-text
-      class="mx-auto px-3"
+      class="mx-auto px-3 mb-2"
     > {{recipe.description}} </v-card-text>
 
     <user-info :user="recipe.owner" class="mt-n8 mb-4"></user-info>
@@ -28,8 +28,8 @@
     <v-img
       style="border: 3px solid #0d1821 !important;"
       color="surface-variant"
-      height="600px"
-      width="800px"
+      width="100%"
+      aspect-ratio="4/3"
       class="mt-n3 mx-auto"
       rounded="lg"
       :src="getRecipeImageUrl(recipe.id)"
@@ -190,26 +190,37 @@
       class="mx-auto px-3"
     > {{recipe.tips}} </v-card-text>
 
-      <span class="d-flex align-center justify-center mb-10 mt-16 ga-16" >
-        <action-button
-          icon="mdi-delete"
-          :text="`${$t('delete')}`"
-          :action="() => remove(recipeId)"
-          v-if="isOwner"
-        ></action-button>
-        <action-button
-          icon="mdi-pencil"
-          :text="`${$t('edit')}`"
-          :action="() => toEditRecipe(recipeId)"
-          v-if="isOwner"
-        ></action-button>
-        <action-button
-          v-if="false"
-          icon="mdi-tray-arrow-down"
-          :text="`${$t('download')}`"
-          :action="() => downloadRecipe(recipeId)"
-        ></action-button>
-      </span>
+    <v-container>
+      <v-row
+        class="d-flex align-center justify-center mb-2 gx-16"
+        dense
+      >
+        <v-col cols="12" sm="auto" class="mx-5">
+          <action-button
+            icon="mdi-delete"
+            :text="`${$t('delete')}`"
+            :action="() => remove(recipeId)"
+            v-if="isOwner"
+          ></action-button>
+        </v-col>
+        <v-col sm="auto" class="mx-5">
+          <action-button
+            icon="mdi-pencil"
+            :text="`${$t('edit')}`"
+            :action="() => toEditRecipe(recipeId)"
+            v-if="isOwner"
+          ></action-button>
+        </v-col>
+        <v-col sm="auto" class="mx-5">
+          <action-button
+            v-if="false"
+            icon="mdi-tray-arrow-down"
+            :text="`${$t('download')}`"
+            :action="() => downloadRecipe(recipeId)"
+          ></action-button>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <v-snackbar
       v-model="snackbar"
@@ -245,7 +256,7 @@ import {
   getRecipeImageUrl,
   toCreateCookbookAddRecipe,
   toEditRecipe,
-  toListRecipe, toViewIngredient, toViewUser,
+  toListRecipe, toSignup, toViewIngredient, toViewUser,
   unitToReadable
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
