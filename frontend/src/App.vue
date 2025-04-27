@@ -36,7 +36,7 @@
       <template v-slot:append>
         <v-card-text class="text-center">{{ `Version ${version}` }}</v-card-text>
       </template>
-      </v-navigation-drawer>
+    </v-navigation-drawer>
 
     <v-main class="d-flex flex-grow-1">
     <v-container fluid class="d-flex">
@@ -51,7 +51,7 @@
         <v-app-bar-nav-icon @click="toggleDrawer" style="border: 3px solid #0d1821 !important;"></v-app-bar-nav-icon>
       </template>
       <template v-slot:append>
-        <v-btn :icon="ICON_NOTIFICATION" flat class="mr-4 text-black" color="#0476a3" style="border: 3px solid #0d1821 !important;"></v-btn>
+        <v-btn v-if="false" :icon="ICON_NOTIFICATION" flat class="mr-4 text-black" color="#0476a3" style="border: 3px solid #0d1821 !important;"></v-btn>
         <v-menu style="border: 0" >
           <template v-slot:activator="{ props }">
             <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;">
@@ -78,8 +78,8 @@
            style ="
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%);
-            width: 40%;
+            transform: translate(-50%, -45%);
+            width: 50%;
             position: absolute;
             z-index: 1;"
            v-if="showSidebar"
