@@ -8,64 +8,73 @@
     <followers-display :is-followers-tab="false"></followers-display>
   </v-dialog>
 
-  <v-card
-    class="mx-auto rounded-xl pa-5 ma-auto my-5 d-flex flex-row"
-    max-width="1000px"
-    v-if="displayError"
-  >
-    <v-icon color="primary" class="text-h3 mr-5 ml-3 mt-2" >mdi-alert</v-icon>
-    <v-card-title prepend-icon="mdi-alert" class="text-primary text-h4">
-      {{ errorMessage }}
-    </v-card-title>
-  </v-card>
+  <error :error="errorMessage"></error>
 
   <v-card
   class="mx-auto pa-5"
   max-width="1000px"
-  v-if="!displayError"
+  v-if="!errorMessage"
   >
-    <v-container class="d-flex flex-row">
+    <v-container class="d-flex
+      flex-wrap justify-center
+      flex-sm-nowrap
+      flex-md-nowrap
+      flex-xl-nowrap flex-xl-row
+     flex-lg-nowrap flex-lg-row !important">
       <v-img
         color="surface-variant"
         :src="getUserIconUrl(user.id)"
         rounded="circle"
         height="200px"
-        width="200px"
+        max-width="200px"
+        min-width="200px"
+        aspect-ratio="1/1"
         cover
         style="border: 3px solid #0d1821;"
       ></v-img>
-      <v-container>
-        <v-card-title
-          class="mx-auto px-3 mt-n8 text-black text-h2 font-weight-bold"
-        >{{ user.username }}</v-card-title>
-        <v-card-text
-          class="mx-auto px-3 mt-n4 text-h6 font-weight-light"
-        > {{user.bio}} </v-card-text>
-        <span class="d-flex flex-row">
-          <interactible-picto-info :value="user.recipesCount" :icon="`${ICON_USER_RECIPES}`" :action="redirectRecipesOwned"></interactible-picto-info>
-          <interactible-picto-info :value="user.likesCount" :icon="`${ICON_USER_LIKES}`" :action="redirectRecipesLiked"></interactible-picto-info>
-          <interactible-picto-info :value="user.followsCount" :icon="`${ICON_USER_FOLLOWS}`" :action="openFollowsWindow"></interactible-picto-info>
-          <interactible-picto-info :value="user.followersCount" :icon="`${ICON_USER_FOLLOWERS}`" :action="openFollowersWindow"></interactible-picto-info>
-        </span>
+      <v-container class="justify-center align-content-center">
+      <v-card-title
+        class="mx-auto px-3 mt-n8 text-black text-h2 font-weight-bold
+        text-center text-sm-left text-md-left text-lg-left text-xl-left"
+      >{{ user.username }}</v-card-title>
+      <v-card-text
+        class="mx-auto px-3 mt-n4 text-h6 font-weight-light
+        text-center text-sm-left text-md-left text-lg-left text-xl-left"
+      > {{user.bio}} </v-card-text>
       </v-container>
-
     </v-container>
 
-    <span class="d-flex align-center justify-center mt-8 mb-8 ga-16"  >
+    <v-container class="d-flex flex-wrap ga-2">
+      <interactible-picto-info :value="user.recipesCount" :icon="`${ICON_USER_RECIPES}`" :action="redirectRecipesOwned"></interactible-picto-info>
+      <interactible-picto-info :value="user.likesCount" :icon="`${ICON_USER_LIKES}`" :action="redirectRecipesLiked"></interactible-picto-info>
+      <interactible-picto-info :value="user.followsCount" :icon="`${ICON_USER_FOLLOWS}`" :action="openFollowsWindow"></interactible-picto-info>
+      <interactible-picto-info :value="user.followersCount" :icon="`${ICON_USER_FOLLOWERS}`" :action="openFollowersWindow"></interactible-picto-info>
+  </v-container>
 
-      <action-button
-        :icon="`${followsUser ? 'mdi-account-minus' : 'mdi-account-plus'}`"
-        :text="`${followsUser ? $t('unfollow') : $t('follow')}`"
-        :action="followUnfollow"
-        v-if="userId != currentUserId"
-      ></action-button>
-      <action-button
-        icon="mdi-pencil"
-        :text="`${$t('edit')}`"
-        :action="() => toEditUser(userId)"
-        v-if="userId == currentUserId"
-      ></action-button>
-    </span>
+    <v-container>
+      <v-row
+        class="d-flex align-center justify-center align-content-center mb-2 gx-16"
+        dense
+      >
+        <v-col cols="12" sm="auto" class="mx-5">
+          <action-button
+            :icon="`${followsUser ? 'mdi-account-minus' : 'mdi-account-plus'}`"
+            :text="`${followsUser ? $t('unfollow') : $t('follow')}`"
+            :action="followUnfollow"
+            v-if="userId != currentUserId"
+          ></action-button>
+        </v-col>
+        <v-col sm="auto" class="mx-5">
+          <action-button
+            icon="mdi-pencil"
+            :text="`${$t('edit')}`"
+            :action="() => toEditUser(userId)"
+            v-if="userId == currentUserId"
+          ></action-button>
+        </v-col>
+      </v-row>
+    </v-container>
+
     <error :error="errorMessage"></error>
 
 
@@ -78,7 +87,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import {ref} from "vue";
-import {getUserIconUrl, toEditUser, toListRecipe} from "@/scripts/common";
+import {getUserIconUrl, toEditUser, toListRecipe, toViewRecipe} from "@/scripts/common";
 import {getUser} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {follow, isFollowingUser, unfollow} from "@/scripts/follows";
