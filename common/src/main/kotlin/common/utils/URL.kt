@@ -9,7 +9,7 @@ object URL {
     const val COOKBOOK_URL = "api/v1/cookbook"
     const val FOLLOW_URL = "api/v1/follow"
     const val AUTH_URL = "api/v1/auth"
-    const val IMAGE_URL = "api/v1/image"
+    const val IMAGE_URL = "image"
     const val EXPORT_URL = "api/v1/export"
     const val TEST_URL = "api/v1/test"
     const val HEALTH_URL = "api/v1/health"

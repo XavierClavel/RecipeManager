@@ -126,10 +126,10 @@ const allowNoLoginStartsWith = [
 ]
 
 
-const getUserIconUrl = (id) => id ? `${import.meta.env.VITE_API_URL}/image/users/${id}.webp` : `/image/users/placeholder.webp`
-const getCookbookIconUrl = (id) => `${import.meta.env.VITE_API_URL}/image/cookbooks/${id}.webp`
-const getRecipeImageUrl = (id) => `${import.meta.env.VITE_API_URL}/image/recipes/${id}.webp`
-const getRecipeThumbnailUrl = (id) => `${import.meta.env.VITE_API_URL}/image/recipes-thumbnails/${id}.webp`
+const getUserIconUrl = (id) => id ? `${import.meta.env.VITE_IMG_URL}/users/${id}.webp` : `/image/users/placeholder.webp`
+const getCookbookIconUrl = (id) => `${import.meta.env.VITE_IMG_URL}/cookbooks/${id}.webp`
+const getRecipeImageUrl = (id) => `${import.meta.env.VITE_IMG_URL}/recipes/${id}.webp`
+const getRecipeThumbnailUrl = (id) => `${import.meta.env.VITE_IMG_URL}/recipes-thumbnails/${id}.webp`
 
 
 async function login(user) {
