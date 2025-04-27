@@ -55,7 +55,7 @@
 
       <!-- Cookbook users -->
       <h2 class="my-3" >{{$t("users")}}</h2>
-          <div class="d-flex align-center mb-2" v-for="index in members.length">
+          <div class="d-flex flex-wrap align-center mb-2" v-for="index in members.length">
 
             <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;" class="mr-3">
               <v-img
@@ -108,21 +108,31 @@
         color="primary"
         flat
         class="mb-10"
-      >{{$t("users_add_new")}}</v-btn>
+      >{{$t("user")}}</v-btn>
 
-      <span class="d-flex align-center justify-center mb-6 mt-6 ga-16" >
-        <action-button
-          v-if="cookbookId"
-          icon="mdi-close-circle-outline"
-          :text="`${$t('cancel')}`"
-          :action="() => toViewCookbook(cookbookId)"
-        ></action-button>
-        <action-button
-          icon="mdi-content-save"
-          :text="`${$t('save')}`"
-          :action="submit"
-        ></action-button>
-      </span>
+
+      <v-container>
+        <v-row
+          class="d-flex align-center justify-center mb-2 gx-16"
+          dense
+        >
+          <v-col cols="12" sm="auto" class="mx-5">
+            <action-button
+              v-if="cookbookId"
+              icon="mdi-close-circle-outline"
+              :text="`${$t('cancel')}`"
+              :action="() => toViewCookbook(cookbookId)"
+            ></action-button>
+          </v-col>
+          <v-col sm="auto" class="mx-5">
+            <action-button
+              icon="mdi-content-save"
+              :text="`${$t('save')}`"
+              :action="submit"
+            ></action-button>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-form>
   </v-card>
 
@@ -131,7 +141,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {getUserIconUrl, toViewCookbook} from "@/scripts/common";
+import {getUserIconUrl, toSignup, toViewCookbook} from "@/scripts/common";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {searchUsers} from "@/scripts/users";
 import {
