@@ -33,7 +33,6 @@
       class="mt-n3 mx-auto"
       rounded="lg"
       :src="getRecipeImageUrl(recipe.id)"
-
       cover
     ></v-img>
 
@@ -192,33 +191,27 @@
 
     <v-container>
       <v-row
-        class="d-flex align-center justify-center mb-2 gx-16"
+        class="d-flex align-center justify-center mb-2 ga-4"
         dense
       >
-        <v-col cols="12" sm="auto" class="mx-5">
           <action-button
             icon="mdi-delete"
             :text="`${$t('delete')}`"
             :action="() => remove(recipeId)"
             v-if="isOwner"
           ></action-button>
-        </v-col>
-        <v-col sm="auto" class="mx-5">
           <action-button
             icon="mdi-pencil"
             :text="`${$t('edit')}`"
             :action="() => toEditRecipe(recipeId)"
             v-if="isOwner"
           ></action-button>
-        </v-col>
-        <v-col sm="auto" class="mx-5">
           <action-button
             v-if="false"
             icon="mdi-tray-arrow-down"
             :text="`${$t('download')}`"
             :action="() => downloadRecipe(recipeId)"
           ></action-button>
-        </v-col>
       </v-row>
     </v-container>
 

@@ -8,7 +8,7 @@
 
 
       <form @submit.prevent="submit">
-        <v-card-title class="text-black text-h2 font-weight-bold" >
+        <v-card-title >
           {{$t("settings")}}
         </v-card-title>
         <error :error="errorMessage"></error>
@@ -45,13 +45,12 @@
 
         <v-container>
           <v-row
-            class="d-flex align-center justify-center mb-2 gx-16"
+            class="d-flex align-center justify-center mb-2 ga-4"
             dense
           >
-            <v-col sm="auto" class="mx-5">
               <action-button
                 icon="mdi-lock-reset"
-                :text="`${$t('update_password')}`"
+                :text="`${$t('password')}`"
                 :action="toUpdatePassword"
               ></action-button>
               <action-button
@@ -59,7 +58,6 @@
                 :text="`${$t('save')}`"
                 :action="submit"
               ></action-button>
-            </v-col>
           </v-row>
         </v-container>
 

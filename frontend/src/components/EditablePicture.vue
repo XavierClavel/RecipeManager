@@ -13,6 +13,8 @@
          cover
          color="surface-variant"
          :width="width"
+         min-width="width"
+         max-width="width"
          min-height="200px"
          :aspect-ratio="aspectRatio"
          class="preview-image my-6 mx-auto"

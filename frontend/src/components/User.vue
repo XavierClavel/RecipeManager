@@ -23,7 +23,7 @@ defineProps({
           :src="getUserIconUrl(user.id)"
           cover
         ></v-img>
-        <v-card-title class="text-black text-h6 font-weight-regular">{{ user.username }}</v-card-title>
+        <v-card-title class="text-black text-h6 text-truncate font-weight-regular">{{ user.username }}</v-card-title>
 
     </v-card>
 

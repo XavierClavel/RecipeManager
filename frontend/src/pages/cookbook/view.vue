@@ -53,7 +53,6 @@
                 v-bind="activatorProps"
                 icon="mdi-door-open"
                 :text="`${$t('leave')}`"
-                class="my-1"
               ></action-button>
             </template>
 

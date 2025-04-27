@@ -3,7 +3,8 @@
   class="mx-auto pa-5 ma-auto my-5"
   max-width="1000px"
   >
-    <v-container class="d-flex flex-row flex-sm-wrap">
+    <v-container class="d-flex flex-wrap justify-center
+      flex-sm-nowrap">
       <editable-picture
         path="image/users"
         :id="userId"
@@ -20,7 +21,7 @@
       ></editable-picture>
       <v-container>
         <v-card-title
-          class="mx-auto px-3 text-black text-h2 font-weight-bold"
+          class="mx-auto px-3 text-black text-h2 font-weight-bold text-center text-sm-left"
         >{{ user.username }}</v-card-title>
       </v-container>
 
@@ -36,23 +37,19 @@
 
     <v-container>
       <v-row
-        class="d-flex align-center justify-center align-content-center mb-2 gx-16"
+        class="d-flex align-center justify-center align-content-center mb-2 ga-4"
         dense
       >
-        <v-col cols="12" sm="auto" class="mx-5">
           <action-button
             icon="mdi-close-circle-outline"
             :text="`${$t('cancel')}`"
             :action="() => toViewUser(userId)"
           ></action-button>
-        </v-col>
-        <v-col sm="auto" class="mx-5">
           <action-button
             icon="mdi-content-save"
             :text="`${$t('save')}`"
             :action="submit"
           ></action-button>
-        </v-col>
       </v-row>
     </v-container>
 

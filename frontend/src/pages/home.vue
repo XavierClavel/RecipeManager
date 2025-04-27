@@ -1,11 +1,16 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <v-card class="pa-4 d-flex flex-column" color="transparent" style="border:0 solid" variant="flat">
+    <v-card class="pl-sm-2 pt-4 d-flex flex-column" color="transparent" style="border:0 solid" variant="flat">
       <v-card-title
-        class="text-black text-left text-h2 font-weight-bold "
-        style="justify-content: flex-start;"
-      >{{$t("welcome")}}, {{username}}! ✨</v-card-title>
-      <v-card-text class="text-h3 mb-8 mt-n6 font-weight-thin" >{{$t("welcome_subtext")}}</v-card-text>
+        class="text-h4 text-sm-h2 font-weight-bold text-left"
+      >
+        {{$t("welcome")}}, {{username}}! ✨
+      </v-card-title>
+
+      <v-card-text class="text-sm-h4 text-md-h3 mb-8 mt-n4 mt-sm-n6 font-weight-thin">
+        {{$t("welcome_subtext")}}
+      </v-card-text>
+
       <v-infinite-scroll
         @load="loadMore"
         :disabled="isLoading || allRecipesLoaded"
@@ -13,7 +18,15 @@
         margin="200"
         style="overflow:hidden"
       >
-      <v-timeline class="my-2" align="center" side="end" line-color="black" line-thickness="2px" density="comfortable" >
+        <v-timeline
+          class="my-2"
+          :align="xs ? 'start' : 'center'"
+          side="end"
+          line-color="black"
+          line-thickness="2px"
+          :density="xs ? 'compact' : 'comfortable'"
+        >
+
         <v-timeline-item
           v-for="(timelineRecipe, date) in timelineRecipes"
           :key="date"
@@ -27,11 +40,12 @@
             {{timelineRecipe.length}}
           </v-avatar>
         </template>
-        <template v-slot:opposite>
-          <v-card color="surface">
-            <v-card-text>{{date}}</v-card-text>
-          </v-card>
-        </template>
+          <template v-slot:opposite>
+            <v-card color="surface" class="pa-1 px-3" style="max-width: 100px;">
+              <v-card-text class="text-caption text-wrap">{{ date }}</v-card-text>
+            </v-card>
+          </template>
+
           <v-row class="my-4">
             <recipe class="ma-2" :recipe="recipe" v-for="recipe in timelineRecipe"></recipe>
           </v-row>
@@ -56,6 +70,7 @@
 import {listRecipes} from "@/scripts/recipes";
 import {useAuthStore} from "@/stores/auth";
 import {useI18n} from "vue-i18n";
+import { useDisplay } from 'vuetify';
 
 const recipes = ref([])
 const timelineRecipes = ref()
@@ -67,6 +82,8 @@ const isLoading = ref(false)
 const allRecipesLoaded = ref(false)
 
 const { t } = useI18n()
+const { xs, sm, md } = useDisplay();
+
 
 const loadMore = async ({ done }: { done: () => void }) => {
   if (isLoading.value || allRecipesLoaded.value) return

@@ -50,25 +50,21 @@
 
     <v-container>
       <v-row
-        class="d-flex align-center justify-center align-content-center mb-2 gx-16"
+        class="d-flex align-center justify-center align-content-center mb-2 gx-4"
         dense
       >
-        <v-col cols="12" sm="auto" class="mx-5">
-          <action-button
-            :icon="`${followsUser ? 'mdi-account-minus' : 'mdi-account-plus'}`"
-            :text="`${followsUser ? $t('unfollow') : $t('follow')}`"
-            :action="followUnfollow"
-            v-if="userId != currentUserId"
-          ></action-button>
-        </v-col>
-        <v-col sm="auto" class="mx-5">
-          <action-button
-            icon="mdi-pencil"
-            :text="`${$t('edit')}`"
-            :action="() => toEditUser(userId)"
-            v-if="userId == currentUserId"
-          ></action-button>
-        </v-col>
+        <action-button
+          :icon="`${followsUser ? 'mdi-account-minus' : 'mdi-account-plus'}`"
+          :text="`${followsUser ? $t('unfollow') : $t('follow')}`"
+          :action="followUnfollow"
+          v-if="userId != currentUserId"
+        ></action-button>
+        <action-button
+          icon="mdi-pencil"
+          :text="`${$t('edit')}`"
+          :action="() => toEditUser(userId)"
+          v-if="userId == currentUserId"
+        ></action-button>
       </v-row>
     </v-container>
 

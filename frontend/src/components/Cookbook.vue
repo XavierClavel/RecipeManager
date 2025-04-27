@@ -29,7 +29,7 @@ for (i in props.cookbook.members.length) {
           :src="getCookbookIconUrl(cookbook.id)"
           cover
         ></v-img>
-        <v-card-title class="text-black text-h6 font-weight-regular">{{ cookbook.title }}</v-card-title>
+        <v-card-title class="text-black text-h6 text-sm-h6 text-truncate font-weight-regular">{{ cookbook.title }}</v-card-title>
         <v-row class="px-6 pt-2 pb-5">
           <v-avatar
             start

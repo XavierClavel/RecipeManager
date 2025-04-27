@@ -113,24 +113,20 @@
 
       <v-container>
         <v-row
-          class="d-flex align-center justify-center mb-2 gx-16"
+          class="d-flex align-center justify-center mb-2 ga-4"
           dense
         >
-          <v-col cols="12" sm="auto" class="mx-5">
             <action-button
               v-if="cookbookId"
               icon="mdi-close-circle-outline"
               :text="`${$t('cancel')}`"
               :action="() => toViewCookbook(cookbookId)"
             ></action-button>
-          </v-col>
-          <v-col sm="auto" class="mx-5">
             <action-button
               icon="mdi-content-save"
               :text="`${$t('save')}`"
               :action="submit"
             ></action-button>
-          </v-col>
         </v-row>
       </v-container>
     </v-form>
