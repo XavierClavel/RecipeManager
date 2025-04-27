@@ -22,26 +22,38 @@
 
       <v-col class="py-2" cols="12">
 
-        <v-btn-toggle
-          v-model="recipe.dishClass"
-          color="primary"
-          bg-color="background"
-          base-color="background"
-          rounded="lg"
-          group
-          mandatory
-          class="ga-2 ml-n3"
-        >
-          <v-btn :value="dishClass.value" v-for="dishClass in dishOptions">{{$t(dishClass.label)}}</v-btn>
-        </v-btn-toggle>
+        <div class="d-flex flex-wrap">
+          <v-btn-toggle
+            v-model="recipe.dishClass"
+            color="primary"
+            bg-color="background"
+            base-color="background"
+            rounded="lg"
+            group
+            mandatory
+            class="ga-2 ml-n3 flex-wrap"
+            style="width: 100%;"
+          >
+          <v-btn
+            v-for="dishClass in dishOptions"
+            :key="dishClass.value"
+            :value="dishClass.value"
+            height="45px"
+            class="ma-1"
+          >
+            {{$t(dishClass.label)}}
+          </v-btn>
+          </v-btn-toggle>
+        </div>
+
       </v-col>
 
        <editable-picture
          path="image/recipes"
          :id="recipeId"
          ref="editablePicture"
-         width="800px"
-         height="600px"
+         width="100%"
+         aspect-ratio="4/3"
        ></editable-picture>
 
 
@@ -170,7 +182,7 @@
       </draggable>
 
       <!-- Custom ingredients -->
-      <h2 class="my-3 mt-12" v-if="recipe.customIngredients && recipe.customIngredients.length > 0">Custom ingredients</h2>
+      <h2 class="my-3 mt-12" v-if="recipe.customIngredients && recipe.customIngredients.length > 0">{{$t('custom_ingredients')}}</h2>
       <draggable v-model="recipe.customIngredients" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
           <div class="d-flex align-center mb-2">
@@ -264,7 +276,7 @@
             prepend-icon="mdi-plus-circle-outline"
             color="black"
             flat
-            class="mb-10 ml-8"
+            class="mb-10 ml-8 text-wrap"
             variant="outlined"
           >{{$t("ingredients_add_custom")}}</v-btn>
         </template>
@@ -318,18 +330,27 @@
           :rules="[max511]"
         ></v-textarea>
 
-      <span class="d-flex align-center justify-center mb-2 mt-16 ga-16" >
-        <action-button
-          icon="mdi-close-circle-outline"
-          :text="`${$t('cancel')}`"
-          :action="() => toViewRecipe(recipeId)"
-        ></action-button>
-        <action-button
-          icon="mdi-content-save"
-          :text="`${$t('save')}`"
-          :action="submit"
-        ></action-button>
-      </span>
+      <v-container>
+        <v-row
+          class="d-flex align-center justify-center align-content-center mb-2 gx-16"
+          dense
+        >
+          <v-col cols="12" sm="auto" class="mx-5">
+            <action-button
+              icon="mdi-close-circle-outline"
+              :text="`${$t('cancel')}`"
+              :action="() => toViewRecipe(recipeId)"
+            ></action-button>
+          </v-col>
+          <v-col sm="auto" class="mx-5">
+            <action-button
+              icon="mdi-content-save"
+              :text="`${$t('save')}`"
+              :action="submit"
+            ></action-button>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-form>
   </v-card>
 
@@ -340,7 +361,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, updateRecipe} from "@/scripts/recipes";
-import {toViewRecipe} from "@/scripts/common";
+import {toSignup, toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {dishOptions, unitOptions} from "@/scripts/values";
