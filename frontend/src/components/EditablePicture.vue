@@ -12,8 +12,9 @@
          @error="handleImageError"
          cover
          color="surface-variant"
-         :height="height"
          :width="width"
+         min-height="200px"
+         :aspect-ratio="aspectRatio"
          class="preview-image my-6 mx-auto"
          :rounded="rounded"
          fill-height
@@ -66,10 +67,10 @@ const props = defineProps({
     type: [String],
     required: true,
   },
-  height: {
+  aspectRatio: {
     type: [String],
     required: false,
-    default: "562px"
+    default: "1/1"
   },
   width: {
     type: [String],
