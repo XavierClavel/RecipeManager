@@ -31,7 +31,7 @@
             rounded="lg"
             group
             mandatory
-            class="ga-2 ml-n3 flex-wrap"
+            class="ga-2 ml-n3 d-flex flex-wrap"
             style="width: 100%;"
           >
           <v-btn
@@ -95,8 +95,8 @@
       <h2 class="my-3 mt-12" >{{$t("ingredients")}}</h2>
       <draggable v-model="recipe.ingredients" tag="div" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
-          <div class="d-flex align-center mb-2">
-            <!-- Add a handle for dragging -->
+          <div class="d-flex flex-wrap align-center mb-2">
+            <!-- Handle for dragging -->
             <v-icon
               class="mr-2 drag-handle"
               color="black"
@@ -117,6 +117,7 @@
               return-object
               @keydown.enter.prevent="selectFirstMatch(index)"
               class="ma-1"
+              min-width="150px"
             ></v-autocomplete>
 
             <v-select
@@ -127,7 +128,7 @@
               :item-title="getLocalizedLabel"
               item-value="value"
               return-object
-              max-width="200px"
+              min-width="120px"
               class="ma-1"
             >
               <!-- Customize how items appear in the dropdown -->
@@ -185,7 +186,7 @@
       <h2 class="my-3 mt-12" v-if="recipe.customIngredients && recipe.customIngredients.length > 0">{{$t('custom_ingredients')}}</h2>
       <draggable v-model="recipe.customIngredients" ghost-class="ghost" item-key="index" handle=".drag-handle">
         <template #item="{ element, index }">
-          <div class="d-flex align-center mb-2">
+          <div class="d-flex flex-wrap align-center mb-2">
             <!-- Add a handle for dragging -->
             <v-icon
               class="mr-2 drag-handle"
