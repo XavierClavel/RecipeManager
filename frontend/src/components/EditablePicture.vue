@@ -7,7 +7,7 @@
     accept="image/*"
   ></v-file-input>
 
-  <v-img :src="imageUrl || defaultImage"
+  <v-img :src="imageUrl"
          @load="handleImageLoad"
          @error="handleImageError"
          cover
@@ -65,9 +65,9 @@ const props = defineProps({
     type: [Number],
     required: false,
   },
-  defaultImage: {
-    type: [String],
-    required: true,
+  version: {
+    type: [Number],
+    required: false,
   },
   path: {
     type: [String],
@@ -110,13 +110,13 @@ const props = defineProps({
   },
 })
 
-import {uploadImage} from "@/scripts/common";
+import {doDeleteImage, getDefaultImageUrl, getImageUrl, uploadImage} from "@/scripts/common";
 import {ref} from "vue";
 
 const image = ref<File | null>(null)
-const baseImageUrl = ref<string>(`${import.meta.env.VITE_API_URL}/${props.path}/${props.id}.webp`)
-const defaultImageUrl = ref<string>(`${import.meta.env.VITE_API_URL}/${props.path}/default.webp`)
-const imageUrl = ref<string>(baseImageUrl)
+const baseImageUrl = ref<string>(getImageUrl(props.path, props.id, props.version))
+const defaultImageUrl = ref<string>(getDefaultImageUrl(props.path))
+const imageUrl = ref<string>(baseImageUrl.value)
 
 const fileInput = ref(null)
 const imageUpdated = ref<Boolean>(false)
@@ -131,14 +131,14 @@ const onImageUpload = () => {
 function undoImageChange() {
   imageUpdated.value = false
   imageDeleted.value = false
-  imageUrl.value = baseImageUrl
+  imageUrl.value = baseImageUrl.value
 }
 
 function deleteImage() {
   imageDeleted.value = hasImage.value
   imageUpdated.value = hasImage.value
 
-  imageUrl.value = defaultImageUrl
+  imageUrl.value = defaultImageUrl.value
 }
 
 // Trigger the v-file-input click
@@ -149,8 +149,6 @@ function triggerFileInput() {
 }
 
 function handleImageLoad(url) {
-  console.log(url)
-  console.log(baseImageUrl.value)
   // Only consider the primary image for setting imageExists
   if (url === baseImageUrl.value) {
     console.log("image success")
@@ -168,8 +166,9 @@ function handleImageError(url) {
 }
 
 async function submitImage() {
+  console.log(imageDeleted.value)
   if (imageDeleted.value) {
-    await deleteImage(props.id, props.path)
+    await doDeleteImage(props.path, props.id)
   } else if (imageUpdated.value) {
     await uploadImage(props.id, image.value, props.path)
   }

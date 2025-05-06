@@ -45,8 +45,10 @@
       </v-select>
 
        <editable-picture
+         v-if="ready"
          path="cookbooks"
          :id="cookbookId"
+         :version="cookbook.version"
          ref="editablePicture"
          width="600px"
          height="600px"
@@ -161,6 +163,7 @@ let addRecipeId = route.query.addRecipe
 const editablePicture = ref(null)
 const form = ref(null)
 const members = ref<Array<{ id: number, username: string, role: string }>>([]);
+const ready = ref(false)
 
 
 const autocompleteList = ref([])
@@ -243,6 +246,9 @@ if (cookbookId.value != null) {
       cookbook.value.title = response.data.title
       cookbook.value.description = response.data.description
       cookbook.value.visibility = response.data.visibility
+      cookbook.value.version = response.data.version
+      console.log(cookbook.value)
+      ready.value = true
     }).catch(function (error) {
     console.log(error);
   })
@@ -252,6 +258,8 @@ if (cookbookId.value != null) {
       members.value = response.data.map(item => ({id: item.id, username: item.username, role: item.isAdmin ? "ADMIN" : "USER"}))
     }
   )
+} else {
+  ready.value = true
 }
 
 

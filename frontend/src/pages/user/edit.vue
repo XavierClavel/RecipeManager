@@ -6,8 +6,10 @@
     <v-container class="d-flex flex-wrap justify-center
       flex-sm-nowrap">
       <editable-picture
+        v-if="user.version"
         path="users"
         :id="userId"
+        :version="user.version"
         rounded="circle"
         height="200px"
         width="200px"

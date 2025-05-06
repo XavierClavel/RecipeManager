@@ -4,6 +4,7 @@ import apiClient from '@/plugins/axios.js';
 import {useAuthStore, declareLogin} from "@/stores/auth";
 import {deleteCookie, getCookie} from "@/scripts/cookies";
 import {getLocale} from "@/scripts/localization";
+import {switchCase} from "@babel/types";
 
 export {
   login,
@@ -47,7 +48,7 @@ export {
   toSettings,
 
   uploadImage,
-  deleteImage,
+  doDeleteImage,
 
   noLoginRedirect,
   noLoginRedirectStartsWith,
@@ -59,6 +60,8 @@ export {
   getCookbookIconUrl,
   getRecipeImageUrl,
   getRecipeThumbnailUrl,
+  getImageUrl,
+  getDefaultImageUrl,
 
   getHealth,
 
@@ -67,8 +70,8 @@ export {
 
 
 const toCreateRecipe = () => navigateTo(`/recipe/edit`)
-const toEditRecipe = (id) => navigateTo(`/recipe/edit/?id=${id}`)
-const toViewRecipe = (id) => navigateTo(`/recipe/view/?id=${id}`)
+const toEditRecipe = (id) => navigateTo(`/recipe/edit?id=${id}`)
+const toViewRecipe = (id) => navigateTo(`/recipe/view?id=${id}`)
 const toListRecipe = (search) => navigateTo(`/recipe/list${search}`)
 
 const toViewUser = (id) => navigateTo(`/user/view/?user=${id}`)
@@ -134,6 +137,31 @@ const getCookbookIconUrl = (id, version) => id && version ? `${import.meta.env.V
 const getRecipeImageUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes/${id}-v${version}.webp` : defaultImageRecipe
 const getRecipeThumbnailUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes-thumbnails/${id}-v${version}.webp` : '/src/assets/default_recipe.png'
 
+const getImageUrl = (path, id, version) => {
+  switch (path) {
+    case "users":
+      return getUserIconUrl(id, version)
+
+    case "recipes":
+      return getRecipeImageUrl(id, version)
+
+    case "cookbooks":
+      return getCookbookIconUrl(id, version)
+  }
+}
+
+const getDefaultImageUrl = (path) => {
+  switch (path) {
+    case "users":
+      return getUserIconUrl(0, 0)
+
+    case "recipes":
+      return getRecipeImageUrl(0, 0)
+
+    case "cookbooks":
+      return getCookbookIconUrl(0, 0)
+  }
+}
 
 async function login(user) {
   const result = await apiClient.post(`/auth/login`, {}, {
@@ -189,6 +217,17 @@ async function logout() {
   return result
 }
 
+async function doDeleteImage(path,id) {
+  return await apiClient.delete( `${import.meta.env.VITE_IMG_URL}/${path}/${id}`).then(function(response){
+    console.log('SUCCESS!!');
+    console.log(response)
+  })
+    .catch(function(error){
+      console.log('FAILURE!!');
+      console.log(error)
+    });
+}
+
 async function uploadImage(id, file, path) {
   let formData = new FormData()
   formData.append('file', file)
@@ -214,9 +253,6 @@ async function getHealth() {
   return await apiClient.get(`/health`)
 }
 
-async function deleteImage(id, path) {
-  return await apiClient.delete(`/${path}/${id}`)
-}
 
 const unitToReadable = (unit) => {
   switch (unit) {

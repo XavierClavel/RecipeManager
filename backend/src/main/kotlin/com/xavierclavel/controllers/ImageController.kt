@@ -1,6 +1,9 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.controllers.RecipeController.recipeService
+import com.xavierclavel.exceptions.ForbiddenCause
+import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.RecipeService
@@ -131,9 +134,10 @@ object ImageController: Controller(IMAGE_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun Route.deleteCookbookImage() = delete("/users/{id}") {
+    private fun Route.deleteCookbookImage() = delete("/cookbooks/{id}") {
         val id = getPathId()
         val cookbook = cookbookService.getEntityById(id)
+        if (!cookbookService.isAdminOfCookbook(id, getSessionUserId())) throw ForbiddenException(ForbiddenCause.MUST_BE_COOKBOOK_ADMINISTRATOR)
         imageService.deleteImage(COOKBOOKS_IMG_PATH, id, cookbook.imageVersion)
         cookbook.resetVersion()
         call.respond(HttpStatusCode.OK)

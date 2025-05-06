@@ -42,9 +42,10 @@
             </v-btn>
           </v-btn-toggle>
        <editable-picture
+         v-if="ready"
          path="recipes"
          :id="recipeId"
-         :default-image="defaultImageRecipe"
+         :version="recipe.version"
          ref="editablePicture"
          width="100%"
          aspect-ratio="4/3"
@@ -367,6 +368,7 @@ const form = ref(null)
 // Get the route object
 const route = useRoute();
 let recipeId = ref(route.query.id)
+const ready = ref(false)
 const editablePicture = ref(null)
 
 const autocompleteList = ref([])
@@ -520,12 +522,16 @@ if (recipeId.value != null) {
       recipe.value.cookingTime = response.data.cookingTime
       recipe.value.cookingTemperature = response.data.cookingTemperature
       recipe.value.tips = response.data.tips
+      recipe.value.version = response.data.version
       console.log(recipe.value)
+      ready.value = true
     }).catch(function (error) {
     console.log(error);
   }).finally(function () {
     // always executed
   });
+} else {
+  ready.value = true
 }
 
 
