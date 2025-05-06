@@ -26,7 +26,7 @@ for (i in props.cookbook.members.length) {
           height="250px"
           class="mt-n3"
           rounded="t-lg"
-          :src="getCookbookIconUrl(cookbook.id)"
+          :src="getCookbookIconUrl(cookbook.id, cookbook.version)"
           cover
         ></v-img>
         <v-card-title class="text-black text-h6 text-sm-h6 text-truncate font-weight-regular">{{ cookbook.title }}</v-card-title>
@@ -41,7 +41,7 @@ for (i in props.cookbook.members.length) {
           >
             <v-img
               v-if="index < 10 || cookbook.members.length <= 10"
-              :src="getUserIconUrl(cookbook.members[(index - 1)].id)"
+              :src="getUserIconUrl(cookbook.members[(index - 1)].id, cookbook.members[(index - 1)].version)"
             ></v-img>
             <v-icon v-else>mdi-dots-horizontal</v-icon>
           </v-avatar>

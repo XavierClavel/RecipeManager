@@ -10,7 +10,7 @@
       flex-sm-nowrap">
       <v-img
         color="surface-variant"
-        :src="imageUrl"
+        :src="getCookbookIconUrl(cookbook.id, cookbook.version)"
         rounded="lg"
         height="200px"
         width="200px"
@@ -87,13 +87,12 @@
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
 import {ref} from "vue";
-import {toEditCookbook, toListCookbooks} from "@/scripts/common";
+import {getCookbookIconUrl, getUserIconUrl, toEditCookbook, toListCookbooks} from "@/scripts/common";
 import {getCookbook, isAdminOfCookbook, leaveCookbook} from "@/scripts/cookbooks";
 import {ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS} from "@/scripts/icons";
 import {useAuthStore} from "@/stores/auth";
 const route = useRoute();
 let cookbookId = ref(route.query.cookbook)
-const imageUrl = computed(() => `${import.meta.env.VITE_API_URL}/image/cookbooks/${cookbookId.value}.webp`);
 const isAdmin = ref(false)
 const cookbook = ref<object>({
   title: "",
@@ -101,6 +100,7 @@ const cookbook = ref<object>({
   users: [],
   recipesCount: null,
   usersCount: null,
+  version: null,
 })
 const errors = ref(null)
 
@@ -108,11 +108,8 @@ const errors = ref(null)
 if (cookbookId.value != null) {
   getCookbook(cookbookId.value).then (
     function (response) {
-      cookbook.value.title = response.data.title
-      cookbook.value.description = response.data.description
-      cookbook.value.recipesCount = response.data.recipesCount
-      cookbook.value.usersCount = response.data.usersCount
-      console.log(response.data)
+      cookbook.value = response.data
+      console.log(cookbook.value)
     }).catch(function (error) {
       console.log(error);
       errors.value = error.response.data;

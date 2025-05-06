@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CookbookInfo(
     val id: Long,
+    val version: Long,
     val title: String,
     val visibility: Visibility,
     val description: String = "",

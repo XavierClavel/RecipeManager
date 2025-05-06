@@ -136,7 +136,6 @@ class RecipeService: KoinComponent {
     fun updateRecipe(id: Long, recipeDTO: RecipeDTO): RecipeInfo =
         getEntityById(id).mergeDTO(recipeDTO).updateAndGet().toInfo(Locale.EN)
 
-
     fun deleteRecipe(id: Long) {
         QRecipe().id.eq(id).delete()
     }
@@ -152,8 +151,8 @@ class RecipeService: KoinComponent {
         logger.info {"Has references: ${recipeInfo.likesCount > 0 || QCookbookRecipe().recipe.id.eq(recipe.id).exists()}"}
         if (recipeInfo.likesCount > 0 || QCookbookRecipe().recipe.id.eq(recipe.id).exists()) return
         recipe.delete()
-        imageService.deleteImage(RECIPES_IMG_PATH, id)
-        imageService.deleteImage(RECIPES_THUMBNAIL_PATH, id)
+        imageService.deleteImage(RECIPES_IMG_PATH, id, recipe.imageVersion)
+        imageService.deleteImage(RECIPES_THUMBNAIL_PATH, id, recipe.imageVersion)
     }
 
     private fun queryByOwner(username: String) =

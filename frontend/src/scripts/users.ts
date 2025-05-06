@@ -9,6 +9,13 @@ export{
   updatePassword,
 }
 
+class UserOverview {
+  private readonly id: number
+  private readonly version: number
+  private readonly username: string
+}
+
+
 async function getUser(id) {
   return await apiClient.get(`/user/${id}`)
 }

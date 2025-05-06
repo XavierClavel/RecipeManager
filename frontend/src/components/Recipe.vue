@@ -20,7 +20,7 @@ defineProps({
             height="180px"
             class="mt-n2"
             rounded="t-lg"
-            :src="getRecipeThumbnailUrl(recipe.id)"
+            :src="getRecipeThumbnailUrl(recipe.id, recipe.version)"
             cover
           ></v-img>
         <v-card-title class="text-black text-h6 text-sm-h6 text text-truncate font-weight-regular justify-end">{{recipe.title}}</v-card-title>

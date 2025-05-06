@@ -9,6 +9,7 @@ import kotlinx.serialization.*
 @Serializable
 data class RecipeInfo (
     val id: Long,
+    val version: Long,
     val title: String,
     val dishClass: DishClass,
     val owner: UserOverview,
@@ -42,6 +43,7 @@ data class RecipeInfo (
 
     fun toOverview() = RecipeOverview(
         id = this.id,
+        version = this.version,
         title = this.title,
         dishClass = this.dishClass,
         owner = this.owner,

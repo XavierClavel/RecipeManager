@@ -10,6 +10,7 @@ import common.infodto.UserInfo
 import common.enums.UserRole
 import common.overviewdto.UserOverview
 import io.ebean.Model
+import io.ebean.annotation.DbDefault
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -26,6 +27,9 @@ class User (
 
     @Id
     var id: Long = 0,
+
+    @DbDefault("0")
+    var imageVersion: Long = 0,
 
     @Column(unique = true)
     var username: String = "",
@@ -94,6 +98,7 @@ class User (
     fun toInfo() =
         UserInfo(
             id = this.id,
+            version = this.imageVersion,
             username = this.username,
             role = this.role,
             joinDate = this.joinDate.toEpochSecond(ZoneOffset.UTC),
@@ -107,6 +112,7 @@ class User (
 
     fun toOverview() = UserOverview(
         id = this.id,
+        version = this.imageVersion,
         username = this.username,
     )
 
@@ -146,4 +152,12 @@ class User (
         this.tokenEndValidity = LocalDateTime.now().plusDays(1)
         update()
     }
+
+    fun increaseVersion() = apply {
+        this.imageVersion++;
+    }.update()
+
+    fun resetVersion() = apply {
+        this.imageVersion = 0
+    }.update()
 }

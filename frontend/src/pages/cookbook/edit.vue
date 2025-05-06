@@ -45,7 +45,7 @@
       </v-select>
 
        <editable-picture
-         path="image/cookbooks"
+         path="cookbooks"
          :id="cookbookId"
          ref="editablePicture"
          width="600px"

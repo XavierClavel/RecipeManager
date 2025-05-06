@@ -34,6 +34,9 @@ class Recipe (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
+    @DbDefault("0")
+    var imageVersion: Long = 0,
+
     var title: String = "",
 
     var description: String = "",
@@ -97,8 +100,17 @@ class Recipe (
         this.owner = user
     }
 
+    fun increaseVersion() = apply {
+        this.imageVersion++;
+    }.update()
+
+    fun resetVersion() = apply {
+        this.imageVersion = 0
+    }.update()
+
     fun toInfo(locale: Locale) = RecipeInfo(
         id = this.id,
+        version = this.imageVersion,
         title = title,
         description = description,
         dishClass = dishClass,
@@ -120,6 +132,7 @@ class Recipe (
 
     fun toOverview() = RecipeOverview(
         id = this.id,
+        version = this.imageVersion,
         title = title,
         dishClass = dishClass,
         owner = this.owner!!.toOverview(),

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <addColumn tableName="cookbooks">
+            <column name="image_version" type="bigint" defaultValue="0" notnull="true"/>
+        </addColumn>
+        <addColumn tableName="recipes">
+            <column name="image_version" type="bigint" defaultValue="0" notnull="true"/>
+        </addColumn>
+        <addColumn tableName="users">
+            <column name="image_version" type="bigint" defaultValue="0" notnull="true"/>
+        </addColumn>
+    </changeSet>
+</migration>

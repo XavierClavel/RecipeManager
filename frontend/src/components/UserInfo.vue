@@ -13,7 +13,7 @@ defineProps({
     <v-container>
       <v-chip link pill @click="toViewUser(user.id)" color="surface">
         <v-avatar start>
-          <v-img :src="getUserIconUrl(user.id)"></v-img>
+          <v-img :src="getUserIconUrl(user.id, user.version)"></v-img>
         </v-avatar>
         {{ user.username }}
       </v-chip>

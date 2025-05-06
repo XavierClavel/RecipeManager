@@ -1,7 +1,10 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.RecipeController.recipeService
+import com.xavierclavel.services.CookbookService
 import com.xavierclavel.services.ImageService
+import com.xavierclavel.services.RecipeService
+import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.checkRecipeEditionRights
 import com.xavierclavel.utils.checkUserEditionRights
@@ -25,6 +28,9 @@ import java.io.File
 
 object ImageController: Controller(IMAGE_URL) {
     val imageService : ImageService by inject(ImageService::class.java)
+    val recipeService: RecipeService by inject(RecipeService::class.java)
+    val cookbookService: CookbookService by inject(CookbookService::class.java)
+    val userService: UserService by inject(UserService::class.java)
 
     /*
         Recipe full display : 800x600
@@ -85,15 +91,23 @@ object ImageController: Controller(IMAGE_URL) {
         val id = getPathId()
         checkRecipeEditionRights(recipeService.getRecipeOwner(id).id)
         val image = receiveImage()
-        imageService.saveImage(RECIPES_IMG_PATH, id, SIZE_IMG_RECIPE, image)
-        imageService.saveImage(RECIPES_THUMBNAIL_PATH, id, SIZE_THUMBNAIL_RECIPE, image)
+        val recipe = recipeService.getEntityById(id)
+
+        imageService.saveImage(RECIPES_IMG_PATH, id, recipe.imageVersion + 1, SIZE_IMG_RECIPE, image)
+        imageService.saveImage(RECIPES_THUMBNAIL_PATH, id, recipe.imageVersion + 1, SIZE_THUMBNAIL_RECIPE, image)
+
+        recipe.increaseVersion()
+        imageService.deleteImage(RECIPES_IMG_PATH, id, recipe.imageVersion - 1)
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.uploadCookbookImage() = post("/cookbooks/{id}") {
         val id = getPathId()
         val image = receiveImage()
-        imageService.saveImage(COOKBOOKS_IMG_PATH, id, SIZE_IMG_COOKBOOK, image)
+        val cookbook = cookbookService.getEntityById(id)
+        imageService.saveImage(COOKBOOKS_IMG_PATH, id, cookbook.imageVersion + 1, SIZE_IMG_COOKBOOK, image)
+        cookbook.increaseVersion()
+        imageService.deleteImage(COOKBOOKS_IMG_PATH, id, cookbook.imageVersion - 1)
         call.respond(HttpStatusCode.OK)
     }
 
@@ -101,27 +115,36 @@ object ImageController: Controller(IMAGE_URL) {
         val id = getPathId()
         checkUserEditionRights(id)
         val image = receiveImage()
-        imageService.saveImage(USERS_IMG_PATH, id, SIZE_IMG_USER, image)
+        val user = userService.getEntityById(id)
+        imageService.saveImage(USERS_IMG_PATH, id, user.imageVersion + 1, SIZE_IMG_USER, image)
+        user.increaseVersion()
+        imageService.deleteImage(USERS_IMG_PATH, id, user.imageVersion - 1)
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.deleteRecipeImage() = delete("/recipes/{id}") {
         val id = getPathId()
+        val recipe = recipeService.getEntityById(id)
         checkRecipeEditionRights(recipeService.getRecipeOwner(id).id)
-        imageService.deleteImage(RECIPES_IMG_PATH,id)
+        imageService.deleteImage(RECIPES_IMG_PATH, id, recipe.imageVersion)
+        recipe.resetVersion()
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.deleteCookbookImage() = delete("/users/{id}") {
         val id = getPathId()
-        imageService.deleteImage(COOKBOOKS_IMG_PATH, id)
+        val cookbook = cookbookService.getEntityById(id)
+        imageService.deleteImage(COOKBOOKS_IMG_PATH, id, cookbook.imageVersion)
+        cookbook.resetVersion()
         call.respond(HttpStatusCode.OK)
     }
 
     private fun Route.deleteUserImage() = delete("/users/{id}") {
         val id = getPathId()
         checkUserEditionRights(id)
-        imageService.deleteImage(USERS_IMG_PATH, id)
+        val user = userService.getEntityById(id)
+        imageService.deleteImage(USERS_IMG_PATH, id, user.imageVersion)
+        user.resetVersion()
         call.respond(HttpStatusCode.OK)
     }
 

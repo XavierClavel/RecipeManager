@@ -42,8 +42,9 @@
             </v-btn>
           </v-btn-toggle>
        <editable-picture
-         path="image/recipes"
+         path="recipes"
          :id="recipeId"
+         :default-image="defaultImageRecipe"
          ref="editablePicture"
          width="100%"
          aspect-ratio="4/3"
@@ -352,7 +353,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useRoute } from 'vue-router';
 import {getRecipe, createRecipe, updateRecipe} from "@/scripts/recipes";
-import {toViewRecipe} from "@/scripts/common";
+import {defaultImageRecipe, toViewRecipe} from "@/scripts/common";
 import {searchIngredients} from "@/scripts/ingredients";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {dishOptions, unitOptions} from "@/scripts/values";

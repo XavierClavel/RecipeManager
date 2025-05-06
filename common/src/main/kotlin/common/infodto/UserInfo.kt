@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserInfo(
     val id: Long,
+    val version: Long,
     val username: String,
     val role: UserRole = UserRole.USER,
     val joinDate: Long,
@@ -19,6 +20,7 @@ data class UserInfo(
 ) {
     fun toOverview() = UserOverview(
         id = this.id,
+        version = this.version,
         username = this.username,
     )
 }

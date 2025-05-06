@@ -61,6 +61,8 @@ export {
   getRecipeThumbnailUrl,
 
   getHealth,
+
+  defaultImageRecipe,
 }
 
 
@@ -125,11 +127,12 @@ const allowNoLoginStartsWith = [
   '/recipe/view',
 ]
 
+const defaultImageRecipe = '/src/assets/default_recipe.png'
 
-const getUserIconUrl = (id) => id ? `${import.meta.env.VITE_IMG_URL}/users/${id}.webp` : `/image/users/placeholder.webp`
-const getCookbookIconUrl = (id) => `${import.meta.env.VITE_IMG_URL}/cookbooks/${id}.webp`
-const getRecipeImageUrl = (id) => `${import.meta.env.VITE_IMG_URL}/recipes/${id}.webp`
-const getRecipeThumbnailUrl = (id) => `${import.meta.env.VITE_IMG_URL}/recipes-thumbnails/${id}.webp`
+const getUserIconUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/users/${id}-v${version}.webp` : `/src/assets/default_user.jpg`
+const getCookbookIconUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/cookbooks/${id}-v${version}.webp` : '/src/assets/default_cookbook.png'
+const getRecipeImageUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes/${id}-v${version}.webp` : defaultImageRecipe
+const getRecipeThumbnailUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes-thumbnails/${id}-v${version}.webp` : '/src/assets/default_recipe.png'
 
 
 async function login(user) {
@@ -189,7 +192,7 @@ async function logout() {
 async function uploadImage(id, file, path) {
   let formData = new FormData()
   formData.append('file', file)
-  return await apiClient.post( `/${path}/${id}`,
+  return await apiClient.post( `${import.meta.env.VITE_IMG_URL}/${path}/${id}`,
     formData,
     {
       headers: {

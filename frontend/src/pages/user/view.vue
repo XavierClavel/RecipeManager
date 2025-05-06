@@ -20,7 +20,7 @@
       flex-sm-nowrap">
       <v-img
         color="surface-variant"
-        :src="getUserIconUrl(user.id)"
+        :src="getUserIconUrl(user.id, user.version)"
         rounded="circle"
         height="200px"
         max-width="200px"
@@ -80,7 +80,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import {ref} from "vue";
-import {getUserIconUrl, toEditUser, toListRecipe, toViewRecipe} from "@/scripts/common";
+import {getUserIconUrl, toEditUser, toListRecipe} from "@/scripts/common";
 import {getUser} from "@/scripts/users";
 import InteractiblePictoInfo from "@/components/InteractiblePictoInfo.vue";
 import {follow, isFollowingUser, unfollow} from "@/scripts/follows";
@@ -142,7 +142,7 @@ async function followUnfollow() {
 const updateUser = () => {
   getUser(userId).then (
     function (response) {
-      console.log(response)
+      console.log(response.data)
       user.value = response.data
     }).catch(function (error) {
     errorMessage.value = error.response.data

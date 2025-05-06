@@ -57,7 +57,7 @@
             <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;">
               <v-img
                 color="surface-variant"
-                :src="getUserIconUrl(userId)"
+                :src="getUserIconUrl(userId, userIconVersion)"
                 cover
                 v-bind="props"
                 class="clickable_image"
@@ -137,6 +137,7 @@ import {overrideLocaleFromCookie} from "@/scripts/localization";
 
 const authStore = useAuthStore()
 const userId = computed(() => authStore.id)
+const userIconVersion = computed(() => authStore.iconVersion)
 const router = useRouter()
 const version = ref(null)
 

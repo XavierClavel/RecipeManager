@@ -72,7 +72,7 @@ object UserController: Controller(USER_URL) {
         val id = getSessionUserId()
         val user = userService.getUser(id)
         userService.deleteUserById(user.id)
-        imageService.deleteImage(USERS_IMG_PATH, user.id)
+        imageService.deleteImage(USERS_IMG_PATH, user.id, user.version)
         call.respond(HttpStatusCode.OK)
     }
 

@@ -132,7 +132,8 @@ object CookbookController: Controller(COOKBOOK_URL) {
 
     private fun Route.deleteCookbook() = delete("/{id}") {
         val id = getPathId()
-        imageService.deleteImage(COOKBOOKS_IMG_PATH, id)
+        val cookbook = cookbookService.getEntityById(id)
+        imageService.deleteImage(COOKBOOKS_IMG_PATH, id, cookbook.imageVersion)
         handleDeletion(cookbookService.deleteCookbook(id))
     }
 

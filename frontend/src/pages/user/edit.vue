@@ -6,7 +6,7 @@
     <v-container class="d-flex flex-wrap justify-center
       flex-sm-nowrap">
       <editable-picture
-        path="image/users"
+        path="users"
         :id="userId"
         rounded="circle"
         height="200px"

@@ -34,10 +34,13 @@ import javax.imageio.ImageWriter
 class ImageService: KoinComponent {
 
 
-    fun saveImage(path: String, id: Long,targetSize: Pair<Int, Int>, image: BufferedImage) =
-        saveImage("$path/$id.webp", targetSize, image)
+    fun saveImage(path: String, id: Long, version: Long, targetSize: Pair<Int, Int>, image: BufferedImage) =
+        saveImage("$path/$id-v$version.webp", targetSize, image)
 
-    fun deleteImage(path: String, id: Long) = deleteImage("$path/$id.webp")
+    fun deleteImage(path: String, id: Long, version: Long) {
+        if (version == 0L) return
+        deleteImage("$path/$id-v$version.webp")
+    }
 
     private fun deleteImage(path:String) = Path(path).deleteIfExists()
 

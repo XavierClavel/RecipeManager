@@ -27,6 +27,9 @@ class Cookbook (
     @GeneratedValue
     var id: Long = 0,
 
+    @DbDefault("0")
+    var imageVersion: Long = 0,
+
     var title: String = "",
 
     var description: String = "",
@@ -59,6 +62,7 @@ class Cookbook (
 
     fun toInfo() = CookbookInfo(
         id = this.id,
+        version = this.imageVersion,
         title = this.title,
         visibility = this.visibility,
         description = this.description,
@@ -69,6 +73,7 @@ class Cookbook (
     )
     fun toOverview() = CookbookOverview(
         id = this.id,
+        version = this.imageVersion,
         title = this.title,
     )
 
@@ -77,5 +82,13 @@ class Cookbook (
         title = this.title,
         hasRecipe = present,
     )
+
+    fun increaseVersion() = apply {
+        this.imageVersion++;
+    }.update()
+
+    fun resetVersion() = apply {
+        this.imageVersion = 0
+    }.update()
 
 }

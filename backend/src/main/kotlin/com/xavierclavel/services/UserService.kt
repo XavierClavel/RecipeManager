@@ -144,7 +144,7 @@ class UserService: KoinComponent {
             .username.like("%$searchString%")
             .setPaging(paging)
             .findList()
-            .map{it.toInfo()}
+            .map{ it.toInfo() }
 
 
 }

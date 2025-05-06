@@ -7,7 +7,7 @@
     accept="image/*"
   ></v-file-input>
 
-  <v-img :src="imageUrl"
+  <v-img :src="imageUrl || defaultImage"
          @load="handleImageLoad"
          @error="handleImageError"
          cover
@@ -64,6 +64,10 @@ const props = defineProps({
   id: {
     type: [Number],
     required: false,
+  },
+  defaultImage: {
+    type: [String],
+    required: true,
   },
   path: {
     type: [String],

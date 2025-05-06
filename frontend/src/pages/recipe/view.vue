@@ -32,7 +32,8 @@
       aspect-ratio="4/3"
       class="mt-n3 mx-auto"
       rounded="lg"
-      :src="getRecipeImageUrl(recipe.id)"
+      :src="getRecipeImageUrl(recipe.id, recipe.version)"
+
       cover
     ></v-img>
 
