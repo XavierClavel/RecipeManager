@@ -6,7 +6,7 @@
     <v-container class="d-flex flex-wrap justify-center
       flex-sm-nowrap">
       <editable-picture
-        v-if="user.version"
+        v-if="ready"
         path="users"
         :id="userId"
         :version="user.version"
@@ -74,6 +74,7 @@ const route = useRoute();
 const userId = route.query.user
 const errorMessage = ref(null)
 const editablePicture = ref(null)
+const ready = ref(false)
 
 const user = ref<object>({})
 
@@ -81,6 +82,7 @@ getUser(userId).then (
   function (response) {
     console.log(response)
     user.value = response.data
+    ready.value = true
   }).catch(function (error) {
     errorMessage.value = error.response.data
 })

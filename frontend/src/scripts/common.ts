@@ -130,12 +130,14 @@ const allowNoLoginStartsWith = [
   '/recipe/view',
 ]
 
-const defaultImageRecipe = '/src/assets/default_recipe.png'
+const defaultImageUser = '/default_user.jpg'
+const defaultImageRecipe = '/default_recipe.png'
+const defaultImageCookbook = '/default_cookbook.png'
 
-const getUserIconUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/users/${id}-v${version}.webp` : `/src/assets/default_user.jpg`
-const getCookbookIconUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/cookbooks/${id}-v${version}.webp` : '/src/assets/default_cookbook.png'
+const getUserIconUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/users/${id}-v${version}.webp` : defaultImageUser
+const getCookbookIconUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/cookbooks/${id}-v${version}.webp` : defaultImageCookbook
 const getRecipeImageUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes/${id}-v${version}.webp` : defaultImageRecipe
-const getRecipeThumbnailUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes-thumbnails/${id}-v${version}.webp` : '/src/assets/default_recipe.png'
+const getRecipeThumbnailUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes-thumbnails/${id}-v${version}.webp` : defaultImageRecipe
 
 const getImageUrl = (path, id, version) => {
   switch (path) {
