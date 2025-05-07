@@ -68,6 +68,7 @@ import {toEditUser, toViewUser} from "@/scripts/common";
 import {getUser, updateUser} from "@/scripts/users";
 import EditablePicture from "@/components/EditablePicture.vue";
 import {max255} from "@/scripts/rules";
+import {useAuthStore} from "@/stores/auth";
 
 // Get the route object
 const route = useRoute();
@@ -93,7 +94,10 @@ async function submit() {
   submitted["bio"] = user.value.bio
   console.log(submitted)
   await updateUser(submitted)
-  await editablePicture.value.submitImage()
+  const newVersion = await editablePicture.value.submitImage()
+  console.log(newVersion)
+  const authStore = useAuthStore()
+  authStore.setImgVersion(newVersion)
   toViewUser(userId)
 }
 

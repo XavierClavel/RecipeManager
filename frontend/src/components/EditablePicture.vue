@@ -165,12 +165,14 @@ function handleImageError(url) {
   }
 }
 
-async function submitImage() {
+async function submitImage(): Promise<number> {
   console.log(imageDeleted.value)
   if (imageDeleted.value) {
     await doDeleteImage(props.path, props.id)
+    return 0
   } else if (imageUpdated.value) {
     await uploadImage(props.id, image.value, props.path)
+    return props.version + 1
   }
 }
 

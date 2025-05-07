@@ -19,6 +19,9 @@ export const useAuthStore = defineStore('auth', {
     login() {
       this.checkAuth()
     },
+    setImgVersion(version) {
+      this.iconVersion = version
+    },
     async checkAuth() {
       if (this.isAuthenticated) return
       try {
