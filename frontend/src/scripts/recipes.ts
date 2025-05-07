@@ -37,30 +37,6 @@ async function deleteRecipe(id) {
   return await apiClient.delete(`/recipe/${id}`)
 }
 
-async function uploadRecipeImage(id, file) {
-  let formData = new FormData()
-  formData.append('file', file)
-  return await apiClient.post( `/image/recipes/${id}`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }
-  ).then(function(response){
-    console.log('SUCCESS!!');
-    console.log(response)
-  })
-    .catch(function(error){
-      console.log('FAILURE!!');
-      console.log(error)
-    });
-}
-
-async function deleteRecipeImage(id) {
-  return await apiClient.delete(`/image/recipes/${id}`)
-}
-
 async function downloadRecipe(id) {
   return await apiClient.get(`/export/recipe/${id}`, {
     responseType: 'arraybuffer',
