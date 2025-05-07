@@ -1,6 +1,6 @@
 import axios from "axios";
 import router from "@/router";
-import apiClient from '@/plugins/axios.js';
+import apiClient, {imageClient} from '@/plugins/axios.js';
 import {useAuthStore, declareLogin} from "@/stores/auth";
 import {deleteCookie, getCookie} from "@/scripts/cookies";
 import {getLocale} from "@/scripts/localization";
@@ -220,7 +220,7 @@ async function logout() {
 }
 
 async function doDeleteImage(path,id) {
-  return await apiClient.delete( `${import.meta.env.VITE_IMG_URL}/${path}/${id}`).then(function(response){
+  return await imageClient.delete( `${import.meta.env.VITE_IMG_URL}/${path}/${id}`).then(function(response){
     console.log('SUCCESS!!');
     console.log(response)
   })
@@ -233,7 +233,7 @@ async function doDeleteImage(path,id) {
 async function uploadImage(id, file, path) {
   let formData = new FormData()
   formData.append('file', file)
-  return await apiClient.post( `${import.meta.env.VITE_IMG_URL}/${path}/${id}`,
+  return await imageClient.post( `${import.meta.env.VITE_IMG_URL}/${path}/${id}`,
     formData,
     {
       headers: {

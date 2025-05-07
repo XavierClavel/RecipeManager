@@ -2,6 +2,14 @@
 import axios from 'axios';
 import {toMaintenance} from "@/scripts/common";
 
+const imageClient = axios.create({
+  baseURL: import.meta.env.VITE_IMG_URL,
+  withCredentials: true, // to include cookies for session-based auth
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true, // to include cookies for session-based auth
@@ -41,5 +49,10 @@ apiClient.interceptors.response.use(
     }
   }
 );
+
+export {
+  apiClient,
+  imageClient,
+}
 
 export default apiClient;
