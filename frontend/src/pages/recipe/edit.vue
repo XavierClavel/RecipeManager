@@ -485,6 +485,7 @@ async function submit() {
     complement: item.complement}))
   submitted.customIngredients = submitted.customIngredients.filter((it) => "name" in it)
   submitted.steps = submitted.steps.filter((it) => it)
+  delete submitted['version']
   console.log(submitted)
   if (recipeId.value == null) {
     const response = await createRecipe(submitted)
