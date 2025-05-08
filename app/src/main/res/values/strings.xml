@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">RecipeManager</string>
-    <string name="title_activity_recipes_disply">RecipesDisplyActivity</string>
-    <string name="title_activity_recipe_display">RecipeDisplayActivity</string>
-    <string name="title_activity_recipe_list">RecipeListActivity</string>
-</resources>
