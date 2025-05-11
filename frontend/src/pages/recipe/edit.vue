@@ -20,28 +20,31 @@
         :rules="[max255]"
       ></v-textarea>
 
-          <v-btn-toggle
-            v-model="recipe.dishClass"
-            color="primary"
-            bg-color="background"
-            base-color="background"
-            rounded="lg"
-            group
-            mandatory
-            class="ga-1 my-1 ml-n3 flex-wrap"
-            style="width: 100%;"
+      <div class="d-flex flex-wrap mx-2">
+        <v-btn-toggle
+          v-model="recipe.dishClass"
+          color="primary"
+          bg-color="background"
+          base-color="background"
+          rounded="lg"
+          group
+          mandatory
+          class="ga-1 my-1 ml-n3 flex-wrap"
+          style="height: auto; align-items: flex-start;"
+        >
+          <v-btn
+            v-for="dishClass in dishOptions"
+            :key="dishClass.value"
+            :value="dishClass.value"
+            class="ma-1 pa-1 px-2"
+            height="45"
           >
-            <v-btn
-              v-for="dishClass in dishOptions"
-              :key="dishClass.value"
-              :value="dishClass.value"
-              height="45px"
-              class="ma-1"
-            >
-              {{$t(dishClass.label)}}
-            </v-btn>
-          </v-btn-toggle>
-       <editable-picture
+            {{ $t(dishClass.label) }}
+          </v-btn>
+        </v-btn-toggle>
+      </div>
+
+      <editable-picture
          v-if="ready"
          path="recipes"
          :id="recipeId"

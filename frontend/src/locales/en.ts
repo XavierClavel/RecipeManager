@@ -66,9 +66,10 @@ export default {
   entree: "Entree",
   plat: "Main Dish",
   desert: "Desert",
-  snacks: "Snacks",
-  salty_snacks: "Salty snacks",
-  sugary_snacks: "Sugary snacks",
+  snacks: "Snack",
+  salty_snacks: "Salty snack",
+  sugary_snacks: "Sugary snack",
+  others: "Other",
   breakfast: "Breakfast",
   drinks: "Drinks",
 

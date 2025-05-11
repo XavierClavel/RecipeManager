@@ -67,8 +67,9 @@ export default {
   plat: "Plat",
   desert: "Dessert",
   snacks: "Snacks",
-  salty_snacks: "Snacks salés",
-  sugary_snacks: "Snacks sucrés",
+  salty_snacks: "Snack salé",
+  sugary_snacks: "Snack sucré",
+  others: "Autre",
   breakfast: "Petit déjeuner",
   drinks: "Boissons",
 

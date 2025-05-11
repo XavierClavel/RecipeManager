@@ -42,6 +42,10 @@ const dishOptions = [
     value: "DRINKS",
     label: "drinks",
   },
+  {
+    value: "OTHERS",
+    label: "others",
+  },
 ]
 
 
