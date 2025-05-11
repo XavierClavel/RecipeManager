@@ -59,8 +59,10 @@ function onComboUpdate(newVal) {
 
 function selectFirstMatch() {
   const query = comboboxRef.value?.search
-  const match = autocompleteList.value.find(opt =>
-    opt.name.toLowerCase().includes(query?.toLowerCase())
+  const match = autocompleteList.value.find(opt => {
+    const name = getLocale() == 'fr' ? opt.name_fr : opt.name_en
+    return name.toLowerCase().includes(query?.toLowerCase())
+    }
   )
 
   if (match && !selectedIngredients.value.some(sel => sel.id === match.id)) {
@@ -99,7 +101,8 @@ const getChipColor = (field) => {
 
 const onIngredientAutocompleteChange = async (query) => {
   const response = await searchIngredients(query, 0, 20);
-  autocompleteList.value = response.data.map(item => ({ id: item.id, name: getLocale() == 'fr' ? item.name_fr : item.name_en }));
+  autocompleteList.value = response.data
+  console.log(autocompleteList.value)
 }
 
 const updateUrl = () => {
