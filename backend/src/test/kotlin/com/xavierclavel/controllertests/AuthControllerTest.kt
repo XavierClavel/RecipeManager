@@ -98,7 +98,7 @@ class AuthControllerTest : ApplicationTest() {
         client.login(user.username, oldPassword)
         client.logout()
 
-        val mail = userService.getEntityById(user.id).mail
+        val mail = encryptionService.decrypt(userService.getEntityById(user.id).mailEncrypted)
         client.requestPasswordReset(mail)
         val newToken = userService.getEntityById(user.id).token
         client.resetPassword(newToken, newPassword)

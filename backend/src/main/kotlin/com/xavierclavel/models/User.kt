@@ -34,8 +34,12 @@ class User (
     @Column(unique = true)
     var username: String = "",
 
+    @DbDefault(value = "")
+    val mailEncrypted: String = "",
+
     @Column(unique = true)
-    val mail: String = "",
+    @DbDefault(value = "")
+    val mailHash: String = "",
 
     var role: UserRole = UserRole.USER,
 
@@ -78,11 +82,11 @@ class User (
     ): Model() {
 
     companion object {
-        fun from(userDTO: UserDTO, token: String): User {
-            val passwordHash = BCrypt.withDefaults().hashToString(12, userDTO.password.toCharArray())
+        fun from(userDTO: UserDTO, token: String, passwordHash: String, mailEncrypted: String, mailHash: String): User {
             return User(
                 username = userDTO.username,
-                mail = userDTO.mail,
+                mailEncrypted = mailEncrypted,
+                mailHash = mailHash,
                 role = userDTO.role,
                 passwordHash = passwordHash,
                 token = token,

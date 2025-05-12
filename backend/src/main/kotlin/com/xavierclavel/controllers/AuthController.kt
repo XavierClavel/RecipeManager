@@ -8,6 +8,7 @@ import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.plugins.RedisService
+import com.xavierclavel.services.EncryptionService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
@@ -38,6 +39,7 @@ import java.util.UUID
 object AuthController: Controller(AUTH_URL) {
     val userService: UserService by inject(UserService::class.java)
     val redisService: RedisService by inject(RedisService::class.java)
+    val encryptionService: EncryptionService by inject(EncryptionService::class.java)
 
     override fun Route.routes() {
         authenticate("auth-basic") {
@@ -92,7 +94,7 @@ object AuthController: Controller(AUTH_URL) {
 
         val token = UUID.randomUUID().toString()
         val userCreated = UserController.userService.createUser(userDTO, token)
-        mailService.sendVerificationEmail(userCreated.mail, token, getLocale())
+        mailService.sendVerificationEmail(encryptionService.decrypt(userCreated.mailEncrypted), token, getLocale())
         call.respond(HttpStatusCode.Created, userCreated.toInfo())
     }
 

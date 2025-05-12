@@ -4,6 +4,7 @@ import com.xavierclavel.plugins.RedisService
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.services.CustomIngredientService
 import com.xavierclavel.services.DashboardService
+import com.xavierclavel.services.EncryptionService
 import com.xavierclavel.services.ExportService
 import com.xavierclavel.services.FollowService
 import com.xavierclavel.services.ImageService
@@ -32,4 +33,5 @@ val appModules = module {
     single { MailService() }
     single { RedisService(getProperty("redis.url", "redis://cooknco-redis:6379")) }
     single { config }
+    single { EncryptionService() }
 }

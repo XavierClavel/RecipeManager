@@ -6,6 +6,7 @@ import com.xavierclavel.plugins.configureAuthentication
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.services.CustomIngredientService
 import com.xavierclavel.services.DashboardService
+import com.xavierclavel.services.EncryptionService
 import com.xavierclavel.services.ExportService
 import com.xavierclavel.services.FollowService
 import com.xavierclavel.services.ImageService
@@ -15,6 +16,7 @@ import com.xavierclavel.services.MailService
 import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
+import com.xavierclavel.utils.loadConfig
 import common.dto.UserDTO
 import common.dto.UserSettingsDTO
 import io.ktor.client.HttpClient
@@ -46,6 +48,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class ApplicationTest: KoinTest {
     val userService: UserService by inject()
+    val encryptionService: EncryptionService by inject()
 
     companion object {
         const val USER1 = "user1"
@@ -73,6 +76,8 @@ abstract class ApplicationTest: KoinTest {
                 single { FollowService() }
                 single { mockMailService }
                 single { RedisService(getProperty("redis.url", "redis://redis:6379")) }
+                single { loadConfig() }
+                single { EncryptionService() }
             }
 
             startKoin {

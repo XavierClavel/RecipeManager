@@ -3,3 +3,5 @@ frontend:
 smtp:
   email: test
   password: test
+encryption:
+  key: 9vFdox9hvLcSJbbP

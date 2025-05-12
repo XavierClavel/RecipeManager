@@ -17,11 +17,14 @@ import common.enums.UserRole
 import common.overviewdto.UserOverview
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
 
 class UserService: KoinComponent {
+    val encryptionService: EncryptionService by inject()
+
     fun countAll() =
         QUser().findCount()
 
@@ -38,7 +41,7 @@ class UserService: KoinComponent {
         QUser().username.eq(username).findOne()
 
     fun findByMail(mail: String) : User {
-        return QUser().mail.eq(mail).findOne() ?: throw NotFoundException(NotFoundCause.MAIL_NOT_FOUND)
+        return QUser().mailHash.eq(encryptionService.hash(mail)).findOne() ?: throw NotFoundException(NotFoundCause.MAIL_NOT_FOUND)
     }
 
 
@@ -69,11 +72,17 @@ class UserService: KoinComponent {
 
 
     fun existsById(id: Long) = QUser().id.eq(id).exists()
-    fun existsByMail(mail: String) = QUser().mail.eq(mail).exists()
+    fun existsByMail(mail: String) = QUser().mailHash.eq(encryptionService.hash(mail)).exists()
     fun existsByUsername(username: String) = QUser().username.eq(username).exists()
 
     fun createUser(userDTO: UserDTO, token: String = ""): User =
-        User.from(userDTO, token).insertAndGet()
+        User.from(
+            userDTO = userDTO,
+            token = token,
+            passwordHash = encryptionService.encryptPassword(userDTO.password),
+            mailEncrypted = encryptionService.encrypt(userDTO.mail),
+            mailHash = encryptionService.hash(userDTO.mail)
+            ).insertAndGet()
 
     fun editUser(id: Long, userDTO: UserDTO): UserInfo =
         getEntityById(id).merge(userDTO).updateAndGet().toInfo()

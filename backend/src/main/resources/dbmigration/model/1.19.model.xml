@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <addColumn tableName="users">
+            <column name="mail_encrypted" type="varchar" defaultValue="''" notnull="true"/>
+            <column name="mail_hash" type="varchar" defaultValue="''" notnull="true" unique="uq_users_mail_hash"/>
+        </addColumn>
+    </changeSet>
+    <changeSet type="pendingDrops">
+        <dropColumn columnName="mail" tableName="users"/>
+    </changeSet>
+</migration>
