@@ -51,7 +51,20 @@ fun Application.configureAuthentication() {
         }
         session<UserSession>("auth-session") {
             validate { session ->
-                if (redisService.redis.get("session:${session.sessionId}")?.toLongOrNull() != null) {
+                if (redisService.hasSession(session.sessionId)) {
+                    session
+                } else {
+                    null
+                }
+            }
+            challenge {
+                call.respond(HttpStatusCode.Unauthorized, UnauthorizedCause.SESSION_NOT_FOUND.key)
+            }
+        }
+
+        session<UserSession>("admin-session") {
+            validate { session ->
+                if (redisService.isUserAdmin(session.sessionId)) {
                     session
                 } else {
                     null

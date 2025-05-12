@@ -111,8 +111,7 @@ class UserService: KoinComponent {
         val user = createUser(UserDTO(
             username = "admin",
             password = "Passw0rd",
-            role = UserRole.ADMIN,
-        ))
+        )).setRole(UserRole.ADMIN)
         validateUser(user.id)
     }
 
@@ -129,13 +128,16 @@ class UserService: KoinComponent {
         BCrypt.verifyer().verify(password.toCharArray(), hash).verified
 
     fun updatePassword(id: Long, password: String) =
-        getEntityById(id).updatePassword(password).updateAndGet().toInfo()
+        getEntityById(id).updatePassword(encryptionService.encryptPassword(password)).updateAndGet().toInfo()
+
+    fun setRole(id: Long, role: UserRole) =
+        getEntityById(id).setRole(role).updateAndGet().toInfo()
 
     fun resetPassword(token: String, password: String) {
         val user = findByToken(token)
         if (!user.isTokenValid()) throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
         user.useToken()
-        user.updatePassword(password)
+        user.updatePassword(encryptionService.encryptPassword(password))
         user.update()
     }
 

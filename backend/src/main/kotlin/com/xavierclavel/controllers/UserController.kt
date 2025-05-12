@@ -13,6 +13,7 @@ import com.xavierclavel.utils.getPathId
 import common.dto.PasswordDTO
 import common.dto.UserDTO
 import common.dto.UserSettingsDTO
+import common.enums.UserRole
 import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.USER_URL
 import io.ktor.http.HttpStatusCode
@@ -46,6 +47,10 @@ object UserController: Controller(USER_URL) {
 
             getSettings()
             updateSettings()
+        }
+
+        authenticate("admin-session") {
+            setRole()
         }
     }
 
@@ -95,6 +100,12 @@ object UserController: Controller(USER_URL) {
         val settingsDTO = call.receive<UserSettingsDTO>()
         userService.updateSettings(getSessionUserId(), settingsDTO)
         call.respond(HttpStatusCode.OK)
+    }
+
+    private fun Route.setRole() = put("/{id}/role/{role}") {
+        val role = UserRole.valueOf(call.parameters["role"]!!)
+        val id = getPathId()
+        call.respond(userService.setRole(id, role))
     }
 
 

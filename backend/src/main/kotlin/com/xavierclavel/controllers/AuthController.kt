@@ -8,6 +8,7 @@ import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.plugins.RedisService
+import com.xavierclavel.plugins.SessionData
 import com.xavierclavel.services.EncryptionService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
@@ -33,6 +34,7 @@ import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
+import kotlinx.serialization.json.Json
 import org.koin.java.KoinJavaComponent.inject
 import java.util.UUID
 
@@ -62,7 +64,7 @@ object AuthController: Controller(AUTH_URL) {
         userService.registerUserActivity(user.id)
 
         val sessionId = UUID.randomUUID().toString()
-        redisService.redis.setex("session:$sessionId", 7 * 24 * 60 * 60, user.id.toString())
+        redisService.createSession(sessionId, user)
         call.sessions.set(UserSession(sessionId))
         call.respond(HttpStatusCode.OK)
     }
@@ -120,7 +122,7 @@ object AuthController: Controller(AUTH_URL) {
     @OptIn(ExperimentalLettuceCoroutinesApi::class)
     suspend fun RoutingContext.getOptionalSessionId(): Long? {
         val session = call.sessions.get<UserSession>() ?: return null
-        val userId = redisService.redis.get("session:${session.sessionId}")?.toLongOrNull()
+        val userId = redisService.getSessionUserId(session.sessionId)
         if (userId == null) {
             call.sessions.clear<UserSession>()
             throw UnauthorizedException(UnauthorizedCause.SESSION_NOT_FOUND)
@@ -131,7 +133,7 @@ object AuthController: Controller(AUTH_URL) {
     @OptIn(ExperimentalLettuceCoroutinesApi::class)
     suspend fun RoutingContext.getSessionUserId(): Long {
         val session = call.sessions.get<UserSession>() ?: throw UnauthorizedException(UnauthorizedCause.SESSION_NOT_FOUND)
-        val userId = redisService.redis.get("session:${session.sessionId}")?.toLongOrNull()
+        val userId = redisService.getSessionUserId(session.sessionId)
         if (userId == null) {
             call.sessions.clear<UserSession>()
             throw UnauthorizedException(UnauthorizedCause.SESSION_NOT_FOUND)

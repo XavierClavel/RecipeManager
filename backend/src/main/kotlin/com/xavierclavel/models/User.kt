@@ -87,12 +87,13 @@ class User (
                 username = userDTO.username,
                 mailEncrypted = mailEncrypted,
                 mailHash = mailHash,
-                role = userDTO.role,
                 passwordHash = passwordHash,
                 token = token,
             )
         }
     }
+
+    fun setRole(role: UserRole) = this.apply { this.role = role }
 
     fun registerNewActivity() =
         this.apply {
@@ -116,6 +117,7 @@ class User (
 
     fun toOverview() = UserOverview(
         id = this.id,
+        role = this.role,
         version = this.imageVersion,
         username = this.username,
     )
@@ -129,8 +131,8 @@ class User (
         isVerified = true
     }
 
-    fun updatePassword(password: String) = this.apply {
-        passwordHash = BCrypt.withDefaults().hashToString(12, password.toCharArray())
+    fun updatePassword(encryptedPassword: String) = this.apply {
+        passwordHash = encryptedPassword
     }
 
     fun updateSettings(userSettingsDTO: UserSettingsDTO) = this.apply {

@@ -7,6 +7,7 @@ export{
   deleteUser,
   searchUsers,
   updatePassword,
+  setRole,
 }
 
 class UserOverview {
@@ -26,6 +27,10 @@ async function updateUser(user) {
 
 async function getUsers() {
   return await apiClient.get(`/user`)
+}
+
+async function setRole(id, role) {
+  return await apiClient.put(`/user/${id}/role/${role}`)
 }
 
 async function deleteUser(id) {

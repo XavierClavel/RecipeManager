@@ -20,6 +20,7 @@ data class UserInfo(
 ) {
     fun toOverview() = UserOverview(
         id = this.id,
+        role = this.role,
         version = this.version,
         username = this.username,
     )
