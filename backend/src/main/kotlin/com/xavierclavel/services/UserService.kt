@@ -102,8 +102,8 @@ class UserService: KoinComponent {
     fun getUser(id: Long) : UserInfo =
         getEntityById(id).toInfo()
 
-    fun listUsers(): List<UserOverview> =
-        QUser().findList().map { it.toOverview() }
+    fun listUsers(paging: Paging): List<UserOverview> =
+        QUser().setPaging(paging).findList().map { it.toOverview() }
 
     //TODO :parameterize password
     fun setupDefaultAdmin() {
@@ -150,9 +150,12 @@ class UserService: KoinComponent {
     fun getSettings(id: Long): UserSettingsDTO =
         getEntityById(id).getSettings()
 
-    fun search(searchString: String, paging: Paging): List<UserInfo> =
+    fun search(searchString: String?, paging: Paging): List<UserInfo> =
         QUser()
-            .username.like("%$searchString%")
+            .apply { if (!searchString.isNullOrBlank()) {
+                this.username.like("%$searchString%")
+                }
+            }
             .setPaging(paging)
             .findList()
             .map{ it.toInfo() }

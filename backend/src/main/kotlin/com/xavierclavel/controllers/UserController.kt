@@ -11,9 +11,11 @@ import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import common.dto.PasswordDTO
+import common.dto.SearchResult
 import common.dto.UserDTO
 import common.dto.UserSettingsDTO
 import common.enums.UserRole
+import common.infodto.UserInfo
 import common.utils.Filepath.USERS_IMG_PATH
 import common.utils.URL.USER_URL
 import io.ktor.http.HttpStatusCode
@@ -23,12 +25,11 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
-import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.sessions.clear
 import io.ktor.server.sessions.sessions
+import kotlinx.serialization.json.Json
 import org.koin.java.KoinJavaComponent.inject
-import java.util.UUID
 
 object UserController: Controller(USER_URL) {
     val userService : UserService by inject(UserService::class.java)
@@ -37,7 +38,8 @@ object UserController: Controller(USER_URL) {
 
     override fun Route.routes() {
         getUser()
-        listUsers()
+        searchUsers()
+        countUsers()
 
         authenticate("auth-session") {
             editUser()
@@ -60,10 +62,16 @@ object UserController: Controller(USER_URL) {
         call.respond(user)
     }
 
-    private fun Route.listUsers() = get {
-            val searchString = call.request.queryParameters["search"]
-                ?: return@get call.respond(userService.listUsers())
-        call.respond(userService.search(searchString, getPaging()))
+    private fun Route.searchUsers() = get {
+        val searchString = call.request.queryParameters["search"]
+        val paging = getPaging()
+        val users = userService.search(searchString, paging)
+        val result = SearchResult(userService.countAll(), paging.pageIndex(), paging.pageSize(), users)
+        call.respond(Json.encodeToString(SearchResult.serializer(UserInfo.serializer()), result))
+    }
+
+    private fun Route.countUsers() = get("/count") {
+        call.respond(userService.countAll())
     }
 
     private fun Route.editUser() = put {

@@ -4,6 +4,7 @@ export{
   getUser,
   updateUser,
   getUsers,
+  getUsersCount,
   deleteUser,
   searchUsers,
   updatePassword,
@@ -25,8 +26,12 @@ async function updateUser(user) {
   return await apiClient.put(`/user`, user)
 }
 
-async function getUsers() {
-  return await apiClient.get(`/user`)
+async function getUsers(query, page, size) {
+  return await apiClient.get(`/user?search=${query}&page=${page}&size=${size}`)
+}
+
+async function getUsersCount() {
+  return await apiClient.get(`/user/count`)
 }
 
 async function setRole(id, role) {

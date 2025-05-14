@@ -6,6 +6,15 @@
         <v-card-title>
           Users
         </v-card-title>
+        <v-text-field
+          width="300px"
+          class="ml-2 mt-n2"
+          density="compact"
+          label="Search user"
+          clearable
+          v-model="query"
+          @update:modelValue="updateDisplay"
+        ></v-text-field>
           <v-table
             fixed-header
           >
@@ -67,7 +76,6 @@
                 v-model="page"
                 :length="pagesCount"
                 class="my-4"
-                active-color="primary"
                 @update:modelValue="updateDisplay"
               ></v-pagination>
             </v-container>
@@ -80,9 +88,13 @@
 </template>
 
 <script lang="ts" setup>
-import {getUsers, deleteUser, setRole} from "@/scripts/users";
+import {getUsers, deleteUser, setRole, getUsersCount} from "@/scripts/users";
 import {getUserIconUrl} from "@/scripts/common";
 let users = ref<string[]>([])
+const page = ref<number>(1)
+const pagesCount = ref<number>(1)
+const pageSize = ref(20)
+const query = ref("")
 
 const userRoles = [
   "USER",
@@ -108,14 +120,19 @@ const performDelete = (username) => {
 
 };
 
-getUsers().then (
-  function (response) {
-    console.log(response)
-    users.value = response.data
-}).catch(function (error) {
-  console.log(error);
-}).finally(function () {
-    // always executed
-  });
+
+const updateDisplay = () => {
+  getUsers(query.value || "",page.value - 1, pageSize.value).then (
+    function (response) {
+      console.log(response)
+      users.value = response.data.items
+      pagesCount.value = Math.ceil(response.data.count / pageSize.value)
+      page.value = 0
+    }).catch(function (error) {
+    console.log(error);
+  })
+}
+
+updateDisplay()
 
 </script>
