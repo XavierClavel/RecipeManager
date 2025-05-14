@@ -90,6 +90,7 @@
 <script lang="ts" setup>
 import {getUsers, deleteUser, setRole, getUsersCount} from "@/scripts/users";
 import {getUserIconUrl} from "@/scripts/common";
+import {debounce} from "lodash";
 let users = ref<string[]>([])
 const page = ref<number>(1)
 const pagesCount = ref<number>(1)
@@ -121,7 +122,7 @@ const performDelete = (username) => {
 };
 
 
-const updateDisplay = () => {
+const updateDisplay = debounce(() => {
   getUsers(query.value || "",page.value - 1, pageSize.value).then (
     function (response) {
       console.log(response)
@@ -131,7 +132,7 @@ const updateDisplay = () => {
     }).catch(function (error) {
     console.log(error);
   })
-}
+}, 500)
 
 updateDisplay()
 
