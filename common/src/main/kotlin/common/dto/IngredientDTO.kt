@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class IngredientDTO(
     val name_en: String = "",
     val name_fr: String = "",
-    val type: IngredientType = IngredientType.OTHER,
+    val type: IngredientType = IngredientType.MISCELLANEOUS,
 
     val calories: Int = 0,
     val glucids: Float = 0f,

@@ -5,6 +5,7 @@ import {useAuthStore, declareLogin} from "@/stores/auth";
 import {deleteCookie, getCookie} from "@/scripts/cookies";
 import {getLocale} from "@/scripts/localization";
 import {switchCase} from "@babel/types";
+import {ingredientTypes} from "@/scripts/values";
 
 export {
   login,
@@ -60,6 +61,7 @@ export {
   getCookbookIconUrl,
   getRecipeImageUrl,
   getRecipeThumbnailUrl,
+  getIngredientImageUrl,
   getImageUrl,
   getDefaultImageUrl,
 
@@ -138,6 +140,16 @@ const getUserIconUrl = (id, version) => id && version ? `${import.meta.env.VITE_
 const getCookbookIconUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/cookbooks/${id}-v${version}.webp` : defaultImageCookbook
 const getRecipeImageUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes/${id}-v${version}.webp` : defaultImageRecipe
 const getRecipeThumbnailUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes-thumbnails/${id}-v${version}.webp` : defaultImageRecipe
+const getIngredientImageUrl = (type) => {
+  console.log(type)
+  try {
+    const t = ingredientTypes.value.find((item) => item.value == type)
+    return `/ingredients/${t.image}`
+  } catch (e) {
+    return ''
+  }
+
+}
 
 const getImageUrl = (path, id, version) => {
   switch (path) {

@@ -44,6 +44,8 @@
               v-model="selectedIngredient.type"
               label="Type"
               :items="ingredientTypes"
+              item-title="value"
+              item-value="value"
             ></v-select>
 
 
@@ -221,7 +223,17 @@
                 backgroundColor: isPanelOpen && ingredient && ingredient.id === selectedIngredient.id ? theme.current.value.colors.secondary : '',
               }"
             >
-              <td>{{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</td>
+              <td>
+                <v-avatar size="40" variant="elevated" class="mr-2" style="border:2px solid #0d1821 !important;">
+                  <v-img
+                    color="surface-variant"
+                    :src="getIngredientImageUrl(ingredient.type)"
+                    cover
+                    v-bind="props"
+                    class="clickable_image"
+                  ></v-img>
+                </v-avatar>
+                {{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</td>
               <td>{{ ingredient.type }}</td>
               <td>{{ ingredient.calories }}</td>
             </tr>
@@ -251,9 +263,10 @@
 <script lang="ts" setup>
 import {createIngredient, deleteIngredient, getCount, searchIngredients, updateIngredient} from "@/scripts/ingredients";
 import { useTheme } from 'vuetify'
-import {ICON_DELETE} from "@/scripts/icons";
-import {toCreateCookbook} from "@/scripts/common";
+import {getIngredientIcon, ICON_DELETE} from "@/scripts/icons";
+import {getIngredientImageUrl, getUserIconUrl, toCreateCookbook} from "@/scripts/common";
 import {getLocale} from "@/scripts/localization";
+import {ingredientTypes} from "@/scripts/values";
 
 const theme = useTheme()
 
@@ -262,12 +275,6 @@ const selectedIngredient = ref({})
 const page = ref<number>(1)
 const pagesCount = ref<number>(1)
 const isPanelOpen = ref<boolean>(false)
-const ingredientTypes = [
-  "CHEESE",
-  "VEGETABLE",
-  "MEAT",
-
-]
 const action = ref<string>("Create ingredient")
 
 async function save() {

@@ -14,6 +14,7 @@ export {
   sortOptions,
   unitOptions,
   visibilityOptions,
+  ingredientTypes,
 }
 
 
@@ -89,5 +90,60 @@ const visibilityOptions = ref([
     label: 'Public',
     value: 'PUBLIC',
     icon: ICON_VISIBILITY_PUBLIC,
+  },
+])
+
+const ingredientTypes = ref([
+  {
+    value: "VEGETABLE",
+    image: "vegetable.png",
+  },
+  {
+    value: "FRUIT",
+    image: "vegetable.png",
+  },
+  {
+    value: "GRAIN",
+    image: "vegetable.png",
+  },
+  {
+    value: "NUT",
+    image: "vegetable.png",
+  },
+  {
+    value: "DAIRY",
+    image: "vegetable.png",
+  },
+  {
+    value: "FISH",
+    image: "vegetable.png",
+  },
+  {
+    value: "MEAT",
+    image: "vegetable.png",
+  },
+  {
+    value: "CONDIMENT",
+    image: "vegetable.png",
+  },
+  {
+    value: "OIL",
+    image: "vegetable.png",
+  },
+  {
+    value: "BAKERY",
+    image: "vegetable.png",
+  },
+  {
+    value: "BEVERAGE_INGREDIENT",
+    image: "vegetable.png",
+  },
+  {
+    value: "ALCOHOL",
+    image: "vegetable.png",
+  },
+  {
+    value: "MISCELLANEOUS",
+    image: "vegetable.png",
   },
 ])

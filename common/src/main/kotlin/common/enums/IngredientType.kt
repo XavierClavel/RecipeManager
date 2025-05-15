@@ -3,15 +3,15 @@ package common.enums
 enum class IngredientType {
     VEGETABLE,
     FRUIT,
-    DAIRY,
-    FISH,
-    CRUSTACEAN,
+    GRAIN, // Pasta, rice, quinoa, beans, lentils ...
+    NUT,
+    DAIRY, // Dairy & eggs
+    FISH, // Fish & crustaceans
     MEAT,
-    PASTA,
-    CONDIMENT,
+    CONDIMENT, // Spices & Dried Herbs, Broths & Stocks,
     OIL,
-    SAUCE,
-    EGG,
-    BAKERY,
-    OTHER,
+    BAKERY, // Flour, Sweeteners, Bread
+    BEVERAGE_INGREDIENT,
+    ALCOHOL,
+    MISCELLANEOUS,
 }

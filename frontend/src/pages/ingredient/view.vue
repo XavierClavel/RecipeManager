@@ -12,6 +12,7 @@
         width="200px"
         cover
         style="border: 3px solid #0d1821 !important;"
+        :src="getIngredientImageUrl(ingredient.type)"
       ></v-img>
       <v-container
       class="px-3 mx-auto"
@@ -43,6 +44,7 @@ import {getIngredient, getIngredientRecipesCount} from "@/scripts/ingredients";
 import {useAuthStore} from "@/stores/auth";
 import {getLocale} from "@/scripts/localization";
 import IngredientNutrionalData from "@/components/IngredientNutritionalData.vue";
+import {getIngredientImageUrl} from "@/scripts/common";
 const route = useRoute();
 let ingredientId = ref(route.query.ingredient)
 const ingredient = ref<object>({

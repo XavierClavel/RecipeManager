@@ -2,7 +2,6 @@ package com.xavierclavel.models
 
 import common.dto.IngredientDTO
 import common.enums.IngredientType
-import common.enums.Locale
 import common.infodto.IngredientInfo
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -25,7 +24,7 @@ class Ingredient (
     @DbDefault("")
     var name_fr: String = "",
 
-    var type: IngredientType = IngredientType.OTHER,
+    var type: IngredientType = IngredientType.MISCELLANEOUS,
 
     var calories: Int = 0,
     var glucids: Float = 0f,
@@ -50,7 +49,7 @@ class Ingredient (
     @DbDefault(value = "1.0")
     var weightPerUnit: Float = 1f,
 
-): Model() {
+    ): Model() {
 
     fun mergeDTO(ingredientDTO: IngredientDTO): Ingredient {
         this.name_en = ingredientDTO.name_en
