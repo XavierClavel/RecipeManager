@@ -338,7 +338,7 @@ const newIngredient = () => {
 }
 
 const editIngredient = (ingredientToEdit) => {
-  if (!isAdmin) return
+  if (!isAdmin.value) return
   if (selectedIngredient.value.id == ingredientToEdit.id) {
     cancel()
   } else {
