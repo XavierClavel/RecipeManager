@@ -101,7 +101,7 @@ const getChipColor = (field) => {
 
 const onIngredientAutocompleteChange = async (query) => {
   const response = await searchIngredients(query, 0, 20);
-  autocompleteList.value = response.data
+  autocompleteList.value = response.data.items
   console.log(autocompleteList.value)
 }
 
