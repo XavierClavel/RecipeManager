@@ -10,6 +10,8 @@ import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
+import com.xavierclavel.utils.getQuery
+import com.xavierclavel.utils.json
 import common.dto.PasswordDTO
 import common.dto.SearchResult
 import common.dto.UserDTO
@@ -63,11 +65,11 @@ object UserController: Controller(USER_URL) {
     }
 
     private fun Route.searchUsers() = get {
-        val searchString = call.request.queryParameters["search"]
+        val searchString = getQuery()
         val paging = getPaging()
         val users = userService.search(searchString, paging)
-        val result = SearchResult(userService.countAll(), paging.pageIndex(), paging.pageSize(), users)
-        call.respond(Json.encodeToString(SearchResult.serializer(UserInfo.serializer()), result))
+        val result = SearchResult(users.first, paging.pageIndex(), paging.pageSize(), users.second)
+        call.respond(json.encodeToString(SearchResult.serializer(UserInfo.serializer()), result))
     }
 
     private fun Route.countUsers() = get("/count") {

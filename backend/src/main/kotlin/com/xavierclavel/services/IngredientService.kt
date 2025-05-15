@@ -43,17 +43,18 @@ class IngredientService: KoinComponent {
         QIngredient().id.eq(ingredientId).findOne()?.deleteAndGet() != null
 
 
-    fun search(searchString: String, paging: Paging, locale: Locale): List<IngredientInfo> =
-        QIngredient()
+    fun search(searchString: String, paging: Paging, locale: Locale): Pair<Int,List<IngredientInfo>> {
+        val query = QIngredient()
             .apply {
                 when(locale) {
                     Locale.EN -> this.name_en.like("%$searchString%")
                     Locale.FR -> this.name_fr.like("%$searchString%")
                 }
             }
-            .setPaging(paging)
-            .findList()
-            .map{it.toInfo()}
+        return Pair(query.findCount(), query.setPaging(paging).findList().map{it.toInfo()})
+    }
+
+
 
     //Ebean.find(MyClass.class).order("id").findPagedList(page,size);
 

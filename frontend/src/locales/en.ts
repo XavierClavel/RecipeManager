@@ -94,7 +94,6 @@ export default {
   no_result: "No result",
   visibility: "Visibility",
 
-//Units
   unit: "Unit",
   gram: "Gram",
   none: "Unspecified",
@@ -181,6 +180,9 @@ export default {
 
   leaveCookbookTitle: "Leave cookbook",
   leaveCookbookDescription: "Are you sure you want to leave this cookbook ?",
+  custom_ingredients: "Custom ingredients",
 
-  custom_ingredients: "Custom ingredients"
+  search_ingredient: "Search ingredient",
+  search_user: "Search user",
+  actions: "Actions",
 };

@@ -27,7 +27,7 @@ async function updateUser(user) {
 }
 
 async function getUsers(query, page, size) {
-  return await apiClient.get(`/user?search=${query}&page=${page}&size=${size}`)
+  return await apiClient.get(`/user?query=${query}&page=${page}&size=${size}`)
 }
 
 async function getUsersCount() {

@@ -181,4 +181,8 @@ export default {
   leaveCookbookTitle: "Quitter le carnet de recettes",
   leaveCookbookDescription: "Es-tu sûr de vouloir quitter ce carnet de recettes ?",
   custom_ingredients: "Ingrédients personnalisés",
+
+  search_ingredient: "Chercher un ingrédient",
+  search_user: "Chercher un utilisateur",
+  actions: "Actions",
 };

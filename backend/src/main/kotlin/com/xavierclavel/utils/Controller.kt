@@ -50,7 +50,7 @@ fun RoutingContext.getSort(): Sort =
     Sort.valueOf(call.request.queryParameters["sort"] ?: "NONE")
 
 fun RoutingContext.getPathId(): Long = getIdPathVariable("id") ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
-fun RoutingContext.getSearch(): String = call.request.queryParameters["search"] ?: ""
+fun RoutingContext.getQuery(): String = call.request.queryParameters["query"] ?: ""
 fun RoutingContext.getLocale(): Locale = call.request.queryParameters["locale"]?.let { enumValueOfIgnoreCase<Locale>(it) } ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
 
 inline fun <reified T : Enum<T>> enumValueOfIgnoreCase(key: String): T =

@@ -1,12 +1,18 @@
 package com.xavierclavel.controllers
 
+import com.xavierclavel.controllers.UserController.userService
 import com.xavierclavel.services.IngredientService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getLocale
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getPaging
-import com.xavierclavel.utils.getSearch
+import com.xavierclavel.utils.getQuery
+import com.xavierclavel.utils.json
+import com.xavierclavel.utils.logger
 import common.dto.IngredientDTO
+import common.dto.SearchResult
+import common.infodto.IngredientInfo
+import common.infodto.UserInfo
 import common.utils.URL.INGREDIENT_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
@@ -17,6 +23,7 @@ import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
+import kotlinx.serialization.json.Json
 import org.koin.java.KoinJavaComponent.inject
 
 object IngredientController: Controller(INGREDIENT_URL) {
@@ -64,8 +71,11 @@ object IngredientController: Controller(INGREDIENT_URL) {
     }
 
     private fun Route.searchIngredients() = get {
-        val searchString = getSearch()
-        call.respond(ingredientService.search(searchString, getPaging(), getLocale()))
+        val searchString = getQuery()
+        val paging = getPaging()
+        val ingredients = ingredientService.search(searchString, paging, getLocale())
+        val result = SearchResult(ingredients.first, paging.pageIndex(), paging.pageSize(), ingredients.second)
+        call.respond(json.encodeToString(SearchResult.serializer(IngredientInfo.serializer()), result))
     }
 
     private fun Route.getIngredient() = get("/{id}") {

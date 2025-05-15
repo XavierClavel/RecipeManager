@@ -99,7 +99,7 @@ const toMyCookbooks = () => {
 }
 
 const toHome = () => navigateTo('/home')
-const toUsers = () => navigateTo('/users')
+const toUsers = () => navigateTo('/user/list')
 const toLogin = () => navigateTo('/login')
 const toSignup = () => navigateTo('/signup')
 const toMaintenance = () => navigateTo('/maintenance')
@@ -141,7 +141,6 @@ const getCookbookIconUrl = (id, version) => id && version ? `${import.meta.env.V
 const getRecipeImageUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes/${id}-v${version}.webp` : defaultImageRecipe
 const getRecipeThumbnailUrl = (id, version) => id && version ? `${import.meta.env.VITE_IMG_URL}/recipes-thumbnails/${id}-v${version}.webp` : defaultImageRecipe
 const getIngredientImageUrl = (type) => {
-  console.log(type)
   try {
     const t = ingredientTypes.value.find((item) => item.value == type)
     return `/ingredients/${t.image}`

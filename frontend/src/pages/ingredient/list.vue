@@ -3,8 +3,9 @@
 
       <v-card class="d-flex flex-column pa-0 ma-0" width="100%" color="transparent" variant="flat" style="border:0 !important">
         <v-card-title class="text-h7">
-          Ingredients
+          {{$t("ingredients")}}
           <v-btn
+            v-if="isAdmin"
             color="black"
             class="ma-4 ml-6 text-h2 text-black"
             rounded="lg"
@@ -195,6 +196,16 @@
           </v-sheet>
         </v-slide-x-reverse-transition>
 
+        <v-text-field
+          width="300px"
+          class="ml-2"
+          density="compact"
+          :label="`${$t('search_ingredient')}`"
+          clearable
+          v-model="query"
+          @update:modelValue="updateQuery"
+        ></v-text-field>
+
         <v-table
             min-height="300px"
             fixed-header
@@ -203,25 +214,25 @@
             <thead>
             <tr>
               <th class="text-left">
-                Ingredient
+                {{$t("ingredient")}}
               </th>
               <th class="text-left">
-                Calories
+                {{$t("calories")}}
               </th>
               <th class="text-left">
-                Cholesterol
+                {{$t("cholesterol")}}
               </th>
               <th class="text-left">
-                Glucids
+                {{$t("glucids")}}
               </th>
               <th class="text-left">
-                Fibers
+                {{$t("fibers")}}
               </th>
               <th class="text-left">
-                Proteins
+                {{$t("proteins")}}
               </th>
               <th class="text-left">
-                Sodium
+                {{$t("sodium")}}
               </th>
             </tr>
             </thead>
@@ -243,6 +254,7 @@
                     cover
                     v-bind="props"
                     class="clickable_image"
+                    @click.stop="toViewIngredient(ingredient.id)"
                   ></v-img>
                 </v-avatar>
                 {{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</td>
@@ -263,7 +275,6 @@
                   v-model="page"
                   :length="pagesCount"
                   class="my-4"
-                  active-color="primary"
                   @update:modelValue="updateDisplay"
                 ></v-pagination>
               </v-container>
@@ -280,9 +291,11 @@
 import {createIngredient, deleteIngredient, getCount, searchIngredients, updateIngredient} from "@/scripts/ingredients";
 import { useTheme } from 'vuetify'
 import {getIngredientIcon, ICON_DELETE} from "@/scripts/icons";
-import {getIngredientImageUrl, getUserIconUrl, toCreateCookbook} from "@/scripts/common";
+import {getIngredientImageUrl, getUserIconUrl, toCreateCookbook, toViewIngredient} from "@/scripts/common";
 import {getLocale} from "@/scripts/localization";
 import {ingredientTypes} from "@/scripts/values";
+import {useAuthStore} from "@/stores/auth";
+import {debounce} from "lodash";
 
 const theme = useTheme()
 
@@ -292,6 +305,9 @@ const page = ref<number>(1)
 const pagesCount = ref<number>(1)
 const isPanelOpen = ref<boolean>(false)
 const action = ref<string>("Create ingredient")
+const authStore = useAuthStore()
+const isAdmin = ref(authStore.isAdmin)
+const query = ref("")
 
 async function save() {
   const { id, ...ingredientToUpdate} = selectedIngredient.value
@@ -322,6 +338,7 @@ const newIngredient = () => {
 }
 
 const editIngredient = (ingredientToEdit) => {
+  if (!isAdmin) return
   if (selectedIngredient.value.id == ingredientToEdit.id) {
     cancel()
   } else {
@@ -347,25 +364,26 @@ const performDelete = (id) => {
 
 };
 
-const updateDisplay = () => {
-  searchIngredients("",page.value - 1, 20).then (
+
+
+const updateDisplay = debounce(() => {
+  searchIngredients(query.value || "",page.value - 1, 20).then (
     function (response) {
-      ingredients.value = response.data
+      ingredients.value = response.data.items
+      pagesCount.value = Math.ceil(response.data.count / 20)
+      console.log(ingredients.value)
     }).catch(function (error) {
     console.log(error);
   })
+}, 500)
+
+const updateQuery = () => {
+  page.value = 1
+  updateDisplay()
 }
 
+
 updateDisplay()
-
-
-getCount().then (
-  function (response) {
-    pagesCount.value = Math.ceil(response.data / 20)
-  }).catch(function (error) {
-  console.log(error);
-})
-
 
 </script>
 
@@ -378,5 +396,9 @@ getCount().then (
   height: 100vh;    /* Full vertical height */
   width: 400px;
   overflow-y: auto; /* Enables scrolling within the panel if content is long */
+}
+
+.clickable_image {
+  cursor: pointer
 }
 </style>

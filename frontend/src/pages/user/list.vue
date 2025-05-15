@@ -4,16 +4,16 @@
     <v-main class="d-flex align-center justify-center" style="min-height: 300px;" >
       <v-card width="100%" max-width="1500px" class="ma-5">
         <v-card-title>
-          Users
+          {{$t("users")}}
         </v-card-title>
         <v-text-field
           width="300px"
           class="ml-2 mt-n2"
           density="compact"
-          label="Search user"
+          :label="`${$t('search_user')}`"
           clearable
           v-model="query"
-          @update:modelValue="updateDisplay"
+          @update:modelValue="updateQuery"
         ></v-text-field>
           <v-table
             fixed-header
@@ -21,13 +21,13 @@
             <thead>
             <tr>
               <th class="text-left">
-                User
+                {{$t("user")}}
               </th>
               <th class="text-center">
-                Role
+                {{$t("role")}}
               </th>
               <th class="text-center">
-                Actions
+                {{$t("actions")}}
               </th>
             </tr>
             </thead>
@@ -121,18 +121,22 @@ const performDelete = (username) => {
 
 };
 
-
 const updateDisplay = debounce(() => {
   getUsers(query.value || "",page.value - 1, pageSize.value).then (
     function (response) {
       console.log(response)
       users.value = response.data.items
       pagesCount.value = Math.ceil(response.data.count / pageSize.value)
-      page.value = 0
     }).catch(function (error) {
     console.log(error);
   })
 }, 500)
+
+const updateQuery = () => {
+  page.value = 1
+  updateDisplay()
+}
+
 
 updateDisplay()
 

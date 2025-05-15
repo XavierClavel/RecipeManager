@@ -2,7 +2,6 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.AuthController.getOptionalSessionId
 import com.xavierclavel.controllers.AuthController.getSessionUserId
-import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.controllers.UserController.imageService
 import com.xavierclavel.exceptions.BadRequestCause
 import com.xavierclavel.exceptions.BadRequestException
@@ -16,10 +15,9 @@ import com.xavierclavel.utils.getIdQueryParam
 import com.xavierclavel.utils.getMandatoryIdQueryParam
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
-import com.xavierclavel.utils.getSearch
+import com.xavierclavel.utils.getQuery
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.handleDeletion
-import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
 import common.dto.CookbookUserDTO
 import common.utils.Filepath.COOKBOOKS_IMG_PATH
@@ -75,7 +73,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.listCookbooks() = get {
         val userId = getIdQueryParam("user")
         val recipeId = getIdQueryParam("recipe")
-        val search = getSearch()
+        val search = getQuery()
         val paging = getPaging()
         val sort = getSort()
         val cookbook = cookbookService.listCookbooks(

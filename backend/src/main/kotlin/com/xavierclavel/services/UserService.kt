@@ -150,15 +150,18 @@ class UserService: KoinComponent {
     fun getSettings(id: Long): UserSettingsDTO =
         getEntityById(id).getSettings()
 
-    fun search(searchString: String?, paging: Paging): List<UserInfo> =
-        QUser()
-            .apply { if (!searchString.isNullOrBlank()) {
-                this.username.like("%$searchString%")
+    fun search(searchString: String?, paging: Paging): Pair<Int, List<UserInfo>> {
+        val query = QUser()
+            .apply {
+                if (!searchString.isNullOrBlank()) {
+                    this.username.like("%$searchString%")
                 }
             }
-            .setPaging(paging)
-            .findList()
-            .map{ it.toInfo() }
+
+        return Pair(query.findCount(), query.setPaging(paging).findList().map{ it.toInfo() })
+    }
+
+
 
 
 }
