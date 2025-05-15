@@ -206,10 +206,22 @@
                 Ingredient
               </th>
               <th class="text-left">
-                Type
+                Calories
               </th>
               <th class="text-left">
-                Calories
+                Cholesterol
+              </th>
+              <th class="text-left">
+                Glucids
+              </th>
+              <th class="text-left">
+                Fibers
+              </th>
+              <th class="text-left">
+                Proteins
+              </th>
+              <th class="text-left">
+                Sodium
               </th>
             </tr>
             </thead>
@@ -234,8 +246,12 @@
                   ></v-img>
                 </v-avatar>
                 {{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</td>
-              <td>{{ ingredient.type }}</td>
               <td>{{ ingredient.calories }}</td>
+              <td>{{ ingredient.cholesterol }}</td>
+              <td>{{ ingredient.glucids }}</td>
+              <td>{{ ingredient.fibers }}</td>
+              <td>{{ ingredient.proteins }}</td>
+              <td>{{ ingredient.sodium }}</td>
             </tr>
             </tbody>
           </v-table>
