@@ -1,5 +1,5 @@
 <template>
-  <v-container class="d-flex flex-row ga-2">
+  <v-container class="d-flex flex-wrap align-content-center align-center justify-center ga-2">
   <v-card width="200px">
     <v-card-title class="text-center">{{report.usersCount}}</v-card-title>
     <v-card-text class="text-center"
