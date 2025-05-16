@@ -25,7 +25,7 @@
             <v-btn icon @click="isPanelOpen = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-card-title>
+            <v-card-title class="text-h6 text-sm-h5">
               {{ action }}
             </v-card-title>
 

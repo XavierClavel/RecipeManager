@@ -98,15 +98,9 @@ updateGrid()
     </template>
   </v-infinite-scroll>
 
-  <v-card
-    class="pa-5 ma-5 d-flex flex-row"
-    v-if="!refreshing && !isLoading && recipes.length === 0"
-  >
-    <v-icon color="black" class="text-h3 mr-5 ml-3 mt-2">mdi-alert</v-icon>
-    <v-card-title class="text-black text-h4">
-      {{$t('no_recipe_to_display')}}
-    </v-card-title>
-  </v-card>
+  <div  v-if="!refreshing && !isLoading && recipes.length === 0">
+    <error error="no_recipe_to_display"></error>
+  </div>
 </template>
 
 <style scoped>

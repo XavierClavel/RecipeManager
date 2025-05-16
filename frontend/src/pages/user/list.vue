@@ -44,6 +44,7 @@
                     cover
                     v-bind="props"
                     class="clickable_image"
+                    @click.stop="toViewUser(user.id)"
                   ></v-img>
                 </v-avatar>
                 {{ user.username }}</td>
@@ -89,7 +90,7 @@
 
 <script lang="ts" setup>
 import {getUsers, deleteUser, setRole, getUsersCount} from "@/scripts/users";
-import {getUserIconUrl} from "@/scripts/common";
+import {getUserIconUrl, toViewIngredient, toViewUser} from "@/scripts/common";
 import {debounce} from "lodash";
 let users = ref<string[]>([])
 const page = ref<number>(1)
