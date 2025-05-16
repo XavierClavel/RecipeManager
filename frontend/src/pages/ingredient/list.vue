@@ -206,6 +206,7 @@
           @update:modelValue="updateQuery"
         ></v-text-field>
 
+        <div class="custom-scroll-table">
         <v-table
             min-height="300px"
             fixed-header
@@ -246,7 +247,7 @@
                 backgroundColor: isPanelOpen && ingredient && ingredient.id === selectedIngredient.id ? theme.current.value.colors.secondary : '',
               }"
             >
-              <td>
+              <td class="d-flex flex-row align-center">
                 <v-avatar size="40" variant="elevated" class="mr-2" style="border:2px solid #0d1821 !important;">
                   <v-img
                     color="surface-variant"
@@ -267,6 +268,7 @@
             </tr>
             </tbody>
           </v-table>
+        </div>
         <v-container>
           <v-row justify="center">
             <v-col cols="6">
@@ -401,4 +403,27 @@ updateDisplay()
 .clickable_image {
   cursor: pointer
 }
+
+.custom-scroll-table::-webkit-scrollbar {
+  height: 4px; /* Height of the horizontal scrollbar */
+}
+
+.custom-scroll-table::-webkit-scrollbar-track {
+  background: #eee; /* Track background */
+}
+
+.custom-scroll-table::-webkit-scrollbar-thumb {
+  background-color: #000000; /* Vuetify primary, for example */
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+
+/* Firefox */
+.custom-scroll-table {
+  scrollbar-color: #000000 #eee;
+  scrollbar-width: thin;
+}
+
 </style>
