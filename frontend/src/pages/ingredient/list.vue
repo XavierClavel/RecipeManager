@@ -217,22 +217,22 @@
               <th class="text-left">
                 {{$t("ingredient")}}
               </th>
-              <th class="text-left">
+              <th class="text-center">
                 {{$t("calories")}}
               </th>
-              <th class="text-left">
+              <th class="text-center">
                 {{$t("cholesterol")}}
               </th>
-              <th class="text-left">
+              <th class="text-center">
                 {{$t("glucids")}}
               </th>
-              <th class="text-left">
+              <th class="text-center">
                 {{$t("fibers")}}
               </th>
-              <th class="text-left">
+              <th class="text-center">
                 {{$t("proteins")}}
               </th>
-              <th class="text-left">
+              <th class="text-center">
                 {{$t("sodium")}}
               </th>
             </tr>
@@ -259,12 +259,12 @@
                   ></v-img>
                 </v-avatar>
                 {{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</td>
-              <td>{{ ingredient.calories }}</td>
-              <td>{{ ingredient.cholesterol }}</td>
-              <td>{{ ingredient.glucids }}</td>
-              <td>{{ ingredient.fibers }}</td>
-              <td>{{ ingredient.proteins }}</td>
-              <td>{{ ingredient.sodium }}</td>
+              <td class="text-center">{{ ingredient.calories }}</td>
+              <td class="text-center">{{ ingredient.cholesterol }}</td>
+              <td class="text-center">{{ ingredient.glucids }}</td>
+              <td class="text-center">{{ ingredient.fibers }}</td>
+              <td class="text-center">{{ ingredient.proteins }}</td>
+              <td class="text-center">{{ ingredient.sodium }}</td>
             </tr>
             </tbody>
           </v-table>
