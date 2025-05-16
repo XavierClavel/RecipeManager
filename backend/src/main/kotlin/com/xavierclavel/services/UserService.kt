@@ -154,7 +154,7 @@ class UserService: KoinComponent {
         val query = QUser()
             .apply {
                 if (!searchString.isNullOrBlank()) {
-                    this.username.like("%$searchString%")
+                    this.username.ilike("%$searchString%")
                 }
             }
 

@@ -47,8 +47,8 @@ class IngredientService: KoinComponent {
         val query = QIngredient()
             .apply {
                 when(locale) {
-                    Locale.EN -> this.name_en.like("%$searchString%")
-                    Locale.FR -> this.name_fr.like("%$searchString%")
+                    Locale.EN -> this.name_en.ilike("%$searchString%")
+                    Locale.FR -> this.name_fr.ilike("%$searchString%")
                 }
             }
         return Pair(query.findCount(), query.setPaging(paging).findList().map{it.toInfo()})

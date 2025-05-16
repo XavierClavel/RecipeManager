@@ -201,7 +201,7 @@ class CookbookService: KoinComponent {
         if (recipeId == null) this else this.where().recipes.recipe.id.eq(recipeId)
 
     private fun QCookbook.filterBySearch(searchString: String?) =
-        if (searchString == null) this else this.title.like("%$searchString%")
+        if (searchString == null) this else this.title.ilike("%$searchString%")
 
     fun isMemberOfCookbook(cookbookId: Long, userId: Long): Boolean =
         QCookbookUser()
