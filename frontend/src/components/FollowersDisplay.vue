@@ -96,17 +96,16 @@ const getTitle = () => {
 <v-card class="ml-2" max-width="500px">
   <v-card-text v-if="!hasAccepted && !hasPending">{{$t("nothing_to_display")}}</v-card-text>
   <v-list lines="two" style="background-color: transparent !important; border-width: 0 !important">
-    <v-list-subheader inset v-if="hasPending">{{$t("pending")}}</v-list-subheader>
+    <v-list-subheader class="text-left ml-n14" inset v-if="hasPending">{{$t("pending")}}</v-list-subheader>
 
     <v-list-item
       v-for="user in usersPending"
       :key="user.user.username"
       :title="user.user.username"
-      @click="toViewUser(user.user.id)"
     >
       <template v-slot:prepend>
-        <v-avatar color="black">
-          <v-img :src="getUserIconUrl(user.user.id)"></v-img>
+        <v-avatar color="black" class="mr-2" style="border:2px solid #0d1821;">
+          <v-img :src="getUserIconUrl(user.user.id)" @click.stop="toViewUser(user.user.id)" class="clickable_image"></v-img>
         </v-avatar>
       </template>
 
@@ -140,17 +139,16 @@ const getTitle = () => {
 
     <v-divider inset v-if="hasPending && hasAccepted"></v-divider>
 
-    <v-list-subheader inset v-if="hasAccepted">{{$t("accepted")}}</v-list-subheader>
+    <v-list-subheader class="text-left ml-n14" inset v-if="hasAccepted">{{$t("accepted")}}</v-list-subheader>
 
     <v-list-item
       v-for="user in usersAccepted"
       :key="user.user.username"
       :title="user.user.username"
-      @click="toViewUser(user.user.id)"
     >
       <template v-slot:prepend>
-        <v-avatar color="black">
-          <v-img :src="getUserIconUrl(user.user.id)"></v-img>
+        <v-avatar color="black" class="mr-2" style="border:2px solid #0d1821;">
+          <v-img :src="getUserIconUrl(user.user.id)" @click.stop="toViewUser(user.user.id)" class="clickable_image"></v-img>
         </v-avatar>
       </template>
 
@@ -178,5 +176,7 @@ const getTitle = () => {
 </template>
 
 <style scoped>
-
+.clickable_image {
+  cursor: pointer
+}
 </style>
