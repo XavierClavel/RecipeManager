@@ -43,7 +43,7 @@ async function deleteUser(id) {
 }
 
 async function searchUsers(query, page, size) {
-  return await apiClient.get(`/user?search=${query}&page=${page}&size=${size}`)
+  return await apiClient.get(`/user?query=${query}&page=${page}&size=${size}`)
 }
 
 async function updatePassword(oldPassword, newPassword) {

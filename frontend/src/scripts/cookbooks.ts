@@ -46,7 +46,7 @@ async function removeRecipeFromCookbook(cookbookId, recipeId) {
 }
 
 async function searchCookbooks(search) {
-  return await apiClient.get(`cookbook?search=${search}`)
+  return await apiClient.get(`cookbook?query=${search}`)
 }
 
 async function getCookbookUsers(cookbookId) {
