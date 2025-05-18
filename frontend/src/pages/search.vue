@@ -87,7 +87,7 @@ updateSearch()
       class="text-black text-h2 font-weight-bold"
     >{{$t("recipes")}}</v-card-title>
   </v-card>
-    <v-row class="mx-5">
+    <v-row class="mx-5 ga-4">
       <recipe v-for="recipe in recipes" :recipe="recipe"></recipe>
     </v-row>
   <v-card
