@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {getUsers} from "@/scripts/users";
 import {getUserIconUrl, toViewUser} from "../scripts/common";
 import {ICON_ACCEPT, ICON_DENY, ICON_REMOVE} from "../scripts/icons";
 import {
@@ -18,9 +17,9 @@ const { t } = useI18n();
 const route = useRoute();
 const userId = route.query.user
 const authStore = useAuthStore()
-const currentUser = acomputed(() => authStore.id)
+const currentUser = computed(() => authStore.id)
 
-const forMyself = currentUser == userId
+const forMyself = ref(currentUser.value == userId)
 
 const props = defineProps({
   isFollowersTab: {
@@ -33,12 +32,21 @@ const usersAccepted = ref(null)
 const usersPending = ref(null)
 
 const refreshData = () => {
+  console.log("refreshing data")
+  console.log(userId)
+  console.log(currentUser)
+  console.log(forMyself)
   if (props.isFollowersTab) {
+    console.log("followers")
+
     getFollowers(userId).then((response) => {
       if (forMyself) usersPending.value = response.data.filter((it) => it.pending)
       usersAccepted.value = response.data.filter((it) => !it.pending)
+      console.log(usersPending.value)
+      console.log(usersAccepted.value)
     })
   } else {
+    console.log("follows")
     getFollows(userId).then((response) => {
       if (forMyself) usersPending.value = response.data.filter((it) => it.pending)
       usersAccepted.value = response.data.filter((it) => !it.pending)
@@ -87,7 +95,7 @@ const getTitle = () => {
 <template>
 <v-card class="ml-2" max-width="500px">
   <v-card-text v-if="!hasAccepted && !hasPending">{{$t("nothing_to_display")}}</v-card-text>
-  <v-list lines="two">
+  <v-list lines="two" style="background-color: transparent !important; border-width: 0 !important">
     <v-list-subheader inset v-if="hasPending">{{$t("pending")}}</v-list-subheader>
 
     <v-list-item
@@ -97,28 +105,31 @@ const getTitle = () => {
       @click="toViewUser(user.user.id)"
     >
       <template v-slot:prepend>
-        <v-avatar color="grey-lighten-1">
+        <v-avatar color="black">
           <v-img :src="getUserIconUrl(user.user.id)"></v-img>
         </v-avatar>
       </template>
 
       <template v-slot:append v-if="forMyself">
         <v-btn
-          color="grey-lighten-1"
+          color="black"
+          style="border-width: 0 !important"
           :icon="ICON_ACCEPT"
           variant="text"
           v-if="isFollowersTab"
           @click.stop="doAcceptFollowRequest(user.user.id)"
         ></v-btn>
         <v-btn
-          color="grey-lighten-1"
+          color="black"
+          style="border-width: 0 !important"
           :icon="ICON_DENY"
           variant="text"
           v-if="isFollowersTab"
           @click.stop="doDeclineFollowRequest(user.user.id)"
         ></v-btn>
         <v-btn
-          color="grey-lighten-1"
+          color="black"
+          style="border-width: 0 !important"
           :icon="ICON_REMOVE"
           variant="text"
           v-if="!isFollowersTab"
@@ -138,21 +149,23 @@ const getTitle = () => {
       @click="toViewUser(user.user.id)"
     >
       <template v-slot:prepend>
-        <v-avatar color="grey-lighten-1">
+        <v-avatar color="black">
           <v-img :src="getUserIconUrl(user.user.id)"></v-img>
         </v-avatar>
       </template>
 
       <template v-slot:append v-if="forMyself">
         <v-btn
-          color="grey-lighten-1"
+          color="black"
+          style="border-width: 0 !important"
           :icon="ICON_REMOVE"
           variant="text"
           v-if="isFollowersTab"
           @click.stop="doRemoveFollower(user.user.id)"
         ></v-btn>
         <v-btn
-          color="grey-lighten-1"
+          color="black"
+          style="border-width: 0 !important"
           :icon="ICON_REMOVE"
           variant="text"
           v-if="!isFollowersTab"
