@@ -185,4 +185,14 @@ export default {
   search_ingredient: "Search ingredient",
   search_user: "Search user",
   actions: "Actions",
+
+  today: "Today",
+  yesterday: "Yesterday",
+  monday: "Monday",
+  tuesday: "Tuesday",
+  wednesday: "Wednesday",
+  thursday: "Thursday",
+  friday: "Friday",
+  saturday: "Saturday",
+  sunday: "Sunday",
 };

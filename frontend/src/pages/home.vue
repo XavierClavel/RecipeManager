@@ -20,7 +20,7 @@
       >
         <v-timeline
           class="my-2"
-          :align="xs ? 'start' : 'center'"
+          :align="xs ? 'start' : 'start'"
           side="end"
           line-color="black"
           line-thickness="2px"
@@ -40,13 +40,11 @@
             {{timelineRecipe.length}}
           </v-avatar>
         </template>
-          <template v-slot:opposite>
-            <v-card color="surface" class="pa-1 px-3" style="max-width: 100px;">
-              <v-card-text class="text-caption text-wrap">{{ date }}</v-card-text>
-            </v-card>
-          </template>
+          <v-card  color="surface" class="mt-n2" width="200px">
+            <v-card-text class="text-caption text-wrap text-h6 text-sm-h6 font-weight-bold">{{ $t(date) }}</v-card-text>
+          </v-card>
+          <v-row class="my-4 mb-16">
 
-          <v-row class="my-4">
             <recipe class="ma-2" :recipe="recipe" v-for="recipe in timelineRecipe"></recipe>
           </v-row>
 
@@ -84,6 +82,9 @@ const allRecipesLoaded = ref(false)
 const { t } = useI18n()
 const { xs, sm, md } = useDisplay();
 
+const dayNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+
+
 
 const loadMore = async ({ done }: { done: () => void }) => {
   if (isLoading.value || allRecipesLoaded.value) return
@@ -109,7 +110,36 @@ const updateGrid = async() => {
     recipes.value.push(...response.data)
     currentPage.value++
     timelineRecipes.value = recipes.value.reduce((acc, recipe) => {
-      const groupKey = new Date(recipe.creationDate * 1000).toLocaleDateString()
+      let groupKey = new Date(recipe.creationDate * 1000).toLocaleDateString()
+      switch (groupKey) {
+        case new Date().toLocaleDateString():
+          groupKey = "today"
+          break
+
+        case new Date((new Date()).valueOf() - 1000*60*60*24).toLocaleDateString():
+          groupKey = "yesterday"
+          break
+
+        case new Date((new Date()).valueOf() - 2 * 1000*60*60*24).toLocaleDateString():
+          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          break
+
+        case new Date((new Date()).valueOf() - 3 * 1000*60*60*24).toLocaleDateString():
+          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          break
+
+        case new Date((new Date()).valueOf() - 4 * 1000*60*60*24).toLocaleDateString():
+          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          break
+
+        case new Date((new Date()).valueOf() - 5 * 1000*60*60*24).toLocaleDateString():
+          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          break
+
+        case new Date((new Date()).valueOf() - 6 * 1000*60*60*24).toLocaleDateString():
+          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          break
+      }
 
       if (!acc[groupKey]) {
         acc[groupKey] = [];

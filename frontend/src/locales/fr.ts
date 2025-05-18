@@ -185,4 +185,14 @@ export default {
   search_ingredient: "Chercher un ingrédient",
   search_user: "Chercher un utilisateur",
   actions: "Actions",
+
+  today: "Aujourd'hui",
+  yesterday: "Hier",
+  monday: "Lundi",
+  tuesday: "Mardi",
+  wednesday: "Mercredi",
+  thursday: "Jeudi",
+  friday: "Vendredi",
+  saturday: "Samedi",
+  sunday: "Dimanche",
 };
