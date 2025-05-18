@@ -9,7 +9,13 @@ import { createRouter, createWebHistory } from 'vue-router/auto'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
 import { useAuthStore } from '@/stores/auth';
-import {allowNoLoginStartsWith, noLoginRedirect, noLoginRedirectStartsWith, toListRecipe} from "@/scripts/common";
+import {
+  adminOnly,
+  allowNoLoginStartsWith,
+  noLoginRedirect,
+  noLoginRedirectStartsWith,
+  toListRecipe
+} from "@/scripts/common";
 import {getCookie, setCookie} from "@/scripts/cookies";
 
 const router = createRouter({
@@ -37,6 +43,11 @@ router.beforeEach(async (to, from) => {
     // redirect the user to the login page
     setCookie("redirectedFrom", to.fullPath)
     return { name: `/login` }
+  }
+
+  //admin only
+  if (adminOnly.includes(to.name) && !authStore.isAdmin) {
+    return {name: '/home'}
   }
   //Keep last query when listing recipes without query
   if (from.name != '/recipe/list' && to.name == '/recipe/list' && !Object.keys(to.query)?.length) {

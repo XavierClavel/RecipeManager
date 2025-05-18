@@ -30,7 +30,9 @@
         <v-list-item :prepend-icon="ICON_RECIPE" link :title="`${$t('recipes')}`" @click="toListRecipe('')"></v-list-item>
         <v-list-item :prepend-icon="ICON_INGREDIENT" link :title="`${$t('ingredients')}`" @click="toListIngredient"></v-list-item>
         <v-list-item :prepend-icon="ICON_COOKBOOK" link :title="`${$t('cookbooks')}`" @click="toMyCookbooks"></v-list-item>
+        <admin-only>
         <v-list-item :prepend-icon="ICON_ADMIN" link :title="`${$t('admin')}`" @click="toUsers"></v-list-item>
+        </admin-only>
 
       </v-list>
       <template v-slot:append>
@@ -140,6 +142,7 @@ const userId = computed(() => authStore.id)
 const userIconVersion = computed(() => authStore.iconVersion)
 const router = useRouter()
 const version = ref(null)
+const isAdmin =ref(authStore.isAdmin)
 
 
 const route = useRoute();

@@ -54,6 +54,7 @@ export {
   noLoginRedirect,
   noLoginRedirectStartsWith,
   allowNoLoginStartsWith,
+  adminOnly,
 
   unitToReadable,
 
@@ -130,6 +131,10 @@ const noLoginRedirectStartsWith = [
 
 const allowNoLoginStartsWith = [
   '/recipe/view',
+]
+
+const adminOnly = [
+  '/user/list',
 ]
 
 const defaultImageUser = '/default_user.jpg'

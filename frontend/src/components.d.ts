@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ActionButton: typeof import('./components/ActionButton.vue')['default']
+    AdminOnly: typeof import('./components/AdminOnly.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     ChipRow: typeof import('./components/ChipRow.vue')['default']
     Cookbook: typeof import('./components/Cookbook.vue')['default']
