@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getRecipeThumbnailUrl, toViewIngredient, toViewRecipe} from "@/scripts/common";
+import {getIngredientImageUrl, getRecipeThumbnailUrl, toViewIngredient, toViewRecipe} from "@/scripts/common";
 import {getIngredientIcon} from "../scripts/icons";
 import {getLocale} from "@/scripts/localization";
 
@@ -18,11 +18,10 @@ defineProps({
         @click="toViewIngredient(ingredient.id)"
       >
           <v-img
-            color="primary"
             height="150px"
             class="mt-n2"
             rounded="t-lg"
-            :src="getIngredientIcon(ingredient.type)"
+            :src="getIngredientImageUrl(ingredient.type)"
             cover
           ></v-img>
         <v-card-title class="text-black text-h6 text-sm-h6 text-truncate font-weight-regular justify-end">{{getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en}}</v-card-title>

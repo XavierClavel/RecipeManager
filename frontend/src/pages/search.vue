@@ -31,7 +31,7 @@ async function updateCookbooks() {
 
 async function updateUsers() {
   const response = await searchUsers(searchQuery.value, 0, 20);
-  users.value = response.data;
+  users.value = response.data.items;
   console.log(users.value)
 }
 
@@ -43,7 +43,7 @@ async function updateRecipes() {
 
 async function updateIngredients() {
   const response = await searchIngredients(searchQuery.value, 0, 20)
-  ingredients.value = response.data
+  ingredients.value = response.data.items
   console.log(ingredients.value)
 }
 
