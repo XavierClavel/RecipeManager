@@ -129,8 +129,10 @@ const noLoginRedirectStartsWith = [
   '/password/reset'
 ]
 
+
 const allowNoLoginStartsWith = [
   '/recipe/view',
+  '/user/view',
 ]
 
 const adminOnly = [

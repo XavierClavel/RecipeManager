@@ -46,9 +46,9 @@ const getValueVolume = v => {
     <thead>
     <tr>
       <th class="text-left">Value</th>
-      <th v-if="ingredient.allowAmount" class="text-center">Per unit</th>
-      <th v-if="ingredient.allowWeight" class="text-center">Per 100g</th>
-      <th v-if="ingredient.allowVolume" class="text-center">Per 100mL</th>
+      <th v-if="ingredient.allowAmount" class="text-center">{{ $t("per_unit") }}</th>
+      <th v-if="ingredient.allowWeight" class="text-center">{{ $t("per_weight")}}</th>
+      <th v-if="ingredient.allowVolume" class="text-center">{{ $t("per_volume")}}</th>
     </tr>
     </thead>
     <tbody>

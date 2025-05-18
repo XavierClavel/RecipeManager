@@ -1,5 +1,18 @@
 <template>
 
+  <v-dialog v-model="recipesDialog" >
+    <v-card color="background" class="mx-10">
+    <recipes-list :query="`user=${user.id}`"></recipes-list>
+    </v-card>
+  </v-dialog>
+
+  <v-dialog v-model="likesDialog" width="260px">
+    <v-card color="background">
+      <recipes-list :query="`likedBy=${user.id}`"></recipes-list>
+    </v-card>
+
+  </v-dialog>
+
   <v-dialog v-model="followersDialog" width="auto">
     <followers-display :is-followers-tab=true></followers-display>
   </v-dialog>
@@ -42,8 +55,8 @@
     </v-container>
 
     <v-container class="d-flex flex-wrap ga-2">
-      <interactible-picto-info :value="user.recipesCount" :icon="`${ICON_USER_RECIPES}`" :action="redirectRecipesOwned"></interactible-picto-info>
-      <interactible-picto-info :value="user.likesCount" :icon="`${ICON_USER_LIKES}`" :action="redirectRecipesLiked"></interactible-picto-info>
+      <interactible-picto-info :value="user.recipesCount" :icon="`${ICON_USER_RECIPES}`" :action="openRecipesWindow"></interactible-picto-info>
+      <interactible-picto-info :value="user.likesCount" :icon="`${ICON_USER_LIKES}`" :action="openLikesWindow"></interactible-picto-info>
       <interactible-picto-info :value="user.followsCount" :icon="`${ICON_USER_FOLLOWS}`" :action="openFollowsWindow"></interactible-picto-info>
       <interactible-picto-info :value="user.followersCount" :icon="`${ICON_USER_FOLLOWERS}`" :action="openFollowersWindow"></interactible-picto-info>
   </v-container>
@@ -98,6 +111,16 @@ const user = ref<object>({})
 const followsUser = ref(null)
 const followersDialog = ref(false)
 const followsDialog = ref(false)
+const recipesDialog = ref(false)
+const likesDialog = ref(false)
+
+const openRecipesWindow = () => {
+  recipesDialog.value = true
+}
+
+const openLikesWindow = () => {
+  likesDialog.value = true
+}
 
 const openFollowersWindow = () => {
   followersDialog.value = true

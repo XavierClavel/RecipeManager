@@ -195,4 +195,8 @@ export default {
   friday: "Friday",
   saturday: "Saturday",
   sunday: "Sunday",
+
+  per_unit: "Per unit",
+  per_weight: "Per 100g",
+  per_volume: "Per 100mL",
 };
