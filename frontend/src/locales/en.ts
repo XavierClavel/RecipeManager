@@ -199,4 +199,6 @@ export default {
   per_unit: "Per unit",
   per_weight: "Per 100g",
   per_volume: "Per 100mL",
+
+  maintenance: "This site is currently down, please try again later."
 };

@@ -44,7 +44,7 @@
       ></v-img>
       <v-container class="justify-center align-content-center">
       <v-card-title
-        class="mx-auto px-3 mt-n8 text-black text-h2 font-weight-bold
+        class="mx-auto px-3 mt-n4 text-black text-h2 font-weight-bold
         text-center text-sm-left"
       >{{ user.username }}</v-card-title>
       <v-card-text

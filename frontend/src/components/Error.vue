@@ -15,7 +15,7 @@ defineProps({
     variant="outlined"
     color="primary"
   >
-    <v-card-title >
+    <v-card-title class="text-h4  text-sm-h2">
       ⚠️ {{ $t(error) }}
     </v-card-title>
   </v-card>
