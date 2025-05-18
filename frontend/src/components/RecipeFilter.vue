@@ -178,7 +178,7 @@ const updateUrl = () => {
       </v-col>
 
       <!-- Right Section: Sorting Chips -->
-      <v-col class="d-flex flex-column align-end align-self-center" cols="auto">
+      <v-col class="d-flex flex-column align-center align-sm-end align-self-center mx-auto" cols="auto">
         <v-chip
           v-for="option in sortOptions"
           :key="option.value"

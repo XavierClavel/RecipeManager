@@ -48,11 +48,11 @@ const selectItem = (index) => {
 </script>
 
 <template>
-  <v-row class="d-flex flex-row ma-1">
+  <v-row class="d-flex flex-row ma-1 justify-sm-start">
     <v-chip
       v-for="(item, index) in values"
       filter
-      class="mx-1"
+      class="ma-1 my-sm-0"
       :color="selectedItems.includes(index) ? 'primary' : 'background'"
       variant="elevated"
       @click="selectItem(index)"
