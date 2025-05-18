@@ -20,7 +20,7 @@
       >
         <v-timeline
           class="my-2"
-          :align="xs ? 'start' : 'start'"
+          align="start"
           side="end"
           line-color="black"
           line-thickness="2px"
