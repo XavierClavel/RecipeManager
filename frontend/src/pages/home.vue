@@ -40,10 +40,8 @@
             {{timelineRecipe.length}}
           </v-avatar>
         </template>
-          <v-card  color="surface" class="mt-n2" width="200px">
-            <v-card-text class="text-caption text-wrap text-h6 text-sm-h6 font-weight-bold">{{ $t(date) }}</v-card-text>
-          </v-card>
-          <v-row class="my-4 mb-16">
+          <v-card-text class="mt-n2 ml-n6 text-wrap text-h6 text-sm-h6 font-weight-bold">{{ $t(date) }}</v-card-text>
+          <v-row class="mt-1 mb-16">
 
             <recipe class="ma-2" :recipe="recipe" v-for="recipe in timelineRecipe"></recipe>
           </v-row>
