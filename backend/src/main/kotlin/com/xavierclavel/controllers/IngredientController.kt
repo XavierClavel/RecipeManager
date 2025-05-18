@@ -35,7 +35,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
         getCount()
         getRecipesCount()
 
-        authenticate("auth-session") {
+        authenticate("admin-session") {
             createIngredient()
             createIngredientsBatch()
             updateIngredient()
