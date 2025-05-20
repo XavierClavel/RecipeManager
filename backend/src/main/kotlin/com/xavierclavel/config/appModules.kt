@@ -31,7 +31,7 @@ val appModules = module {
     single { CustomIngredientService() }
     single { FollowService() }
     single { MailService() }
-    single { RedisService(getProperty("redis.url", "redis://cooknco-redis:6379")) }
+    single { RedisService(getProperty("redis.url", "redis://:${System.getenv("REDIS_PASSWORD")}@cooknco-redis:6379")) }
     single { config }
     single { EncryptionService() }
 }

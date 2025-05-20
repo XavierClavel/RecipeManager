@@ -10,6 +10,8 @@ services:
       - logs:/var/log/cooknco
       - /secrets/cooknco/db.properties:/app/config/db.properties:ro
       - /secrets/cooknco/application.properties:/app/config/application.yaml:ro
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports:
       - "8080:8080"
     networks:
@@ -49,7 +51,10 @@ services:
     image: postgres:17.2
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file: "/secrets/cooknco/postgres.env"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - database-network
     healthcheck:
@@ -66,7 +71,9 @@ services:
       - redis_data:/data
     networks:
       - auth-network
-    command: [ "redis-server", "--appendonly", "yes" ]
+    command: [ "redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}" ]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     healthcheck:
       test: [ "CMD", "redis-cli","ping" ]
       interval: 10s
@@ -84,4 +91,5 @@ networks:
   database-network:
     internal: true
   auth-network:
+    driver: bridge
     internal: true
