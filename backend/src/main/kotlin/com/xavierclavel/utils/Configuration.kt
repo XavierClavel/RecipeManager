@@ -5,21 +5,40 @@ import com.sksamuel.hoplite.addFileSource
 import com.sksamuel.hoplite.addResourceSource
 import javax.crypto.spec.SecretKeySpec
 
-data class Frontend(
-    val url: String,
-)
 
-
-data class Smtp(
-    val email: String,
-    val password: String,
-)
-
-data class Encryption(
-    val key: String,
+data class Configuration(
+    val smtp: Smtp,
+    val frontend: Frontend,
+    val encryption: Encryption,
+    val oauth: OAuth,
 ) {
-    val aesKey = SecretKeySpec(key.toByteArray(), "AES")
+    data class OAuth(
+        val google: OAuthProvider
+    ) {
+        data class OAuthProvider(
+            val clientId: String,
+            val clientSecret: String,
+        )
+    }
+
+    data class Frontend(
+        val url: String,
+    )
+
+
+    data class Smtp(
+        val email: String,
+        val password: String,
+    )
+
+    data class Encryption(
+        val key: String,
+    ) {
+        val aesKey = SecretKeySpec(key.toByteArray(), "AES")
+    }
 }
+
+
 
 fun loadConfig(): Configuration {
     return ConfigLoaderBuilder.default()
@@ -31,11 +50,7 @@ fun loadConfig(): Configuration {
 
 
 
-data class Configuration(
-    val smtp: Smtp,
-    val frontend: Frontend,
-    val encryption: Encryption,
-)
+
 
 data class Database(
     val host: String,

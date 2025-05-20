@@ -49,11 +49,7 @@ services:
     image: postgres:17.2
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: postgres
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: changeit
+    env_file: "/secrets/cooknco/postgres.env"
     networks:
       - database-network
     healthcheck:
