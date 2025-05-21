@@ -48,7 +48,6 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-sessions:$ktorVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
-    implementation("io.ktor:ktor-server-auth-oauth:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
 
     implementation("org.webjars:jquery:3.2.1")
