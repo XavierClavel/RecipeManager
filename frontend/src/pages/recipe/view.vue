@@ -109,7 +109,7 @@
       v-model="selectedYield"
       min="1"
       max-width="200px"
-      class="mx-auto"
+      class="mx-auto mt-8"
       control-variant="split"
       precision="0"
     ></v-number-input>
