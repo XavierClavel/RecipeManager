@@ -7,14 +7,14 @@
           <v-btn
             v-if="isAdmin"
             color="black"
-            class="ma-4 ml-6 text-h2 text-black"
+            class="ma-4 ml-6 text-h5 text-black"
             rounded="lg"
-            height="100px"
-            width="100px"
+            height="50px"
+            width="50px"
             @click="newIngredient"
             icon="mdi-plus"
             variant="outlined"
-            style="border: 5px solid #0d1821 !important;"
+            style="border: 4px solid #0d1821 !important;"
           ></v-btn>
         </v-card-title>
 

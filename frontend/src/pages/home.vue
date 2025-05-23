@@ -106,6 +106,7 @@ const updateGrid = async() => {
     noRecipes.value = recipes.value.length == 0
   } else {
     recipes.value.push(...response.data)
+    console.log(recipes.value)
     currentPage.value++
     timelineRecipes.value = recipes.value.reduce((acc, recipe) => {
       let groupKey = new Date(recipe.creationDate * 1000).toLocaleDateString()
@@ -119,23 +120,23 @@ const updateGrid = async() => {
           break
 
         case new Date((new Date()).valueOf() - 2 * 1000*60*60*24).toLocaleDateString():
-          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          groupKey = dayNames[new Date(recipe.creationDate * 1000).getDay()]
           break
 
         case new Date((new Date()).valueOf() - 3 * 1000*60*60*24).toLocaleDateString():
-          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          groupKey = dayNames[new Date(recipe.creationDate * 1000).getDay()]
           break
 
         case new Date((new Date()).valueOf() - 4 * 1000*60*60*24).toLocaleDateString():
-          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          groupKey = dayNames[new Date(recipe.creationDate * 1000).getDay()]
           break
 
         case new Date((new Date()).valueOf() - 5 * 1000*60*60*24).toLocaleDateString():
-          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          groupKey = dayNames[new Date(recipe.creationDate * 1000).getDay()]
           break
 
         case new Date((new Date()).valueOf() - 6 * 1000*60*60*24).toLocaleDateString():
-          groupKey = dayNames[Date(recipe.creationDate * 1000).getDay()]
+          groupKey = dayNames[new Date(recipe.creationDate * 1000).getDay()]
           break
       }
 
