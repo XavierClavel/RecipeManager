@@ -58,6 +58,14 @@
               :step="10"
             ></v-number-input>
 
+            <v-number-input
+              v-model="selectedIngredient.proteins"
+              :label="`${$t('proteins')}`"
+              type="number"
+              :min=0
+              :step="10"
+            ></v-number-input>
+
 
             <v-number-input
               v-model="selectedIngredient.carbohydrates"
