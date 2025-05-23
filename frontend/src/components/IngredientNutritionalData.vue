@@ -69,16 +69,16 @@ const getValueVolume = v => {
 
     <tr>
       <th class="text-left">
-        {{$t('glucids')}}
+        {{$t('carbohydrates')}}
       </th>
       <th class="text-center" v-if="ingredient.allowAmount">
-        {{ getValueAmount(ingredient.glucids)}}
+        {{ getValueAmount(ingredient.carbohydrates)}}
       </th>
       <th class="text-center" v-if="ingredient.allowWeight">
-        {{ getValueWeight(ingredient.glucids)}}
+        {{ getValueWeight(ingredient.carbohydrates)}}
       </th>
       <th class="text-center" v-if="ingredient.allowVolume">
-        {{ getValueVolume(ingredient.glucids)}}
+        {{ getValueVolume(ingredient.carbohydrates)}}
       </th>
     </tr>
 
@@ -99,16 +99,31 @@ const getValueVolume = v => {
 
     <tr>
       <th class="text-left">
-        {{$t('lipids')}}
+        {{$t('unsaturatedFat')}}
       </th>
       <th class="text-center" v-if="ingredient.allowAmount">
-        {{ getValueAmount(ingredient.lipids)}}
+        {{ getValueAmount(ingredient.unsaturatedFat)}}
       </th>
       <th class="text-center" v-if="ingredient.allowWeight">
-        {{ getValueWeight(ingredient.lipids)}}
+        {{ getValueWeight(ingredient.unsaturatedFat)}}
       </th>
       <th class="text-center" v-if="ingredient.allowVolume">
-        {{ getValueVolume(ingredient.lipids)}}
+        {{ getValueVolume(ingredient.unsaturatedFat)}}
+      </th>
+    </tr>
+
+    <tr>
+      <th class="text-left">
+        {{$t('saturatedFat')}}
+      </th>
+      <th class="text-center" v-if="ingredient.allowAmount">
+        {{ getValueAmount(ingredient.saturatedFat)}}
+      </th>
+      <th class="text-center" v-if="ingredient.allowWeight">
+        {{ getValueWeight(ingredient.saturatedFat)}}
+      </th>
+      <th class="text-center" v-if="ingredient.allowVolume">
+        {{ getValueVolume(ingredient.saturatedFat)}}
       </th>
     </tr>
 

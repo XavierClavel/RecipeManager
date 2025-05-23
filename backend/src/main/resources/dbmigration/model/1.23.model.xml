@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <addColumn tableName="ingredients">
+            <column name="carbohydrates" type="float" defaultValue="0" notnull="true"/>
+            <column name="saturated_fat" type="float" defaultValue="0" notnull="true"/>
+            <column name="unsaturated_fat" type="float" defaultValue="0" notnull="true"/>
+        </addColumn>
+    </changeSet>
+    <changeSet type="pendingDrops">
+        <dropColumn columnName="glucids" tableName="ingredients"/>
+        <dropColumn columnName="lipids" tableName="ingredients"/>
+    </changeSet>
+</migration>

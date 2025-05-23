@@ -166,9 +166,10 @@ export default {
 
   //Ingredients
   calories: "Calories",
-  glucids: "Glucids",
+  carbohydrates: "Carboydrates",
   cholesterol: "Cholesterol",
-  lipids: "Lipids",
+  unsaturatedFat: "Unsaturated fat",
+  saturatedFat: "Saturated fat",
   fibers: "Fibers",
   proteins: "Proteins",
   sodium: "Sodium",

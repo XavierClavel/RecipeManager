@@ -10,9 +10,10 @@ data class IngredientDTO(
     val type: IngredientType = IngredientType.MISCELLANEOUS,
 
     val calories: Int = 0,
-    val glucids: Float = 0f,
+    val carbohydrates: Float = 0f,
     val cholesterol: Float = 0f,
-    val lipids: Float = 0f,
+    val saturatedFat: Float = 0f,
+    val unsaturatedFat: Float = 0f,
     val fibers: Float = 0f,
     val proteins: Float = 0f,
     val sodium: Float = 0f,

@@ -27,9 +27,16 @@ class Ingredient (
     var type: IngredientType = IngredientType.MISCELLANEOUS,
 
     var calories: Int = 0,
-    var glucids: Float = 0f,
+
+    @DbDefault(value = "0")
+    var carbohydrates: Float = 0f,
     var cholesterol: Float = 0f,
-    var lipids: Float = 0f,
+
+    @DbDefault(value = "0")
+    var saturatedFat: Float = 0f,
+
+    @DbDefault(value = "0")
+    var unsaturatedFat: Float = 0f,
     var fibers: Float = 0f,
     var proteins: Float = 0f,
     var sodium: Float = 0f,
@@ -55,9 +62,10 @@ class Ingredient (
         this.type = ingredientDTO.type
 
         this.calories = ingredientDTO.calories
-        this.glucids = ingredientDTO.glucids
+        this.carbohydrates = ingredientDTO.carbohydrates
         this.cholesterol = ingredientDTO.cholesterol
-        this.lipids = ingredientDTO.lipids
+        this.saturatedFat = ingredientDTO.saturatedFat
+        this.unsaturatedFat = ingredientDTO.unsaturatedFat
         this.fibers = ingredientDTO.fibers
         this.proteins = ingredientDTO.proteins
         this.sodium = ingredientDTO.sodium
@@ -76,9 +84,10 @@ class Ingredient (
         type = this.type,
 
         calories = this.calories,
-        glucids = this.glucids,
+        carbohydrates = this.carbohydrates,
         cholesterol = this.cholesterol,
-        lipids = this.lipids,
+        saturatedFat = this.saturatedFat,
+        unsaturatedFat = this.unsaturatedFat,
         fibers = this.fibers,
         proteins = this.proteins,
         sodium = this.sodium,

@@ -32,19 +32,19 @@ const dishOptions = [
     label: "desert",
   },
   {
-    value: "SALTY_SNACKS",
+    value: "SALTY_SNACK",
     label: "salty_snacks",
   },
   {
-    value: "SUGARY_SNACKS",
+    value: "SUGARY_SNACK",
     label: "sugary_snacks",
   },
   {
-    value: "DRINKS",
+    value: "DRINK",
     label: "drinks",
   },
   {
-    value: "OTHERS",
+    value: "OTHER",
     label: "others",
   },
 ]

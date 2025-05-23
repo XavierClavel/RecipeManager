@@ -60,8 +60,8 @@
 
 
             <v-number-input
-              v-model="selectedIngredient.glucids"
-              :label="`${$t('glucids')}`"
+              v-model="selectedIngredient.carbohydrates"
+              :label="`${$t('carbohydrates')}`"
               type="number"
               color="primary"
               :min=0
@@ -70,8 +70,17 @@
 
 
             <v-number-input
-              v-model="selectedIngredient.lipids"
-              :label="`${$t('lipids')}`"
+              v-model="selectedIngredient.unsaturatedFat"
+              :label="`${$t('unsaturatedFat')}`"
+              type="number"
+              color="primary"
+              :min=0
+              :step="1"
+            ></v-number-input>
+
+            <v-number-input
+              v-model="selectedIngredient.saturatedFat"
+              :label="`${$t('saturatedFat')}`"
               type="number"
               color="primary"
               :min=0
@@ -224,7 +233,7 @@
                 {{$t("cholesterol")}}
               </th>
               <th class="text-center">
-                {{$t("glucids")}}
+                {{$t("carbohydrates")}}
               </th>
               <th class="text-center">
                 {{$t("fibers")}}
@@ -234,6 +243,12 @@
               </th>
               <th class="text-center">
                 {{$t("sodium")}}
+              </th>
+              <th class="text-center">
+                {{$t("saturatedFat")}}
+              </th>
+              <th class="text-center">
+                {{$t("unsaturatedFat")}}
               </th>
             </tr>
             </thead>
@@ -261,10 +276,12 @@
                 {{ ingredient.name[getLocale().toUpperCase()]}}</td>
               <td class="text-center">{{ ingredient.calories }}</td>
               <td class="text-center">{{ ingredient.cholesterol }}</td>
-              <td class="text-center">{{ ingredient.glucids }}</td>
+              <td class="text-center">{{ ingredient.carbohydrates }}</td>
               <td class="text-center">{{ ingredient.fibers }}</td>
               <td class="text-center">{{ ingredient.proteins }}</td>
               <td class="text-center">{{ ingredient.sodium }}</td>
+              <td class="text-center">{{ ingredient.saturatedFat }}</td>
+              <td class="text-center">{{ ingredient.unsaturatedFat }}</td>
             </tr>
             </tbody>
           </v-table>
