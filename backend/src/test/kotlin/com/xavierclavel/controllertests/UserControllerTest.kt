@@ -31,7 +31,7 @@ class UserControllerTest : ApplicationTest() {
     fun `list users`() = runTestAsAdmin {
         val usernames = setOf("test_user1", "test_user2")
         usernames.forEach { username -> client.createUser(username = username) }
-        val response = client.listUsers().map { it.username }.toSet()
+        val response = client.listUsers().items.map { it.username }.toSet()
         for (username in usernames) {
             assertTrue { response.contains(username) }
         }

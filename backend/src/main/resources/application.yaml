@@ -5,3 +5,7 @@ smtp:
   password: test
 encryption:
   key: 9vFdox9hvLcSJbbP
+oauth:
+  google:
+    client_id: aaaa
+    client_secret: bbbb

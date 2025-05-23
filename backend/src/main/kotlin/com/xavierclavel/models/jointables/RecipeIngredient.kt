@@ -43,10 +43,7 @@ class RecipeIngredient (
 
     fun toInfo(locale: Locale) = RecipeIngredientInfo(
         id = ingredient!!.id,
-        name = when(locale) {
-            Locale.EN -> ingredient!!.name_en
-            Locale.FR -> ingredient!!.name_fr
-        },
+        name = ingredient!!.translations.find { it.locale == locale }?.name ?: "Unknown",
         type = ingredient!!.type,
         amount = amount,
         unit = unit,

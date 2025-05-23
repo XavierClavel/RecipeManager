@@ -1,5 +1,6 @@
 package com.xavierclavel.models
 
+import com.xavierclavel.models.localization.LocalizedIngredientName
 import common.dto.IngredientDTO
 import common.enums.IngredientType
 import common.infodto.IngredientInfo
@@ -7,8 +8,10 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import jakarta.persistence.OneToMany
 import io.ebean.Model
 import io.ebean.annotation.DbDefault
+import jakarta.persistence.CascadeType
 import jakarta.persistence.GenerationType
 
 @Entity
@@ -18,11 +21,8 @@ class Ingredient (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
-    @DbDefault("")
-    var name_en: String = "",
-
-    @DbDefault("")
-    var name_fr: String = "",
+    @OneToMany(mappedBy = "ingredient", cascade = [CascadeType.ALL])
+    var translations: MutableList<LocalizedIngredientName> = mutableListOf(),
 
     var type: IngredientType = IngredientType.MISCELLANEOUS,
 
@@ -52,8 +52,6 @@ class Ingredient (
     ): Model() {
 
     fun mergeDTO(ingredientDTO: IngredientDTO): Ingredient {
-        this.name_en = ingredientDTO.name_en
-        this.name_fr = ingredientDTO.name_fr
         this.type = ingredientDTO.type
 
         this.calories = ingredientDTO.calories
@@ -75,8 +73,6 @@ class Ingredient (
 
     fun toInfo() = IngredientInfo(
         id = this.id,
-        name_en = name_en,
-        name_fr = name_fr,
         type = this.type,
 
         calories = this.calories,
@@ -92,7 +88,6 @@ class Ingredient (
         volumicMass = this.volumicMass,
         weightPerUnit = this.weightPerUnit,
 
-
-
+        name = translations.associate { it.locale to it.name },
     )
 }

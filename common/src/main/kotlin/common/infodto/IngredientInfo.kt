@@ -2,13 +2,13 @@ package common.infodto
 
 import common.dto.IngredientDTO
 import common.enums.IngredientType
+import common.enums.Locale
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class IngredientInfo(
     val id: Long,
-    val name_en: String,
-    val name_fr: String,
+    val name: Map<Locale, String>,
     val type: IngredientType,
 
     val calories: Int = 0,
@@ -27,5 +27,6 @@ data class IngredientInfo(
     val weightPerUnit: Float = 1f,
 ) {
     fun compareToDTO(ingredientDTO: IngredientDTO): Boolean =
-        this.type == ingredientDTO.type
+        this.type == ingredientDTO.type &&
+        this.name == ingredientDTO.name
 }

@@ -3,6 +3,7 @@ package main.com.xavierclavel.controllertests
 import com.xavierclavel.ApplicationTest
 import common.dto.IngredientDTO
 import common.enums.IngredientType
+import common.enums.Locale
 import common.utils.URL.INGREDIENT_URL
 import io.ktor.client.request.header
 import io.ktor.client.request.setBody
@@ -26,8 +27,7 @@ class IngredientControllerTest : ApplicationTest() {
     @Test
     fun `create ingredient`() = runTestAsAdmin {
         val ingredientDTO = IngredientDTO(
-            name_en = "My ingredient",
-            name_fr = "mon ingrédient",
+            name = mapOf(Locale.EN to "my ingredient", Locale.FR to "mon ingredient"),
             type = IngredientType.DAIRY,
             calories = 10,
         )
@@ -49,18 +49,20 @@ class IngredientControllerTest : ApplicationTest() {
     @Test
     fun `update ingredient`() = runTestAsAdmin {
         val ingredientDTO = IngredientDTO(
-            name_en = "My ingredient",
+            name = mapOf(Locale.EN to "my ingredient", Locale.FR to "mon ingredient"),
             type = IngredientType.DAIRY,
             calories = 10,
         )
         val response = client.createIngredient(ingredientDTO)
         val ingredientDTO2 = IngredientDTO(
-            name_en = "My better ingredient",
+            name = mapOf(Locale.EN to "my better ingredient", Locale.FR to "mon ingredient"),
             type = IngredientType.VEGETABLE,
             calories = 10,
         )
         client.updateIngredient(response.id, ingredientDTO2)
         assertFalse(client.getIngredient(response.id).compareToDTO(ingredientDTO))
+        println(client.getIngredient(response.id))
+        println(ingredientDTO2)
         assertTrue(client.getIngredient(response.id).compareToDTO(ingredientDTO2))
     }
 

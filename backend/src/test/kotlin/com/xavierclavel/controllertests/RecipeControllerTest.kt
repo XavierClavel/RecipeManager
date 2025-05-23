@@ -112,7 +112,7 @@ class RecipeControllerTest : ApplicationTest() {
         val expected = setOf(
             RecipeIngredientInfo(
                 id = ingredient2.id,
-                name = "",
+                name = "Unknown",
                 unit = AmountUnit.UNIT,
                 amount = 2f,
                 complement = null,
@@ -120,7 +120,7 @@ class RecipeControllerTest : ApplicationTest() {
             ),
             RecipeIngredientInfo(
                 id = ingredient3.id,
-                name = "",
+                name = "Unknown",
                 unit = AmountUnit.GRAM,
                 amount = 1f,
                 complement = null,

@@ -111,7 +111,6 @@ class MailService: KoinComponent {
                 setText(body)
             }
             Transport.send(message)
-            println("Email sent successfully!")
         } catch (e: MessagingException) {
             e.printStackTrace()
         }

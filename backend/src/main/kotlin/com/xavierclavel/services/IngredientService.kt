@@ -1,7 +1,11 @@
 package com.xavierclavel.services
 
+import com.xavierclavel.exceptions.NotFoundCause
+import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.models.Ingredient
 import com.xavierclavel.models.jointables.query.QRecipeIngredient
+import com.xavierclavel.models.localization.LocalizedIngredientName
+import com.xavierclavel.models.localization.query.QLocalizedIngredientName
 import com.xavierclavel.models.query.QIngredient
 import common.dto.IngredientDTO
 import io.ebean.Paging
@@ -25,14 +29,35 @@ class IngredientService: KoinComponent {
     fun findById(ingredientId: Long) : IngredientInfo? =
         QIngredient().id.eq(ingredientId).findOne()?.toInfo()
 
-    fun createIngredient(ingredientDTO: IngredientDTO): IngredientInfo =
-        Ingredient().mergeDTO(ingredientDTO).insertAndGet().toInfo()
+    fun createIngredient(ingredientDTO: IngredientDTO): IngredientInfo {
+        val ingredient = Ingredient().mergeDTO(ingredientDTO).insertAndGet()
+        ingredientDTO.name.forEach {
+            val localizedIngredientName = LocalizedIngredientName(ingredient = ingredient, locale = it.key, name = it.value)
+            localizedIngredientName.insert()
+        }
+        return QIngredient().id.eq(ingredient.id).findOne()!!.toInfo()
+    }
 
-    fun updateIngredient(id:Long, ingredientDTO: IngredientDTO): IngredientInfo? =
-        QIngredient().id.eq(id).findOne()
-            ?.mergeDTO(ingredientDTO)
-            ?.updateAndGet()
-            ?.toInfo()
+
+    fun updateIngredient(id:Long, ingredientDTO: IngredientDTO): IngredientInfo {
+        val ingredient = findEntityById(id) ?: throw NotFoundException(NotFoundCause.INGREDIENT_NOT_FOUND)
+
+        ingredientDTO.name.forEach {
+            val localizedIngredientName = QLocalizedIngredientName()
+                .ingredient.id.eq(ingredient.id)
+                .locale.eq(it.key)
+                .findOneOrEmpty()
+                .orElse(LocalizedIngredientName(ingredient = ingredient, locale = it.key))
+            localizedIngredientName.name = it.value
+            localizedIngredientName.save()
+        }
+        ingredient
+            .mergeDTO(ingredientDTO)
+            .updateAndGet()
+            .toInfo()
+        return QIngredient().id.eq(ingredient.id).findOne()!!.toInfo()
+    }
+
 
 
     fun updateIngredient(ingredientDTO: IngredientDTO) {
@@ -45,12 +70,11 @@ class IngredientService: KoinComponent {
 
     fun search(searchString: String, paging: Paging, locale: Locale): Pair<Int,List<IngredientInfo>> {
         val query = QIngredient()
-            .apply {
-                when(locale) {
-                    Locale.EN -> this.name_en.ilike("%$searchString%")
-                    Locale.FR -> this.name_fr.ilike("%$searchString%")
-                }
-            }
+            .and()
+            .translations.locale.eq(locale)
+            .translations.name.ilike("%$searchString%")
+            .endAnd()
+
         return Pair(query.findCount(), query.setPaging(paging).findList().map{it.toInfo()})
     }
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <createTable name="ingredient_translation" pkName="pk_ingredient_translation">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="ingredient_id" type="bigint" references="ingredients.id" foreignKeyName="fk_ingredient_translation_ingredient_id" foreignKeyIndex="ix_ingredient_translation_ingredient_id"/>
+            <column name="name" type="varchar" notnull="true"/>
+            <column name="locale" type="integer" notnull="true" checkConstraint="check ( locale in (0,1))" checkConstraintName="ck_ingredient_translation_locale"/>
+            <uniqueConstraint name="uq_ingredient_translation_ingredient_id_locale" columnNames="ingredient_id,locale" oneToOne="false" nullableColumns="ingredient_id"/>
+        </createTable>
+    </changeSet>
+    <changeSet type="pendingDrops">
+        <dropColumn columnName="name_en" tableName="ingredients"/>
+        <dropColumn columnName="name_fr" tableName="ingredients"/>
+    </changeSet>
+</migration>

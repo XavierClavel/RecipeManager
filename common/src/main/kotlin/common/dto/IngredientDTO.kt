@@ -1,12 +1,12 @@
 package common.dto
 
 import common.enums.IngredientType
+import common.enums.Locale
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class IngredientDTO(
-    val name_en: String = "",
-    val name_fr: String = "",
+    val name: Map<Locale, String> = mapOf(),
     val type: IngredientType = IngredientType.MISCELLANEOUS,
 
     val calories: Int = 0,

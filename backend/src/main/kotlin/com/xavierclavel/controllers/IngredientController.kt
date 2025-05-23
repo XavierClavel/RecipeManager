@@ -59,7 +59,7 @@ object IngredientController: Controller(INGREDIENT_URL) {
     private fun Route.updateIngredient() = put("/{id}") {
         val id = getPathId()
         val ingredientDTO = call.receive<IngredientDTO>()
-        val ingredient = ingredientService.updateIngredient(id, ingredientDTO) ?: return@put call.respond(HttpStatusCode.NotFound)
+        val ingredient = ingredientService.updateIngredient(id, ingredientDTO)
         call.respond(ingredient)
     }
 

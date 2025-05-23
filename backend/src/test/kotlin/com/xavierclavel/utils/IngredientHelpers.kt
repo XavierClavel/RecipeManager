@@ -30,7 +30,6 @@ suspend fun HttpClient.createIngredient(ingredient: IngredientDTO = ingredientDT
         setBody(ingredient)
     }.apply{
         assertEquals(HttpStatusCode.Created, status)
-        println(bodyAsText())
         val response = Json.decodeFromString<IngredientInfo>(bodyAsText())
         assertTrue(response.compareToDTO(ingredient))
         return response
@@ -54,6 +53,8 @@ suspend fun HttpClient.updateIngredient(id: Long, ingredient: IngredientDTO): In
     }.apply{
         assertEquals(HttpStatusCode.OK, status)
         val response = Json.decodeFromString<IngredientInfo>(bodyAsText())
+        println(response)
+        println(ingredient)
         assertTrue(response.compareToDTO(ingredient))
         return response
     }

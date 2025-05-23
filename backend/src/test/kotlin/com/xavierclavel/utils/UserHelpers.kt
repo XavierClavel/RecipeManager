@@ -1,6 +1,7 @@
 package main.com.xavierclavel.utils
 
 import com.xavierclavel.services.UserService
+import common.dto.SearchResult
 import common.dto.UserDTO
 import common.infodto.UserInfo
 import common.overviewdto.UserOverview
@@ -74,9 +75,9 @@ suspend fun HttpClient.assertUserDoesNotExist(id: Long) {
     }
 }
 
-suspend fun HttpClient.listUsers() : Set<UserOverview> {
+suspend fun HttpClient.listUsers() : SearchResult<UserInfo> {
     this.get(USER_URL).apply {
         assertEquals(HttpStatusCode.OK, status)
-        return Json.decodeFromString<Set<UserOverview>>(bodyAsText())
+        return Json.decodeFromString<SearchResult<UserInfo>>(bodyAsText())
     }
 }

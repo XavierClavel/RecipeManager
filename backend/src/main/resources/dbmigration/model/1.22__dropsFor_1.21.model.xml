@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply" dropsFor="1.21">
+        <dropColumn columnName="name_en" tableName="ingredients"/>
+        <dropColumn columnName="name_fr" tableName="ingredients"/>
+    </changeSet>
+</migration>
