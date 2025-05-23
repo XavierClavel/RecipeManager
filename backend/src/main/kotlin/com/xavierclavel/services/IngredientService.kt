@@ -70,10 +70,14 @@ class IngredientService: KoinComponent {
 
     fun search(searchString: String, paging: Paging, locale: Locale): Pair<Int,List<IngredientInfo>> {
         val query = QIngredient()
-            .and()
-            .translations.locale.eq(locale)
-            .translations.name.ilike("%$searchString%")
-            .endAnd()
+            .apply {
+                if (searchString.isBlank()) return@apply
+                this.and()
+                    .translations.locale.eq(locale)
+                    .translations.name.ilike("%$searchString%")
+                    .endAnd()
+            }
+
 
         return Pair(query.findCount(), query.setPaging(paging).findList().map{it.toInfo()})
     }

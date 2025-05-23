@@ -33,7 +33,7 @@ function setLocale(locale) {
   i18n.global.locale = locale
 }
 
-function getLocale() {
+function getLocale(): string {
   let locale = i18n.global.locale
   if (!Object.keys(i18n.global.messages).includes(locale)) {
     locale = i18n.global.fallbackLocale

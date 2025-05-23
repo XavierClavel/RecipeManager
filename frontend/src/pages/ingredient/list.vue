@@ -30,13 +30,13 @@
             </v-card-title>
 
             <v-text-field
-              v-model="selectedIngredient.name_fr"
+              v-model="selectedIngredient.name.FR"
               label="Name FR"
             ></v-text-field>
 
 
               <v-text-field
-                v-model="selectedIngredient.name_en"
+                v-model="selectedIngredient.name.EN"
                 label="Name EN"
               ></v-text-field>
 
@@ -258,7 +258,7 @@
                     @click.stop="toViewIngredient(ingredient.id)"
                   ></v-img>
                 </v-avatar>
-                {{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</td>
+                {{ ingredient.name[getLocale().toUpperCase()]}}</td>
               <td class="text-center">{{ ingredient.calories }}</td>
               <td class="text-center">{{ ingredient.cholesterol }}</td>
               <td class="text-center">{{ ingredient.glucids }}</td>
@@ -302,7 +302,7 @@ import {debounce} from "lodash";
 const theme = useTheme()
 
 const ingredients = ref<object[]>([])
-const selectedIngredient = ref({})
+const selectedIngredient = ref({name: {}})
 const page = ref<number>(1)
 const pagesCount = ref<number>(1)
 const isPanelOpen = ref<boolean>(false)
@@ -335,7 +335,7 @@ const cancel = () => {
 
 const newIngredient = () => {
   isPanelOpen.value = true
-  selectedIngredient.value = {}
+  selectedIngredient.value = {name: {}}
   action.value = "Create ingredient"
 }
 
@@ -346,7 +346,7 @@ const editIngredient = (ingredientToEdit) => {
   } else {
     isPanelOpen.value = true
     selectedIngredient.value = ingredientToEdit
-    action.value = `Edit ingredient "${ingredientToEdit.name_en}"`
+    action.value = `Edit ingredient "${ingredientToEdit.name[getLocale().toUpperCase()]}"`
   }
 
 }
