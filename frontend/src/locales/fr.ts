@@ -171,6 +171,7 @@ export default {
   unsaturatedFat: "Acides gras insaturés",
   saturatedFat: "Acides gras saturés",
   fibers: "Fibres",
+  sugars: "Sucres",
   proteins: "Protéines",
   sodium: "Sel",
   allowAmount: "Autoriser quantité",

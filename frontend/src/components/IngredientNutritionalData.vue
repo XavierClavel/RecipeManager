@@ -84,6 +84,36 @@ const getValueVolume = v => {
 
     <tr>
       <th class="text-left">
+        {{$t('sugars')}}
+      </th>
+      <th class="text-center" v-if="ingredient.allowAmount">
+        {{ getValueAmount(ingredient.sugars)}}
+      </th>
+      <th class="text-center" v-if="ingredient.allowWeight">
+        {{ getValueWeight(ingredient.sugars)}}
+      </th>
+      <th class="text-center" v-if="ingredient.allowVolume">
+        {{ getValueVolume(ingredient.sugars)}}
+      </th>
+    </tr>
+
+    <tr>
+      <th class="text-left">
+        {{$t('fibers')}}
+      </th>
+      <th class="text-center" v-if="ingredient.allowAmount">
+        {{ getValueAmount(ingredient.fibers)}}
+      </th>
+      <th class="text-center" v-if="ingredient.allowWeight">
+        {{ getValueWeight(ingredient.fibers)}}
+      </th>
+      <th class="text-center" v-if="ingredient.allowVolume">
+        {{ getValueVolume(ingredient.fibers)}}
+      </th>
+    </tr>
+
+    <tr>
+      <th class="text-left">
         {{$t('cholesterol')}}
       </th>
       <th class="text-center" v-if="ingredient.allowAmount">
@@ -124,21 +154,6 @@ const getValueVolume = v => {
       </th>
       <th class="text-center" v-if="ingredient.allowVolume">
         {{ getValueVolume(ingredient.saturatedFat)}}
-      </th>
-    </tr>
-
-    <tr>
-      <th class="text-left">
-        {{$t('fibers')}}
-      </th>
-      <th class="text-center" v-if="ingredient.allowAmount">
-        {{ getValueAmount(ingredient.fibers)}}
-      </th>
-      <th class="text-center" v-if="ingredient.allowWeight">
-        {{ getValueWeight(ingredient.fibers)}}
-      </th>
-      <th class="text-center" v-if="ingredient.allowVolume">
-        {{ getValueVolume(ingredient.fibers)}}
       </th>
     </tr>
 

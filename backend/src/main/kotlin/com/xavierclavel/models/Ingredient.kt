@@ -28,8 +28,6 @@ class Ingredient (
 
     var calories: Int = 0,
 
-    @DbDefault(value = "0")
-    var carbohydrates: Float = 0f,
     var cholesterol: Float = 0f,
 
     @DbDefault(value = "0")
@@ -37,6 +35,13 @@ class Ingredient (
 
     @DbDefault(value = "0")
     var unsaturatedFat: Float = 0f,
+
+    @DbDefault(value = "0")
+    var carbohydrates: Float = 0f,
+
+    @DbDefault(value = "0")
+    var sugars: Float = 0f,
+
     var fibers: Float = 0f,
     var proteins: Float = 0f,
     var sodium: Float = 0f,
@@ -67,6 +72,7 @@ class Ingredient (
         this.saturatedFat = ingredientDTO.saturatedFat
         this.unsaturatedFat = ingredientDTO.unsaturatedFat
         this.fibers = ingredientDTO.fibers
+        this.sugars = ingredientDTO.sugars
         this.proteins = ingredientDTO.proteins
         this.sodium = ingredientDTO.sodium
 
@@ -88,6 +94,7 @@ class Ingredient (
         cholesterol = this.cholesterol,
         saturatedFat = this.saturatedFat,
         unsaturatedFat = this.unsaturatedFat,
+        sugars = this.sugars,
         fibers = this.fibers,
         proteins = this.proteins,
         sodium = this.sodium,

@@ -68,6 +68,24 @@
               :step="1"
             ></v-number-input>
 
+            <v-number-input
+              v-model="selectedIngredient.sugars"
+              :label="`${$t('sugars')}`"
+              type="number"
+              color="primary"
+              :min=0
+              :step="1"
+            ></v-number-input>
+
+            <v-number-input
+              v-model="selectedIngredient.fibers"
+              :label="`${$t('fibers')}`"
+              type="number"
+              color="primary"
+              :min=0
+              :step="1"
+            ></v-number-input>
+
 
             <v-number-input
               v-model="selectedIngredient.unsaturatedFat"
@@ -81,16 +99,6 @@
             <v-number-input
               v-model="selectedIngredient.saturatedFat"
               :label="`${$t('saturatedFat')}`"
-              type="number"
-              color="primary"
-              :min=0
-              :step="1"
-            ></v-number-input>
-
-
-            <v-number-input
-              v-model="selectedIngredient.fibers"
-              :label="`${$t('fibers')}`"
               type="number"
               color="primary"
               :min=0
@@ -236,6 +244,9 @@
                 {{$t("carbohydrates")}}
               </th>
               <th class="text-center">
+                {{$t("sugars")}}
+              </th>
+              <th class="text-center">
                 {{$t("fibers")}}
               </th>
               <th class="text-center">
@@ -265,7 +276,7 @@
               <td class="d-flex flex-row align-center">
                 <v-avatar size="40" variant="elevated" class="mr-2" style="border:2px solid #0d1821 !important;">
                   <v-img
-                    color="surface-variant"
+                    color="background"
                     :src="getIngredientImageUrl(ingredient.type)"
                     cover
                     v-bind="props"
@@ -277,6 +288,7 @@
               <td class="text-center">{{ ingredient.calories }}</td>
               <td class="text-center">{{ ingredient.cholesterol }}</td>
               <td class="text-center">{{ ingredient.carbohydrates }}</td>
+              <td class="text-center">{{ ingredient.sugars }}</td>
               <td class="text-center">{{ ingredient.fibers }}</td>
               <td class="text-center">{{ ingredient.proteins }}</td>
               <td class="text-center">{{ ingredient.sodium }}</td>

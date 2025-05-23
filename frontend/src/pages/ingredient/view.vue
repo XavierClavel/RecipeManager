@@ -20,7 +20,7 @@
       class="px-3 mx-auto mb-n8"
       >
         <v-card-title class="mx-auto px-3 mt-n8 text-black text-h2 text-center text-sm-left font-weight-bold"
-        >{{ getLocale() == 'fr' ? ingredient.name_fr : ingredient.name_en }}</v-card-title>
+        >{{ ingredient.name[getLocale().toUpperCase()] }}</v-card-title>
         <v-row class="d-flex flex-row mx-4" justify="center" justify-sm="start">
           <v-col class="d-inline-flex" cols="auto">
             <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>

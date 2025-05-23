@@ -17,6 +17,7 @@ data class IngredientDTO(
     val fibers: Float = 0f,
     val proteins: Float = 0f,
     val sodium: Float = 0f,
+    val sugars: Float = 0f,
 
     val allowAmount: Boolean = true,
     val allowWeight: Boolean = true,

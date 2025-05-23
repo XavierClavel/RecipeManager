@@ -171,6 +171,7 @@ export default {
   unsaturatedFat: "Unsaturated fat",
   saturatedFat: "Saturated fat",
   fibers: "Fibers",
+  sugars: "Sugars",
   proteins: "Proteins",
   sodium: "Sodium",
   allowAmount: "Allow amount",
