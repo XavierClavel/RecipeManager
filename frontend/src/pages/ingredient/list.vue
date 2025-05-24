@@ -63,7 +63,7 @@
               :label="`${$t('proteins')}`"
               type="number"
               :min=0
-              :step="10"
+              :step="0.1"
             ></v-number-input>
 
 
@@ -73,7 +73,7 @@
               type="number"
               color="primary"
               :min=0
-              :step="1"
+              :step="0.1"
             ></v-number-input>
 
             <v-number-input
@@ -82,7 +82,7 @@
               type="number"
               color="primary"
               :min=0
-              :step="1"
+              :step="0.1"
             ></v-number-input>
 
             <v-number-input
@@ -91,7 +91,7 @@
               type="number"
               color="primary"
               :min=0
-              :step="1"
+              :step="0.1"
             ></v-number-input>
 
 
@@ -101,7 +101,7 @@
               type="number"
               color="primary"
               :min=0
-              :step="1"
+              :step="0.1"
             ></v-number-input>
 
             <v-number-input
@@ -110,7 +110,7 @@
               type="number"
               color="primary"
               :min=0
-              :step="1"
+              :step="0.1"
             ></v-number-input>
 
 
@@ -120,7 +120,7 @@
               type="number"
               color="primary"
               :min=0
-              :step="1"
+              :step="0.1"
             ></v-number-input>
 
 
@@ -130,7 +130,7 @@
               type="number"
               color="primary"
               :min=0
-              :step="1"
+              :step="0.1"
             ></v-number-input>
 
             <v-card color="background" class="mb-2">
