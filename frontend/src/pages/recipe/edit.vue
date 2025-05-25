@@ -377,16 +377,30 @@ const editablePicture = ref(null)
 const autocompleteList = ref([])
 const queryList = ref([])
 
+const recipe = ref<object>({
+  title: "",
+  description: "",
+  steps: [''],
+  dishClass: "MAIN_DISH",
+  ingredients: [],
+  customIngredients: [],
+  tips: "",
+})
+
 function getLocalizedLabel(item: any) {
   return t(item.label)
 }
 
 const onIngredientAutocompleteChange = async (query, index) => {
   queryList.value[index] = query
+  console.log(recipe.value.ingredients)
+  console.log(recipe.value.ingredients[index])
+  console.log(!query)
+  if (!query) return
   const response = await searchIngredients(query, 0, 20);
-  autocompleteList.value[index] = response.data.map(item => ({
+  autocompleteList.value[index] = response.data.items.map(item => ({
     id: item.id,
-    name: getLocale() == 'fr' ? item.name_fr : item.name_en,
+    name: item.name?.[getLocale().toUpperCase()] || '',
     allowWeight: item.allowWeight,
     allowVolume: item.allowVolume,
     allowAmount: item.allowAmount,
@@ -407,24 +421,16 @@ function selectFirstMatch(index) {
 
 
 
-const recipe = ref<object>({
-  title: "",
-  description: "",
-  steps: [''],
-  dishClass: "MAIN_DISH",
-  ingredients: [],
-  customIngredients: [],
-  tips: "",
-})
+
 
 const getUnitOptions = (v) => {
-  console.log(v)
-  if (v == null) return unitOptions
+  const ingredient = v?.ingredient
+  if (!ingredient || typeof ingredient !== 'object') return unitOptions.value
   return unitOptions.value.filter(it =>
     it.type == "NONE" ||
-    (v.ingredient.allowAmount && it.type == "AMOUNT") ||
-    (v.ingredient.allowWeight && it.type == "WEIGHT") ||
-    (v.ingredient.allowVolume && it.type == "VOLUME")
+    (ingredient.allowAmount && it.type == "AMOUNT") ||
+    (ingredient.allowWeight && it.type == "WEIGHT") ||
+    (ingredient.allowVolume && it.type == "VOLUME")
   )
 }
 
@@ -436,7 +442,9 @@ const addStep = () => {
 };
 
 const addIngredient = () => {
-  recipe.value.ingredients.push({ingredient: '' ,complement: ""});
+  recipe.value.ingredients.push({ ingredient: null, complement: "" });
+  queryList.value.push('');
+  autocompleteList.value.push([]);
 }
 
 async function deleteStepAt(index) {
