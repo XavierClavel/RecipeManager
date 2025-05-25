@@ -64,7 +64,7 @@ fun Application.configureAuthentication() {
 
         oauth("auth-oauth-google") {
             // Configure oauth authentication
-            urlProvider = { "http://localhost:8080/callback" }
+            urlProvider = { "http://localhost:8080/api/v1/auth/callback-oauth-google" }
             providerLookup = {
                 OAuthServerSettings.OAuth2ServerSettings(
                     name = "google",
