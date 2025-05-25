@@ -1,6 +1,8 @@
 package com.xavierclavel.services
 
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.xavierclavel.exceptions.BadRequestCause
+import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.exceptions.NotFoundCause
 import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.exceptions.UnauthorizedCause
@@ -40,8 +42,14 @@ class UserService: KoinComponent {
     fun findByUsername(username: String) : User? =
         QUser().username.eq(username).findOne()
 
+    fun findEntityByMail(mail: String): User? =
+        QUser().mailHash.eq(encryptionService.hash(mail)).findOne()
+
+    fun findEntityByGoogleId(googleId: String): User? =
+        QUser().googleId.eq(googleId).findOne()
+
     fun findByMail(mail: String) : User {
-        return QUser().mailHash.eq(encryptionService.hash(mail)).findOne() ?: throw NotFoundException(NotFoundCause.MAIL_NOT_FOUND)
+        return findEntityByMail(mail) ?: throw NotFoundException(NotFoundCause.MAIL_NOT_FOUND)
     }
 
 
@@ -51,6 +59,7 @@ class UserService: KoinComponent {
 
     fun requestPasswordReset(mail: String): String {
         val user = findByMail(mail)
+        if (user.passwordHash == null) throw BadRequestException(BadRequestCause.OAUTH_ONLY)
         val token = generateToken()
         user.updateToken(token)
         return token
@@ -122,13 +131,17 @@ class UserService: KoinComponent {
     }
 
     fun isPasswordValid(id: Long, password: String): Boolean =
-        isPasswordValid(password, getEntityById(id).passwordHash)
+        isPasswordValid(password, getEntityById(id).passwordHash!!)
 
     fun isPasswordValid(password: String, hash: String): Boolean =
         BCrypt.verifyer().verify(password.toCharArray(), hash).verified
 
-    fun updatePassword(id: Long, password: String) =
-        getEntityById(id).updatePassword(encryptionService.encryptPassword(password)).updateAndGet().toInfo()
+    fun updatePassword(id: Long, password: String): UserInfo {
+        val user = getEntityById(id)
+        if (user.passwordHash == null) throw BadRequestException(BadRequestCause.OAUTH_ONLY)
+        return getEntityById(id).updatePassword(encryptionService.encryptPassword(password)!!).updateAndGet().toInfo()
+    }
+
 
     fun setRole(id: Long, role: UserRole) =
         getEntityById(id).setRole(role).updateAndGet().toInfo()
@@ -136,8 +149,9 @@ class UserService: KoinComponent {
     fun resetPassword(token: String, password: String) {
         val user = findByToken(token)
         if (!user.isTokenValid()) throw UnauthorizedException(UnauthorizedCause.INVALID_TOKEN)
+        if (user.passwordHash == null) throw BadRequestException(BadRequestCause.OAUTH_ONLY)
         user.useToken()
-        user.updatePassword(encryptionService.encryptPassword(password))
+        user.updatePassword(encryptionService.encryptPassword(password)!!)
         user.update()
     }
 

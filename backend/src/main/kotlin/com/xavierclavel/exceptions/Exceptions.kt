@@ -13,6 +13,8 @@ enum class UnauthorizedCause(val key: String) {
     USER_NOT_VERIFIED("user_not_verified"),
     INVALID_PASSWORD("invalid_password"),
     INVALID_TOKEN("invalid_token"),
+    OAUTH_FAILED("oauth_failed"),
+    OAUTH_NOT_SETUP("oauth_not_setup"),
 }
 
 enum class ForbiddenCause(val key: String) {
@@ -51,5 +53,7 @@ enum class BadRequestCause (val key: String) {
     USERNAME_ALREADY_USED("username_already_used"),
     RECIPE_ALREADY_IN_COOKBOOK("recipe_already_in_cookbook"),
     RECIPE_NOT_IN_COOKBOOK("recipe_not_in_cookbook"),
+
+    OAUTH_ONLY("oauth_only"),
 
 }

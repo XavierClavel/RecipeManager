@@ -37,3 +37,4 @@ out/
 
 ### Custom ###
 /backend/.env
+/backend/src/main/resources/application.yaml

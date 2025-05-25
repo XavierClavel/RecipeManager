@@ -33,8 +33,9 @@ class EncryptionService: KoinComponent {
         return Base64.getEncoder().encodeToString(ivBytes + encrypted)
     }
 
-    fun encryptPassword(password: String): String =
-        BCrypt.withDefaults().hashToString(12, password.toCharArray())
+    fun encryptPassword(password: String?): String? =
+        password?.let { BCrypt.withDefaults().hashToString(12, password.toCharArray()) }
+
 
 
     fun decrypt(encryptedEmail: String): String {

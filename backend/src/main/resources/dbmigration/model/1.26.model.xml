@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <alterColumn columnName="password_hash" tableName="users" currentType="varchar" notnull="false" currentNotnull="true"/>
+        <addColumn tableName="users">
+            <column name="google_id" type="varchar"/>
+        </addColumn>
+    </changeSet>
+</migration>

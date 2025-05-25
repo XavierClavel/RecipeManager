@@ -43,7 +43,9 @@ class User (
 
     var role: UserRole = UserRole.USER,
 
-    var passwordHash: String = "",
+    var passwordHash: String? = null,
+
+    var googleId: String? = null,
 
     var bio: String = "",
 
@@ -82,12 +84,13 @@ class User (
     ): Model() {
 
     companion object {
-        fun from(userDTO: UserDTO, token: String, passwordHash: String, mailEncrypted: String, mailHash: String): User {
+        fun from(userDTO: UserDTO, token: String, passwordHash: String?, mailEncrypted: String, mailHash: String): User {
             return User(
                 username = userDTO.username,
                 mailEncrypted = mailEncrypted,
                 mailHash = mailHash,
                 passwordHash = passwordHash,
+                googleId = userDTO.googleId,
                 token = token,
             )
         }

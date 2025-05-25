@@ -52,7 +52,7 @@ fun Application.configureAuthentication() {
             validate { credentials ->
                 val user = userService.findByUsername(credentials.name) ?: throw NotFoundException(NotFoundCause.USER_NOT_FOUND)
                 if (!user.isVerified) throw UnauthorizedException(UnauthorizedCause.USER_NOT_VERIFIED)
-                if (userService.isPasswordValid(credentials.password, user.passwordHash)) {
+                if (userService.isPasswordValid(credentials.password, user.passwordHash!!)) {
                     logger.info {"Login accepted for user ${user.username}"}
                     UserIdPrincipal(credentials.name)
                 } else {
@@ -69,11 +69,11 @@ fun Application.configureAuthentication() {
                 OAuthServerSettings.OAuth2ServerSettings(
                     name = "google",
                     authorizeUrl = "https://accounts.google.com/o/oauth2/auth",
-                    accessTokenUrl = "https://accounts.google.com/o/oauth2/token",
+                    accessTokenUrl = "https://oauth2.googleapis.com/token",
                     requestMethod = HttpMethod.Post,
                     clientId = configuration.oauth.google.clientId,
                     clientSecret = configuration.oauth.google.clientSecret,
-                    defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.profile"),
+                    defaultScopes = listOf("openid", "profile", "email"),
                     extraAuthParameters = listOf("access_type" to "offline"),
                     onStateCreated = { call, state ->
                         //saves new state with redirect url value

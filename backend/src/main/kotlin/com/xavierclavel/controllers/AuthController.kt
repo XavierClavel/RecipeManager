@@ -7,25 +7,26 @@ import com.xavierclavel.exceptions.NotFoundCause
 import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
+import com.xavierclavel.models.User
 import com.xavierclavel.plugins.RedisService
-import com.xavierclavel.plugins.SessionData
 import com.xavierclavel.services.EncryptionService
 import com.xavierclavel.services.UserService
+import com.xavierclavel.utils.Configuration
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.getLocale
 import com.xavierclavel.utils.logger
+import common.dto.GoogleOauthDto
 import common.dto.UserDTO
+import common.infodto.UserInfo
 import common.utils.URL.AUTH_URL
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.auth.OAuthAccessTokenResponse
 import io.ktor.server.auth.UserIdPrincipal
@@ -45,14 +46,17 @@ import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import org.koin.java.KoinJavaComponent.inject
 import java.util.UUID
+import kotlin.text.trim
 
 object AuthController: Controller(AUTH_URL) {
     val userService: UserService by inject(UserService::class.java)
     val redisService: RedisService by inject(RedisService::class.java)
     val encryptionService: EncryptionService by inject(EncryptionService::class.java)
+    val configuration: Configuration by inject(Configuration::class.java)
     val redirects = mutableMapOf<String, String>()
     val applicationHttpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
@@ -82,13 +86,11 @@ object AuthController: Controller(AUTH_URL) {
     private fun Route.login() = post("/login") {
         val username = call.principal<UserIdPrincipal>()?.name.toString()
         val user = userService.getUserByUsername(username) ?: throw NotFoundException(NotFoundCause.USER_NOT_FOUND)
-        userService.registerUserActivity(user.id)
-
-        val sessionId = UUID.randomUUID().toString()
-        redisService.createSession(sessionId, user)
-        call.sessions.set(UserSession(sessionId))
+        createSession(user)
         call.respond(HttpStatusCode.OK)
     }
+
+
 
     private fun Route.loginGoogleOauth() = get("/login-oauth-google") {
     }
@@ -98,27 +100,60 @@ object AuthController: Controller(AUTH_URL) {
         // redirects home if the url is not found before authorization
         currentPrincipal?.let { principal ->
             principal.state?.let { state ->
-                logger.info {"state: $state, accesstoken: ${principal.accessToken}"}
-                call.sessions.set(UserSession(principal.accessToken))
-                getPersonalGreeting(principal.accessToken)
+                googleOauthLogin(principal.accessToken)
                 redirects[state]?.let { redirect ->
                     call.respondRedirect(redirect)
                     return@get
                 }
             }
         }
-        call.respondRedirect("/home")
+        call.respondRedirect("${configuration.frontend.url}/home")
     }
 
-    private suspend fun getPersonalGreeting(
-        token: String
+    private suspend fun RoutingContext.googleOauthLogin(
+        oauthToken: String
     ) {
-        val data = applicationHttpClient.get("https://www.googleapis.com/oauth2/v2/userinfo") {
-            headers {
-                append(HttpHeaders.Authorization, "Bearer $token")
-            }
+        val data = applicationHttpClient.get("https://openidconnect.googleapis.com/v1/userinfo") {
+            bearerAuth(oauthToken)
         }.bodyAsText()
-        logger.info {"user data: $data"}
+        val response = try {
+            Json.decodeFromString<GoogleOauthDto>(data)
+        } catch (e: SerializationException) {
+            throw UnauthorizedException(UnauthorizedCause.OAUTH_FAILED)
+        }
+        var user = userService.findEntityByGoogleId(response.sub)
+        if (user != null) {
+            createSession(user.toInfo())
+            return
+        }
+        if (userService.findEntityByMail(response.email) != null) {
+            //todo: merge accounts
+            throw UnauthorizedException(UnauthorizedCause.OAUTH_NOT_SETUP)
+        }
+
+        user = createGoogleOauthUser(response)
+        createSession(user.toInfo())
+
+
+    }
+
+    private suspend fun RoutingContext.createGoogleOauthUser(oauthDto: GoogleOauthDto): User {
+        val token = UUID.randomUUID().toString()
+        val baseName = oauthDto.name.trim().replace(" ", ".")
+        var name = baseName
+        var index = 1
+        while (!userService.existsByUsername(name)) {
+            name = "$baseName-$index"
+            index++
+        }
+        val userDTO = UserDTO(
+            username = name,
+            mail = oauthDto.email,
+            googleId = oauthDto.sub
+            )
+        val userCreated = userService.createUser(userDTO, token)
+        userService.verifyUser(token)
+        return userCreated
     }
 
     private fun Route.logout() = post("/logout") {
@@ -142,6 +177,7 @@ object AuthController: Controller(AUTH_URL) {
 
     private fun Route.signup() = post("/signup") {
         val userDTO = call.receive(UserDTO::class)
+        userDTO.username = userDTO.username.trim().replace(" ", ".")
         logger.info {userDTO}
         if (UserController.userService.existsByUsername(userDTO.username)) throw BadRequestException(BadRequestCause.USERNAME_ALREADY_USED)
         if (UserController.userService.existsByMail(userDTO.mail)) throw BadRequestException(BadRequestCause.MAIL_ALREADY_USED)
@@ -191,6 +227,13 @@ object AuthController: Controller(AUTH_URL) {
             throw UnauthorizedException(UnauthorizedCause.SESSION_NOT_FOUND)
         }
         return userId
+    }
+
+    private suspend fun RoutingContext.createSession(user: UserInfo) {
+        userService.registerUserActivity(user.id)
+        val sessionId = UUID.randomUUID().toString()
+        redisService.createSession(sessionId, user)
+        call.sessions.set(UserSession(sessionId))
     }
 
 }
