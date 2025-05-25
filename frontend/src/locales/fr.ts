@@ -216,4 +216,7 @@ export default {
   public_account: "Compte public",
   auto_accept_follow_requests: "Accepter automatiques requêtes d'abonnement",
   no_data: "Aucune donnée",
+
+  unit_teaspoon: "cuillères à café",
+  unit_tablespoon: "cuillères à coupe",
 };

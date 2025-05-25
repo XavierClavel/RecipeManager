@@ -6,6 +6,7 @@ import {deleteCookie, getCookie} from "@/scripts/cookies";
 import {getLocale} from "@/scripts/localization";
 import {switchCase} from "@babel/types";
 import {ingredientTypes} from "@/scripts/values";
+import i18n from "@/plugins/i18n";
 
 export {
   login,
@@ -71,6 +72,8 @@ export {
 
   defaultImageRecipe,
 }
+
+const { t } = i18n.global
 
 
 const toCreateRecipe = () => navigateTo(`/recipe/edit`)
@@ -288,6 +291,16 @@ const unitToReadable = (unit) => {
       return ""
     case "GRAM":
       return "g"
+    case "MILLILITERS":
+      return "mL"
+    case "POUND":
+      return "lb"
+    case "TEASPOON":
+      return ` ${t("unit_teaspoon")}`
+    case "TABLESPOON":
+      return ` ${t("unit_tablespoon")}`
+    case "CUP":
+      return " cups"
     case "NONE":
       return ""
     case null:
