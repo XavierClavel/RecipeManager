@@ -18,6 +18,7 @@ import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getQuery
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.handleDeletion
+import com.xavierclavel.utils.logger
 import common.dto.CookbookDTO
 import common.dto.CookbookUserDTO
 import common.utils.Filepath.COOKBOOKS_IMG_PATH
@@ -66,6 +67,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
         val cookbook = cookbookService.createCookbook(cookbookDTO)
         val userId = getSessionUserId()
         cookbookService.addUserToCookbook(cookbook.id, userId, isAdmin = true)
+        logger.info {"Cookbook ${cookbook.id} (${cookbook.title} created by user $userId"}
         call.respond(HttpStatusCode.Created, cookbook)
     }
 
@@ -147,7 +149,7 @@ object CookbookController: Controller(COOKBOOK_URL) {
     private fun Route.setCookbookUsers() = put("/{id}/users") {
         val cookbookId = getPathId()
         checkIfAdminOfCookbook(cookbookId)
-        val userInput = call.receive<List<CookbookUserDTO>>() ?: throw BadRequestException(BadRequestCause.INVALID_REQUEST)
+        val userInput = call.receive<List<CookbookUserDTO>>()
         cookbookService.setCookbookUsers(cookbookId, userInput)
         call.respond(HttpStatusCode.OK)
     }

@@ -152,6 +152,7 @@ object AuthController: Controller(AUTH_URL) {
             )
         val userCreated = userService.createUser(userDTO, token)
         userService.verifyUser(token)
+        logger.info {"Account created through Google Oauth by ${userCreated.username}"}
         return userCreated
     }
 
@@ -163,7 +164,8 @@ object AuthController: Controller(AUTH_URL) {
     private fun Route.verifyUser() = post("/verify") {
         val token = call.queryParameters["token"] ?: throw BadRequestException(BadRequestCause.TOKEN_MISSING)
         logger.info {"'$token'"}
-        userService.verifyUser(token)
+        val user = userService.verifyUser(token)
+        logger.info {"Account verified : ${user.username}"}
         call.respond(HttpStatusCode.OK)
     }
 
@@ -184,6 +186,7 @@ object AuthController: Controller(AUTH_URL) {
         val token = UUID.randomUUID().toString()
         val userCreated = UserController.userService.createUser(userDTO, token)
         mailService.sendVerificationEmail(encryptionService.decrypt(userCreated.mailEncrypted), token, getLocale())
+        logger.info {"Account created through basic auth by ${userCreated.username}"}
         call.respond(HttpStatusCode.Created, userCreated.toInfo())
     }
 

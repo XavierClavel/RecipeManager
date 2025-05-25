@@ -2,8 +2,6 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.AuthController.getOptionalSessionId
 import com.xavierclavel.controllers.AuthController.getSessionUserId
-import com.xavierclavel.exceptions.ForbiddenCause
-import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.services.CustomIngredientService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.RecipeIngredientService
@@ -22,14 +20,12 @@ import common.RecipeFilter
 import common.dto.RecipeDTO
 import common.enums.DishClass
 import common.enums.Locale
-import common.infodto.RecipeInfo
 import common.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -91,6 +87,7 @@ object RecipeController: Controller(RECIPE_URL) {
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
             customIngredientService.updateCustomIngredients(recipe.id, recipeDto)
             val recipeInfo = recipeService.getRawById(recipe.id, getSessionUserId(), Locale.EN)
+            logger.info{"Recipe ${recipeInfo.id} (${recipeInfo.title}) created by user ${user.username}"}
             call.respond(HttpStatusCode.Created, recipeInfo)
         } catch (e: Exception) {
             logger.error {e.message}
@@ -106,8 +103,9 @@ object RecipeController: Controller(RECIPE_URL) {
             val recipeDto = call.receive<RecipeDTO>()
             recipeIngredientService.updateRecipeIngredients(recipe.id, recipeDto)
             customIngredientService.updateCustomIngredients(recipe.id, recipeDto)
-            val info = recipeService.updateRecipe(recipeId, recipeDto)
-            call.respond(HttpStatusCode.OK, info)
+            val recipeInfo = recipeService.updateRecipe(recipeId, recipeDto)
+            logger.info{"Recipe ${recipeInfo.id} (${recipeInfo.title}) edited by user ${recipe.owner.username}"}
+            call.respond(HttpStatusCode.OK, recipeInfo)
         } catch (e: Exception) {
             logger.error {e}
         }
@@ -119,6 +117,7 @@ object RecipeController: Controller(RECIPE_URL) {
         checkRecipeEditionRights(recipe.owner!!.id)
         recipeService.tagRecipeForDeletion(recipeId)
         recipeService.tryDelete(recipeId)
+        logger.info{"Recipe ${recipe.id} (${recipe.title}) deleted by user ${recipe.owner.username}"}
         call.respond(HttpStatusCode.OK)
     }
 
