@@ -15,7 +15,7 @@
         height="200px"
         width="200px"
         max-width="200px"
-        aspect-ratio="1/1"
+        aspect-ratio="1"
         cover
         style="border: 3px solid #0d1821 !important;"
       ></v-img>

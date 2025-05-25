@@ -28,7 +28,7 @@
             <v-col cols="5" class="text-center">
               <v-divider class="mt-3" color="black" opacity="1"/>
             </v-col>
-            <v-col cols="2" class="text-center text-h6" >
+            <v-col cols="2" class="text-center text-h6 mt-n1" >
               {{ $t("or")}}
             </v-col>
             <v-col cols="5" class="text-center">

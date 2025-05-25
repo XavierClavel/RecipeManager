@@ -8,7 +8,7 @@
 
     <form @submit.prevent="submit" class="mx-auto">
       <v-card-title>
-        Logout
+        {{$t("logout")}}
       </v-card-title>
       <v-card-text>
         {{$t("logout_successful")}}

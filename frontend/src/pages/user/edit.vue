@@ -12,7 +12,7 @@
         rounded="circle"
         height="200px"
         width="200px"
-        aspect-ratio="1/1"
+        aspect-ratio="1"
         max-width="200px"
         buttons-size="50px"
         buttons-icon-size="text-h7"

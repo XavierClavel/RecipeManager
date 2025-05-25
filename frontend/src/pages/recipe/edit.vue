@@ -51,7 +51,7 @@
          :version="recipe.version"
          ref="editablePicture"
          width="100%"
-         aspect-ratio="4/3"
+         :aspect-ratio="4/3"
        ></editable-picture>
 
 
@@ -116,6 +116,7 @@
               @keydown.enter.prevent="selectFirstMatch(index)"
               class="ma-1"
               min-width="150px"
+              :no-data-text="`${$t('no_data')}`"
             ></v-autocomplete>
 
             <v-select

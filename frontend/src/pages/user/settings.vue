@@ -23,7 +23,7 @@
         <v-card color="background" class="mb-2">
           <v-checkbox
             v-model="settings.isAccountPublic"
-            label="Is account public"
+            :label="`${$t('public_account')}`"
             color="black"
             base-color="black"
             bg-color="background"
@@ -35,7 +35,7 @@
         <v-card color="background" class="mb-2">
           <v-checkbox
             v-model="settings.autoAcceptFollowRequests"
-            label="Auto accept follow requests"
+            :label="`${$t('auto_accept_follow_requests')}`"
             color="black"
             base-color="black"
             variant="elevated"

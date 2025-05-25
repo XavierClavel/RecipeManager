@@ -102,7 +102,6 @@ const getChipColor = (field) => {
 const onIngredientAutocompleteChange = async (query) => {
   const response = await searchIngredients(query, 0, 20);
   autocompleteList.value = response.data.items
-  console.log(autocompleteList.value)
 }
 
 const updateUrl = () => {
@@ -151,7 +150,7 @@ const updateUrl = () => {
             ref="comboboxRef"
             v-model="selectedIngredients"
             :items="autocompleteList"
-            :item-title="`${getLocale() == 'fr' ? 'name_fr' : 'name_en'}`"
+            :item-title="`name.${getLocale().toUpperCase()}`"
             item-value="id"
             return-object
             multiple

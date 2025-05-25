@@ -4,6 +4,7 @@ export default {
   cookbooks: "Carnets de recettes",
   admin: "Administration",
 
+  logout: "Déconnexion",
   logout_successful: "Vous vous êtes déconnecté avec succès.",
   sign_up: "S'inscrire",
   log_in: "Se connecter",
@@ -71,7 +72,7 @@ export default {
   sugary_snacks: "Snack sucré",
   others: "Autre",
   breakfast: "Petit déjeuner",
-  drinks: "Boissons",
+  drinks: "Boisson",
 
   alphabetical: "Alphabétique",
   likes: "Likes",
@@ -210,5 +211,9 @@ export default {
   or: "ou",
 
   email_verification: "Vérification de l'adresse mail",
-  email_verified: "Ton adresse mail a été vérifiée avec succès ! Cliques sur le lien suivant pour ton connecter:",
+  email_verified: "Ton adresse mail a été vérifiée avec succès ! Clique sur le lien suivant pour te connecter:",
+
+  public_account: "Compte public",
+  auto_accept_follow_requests: "Accepter automatiques requêtes d'abonnement",
+  no_data: "Aucune donnée",
 };

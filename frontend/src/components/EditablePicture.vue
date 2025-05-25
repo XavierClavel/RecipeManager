@@ -7,22 +7,18 @@
     accept="image/*"
   ></v-file-input>
 
-  <v-img :src="imageUrl"
-         @load="handleImageLoad"
-         @error="handleImageError"
-         cover
-         color="surface-variant"
-         :width="width"
-         min-width="width"
-         max-width="width"
-         min-height="200px"
-         :aspect-ratio="aspectRatio"
-         class="preview-image my-6 mx-auto"
-         :rounded="rounded"
-         fill-height
-         fluid
-         @click="triggerFileInput"
-         style="border: 4px solid #0d1821 !important;"
+  <v-img
+    :src="imageUrl"
+    :width="width"
+    :aspect-ratio="aspectRatio"
+    cover
+    color="surface-variant"
+    class="preview-image my-6 mx-auto"
+    :rounded="rounded"
+    @click="triggerFileInput"
+    @load="handleImageLoad"
+    @error="handleImageError"
+    style="border: 4px solid #0d1821 !important;"
   >
     <v-container :class="`image-overlay d-flex flex-row ${buttonsSpacing}`"  >
       <v-btn
@@ -74,9 +70,9 @@ const props = defineProps({
     required: true,
   },
   aspectRatio: {
-    type: [String],
+    type: [Number],
     required: false,
-    default: "1/1"
+    default: "1"
   },
   width: {
     type: [String],

@@ -4,6 +4,7 @@ export default {
   cookbooks: "Cookbooks",
   admin: "Admin",
 
+  logout: "Logout",
   logout_successful: "You have successfully logged out.",
   sign_up: "Sign up",
   log_in: "Log in",
@@ -211,4 +212,8 @@ export default {
 
   email_verification: "Email verification",
   email_verified: "Your email was successfully verified! Please click the button below to log in to your account",
+
+  public_account: "Public account",
+  auto_accept_follow_requests: "Auto accept follow requests",
+  no_data: "No data",
 };

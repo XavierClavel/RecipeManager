@@ -132,6 +132,7 @@ class User (
 
     fun verify() = this.apply {
         isVerified = true
+        tokenEndValidity = LocalDateTime.now().minusDays(1)
     }
 
     fun updatePassword(encryptedPassword: String) = this.apply {

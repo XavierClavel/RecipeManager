@@ -53,6 +53,7 @@
          width="600px"
          height="600px"
          class="my-2"
+         aspect-ratio="1"
        ></editable-picture>
 
       <!-- Cookbook users -->
