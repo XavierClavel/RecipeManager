@@ -59,8 +59,8 @@ class CookbookRightsTest: ApplicationTest() {
         var cookbook: CookbookInfo? = null
         runAsAdmin {
             cookbook = client.createCookbook()
-            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER1)!!.id, false)
-            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+            client.addCookbookUser(cookbook.id, userService.findByMail(USER1).id, false)
+            client.addCookbookUser(cookbook.id, userService.findByMail(USER2).id, false)
         }
         runAsUser1 {
             recipe = client.createRecipe(recipeDTO)
@@ -77,8 +77,8 @@ class CookbookRightsTest: ApplicationTest() {
         var cookbook: CookbookInfo? = null
         runAsAdmin {
             cookbook = client.createCookbook()
-            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER1)!!.id, false)
-            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+            client.addCookbookUser(cookbook.id, userService.findByMail(USER1).id, false)
+            client.addCookbookUser(cookbook.id, userService.findByMail(USER2).id, false)
         }
         runAsUser1 {
             recipe = client.createRecipe(recipeDTO)
@@ -112,8 +112,8 @@ class CookbookRightsTest: ApplicationTest() {
         var cookbook: CookbookInfo? = null
         runAsUser1 {
             cookbook = client.createCookbook()
-            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
-            client.deleteCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id)
+            client.addCookbookUser(cookbook.id, userService.findByMail(USER2).id, false)
+            client.deleteCookbookUser(cookbook.id, userService.findByMail(USER2).id)
         }
     }
 
@@ -124,10 +124,10 @@ class CookbookRightsTest: ApplicationTest() {
             cookbook = client.createCookbook()
         }
         runAsUser2 {
-            client.addCookbookUserRaw(cookbook!!.id, userService.getUserByUsername(USER2)!!.id, false).apply {
+            client.addCookbookUserRaw(cookbook!!.id, userService.findByMail(USER2).id, false).apply {
                 assertEquals(status, HttpStatusCode.Forbidden)
             }
-            client.deleteCookbookUserRaw(cookbook.id, userService.getUserByUsername(USER2)!!.id).apply {
+            client.deleteCookbookUserRaw(cookbook.id, userService.findByMail(USER2).id).apply {
                 assertEquals(status, HttpStatusCode.Forbidden)
             }
         }
@@ -183,7 +183,7 @@ class CookbookRightsTest: ApplicationTest() {
             cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PUBLIC))
         }
         runAsUser2 {
-            client.follow(userService.getUserByUsername(USER1)!!.id)
+            client.follow(userService.findByMail(USER1).id)
             client.getCookbook(cookbook!!.id)
             val result = client.listCookbooks()
             assertEquals(1, result.size)
@@ -197,7 +197,7 @@ class CookbookRightsTest: ApplicationTest() {
             cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PROTECTED))
         }
         runAsUser2 {
-            client.follow(userService.getUserByUsername(USER1)!!.id)
+            client.follow(userService.findByMail(USER1).id)
             client.getCookbook(cookbook!!.id)
             val result = client.listCookbooks()
             assertEquals(1, result.size)
@@ -211,7 +211,7 @@ class CookbookRightsTest: ApplicationTest() {
             cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PRIVATE))
         }
         runAsUser2 {
-            client.follow(userService.getUserByUsername(USER1)!!.id)
+            client.follow(userService.findByMail(USER1).id)
             client.getCookbookRaw(cookbook!!.id).apply {
                 assertEquals(HttpStatusCode.Forbidden, status)
             }
@@ -225,7 +225,7 @@ class CookbookRightsTest: ApplicationTest() {
         var cookbook: CookbookInfo? = null
         runAsUser1 {
             cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PUBLIC))
-            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+            client.addCookbookUser(cookbook.id, userService.findByMail(USER2).id, false)
         }
         runAsUser2 {
             client.getCookbook(cookbook!!.id)
@@ -239,7 +239,7 @@ class CookbookRightsTest: ApplicationTest() {
         var cookbook: CookbookInfo? = null
         runAsUser1 {
             cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PROTECTED))
-            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+            client.addCookbookUser(cookbook.id, userService.findByMail(USER2).id, false)
         }
         runAsUser2 {
             client.getCookbook(cookbook!!.id)
@@ -253,7 +253,7 @@ class CookbookRightsTest: ApplicationTest() {
         var cookbook: CookbookInfo? = null
         runAsUser1 {
             cookbook = client.createCookbook(CookbookDTO("", visibility = Visibility.PRIVATE))
-            client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+            client.addCookbookUser(cookbook.id, userService.findByMail(USER2).id, false)
         }
         runAsUser2 {
             client.getCookbook(cookbook!!.id)

@@ -57,11 +57,11 @@ class CookbookControllerTest : ApplicationTest() {
     fun `add user to cookbook`() = runTestAsAdmin {
         val cookbook = client.createCookbook()
         client.assertCookbookExists(cookbook.id)
-        val user = client.createUser("user3")
+        val user = client.createUser("user3@mail.com")
         client.addCookbookUser(cookbook.id, user.id, false)
         val users = client.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)
-        assertTrue(users.any { it.username == "user3" })
+        assertTrue(users.any { it.id == user.id })
     }
 
     @Test
@@ -82,16 +82,16 @@ class CookbookControllerTest : ApplicationTest() {
         val cookbook = client.createCookbook()
         client.assertCookbookExists(cookbook.id)
 
-        val user = userService.getUserByUsername("user1")!!
+        val user = userService.findByMail(USER1)
         client.addCookbookUser(cookbook.id, user.id, false)
         val users = client.getCookbookUsers(cookbook.id)
         assertEquals(2, users.size)
-        assertTrue(users.any { it.username == "user1" })
+        assertTrue(users.any { it.id == user.id})
 
         client.deleteCookbookUser(cookbook.id, user.id)
         val users2 = client.getCookbookUsers(cookbook.id)
         assertEquals(1, users2.size)
-        assertTrue(users2.none { it.username == "user1" })
+        assertTrue(users2.none { it.id == user.id })
     }
 
     @Test
@@ -287,7 +287,7 @@ class CookbookControllerTest : ApplicationTest() {
             assertEquals(HttpStatusCode.OK, status)
         }
 
-        client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+        client.addCookbookUser(cookbook.id, userService.findByMail(USER2).id, false)
 
         client.leaveCookbook(cookbook.id)
 
@@ -297,7 +297,7 @@ class CookbookControllerTest : ApplicationTest() {
     }
 
     @Test
-    fun `new cookook admin is assigned if no admin left`() = runTestAsUser {
+    fun `new cookbook admin is assigned if no admin left`() = runTestAsUser {
         val cookbook = client.createCookbook()
         val recipe = client.createRecipe()
 
@@ -305,7 +305,7 @@ class CookbookControllerTest : ApplicationTest() {
             assertEquals(HttpStatusCode.OK, status)
         }
 
-        client.addCookbookUser(cookbook.id, userService.getUserByUsername(USER2)!!.id, false)
+        client.addCookbookUser(cookbook.id, userService.findByMail(USER2).id, false)
 
         client.leaveCookbook(cookbook.id)
 

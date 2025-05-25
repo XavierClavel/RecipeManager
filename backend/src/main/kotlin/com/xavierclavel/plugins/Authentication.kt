@@ -52,17 +52,17 @@ fun Application.configureAuthentication() {
         basic("auth-basic") {
             realm = "Access to the '/' path"
             validate { credentials ->
-                val user = userService.findByUsername(credentials.name) ?: throw NotFoundException(NotFoundCause.USER_NOT_FOUND)
+                val user = userService.findEntityByMail(credentials.name) ?: throw UnauthorizedException(UnauthorizedCause.INVALID_MAIL_OR_PASSWORD)
                 if (user.passwordHash.isNullOrBlank()) throw BadRequestException(BadRequestCause.OAUTH_ONLY)
                 if (!user.isVerified) throw UnauthorizedException(UnauthorizedCause.USER_NOT_VERIFIED)
                 if (userService.isPasswordValid(credentials.password, user.passwordHash!!)) {
-                    logger.info {"Login accepted for user ${user.username}"}
                     UserIdPrincipal(credentials.name)
                 } else {
-                    logger.error {"Login rejected for user ${user.username}"}
-                    throw UnauthorizedException(UnauthorizedCause.INVALID_PASSWORD)
+                    throw UnauthorizedException(UnauthorizedCause.INVALID_MAIL_OR_PASSWORD)
                 }
             }
+
+
         }
 
         oauth("auth-oauth-google") {

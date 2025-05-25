@@ -3,7 +3,6 @@ package main.com.xavierclavel.controllertests
 import com.xavierclavel.ApplicationTest
 import main.com.xavierclavel.utils.assertUserExists
 import main.com.xavierclavel.utils.createUser
-import main.com.xavierclavel.utils.deleteUser
 import main.com.xavierclavel.utils.listUsers
 import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
@@ -11,8 +10,8 @@ import kotlin.test.assertTrue
 class UserControllerTest : ApplicationTest() {
     @Test
     fun `create user`() = runTestAsAdmin {
-        val username = "test_user"
-        val user = client.createUser(username = username)
+        val mail = "test_user@mail.fr"
+        val user = client.createUser(mail = mail)
         client.assertUserExists(user.id)
     }
 
@@ -29,11 +28,11 @@ class UserControllerTest : ApplicationTest() {
 
     @Test
     fun `list users`() = runTestAsAdmin {
-        val usernames = setOf("test_user1", "test_user2")
-        usernames.forEach { username -> client.createUser(username = username) }
-        val response = client.listUsers().items.map { it.username }.toSet()
-        for (username in usernames) {
-            assertTrue { response.contains(username) }
+        val emails = setOf("test_user1@mail.com", "test_user2@mail.com")
+        val users = emails.map { mail -> client.createUser(mail = mail) }
+        val response = client.listUsers().items.map { it.id }.toSet()
+        for (user in users) {
+            assertTrue { user.id in response }
         }
     }
 }

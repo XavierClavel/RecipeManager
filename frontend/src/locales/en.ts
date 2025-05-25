@@ -131,6 +131,7 @@ export default {
   session_not_found: "Session not found",
   user_not_verified: "Your account is not verified yet",
   invalid_password: "Wrong password",
+  invalid_mail_or_password: "Wrong email address or password",
   invalid_token: "Invalid token",
 
   not_allowed_to_edit_recipe: "You are not allowed to edit this recipe",
@@ -207,4 +208,7 @@ export default {
 
   maintenance: "This site is currently down, please try again later.",
   or: "or",
+
+  email_verification: "Email verification",
+  email_verified: "Your email was successfully verified! Please click the button below to log in to your account",
 };

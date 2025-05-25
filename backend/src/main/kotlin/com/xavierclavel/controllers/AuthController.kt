@@ -84,13 +84,11 @@ object AuthController: Controller(AUTH_URL) {
 
     @OptIn(ExperimentalLettuceCoroutinesApi::class)
     private fun Route.login() = post("/login") {
-        val username = call.principal<UserIdPrincipal>()?.name.toString()
-        val user = userService.getUserByUsername(username) ?: throw NotFoundException(NotFoundCause.USER_NOT_FOUND)
+        val mail = call.principal<UserIdPrincipal>()?.name.toString()
+        val user = userService.findByMail(mail).toInfo()
         createSession(user)
         call.respond(HttpStatusCode.OK)
     }
-
-
 
     private fun Route.loginGoogleOauth() = get("/login-oauth-google") {
     }

@@ -27,11 +27,11 @@ import kotlin.test.assertEquals
 
 val userService: UserService by inject(UserService::class.java)
 
-suspend fun HttpClient.createUser(username: String = UUID.randomUUID().toString()): UserInfo  {
+suspend fun HttpClient.createUser(mail: String = UUID.randomUUID().toString()): UserInfo  {
     this.post("$AUTH_URL/signup?locale=EN"){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
-        setBody(UserDTO(username = username, mail = UUID.randomUUID().toString(), password="password"))
+        setBody(UserDTO(mail = mail, username = UUID.randomUUID().toString(), password="password"))
     }.apply {
         assertEquals(HttpStatusCode.Created, status)
         val user = Json.decodeFromString<UserInfo>(bodyAsText())

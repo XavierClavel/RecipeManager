@@ -188,7 +188,7 @@ const getDefaultImageUrl = (path) => {
 async function login(user) {
   const result = await apiClient.post(`/auth/login`, {}, {
     auth: {
-      username: user.username,
+      username: user.mail,
       password: user.password,
     },
     withCredentials: true

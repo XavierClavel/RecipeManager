@@ -126,6 +126,7 @@ class UserService: KoinComponent {
         val user = createUser(UserDTO(
             username = "admin",
             password = "Passw0rd",
+            mail = "admin@mail.com"
         )).setRole(UserRole.ADMIN).updateAndGet()
         validateUser(user.id)
     }

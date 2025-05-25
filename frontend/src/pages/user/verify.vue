@@ -9,11 +9,11 @@
 
     <form @submit.prevent="submit">
       <v-card-title>
-        Email verification
+        {{$t("email_verification")}}
       </v-card-title>
       <error :error="errorMessage"></error>
 
-      <v-card-text v-if="!errorMessage">Your email was successfully verified! Please click the button below to log in to your account</v-card-text>
+      <v-card-text v-if="!errorMessage">{{ $t("email_verified")}}</v-card-text>
       <v-container>
         <v-row
           class="d-flex align-center justify-center mb-2 mt-16 gx-16"

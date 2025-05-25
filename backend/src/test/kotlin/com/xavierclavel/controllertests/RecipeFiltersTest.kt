@@ -31,7 +31,7 @@ class RecipeFiltersTest : ApplicationTest() {
         var adminUser: UserInfo? = null
         var recipe: RecipeInfo? = null
         runAsAdmin {
-            user = userService.getUserByUsername(USER1)!!
+            user = userService.findByMail(USER1).toInfo()
             adminUser = client.getMe()
         }
         runAs(USER1) {
@@ -72,16 +72,14 @@ class RecipeFiltersTest : ApplicationTest() {
 
     @Test
     fun `filter recipes by liked and owned`() = runTest {
-        var user: UserInfo? = null
         var adminUser: UserInfo? = null
         var recipeOwned: RecipeInfo? = null
         var recipeLiked: RecipeInfo? = null
         runAsAdmin {
-            user = userService.getUserByUsername("user1")
             adminUser = client.getMe()
             recipeOwned = client.createRecipe()
         }
-        runAs(user!!.username) {
+        runAsUser1 {
             recipeLiked = client.createRecipe()
         }
         runAsAdmin {
@@ -106,7 +104,7 @@ class RecipeFiltersTest : ApplicationTest() {
         var recipe2: RecipeInfo? = null
         var recipe3: RecipeInfo? = null
         runAsAdmin {
-            user = userService.getUserByUsername(USER1)!!
+            user = userService.findByMail(USER1).toInfo()
             adminUser = client.getMe()
             recipe1 = client.createRecipe()
             recipe2 = client.createRecipe()
@@ -235,17 +233,17 @@ class RecipeFiltersTest : ApplicationTest() {
         var recipe12: RecipeInfo? = null
         var recipe21: RecipeInfo? = null
         runAsAdmin {
-            user1 = userService.getUserByUsername("user1")
-            user2 = userService.getUserByUsername("user2")
+            user1 = userService.findByMail(USER1).toInfo()
+            user2 = userService.findByMail(USER2).toInfo()
             adminUser = client.getMe()
             recipe0 = client.createRecipe()
         }
         adminUser!!
-        runAs(user1!!.username) {
+        runAsUser1 {
             recipe11 = client.createRecipe()
             recipe12 = client.createRecipe()
         }
-        runAs(user2!!.username) {
+        runAsUser2 {
             recipe21 = client.createRecipe()
         }
         recipe0!!

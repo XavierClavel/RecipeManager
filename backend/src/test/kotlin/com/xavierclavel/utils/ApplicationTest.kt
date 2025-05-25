@@ -104,9 +104,9 @@ abstract class ApplicationTest: KoinTest {
         setupTestUser(USER2)
     }
 
-    fun setupTestUser(username: String, settings: UserSettingsDTO = UserSettingsDTO(true, true)): Long {
+    fun setupTestUser(mail: String, settings: UserSettingsDTO = UserSettingsDTO(true, true)): Long {
         val token1 = UUID.randomUUID().toString()
-        val userDTO1 = UserDTO(username = username, password = password, mail = UUID.randomUUID().toString())
+        val userDTO1 = UserDTO(username = UUID.randomUUID().toString(), password = password, mail = mail)
         val id1 = userService.createUser(userDTO1, token1).id
         userService.verifyUser(token1)
         userService.updateSettings(id1, settings)
@@ -129,7 +129,7 @@ abstract class ApplicationTest: KoinTest {
     }
 
     @KtorDsl
-    suspend fun TestBuilderWrapper.runAsAdmin(block: suspend TestBuilderWrapper.() -> Unit) = runAs("admin", password) {
+    suspend fun TestBuilderWrapper.runAsAdmin(block: suspend TestBuilderWrapper.() -> Unit) = runAs("admin@mail.com", password) {
         this.block()
     }
 

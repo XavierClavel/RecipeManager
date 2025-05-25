@@ -38,9 +38,9 @@
         </v-container>
 
           <v-text-field
-            v-model="user.username"
-            prepend-inner-icon="mdi-account"
-            :label="`${$t('username')}`"
+            v-model="user.mail"
+            prepend-inner-icon="mdi-email-outline"
+            :label="`${$t('mail')}`"
             :rules="[requiredRule]"
           ></v-text-field>
 

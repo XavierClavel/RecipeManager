@@ -12,6 +12,7 @@ enum class UnauthorizedCause(val key: String) {
     SESSION_NOT_FOUND("session_not_found"),
     USER_NOT_VERIFIED("user_not_verified"),
     INVALID_PASSWORD("invalid_password"),
+    INVALID_MAIL_OR_PASSWORD("invalid_mail_or_password"),
     INVALID_TOKEN("invalid_token"),
     OAUTH_FAILED("oauth_failed"),
     OAUTH_NOT_SETUP("oauth_not_setup"),

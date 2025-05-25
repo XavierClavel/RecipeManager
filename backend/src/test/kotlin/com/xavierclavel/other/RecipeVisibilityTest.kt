@@ -36,7 +36,7 @@ class RecipeVisibilityTest: ApplicationTest() {
             client.createRecipe(recipeDTO).id
         }
         runAsUser2 {
-            val result = client.listRecipes(user = userService.getUserByUsername(USER1)!!.id)
+            val result = client.listRecipes(user = userService.findByMail(USER1)!!.id)
             assertEquals(1, result.size)
         }
     }
@@ -55,7 +55,7 @@ class RecipeVisibilityTest: ApplicationTest() {
         runAsUser1 {
             client.createRecipe(recipeDTO).id
         }
-        val result = client.listRecipes(user = userService.getUserByUsername(USER1)!!.id)
+        val result = client.listRecipes(user = userService.findByMail(USER1)!!.id)
         assertEquals(1, result.size)
     }
 
@@ -73,7 +73,7 @@ class RecipeVisibilityTest: ApplicationTest() {
         setupTestUser("user3", UserSettingsDTO(isAccountPublic = false))
         runAs("user3") {
             client.createRecipe(recipeDTO).id
-            val result = client.listRecipes(user = userService.getUserByUsername("user3")!!.id)
+            val result = client.listRecipes(user = userService.findByMail("user3")!!.id)
             assertEquals(1, result.size)
         }
     }
@@ -85,7 +85,7 @@ class RecipeVisibilityTest: ApplicationTest() {
         runAs("user3") {
             recipeId = client.createRecipe(recipeDTO).id
         }
-        likeService.createLike(recipeId!!, userService.getUserByUsername(USER1)!!.id)
+        likeService.createLike(recipeId!!, userService.findByMail(USER1)!!.id)
         logger.info {likeService.countByRecipe(recipeId)}
         runAsUser1 {
             client.getRecipe(recipeId)
@@ -100,8 +100,8 @@ class RecipeVisibilityTest: ApplicationTest() {
             recipeId = client.createRecipe(recipeDTO).id
         }
         recipeId!!
-        followService.createFollow(userService.getUserByUsername("user3")!!.id, userService.getUserByUsername(USER1)!!.id)
-        followService.acceptFollowRequest(userService.getUserByUsername("user3")!!.id, userService.getUserByUsername(USER1)!!.id)
+        followService.createFollow(userService.findByMail("user3")!!.id, userService.findByMail(USER1)!!.id)
+        followService.acceptFollowRequest(userService.findByMail("user3")!!.id, userService.findByMail(USER1)!!.id)
         runAsUser1 {
             client.getRecipe(recipeId)
         }
@@ -115,7 +115,7 @@ class RecipeVisibilityTest: ApplicationTest() {
             recipeId = client.createRecipe(recipeDTO).id
         }
         recipeId!!
-        followService.createFollow(userService.getUserByUsername("user3")!!.id, userService.getUserByUsername(USER1)!!.id)
+        followService.createFollow(userService.findByMail("user3")!!.id, userService.findByMail(USER1)!!.id)
         runAsUser1 {
             client.getRecipeRaw(recipeId).apply {
                 assertEquals(HttpStatusCode.Forbidden, status)
@@ -131,10 +131,10 @@ class RecipeVisibilityTest: ApplicationTest() {
             recipeId = client.createRecipe(recipeDTO).id
         }
         recipeId!!
-        followService.createFollow(userService.getUserByUsername("user3")!!.id, userService.getUserByUsername(USER1)!!.id)
-        followService.acceptFollowRequest(userService.getUserByUsername("user3")!!.id, userService.getUserByUsername(USER1)!!.id)
+        followService.createFollow(userService.findByMail("user3")!!.id, userService.findByMail(USER1)!!.id)
+        followService.acceptFollowRequest(userService.findByMail("user3")!!.id, userService.findByMail(USER1)!!.id)
         runAsUser1 {
-            val result = client.listRecipes(user = userService.getUserByUsername("user3")!!.id)
+            val result = client.listRecipes(user = userService.findByMail("user3")!!.id)
             assertEquals(1, result.size)
         }
     }
@@ -147,9 +147,9 @@ class RecipeVisibilityTest: ApplicationTest() {
             recipeId = client.createRecipe(recipeDTO).id
         }
         recipeId!!
-        followService.createFollow(userService.getUserByUsername("user3")!!.id, userService.getUserByUsername(USER1)!!.id)
+        followService.createFollow(userService.findByMail("user3")!!.id, userService.findByMail(USER1)!!.id)
         runAsUser1 {
-            val result = client.listRecipes(user = userService.getUserByUsername("user3")!!.id)
+            val result = client.listRecipes(user = userService.findByMail("user3")!!.id)
             assertEquals(0, result.size)
         }
     }
@@ -163,8 +163,8 @@ class RecipeVisibilityTest: ApplicationTest() {
         }
         recipeId!!
         val cookbookInfo = cookbookService.createCookbook(CookbookDTO("cookbook"))
-        cookbookService.addRecipeToCookbook(cookbookInfo.id, recipeId, userService.getUserByUsername("user3")!!.id)
-        cookbookService.addUserToCookbook(cookbookInfo.id, userService.getUserByUsername(USER1)!!.id, false)
+        cookbookService.addRecipeToCookbook(cookbookInfo.id, recipeId, userService.findByMail("user3")!!.id)
+        cookbookService.addUserToCookbook(cookbookInfo.id, userService.findByMail(USER1)!!.id, false)
         runAsUser1 {
             client.getRecipe(recipeId)
         }
@@ -193,7 +193,7 @@ class RecipeVisibilityTest: ApplicationTest() {
             recipeId = client.createRecipe(recipeDTO).id
         }
         runAsUser1 {
-            val result = client.listRecipes(user = userService.getUserByUsername("user3")!!.id)
+            val result = client.listRecipes(user = userService.findByMail("user3")!!.id)
             assertEquals(0, result.size)
         }
     }
@@ -217,7 +217,7 @@ class RecipeVisibilityTest: ApplicationTest() {
         runAs("user3") {
             recipeId = client.createRecipe(recipeDTO).id
         }
-            val result = client.listRecipes(user = userService.getUserByUsername("user3")!!.id)
+            val result = client.listRecipes(user = userService.findByMail("user3")!!.id)
             assertEquals(0, result.size)
     }
 
