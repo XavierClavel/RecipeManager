@@ -9,6 +9,7 @@ import javax.crypto.spec.SecretKeySpec
 data class Configuration(
     val smtp: Smtp,
     val frontend: Frontend,
+    val backend: Backend,
     val encryption: Encryption,
     val oauth: OAuth,
 ) {
@@ -22,6 +23,10 @@ data class Configuration(
     }
 
     data class Frontend(
+        val url: String,
+    )
+
+    data class Backend(
         val url: String,
     )
 
