@@ -100,7 +100,7 @@ export default {
   none: "Non spécifié",
   pound: "Livres",
   milliliters: "Millilitres",
-  teaspoon: "Cuillère à sucre",
+  teaspoon: "Cuillère à café",
   tablespoon: "Cuillère à soupe",
   cup: "Tasse",
 

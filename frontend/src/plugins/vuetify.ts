@@ -13,7 +13,7 @@ import {createVuetify, ThemeDefinition} from 'vuetify'
 import { VNumberInput } from 'vuetify/labs/VNumberInput'
 
 const customTheme: ThemeDefinition = {
-  dark: true,
+  dark: false,
   colors: {
     background: '#f0f4ef',
     surface: '#629677',
