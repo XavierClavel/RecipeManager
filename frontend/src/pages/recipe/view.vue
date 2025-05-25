@@ -126,7 +126,7 @@
         :title="`${ingredient.name} ${ingredient.complement ? '(' + ingredient.complement + ')' : ''}`"
       >
         <template v-slot:prepend>
-          <v-avatar size="40" variant="elevated" class="mr-4" style="border:3px solid #0d1821 !important;">
+          <v-avatar size="40" variant="elevated" class="mr-2" style="border:3px solid #0d1821 !important;">
             <v-img
               color="surface"
               :src="getIngredientImageUrl(ingredient.type)"
@@ -160,8 +160,13 @@
           :title="ingredient.name"
         >
           <template v-slot:prepend>
-            <v-avatar color="surface">
-              <v-icon color="white">mdi-carrot</v-icon>
+            <v-avatar size="40" variant="elevated" class="mr-2" style="border:3px solid #0d1821 !important;">
+              <v-img
+                color="surface"
+                :src="getIngredientImageUrl('VEGETABLE')"
+                cover
+                v-bind="props"
+              ></v-img>
             </v-avatar>
           </template>
 

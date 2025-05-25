@@ -389,6 +389,7 @@ const recipe = ref<object>({
 })
 
 function getLocalizedLabel(item: any) {
+  console.log(item)
   return t(item.label)
 }
 
@@ -495,7 +496,13 @@ async function submit() {
     amount: item.unit == null || item.unit.value == "NONE" ? null : item.amount,
     unit: item.unit ? item.unit.value : "NONE",
     complement: item.complement}))
-  submitted.customIngredients = submitted.customIngredients.filter((it) => "name" in it)
+  submitted.customIngredients = recipe.value.customIngredients
+    .filter((it) => "name" in it)
+    .map(item => ({
+      name: item.name,
+      amount: item.unit == null || item.unit.value == "NONE" ? null : item.amount,
+      unit: item.unit ? item.unit.value : "NONE"
+    }))
   submitted.steps = submitted.steps.filter((it) => it)
   delete submitted['version']
   console.log(submitted)
@@ -529,7 +536,11 @@ if (recipeId.value != null) {
         amount: item.amount,
         unit: unitOptions.value.find(it => it.value == item.unit)
       }))
-      recipe.value.customIngredients = response.data.customIngredients
+      recipe.value.customIngredients = response.data.customIngredients.map(item => ({
+        name: item.name,
+        amount: item.amount,
+        unit: unitOptions.value.find(it => it.value == item.unit)
+      }))
       recipe.value.yield = response.data.yield
       recipe.value.preparationTime = response.data.preparationTime
       recipe.value.cookingTime = response.data.cookingTime
