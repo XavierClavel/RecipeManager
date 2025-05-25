@@ -126,8 +126,15 @@
         :title="`${ingredient.name} ${ingredient.complement ? '(' + ingredient.complement + ')' : ''}`"
       >
         <template v-slot:prepend>
-          <v-avatar color="surface" class="mr-4">
-            <v-icon color="white">{{getIngredientIcon(ingredient.type)}}</v-icon>
+          <v-avatar size="40" variant="elevated" class="mr-4" style="border:3px solid #0d1821 !important;">
+            <v-img
+              color="surface"
+              :src="getIngredientImageUrl(ingredient.type)"
+              cover
+              v-bind="props"
+              class="clickable_image"
+              @click.stop="toViewIngredient(ingredient.id)"
+            ></v-img>
           </v-avatar>
         </template>
 
@@ -247,6 +254,7 @@ import { useRoute } from 'vue-router';
 import {deleteRecipe, downloadRecipe, getRecipe} from "@/scripts/recipes";
 import {ref} from "vue";
 import {
+  getIngredientImageUrl,
   getRecipeImageUrl,
   toCreateCookbookAddRecipe,
   toEditRecipe,
