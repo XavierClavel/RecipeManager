@@ -171,7 +171,7 @@ const autocompleteList = ref([])
 
 const onAutocompleteChange = async (query, index) => {
   const response = await searchUsers(query, 0, 20);
-  autocompleteList.value[index] = response.data;
+  autocompleteList.value[index] = response.data.items;
 }
 
 const updateMember = (index, value) => {
