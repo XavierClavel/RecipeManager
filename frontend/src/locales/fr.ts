@@ -162,6 +162,9 @@ export default {
   recipe_already_in_cookbook: "Cette recette est déjà dans ce cookbook",
   recipe_not_in_cookbook: "Cette recette n'est pas dans ce cookbook",
 
+  oauth_only: "Utilisez l'OAuth Google pour accéder à votre compte",
+  oauth_not_setup: "Adresse mail déjà liée à un compte",
+
   custom_ingredients_warning: "Les ingrédients personnalisés ne doivent être utilisés que si l'ingrédient recherché n'est pas disponible dans la liste.",
 
   //Ingredients

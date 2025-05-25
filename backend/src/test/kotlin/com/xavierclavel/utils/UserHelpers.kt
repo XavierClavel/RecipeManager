@@ -31,7 +31,7 @@ suspend fun HttpClient.createUser(username: String = UUID.randomUUID().toString(
     this.post("$AUTH_URL/signup?locale=EN"){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
-        setBody(UserDTO(username = username, mail = UUID.randomUUID().toString()))
+        setBody(UserDTO(username = username, mail = UUID.randomUUID().toString(), password="password"))
     }.apply {
         assertEquals(HttpStatusCode.Created, status)
         val user = Json.decodeFromString<UserInfo>(bodyAsText())
