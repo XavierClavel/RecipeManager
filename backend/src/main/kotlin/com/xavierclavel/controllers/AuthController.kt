@@ -137,12 +137,12 @@ object AuthController: Controller(AUTH_URL) {
 
     }
 
-    private suspend fun RoutingContext.createGoogleOauthUser(oauthDto: GoogleOauthDto): User {
+    private fun RoutingContext.createGoogleOauthUser(oauthDto: GoogleOauthDto): User {
         val token = UUID.randomUUID().toString()
-        val baseName = oauthDto.name.trim().replace(" ", ".")
+        val baseName = oauthDto.name.trim()
         var name = baseName
         var index = 1
-        while (!userService.existsByUsername(name)) {
+        while (userService.existsByUsername(name)) {
             name = "$baseName-$index"
             index++
         }
@@ -177,7 +177,7 @@ object AuthController: Controller(AUTH_URL) {
 
     private fun Route.signup() = post("/signup") {
         val userDTO = call.receive(UserDTO::class)
-        userDTO.username = userDTO.username.trim().replace(" ", ".")
+        userDTO.username = userDTO.username.trim()
         logger.info {userDTO}
         if (UserController.userService.existsByUsername(userDTO.username)) throw BadRequestException(BadRequestCause.USERNAME_ALREADY_USED)
         if (UserController.userService.existsByMail(userDTO.mail)) throw BadRequestException(BadRequestCause.MAIL_ALREADY_USED)

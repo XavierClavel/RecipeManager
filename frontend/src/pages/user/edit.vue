@@ -3,8 +3,7 @@
   class="mx-auto pa-5 ma-auto my-5"
   max-width="1000px"
   >
-    <v-container class="d-flex flex-wrap justify-center
-      flex-sm-nowrap">
+    <v-container class="justify-center">
       <editable-picture
         v-if="ready"
         path="users"
@@ -21,15 +20,14 @@
         buttons-rounded="lg"
         ref="editablePicture"
       ></editable-picture>
-      <v-container>
-        <v-card-title
-          class="mx-auto px-3 text-black text-h2 font-weight-bold text-center text-sm-left"
-        >{{ user.username }}</v-card-title>
-      </v-container>
-
     </v-container>
 
     <error :error="errorMessage"></error>
+
+    <v-text-field
+      v-model="user.username"
+      label="Username"
+    ></v-text-field>
 
     <v-textarea
         v-model="user.bio"
@@ -93,12 +91,17 @@ async function submit() {
   submitted["username"] = user.value.username
   submitted["bio"] = user.value.bio
   console.log(submitted)
-  await updateUser(submitted)
-  const newVersion = await editablePicture.value.submitImage()
-  console.log(newVersion)
-  const authStore = useAuthStore()
-  authStore.setImgVersion(newVersion)
-  toViewUser(userId)
+  try {
+    await updateUser(submitted).catch()
+    const newVersion = await editablePicture.value.submitImage()
+    console.log(newVersion)
+    const authStore = useAuthStore()
+    authStore.setImgVersion(newVersion)
+    toViewUser(userId)
+  } catch (e) {
+    errorMessage.value = e.response.data
+  }
+
 }
 
 </script>

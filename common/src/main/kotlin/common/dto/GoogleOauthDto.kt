@@ -1,5 +1,8 @@
 package common.dto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class GoogleOauthDto (
     val sub: String,
     val name: String,

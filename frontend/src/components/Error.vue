@@ -10,7 +10,7 @@ defineProps({
 
 <template>
   <v-card
-    class="pa-1 pa-sm-5 ma-5"
+    class="pa-1 pa-sm-2 ma-5 "
     v-if="error"
     variant="outlined"
     color="primary"

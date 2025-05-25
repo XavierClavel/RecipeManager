@@ -93,8 +93,14 @@ class UserService: KoinComponent {
             mailHash = encryptionService.hash(userDTO.mail)
             ).insertAndGet()
 
-    fun editUser(id: Long, userDTO: UserDTO): UserInfo =
-        getEntityById(id).merge(userDTO).updateAndGet().toInfo()
+    fun editUser(id: Long, userDTO: UserDTO): UserInfo {
+        val currentUser = getEntityById(id)
+        userDTO.username = userDTO.username.trim()
+        if (userDTO.username != currentUser.username && existsByUsername(userDTO.username)) {
+            throw BadRequestException(BadRequestCause.USERNAME_ALREADY_USED)
+        }
+        return currentUser.merge(userDTO).updateAndGet().toInfo()
+    }
 
     fun registerUserActivity(id: Long) = getEntityById(id).registerNewActivity()
 
