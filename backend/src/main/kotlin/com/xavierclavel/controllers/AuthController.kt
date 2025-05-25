@@ -138,7 +138,7 @@ object AuthController: Controller(AUTH_URL) {
 
     private fun RoutingContext.createGoogleOauthUser(oauthDto: GoogleOauthDto): User {
         val token = UUID.randomUUID().toString()
-        val baseName = oauthDto.name.trim()
+        val baseName = oauthDto.name?.trim() ?: UUID.randomUUID().toString()
         var name = baseName
         var index = 1
         while (userService.existsByUsername(name)) {

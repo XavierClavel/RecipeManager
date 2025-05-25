@@ -3,12 +3,12 @@ package common.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GoogleOauthDto (
+data class GoogleOauthDto(
     val sub: String,
-    val name: String,
-    val given_name: String,
-    val family_name: String,
-    val picture: String,
+    val name: String?,
+    val given_name: String?,
+    val family_name: String?,
+    val picture: String?,
     val email: String,
-    val email_verified: Boolean,
+    val email_verified: Boolean?
 )
