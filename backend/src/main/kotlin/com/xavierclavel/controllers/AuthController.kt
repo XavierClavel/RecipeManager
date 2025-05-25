@@ -90,7 +90,7 @@ object AuthController: Controller(AUTH_URL) {
         call.respond(HttpStatusCode.OK)
     }
 
-    private fun Route.loginGoogleOauth() = post("/login-oauth-google") {
+    private fun Route.loginGoogleOauth() = get("/login-oauth-google") {
     }
 
     private fun Route.callbackGoogleOauth() = get("/callback-oauth-google") {

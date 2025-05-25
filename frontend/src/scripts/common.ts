@@ -209,7 +209,7 @@ async function login(user) {
 
 async function loginOauthGoogle() {
   console.log("login oauth")
-  const result = await apiClient.post(`/auth/login-oauth-google`)
+  window.location.href = `${import.meta.env.VITE_API_URL}/auth/login-oauth-google`;
   console.log(result)
 }
 
