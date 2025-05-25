@@ -17,12 +17,23 @@ import com.xavierclavel.utils.getLocale
 import com.xavierclavel.utils.logger
 import common.dto.UserDTO
 import common.utils.URL.AUTH_URL
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.headers
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.auth.OAuthAccessTokenResponse
 import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondRedirect
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.delete
@@ -42,10 +53,20 @@ object AuthController: Controller(AUTH_URL) {
     val userService: UserService by inject(UserService::class.java)
     val redisService: RedisService by inject(RedisService::class.java)
     val encryptionService: EncryptionService by inject(EncryptionService::class.java)
+    val redirects = mutableMapOf<String, String>()
+    val applicationHttpClient = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            json()
+        }
+    }
 
     override fun Route.routes() {
         authenticate("auth-basic") {
             login()
+        }
+        authenticate("auth-oauth-google") {
+            loginGoogleOauth()
+            callbackGoogleOauth()
         }
         authenticate("auth-session") {
             whoami()
@@ -67,6 +88,37 @@ object AuthController: Controller(AUTH_URL) {
         redisService.createSession(sessionId, user)
         call.sessions.set(UserSession(sessionId))
         call.respond(HttpStatusCode.OK)
+    }
+
+    private fun Route.loginGoogleOauth() = post("/login-oauth-google") {
+    }
+
+    private fun Route.callbackGoogleOauth() = get("/callback-oauth-google") {
+        val currentPrincipal: OAuthAccessTokenResponse.OAuth2? = call.principal()
+        // redirects home if the url is not found before authorization
+        currentPrincipal?.let { principal ->
+            principal.state?.let { state ->
+                logger.info {"state: $state, accesstoken: ${principal.accessToken}"}
+                call.sessions.set(UserSession(principal.accessToken))
+                getPersonalGreeting(principal.accessToken)
+                redirects[state]?.let { redirect ->
+                    call.respondRedirect(redirect)
+                    return@get
+                }
+            }
+        }
+        call.respondRedirect("/home")
+    }
+
+    private suspend fun getPersonalGreeting(
+        token: String
+    ) {
+        val data = applicationHttpClient.get("https://www.googleapis.com/oauth2/v2/userinfo") {
+            headers {
+                append(HttpHeaders.Authorization, "Bearer $token")
+            }
+        }.bodyAsText()
+        logger.info {"user data: $data"}
     }
 
     private fun Route.logout() = post("/logout") {

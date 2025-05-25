@@ -9,6 +9,7 @@ import {ingredientTypes} from "@/scripts/values";
 
 export {
   login,
+  loginOauthGoogle,
   logout,
   signup,
   verifyEmail,
@@ -124,6 +125,7 @@ const noLoginRedirect = [
   '/maintenance',
   '/verification-email-sent',
   '/password/update/success',
+  'https://accounts.google.com/o/oauth2/auth',
 ]
 const noLoginRedirectStartsWith = [
   '/password/reset'
@@ -203,6 +205,12 @@ async function login(user) {
     authStore.login()
   }
   return result
+}
+
+async function loginOauthGoogle() {
+  console.log("login oauth")
+  const result = await apiClient.post(`/auth/login-oauth-google`)
+  console.log(result)
 }
 
 async function signup(user) {

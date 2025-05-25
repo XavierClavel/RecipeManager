@@ -13,6 +13,13 @@
         </v-card-title>
         <error :error="errorMessage"></error>
 
+        <v-btn
+          icon="mdi-google"
+          width="150px"
+          @click="loginOauthGoogle"
+        >
+        </v-btn>
+
           <v-text-field
             v-model="user.username"
             prepend-inner-icon="mdi-account"
@@ -74,7 +81,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {login, toResetPassword, toSignup} from '@/scripts/common'
+import {login, loginOauthGoogle, toResetPassword, toSignup} from '@/scripts/common'
 import {useI18n} from "vue-i18n";
 import {requiredRule} from "@/scripts/rules";
 

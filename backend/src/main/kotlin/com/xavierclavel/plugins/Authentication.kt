@@ -1,22 +1,31 @@
 package com.xavierclavel.plugins
 
+import com.xavierclavel.controllers.AuthController
 import com.xavierclavel.exceptions.NotFoundCause
 import com.xavierclavel.exceptions.NotFoundException
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.services.UserService
+import com.xavierclavel.utils.Configuration
 import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.logger
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.OAuthServerSettings
 import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.basic
+import io.ktor.server.auth.oauth
 import io.ktor.server.auth.session
 import io.ktor.server.response.respond
 import io.ktor.server.sessions.Sessions
 import io.ktor.server.sessions.cookie
+import io.ktor.client.engine.cio.*
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import org.koin.java.KoinJavaComponent
 import org.koin.ktor.ext.inject
@@ -25,6 +34,9 @@ import org.koin.ktor.ext.inject
 fun Application.configureAuthentication() {
     val userService : UserService by inject<UserService>()
     val redisService: RedisService by inject<RedisService>()
+    val configuration: Configuration by inject<Configuration>()
+
+
 
     install(Sessions) {
         cookie<UserSession>("user_session") {
@@ -49,6 +61,31 @@ fun Application.configureAuthentication() {
                 }
             }
         }
+
+        oauth("auth-oauth-google") {
+            // Configure oauth authentication
+            urlProvider = { "http://localhost:8080/callback" }
+            providerLookup = {
+                OAuthServerSettings.OAuth2ServerSettings(
+                    name = "google",
+                    authorizeUrl = "https://accounts.google.com/o/oauth2/auth",
+                    accessTokenUrl = "https://accounts.google.com/o/oauth2/token",
+                    requestMethod = HttpMethod.Post,
+                    clientId = configuration.oauth.google.clientId,
+                    clientSecret = configuration.oauth.google.clientSecret,
+                    defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.profile"),
+                    extraAuthParameters = listOf("access_type" to "offline"),
+                    onStateCreated = { call, state ->
+                        //saves new state with redirect url value
+                        call.request.queryParameters["redirectUrl"]?.let {
+                            AuthController.redirects[state] = it
+                        }
+                    }
+                )
+            }
+            client = AuthController.applicationHttpClient
+        }
+
         session<UserSession>("auth-session") {
             validate { session ->
                 if (redisService.hasSession(session.sessionId)) {
