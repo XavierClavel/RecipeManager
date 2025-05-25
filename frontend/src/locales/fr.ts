@@ -202,5 +202,6 @@ export default {
   per_weight: "Pour 100g",
   per_volume: "Pour 100mL",
 
-  maintenance: "Ce site est actuellement indisponible, merci de réessayer ultérieurement."
+  maintenance: "Ce site est actuellement indisponible, merci de réessayer ultérieurement.",
+  or: "ou",
 };

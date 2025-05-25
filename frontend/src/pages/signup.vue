@@ -9,6 +9,31 @@
         {{$t("signup")}}
       </v-card-title>
       <error :error="errorMessage"></error>
+
+      <v-btn
+        class="mt-3"
+        icon="mdi-google"
+        base-color="background"
+        width="150px"
+        @click="loginOauthGoogle"
+      >
+        <img src="@/assets/google.webp" alt="icon" style="width: 24px; height: 24px;" />
+      </v-btn>
+
+      <v-container class="my-4">
+        <v-row wrap no-gutters>
+          <v-col cols="5" class="text-center">
+            <v-divider class="mt-3" color="black" opacity="1"/>
+          </v-col>
+          <v-col cols="2" class="text-center text-h6" >
+            {{ $t("or")}}
+          </v-col>
+          <v-col cols="5" class="text-center">
+            <v-divider class="mt-3" color="black" opacity="1"/>
+          </v-col>
+        </v-row>
+      </v-container>
+      
       <v-text-field
         v-model="user.username"
         prepend-inner-icon="mdi-account"
@@ -78,7 +103,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {signup, toLogin} from "@/scripts/common";
+import {loginOauthGoogle, signup, toLogin} from "@/scripts/common";
 import {useI18n} from "vue-i18n";
 import {min8Rule, passwordRule, requiredRule} from "@/scripts/rules";
 

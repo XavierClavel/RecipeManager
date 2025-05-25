@@ -202,5 +202,6 @@ export default {
   per_weight: "Per 100g",
   per_volume: "Per 100mL",
 
-  maintenance: "This site is currently down, please try again later."
+  maintenance: "This site is currently down, please try again later.",
+  or: "or",
 };

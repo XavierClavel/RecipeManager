@@ -197,6 +197,10 @@ object AuthController: Controller(AUTH_URL) {
             call.respond(HttpStatusCode.OK)
         } catch (e: NotFoundException) {
             call.respond(HttpStatusCode.OK)
+        } catch (e: BadRequestException) {
+            if (e.message == BadRequestCause.OAUTH_ONLY.key) {
+                call.respond(HttpStatusCode.OK)
+            }
         }
     }
 
