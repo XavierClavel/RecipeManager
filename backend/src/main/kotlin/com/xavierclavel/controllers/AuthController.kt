@@ -117,6 +117,7 @@ object AuthController: Controller(AUTH_URL) {
         val response = try {
             Json.decodeFromString<GoogleOauthDto>(data)
         } catch (e: SerializationException) {
+            logger.info {"Failed to parse the following data: $data"}
             throw UnauthorizedException(UnauthorizedCause.OAUTH_FAILED)
         }
         var user = userService.findEntityByGoogleId(response.sub)
