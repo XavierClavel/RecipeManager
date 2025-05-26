@@ -28,7 +28,7 @@
             base-color="black"
             bg-color="background"
             variant="elevated"
-            class="mx-2 my-0 mb-n6"
+            class="mx-2 my-0 mb-n6 text-black"
           ></v-checkbox>
         </v-card>
 

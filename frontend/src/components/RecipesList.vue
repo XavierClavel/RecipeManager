@@ -9,7 +9,6 @@ const props = defineProps({
 })
 
 const recipes = ref<object[]>([])
-const noRecipes = ref(false)
 const router = useRouter()
 const routesToCheck = ["/recipe/list", "/ingredient/view", "/cookbook/recipes"]
 const currentPage = ref(0)
@@ -17,6 +16,7 @@ const isLoading = ref(false)
 const allRecipesLoaded = ref(false)
 const infiniteScrollKey = ref(0)
 const refreshing = ref(true)
+const errorMessage = ref(null)
 
 
 const loadMore = async ({ done }: { done: () => void }) => {
@@ -33,17 +33,27 @@ const loadMore = async ({ done }: { done: () => void }) => {
 }
 
 const updateGrid = async() => {
-  const query = props.query || window.location.search
-  const response = await listRecipes(query, currentPage.value, 20)
-  if (response.data.length === 0) {
-    allRecipesLoaded.value = true
-    noRecipes.value = recipes.value.length == 0
-  } else {
-    recipes.value.push(...response.data)
-    currentPage.value++
+  console.log("updating recipes")
+  errorMessage.value = null
+  try {
+    const query = props.query || window.location.search
+    const response = await listRecipes(query, currentPage.value, 20)
+    if (response.data.length === 0) {
+      allRecipesLoaded.value = true
+      if (recipes.value.length == 0) {
+        throw "no_recipe_to_display"
+      }
+    } else {
+      recipes.value.push(...response.data)
+      currentPage.value++
+    }
+  } catch (e) {
+    console.log(e)
+    errorMessage.value = e
+  } finally {
+    isLoading.value = false
+    refreshing.value = false
   }
-  isLoading.value = false
-  refreshing.value = false
 }
 
 
@@ -98,8 +108,8 @@ updateGrid()
     </template>
   </v-infinite-scroll>
 
-  <div  v-if="!refreshing && !isLoading && recipes.length === 0">
-    <error error="no_recipe_to_display"></error>
+  <div  v-if="!refreshing && !isLoading">
+    <error :error="errorMessage"></error>
   </div>
 </template>
 

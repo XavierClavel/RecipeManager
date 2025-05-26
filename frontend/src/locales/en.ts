@@ -108,6 +108,7 @@ export default {
   tips: "Tips",
   leave: "Leave",
   no_recipe_to_display: "No recipe to display",
+  no_recipe_source: "Please select at least one recipe source (My recipes, likes etc)",
 
   //Password reset
   reset_password: "Reset password",

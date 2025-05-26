@@ -108,6 +108,7 @@ export default {
   tips: "Conseils",
   leave: "Partir",
   no_recipe_to_display: "Aucune recette à afficher",
+  no_recipe_source: "Sélectionne au moins une source de recette ! (Mes recettes, likes etc)",
 
   //Password reset
   reset_password: "Réinitialiser son mot de passe",

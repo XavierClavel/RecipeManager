@@ -16,9 +16,12 @@ async function getRecipe(id) {
   return await apiClient.get(`/recipe/${id}?locale=${getLocale()}`)
 }
 
-async function listRecipes(search, page, size) {
+async function listRecipes(search: string, page: number, size: number) {
   const query = new URLSearchParams(search)
   console.log(query)
+  if(!query.has('user') && !query.has('likedBy') && !query.has('cookbookUser') && !query.has('followedBy') && !query.has('cookbook')) {
+    throw "no_recipe_source"
+  }
   if (page != undefined) query.append('page', page)
   if (size != undefined) query.append('limit', size)
   console.log(query)
