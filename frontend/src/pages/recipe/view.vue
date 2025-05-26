@@ -40,7 +40,6 @@
 
     <span class="d-flex align-center justify-center mb-2 my-5 ga-10">
       <v-btn
-        v-if="recipeLiked"
         :icon="recipeLiked ? 'mdi-heart' : 'mdi-heart-outline' "
         color="background"
         flat

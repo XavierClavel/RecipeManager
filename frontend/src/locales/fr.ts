@@ -23,7 +23,7 @@ export default {
   update_password_success_title: "Mot de passe modifié",
   update_password_success_description: "Tu peux maintenant te reconnecter avec ton nouveau mot de passe !",
 
-  search_recipe: "Rechercher une recette",
+  search_recipe: "Rechercher une recette, un utilisateur,...",
 
   profile: "Profil",
   settings: "Paramètres",
@@ -222,5 +222,5 @@ export default {
   no_data: "Aucune donnée",
 
   unit_teaspoon: "cuillères à café",
-  unit_tablespoon: "cuillères à coupe",
+  unit_tablespoon: "cuillères à soupe",
 };

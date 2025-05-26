@@ -23,7 +23,7 @@ export default {
   update_password_success_title: "Password successfully updated",
   update_password_success_description: "You can now log in using your new password!",
 
-  search_recipe: "Search a recipe",
+  search_recipe: "Search a recipe, a user,...",
 
   profile: "Profile",
   settings: "Settings",
