@@ -20,11 +20,9 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   function (config) {
-    console.log("here")
     return config
   },
   function (error) {
-    console.log("here2")
     return Promise.reject(error)
   }
 )
@@ -33,8 +31,6 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   function (response){
-    console.log(response.request.responseURL)
-    console.log("intercepted !")
     return response
   },
   function (error) {

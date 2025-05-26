@@ -53,7 +53,10 @@
         <v-app-bar-nav-icon @click="toggleDrawer" style="border: 3px solid #0d1821 !important;"></v-app-bar-nav-icon>
       </template>
       <template v-slot:append>
-        <v-btn v-if="false" :icon="ICON_NOTIFICATION" flat class="mr-4 text-black" color="#0476a3" style="border: 3px solid #0d1821 !important;"></v-btn>
+        <div class="relative-btn" v-if="!xs">
+          <v-btn  :icon="ICON_NOTIFICATION" flat class="mr-4 text-black" color="#0476a3" style="border: 3px solid #0d1821 !important;"></v-btn>
+          <div v-if="pollingStore.data.followersPending?.length" class="notification-dot"></div>
+        </div>
         <v-menu style="border: 0" >
           <template v-slot:activator="{ props }">
             <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;">
@@ -137,6 +140,7 @@ import { debounce } from 'lodash'
 import {ICON_ADMIN, ICON_COOKBOOK, ICON_HOME, ICON_INGREDIENT, ICON_NOTIFICATION, ICON_RECIPE} from "@/scripts/icons";
 import {overrideLocaleFromCookie} from "@/scripts/localization";
 import {useDisplay} from "vuetify";
+import {usePollingStore} from "@/stores/pollingStore";
 
 const authStore = useAuthStore()
 const userId = computed(() => authStore.id)
@@ -156,6 +160,7 @@ const toggleDrawer = () => {
 }
 
 const showSidebar = computed(() =>
+  route.name &&
   !noLoginRedirect.includes(route.name) &&
   !noLoginRedirectStartsWith.some((it) => route.name.startsWith(it)) &&
   authStore.isAuthenticated
@@ -174,6 +179,14 @@ if (!version.value) {
   })
   authStore.checkAuth()
 }
+
+const pollingStore = usePollingStore()
+const { data, isLoading, error } = usePollingStore()
+console.log("polling store")
+onMounted(() => {
+  console.log("mounting")
+  pollingStore.startPolling()
+})
 
 </script>
 
@@ -194,5 +207,22 @@ if (!version.value) {
   //max-width: calc(100% - 296px); /* Reduce width to account for margin */
   height: 65px; /* Optional: Limit width */
   //overflow: hidden; /* Ensures child elements respect border-radius */
+}
+
+.relative-btn {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-dot {
+  position: absolute;
+  bottom: 36px;
+  right: 15px;
+  width: 10px;
+  height: 10px;
+  background-color: #ff6f59;
+  border-radius: 50%;
+  z-index: 1;
+  box-shadow: 0 0 0 2px white; /* Optional: border contrast */
 }
 </style>

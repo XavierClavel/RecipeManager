@@ -33,7 +33,6 @@ const loadMore = async ({ done }: { done: () => void }) => {
 }
 
 const updateGrid = async() => {
-  console.log("updating recipes")
   errorMessage.value = null
   try {
     const query = props.query || window.location.search

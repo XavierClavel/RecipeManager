@@ -90,7 +90,6 @@ const loadMore = async ({ done }: { done: () => void }) => {
   try {
     await updateGrid()
     isLoading.value = false
-    refreshing.value = false
   } catch (error) {
     console.error(error)
   } finally {
@@ -103,10 +102,8 @@ const updateGrid = async() => {
   const response = await listRecipes(`?user=${userId.value}&followedBy=${userId.value}&sort=DATE_DESCENDING`, currentPage.value, 20)
   if (response.data.length === 0) {
     allRecipesLoaded.value = true
-    noRecipes.value = recipes.value.length == 0
   } else {
     recipes.value.push(...response.data)
-    console.log(recipes.value)
     currentPage.value++
     timelineRecipes.value = recipes.value.reduce((acc, recipe) => {
       let groupKey = new Date(recipe.creationDate * 1000).toLocaleDateString()
