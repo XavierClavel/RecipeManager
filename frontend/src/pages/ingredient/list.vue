@@ -61,7 +61,6 @@
             <v-number-input
               v-model="selectedIngredient.proteins"
               :label="`${$t('proteins')}`"
-              type="number"
               :min=0
               :step="0.1"
             ></v-number-input>
@@ -70,7 +69,6 @@
             <v-number-input
               v-model="selectedIngredient.carbohydrates"
               :label="`${$t('carbohydrates')}`"
-              type="number"
               color="primary"
               :min=0
               :step="0.1"
@@ -79,7 +77,6 @@
             <v-number-input
               v-model="selectedIngredient.sugars"
               :label="`${$t('sugars')}`"
-              type="number"
               color="primary"
               :min=0
               :step="0.1"
@@ -88,7 +85,6 @@
             <v-number-input
               v-model="selectedIngredient.fibers"
               :label="`${$t('fibers')}`"
-              type="number"
               color="primary"
               :min=0
               :step="0.1"
@@ -98,7 +94,6 @@
             <v-number-input
               v-model="selectedIngredient.unsaturatedFat"
               :label="`${$t('unsaturatedFat')}`"
-              type="number"
               color="primary"
               :min=0
               :step="0.1"
@@ -107,7 +102,6 @@
             <v-number-input
               v-model="selectedIngredient.saturatedFat"
               :label="`${$t('saturatedFat')}`"
-              type="number"
               color="primary"
               :min=0
               :step="0.1"
@@ -117,7 +111,6 @@
             <v-number-input
               v-model="selectedIngredient.cholesterol"
               :label="`${$t('cholesterol')}`"
-              type="number"
               color="primary"
               :min=0
               :step="0.1"
@@ -127,7 +120,6 @@
             <v-number-input
               v-model="selectedIngredient.sodium"
               :label="`${$t('sodium')}`"
-              type="number"
               color="primary"
               :min=0
               :step="0.1"
@@ -172,7 +164,6 @@
             <v-number-input
               v-model="selectedIngredient.weightPerUnit"
               :label="`${$t('weightPerUnit')}`"
-              type="number"
               :min=0
               :step="10"
             ></v-number-input>
@@ -180,7 +171,6 @@
             <v-number-input
               v-model="selectedIngredient.volumicMass"
               :label="`${$t('volumicMass')}`"
-              type="number"
               :min=0
               :step="10"
             ></v-number-input>
@@ -395,6 +385,7 @@ const performDelete = (id) => {
         const index = ingredients.value.findIndex((user) => user.id == id)
         ingredients.value.splice(index,1)
       }
+      cancel()
     }).catch(function (error) {
     console.log(error);
   }).finally(function () {

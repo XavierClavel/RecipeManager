@@ -147,9 +147,8 @@
             </v-select>
 
             <v-number-input
-              v-model="recipe.ingredients[index].amount"
+              v-model.number="recipe.ingredients[index].amount"
               :label="`${$t('amount')}`"
-              type="number"
               color="primary"
               control-variant="stacked"
               min=0
@@ -233,7 +232,6 @@
             <v-number-input
               v-model="recipe.customIngredients[index].amount"
               :label="`${$t('amount')}`"
-              type="number"
               color="primary"
               control-variant="stacked"
               min=0

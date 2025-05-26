@@ -19,9 +19,9 @@ data class IngredientDTO(
     val sodium: Float = 0f,
     val sugars: Float = 0f,
 
-    val allowAmount: Boolean = true,
-    val allowWeight: Boolean = true,
-    val allowVolume: Boolean = true,
+    val allowAmount: Boolean = false,
+    val allowWeight: Boolean = false,
+    val allowVolume: Boolean = false,
 
     val volumicMass: Float = 1f,
     val weightPerUnit: Float = 1f,
