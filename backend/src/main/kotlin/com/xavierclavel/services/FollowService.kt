@@ -9,6 +9,7 @@ import com.xavierclavel.models.jointables.query.QFollow
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import common.infodto.FollowInfo
+import common.overviewdto.UserOverview
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -36,6 +37,13 @@ class FollowService: KoinComponent {
             .pending.eq(true)
             .findOne()
             ?: throw BadRequestException(BadRequestCause.NO_FOLLOW_REQUEST)
+
+    fun getFollowersPending(userId: Long): List<UserOverview> =
+        QFollow().where()
+            .user.id.eq(userId)
+            .pending.eq(true)
+            .findList()
+            .map { it.user!!.toOverview() }
 
     fun acceptFollowRequest(userId: Long, followerId: Long) {
         getFollow(userId, followerId).acceptRequest().updateAndGet()

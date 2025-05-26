@@ -11,6 +11,7 @@ import com.xavierclavel.controllers.IngredientController
 import com.xavierclavel.controllers.RecipeController
 import com.xavierclavel.controllers.ImageController
 import com.xavierclavel.controllers.LikeController
+import com.xavierclavel.controllers.NotificationController
 import com.xavierclavel.controllers.TestController
 import com.xavierclavel.controllers.UserController
 import com.xavierclavel.exceptions.BadRequestException
@@ -101,4 +102,5 @@ fun Application.serveRoutes() = routing {
     serve(RecipeController)
     serve(CookbookController)
     serve(AuthController)
+    serve(NotificationController)
 }
