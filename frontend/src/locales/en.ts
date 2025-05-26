@@ -187,6 +187,8 @@ export default {
 
   leaveCookbookTitle: "Leave cookbook",
   leaveCookbookDescription: "Are you sure you want to leave this cookbook ?",
+  deleteRecipeTitle: "Delete recipe",
+  deleteRecipeDescription: "Are you sure you want to delete this recipe ?",
   custom_ingredients: "Custom ingredients",
 
   search_ingredient: "Search ingredient",

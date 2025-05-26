@@ -66,7 +66,7 @@
 
             <template v-slot:default="{ isActive }">
               <v-card>
-                <v-card-title class="text-h5">{{$t("leaveCookbookTitle")}}</v-card-title>
+                <v-card-text class="font-weight-bold text-h4">{{$t("leaveCookbookTitle")}}</v-card-text>
                 <v-card-text>
                   {{$t("leaveCookbookDescription")}}
                 </v-card-text>

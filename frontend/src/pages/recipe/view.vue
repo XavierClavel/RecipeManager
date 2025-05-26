@@ -207,12 +207,37 @@
         class="d-flex align-center justify-center mb-2 ga-4"
         dense
       >
-          <action-button
-            icon="mdi-delete"
-            :text="`${$t('delete')}`"
-            :action="() => remove(recipeId)"
-            v-if="isOwner"
-          ></action-button>
+        <v-dialog max-width="500" v-if="isOwner">
+          <template v-slot:activator="{ props: activatorProps }">
+            <action-button
+              icon="mdi-delete"
+              :text="`${$t('delete')}`"
+              v-bind="activatorProps"
+            ></action-button>
+          </template>
+
+          <template v-slot:default="{ isActive }">
+            <v-card>
+              <v-card-text class="font-weight-bold text-h4">{{$t("deleteRecipeTitle")}}</v-card-text>
+              <v-card-text>
+                {{$t("deleteRecipeDescription")}}
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                  :text="`${$t('cancel')}`"
+                  @click="isActive.value = false"
+                ></v-btn>
+                <v-btn
+                  :text="`${$t('delete')}`"
+                  @click="() => remove(recipeId)"
+                ></v-btn>
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
           <action-button
             icon="mdi-pencil"
             :text="`${$t('edit')}`"

@@ -1,7 +1,7 @@
 <template>
-  <v-container class="mx-auto" align="center">
+  <v-container class="ma-0 pa-0" align="center">
   <v-card
-  class="pa-5 ma-5"
+  class="pa-5"
   max-width="1000px"
   >
     <v-form @submit.prevent="submit" class="mx-auto" ref="loginForm" >

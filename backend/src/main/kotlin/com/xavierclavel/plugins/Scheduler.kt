@@ -10,8 +10,6 @@ fun Application.scheduleJob() {
 
     scope.launch {
         doInfinity("0 1 * * *") {
-            logger.info {"Job started"}
-            logger.info { "Job finished" }
         }
     }
 }
