@@ -12,6 +12,7 @@ import {
 import {useRoute} from "vue-router";
 import {useAuthStore} from "@/stores/auth";
 import {useI18n} from "vue-i18n";
+import {usePollingStore} from "@/stores/pollingStore";
 const { t } = useI18n();
 
 const route = useRoute();
@@ -30,6 +31,7 @@ const props = defineProps({
 
 const usersAccepted = ref(null)
 const usersPending = ref(null)
+const pollingStore = usePollingStore()
 
 const refreshData = () => {
   console.log("refreshing data")
@@ -64,11 +66,13 @@ const hasAccepted = computed(() => usersAccepted?.value?.length)
 async function doDeclineFollowRequest(id) {
   await declineFollowRequest(id)
   await refreshData()
+  pollingStore.fetchData()
 }
 
 async function doAcceptFollowRequest(id) {
   await acceptFollowRequest(id)
   await refreshData()
+  pollingStore.fetchData()
 }
 
 async function cancelFollowRequest(id) {

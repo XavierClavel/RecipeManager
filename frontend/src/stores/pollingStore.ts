@@ -23,6 +23,7 @@ export const usePollingStore = defineStore('polling', () => {
     }
   }
 
+
   const startPolling = () => {
     console.log("starting polling")
     if (intervalId !== null) return // prevent duplicates

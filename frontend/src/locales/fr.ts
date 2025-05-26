@@ -88,6 +88,7 @@ export default {
 
   accepted: "Acceptés",
   pending: "En attente",
+  follow_requests: "Follow requests",
   nothing_to_display: "Rien à afficher",
 
   welcome: "Bienvenue",

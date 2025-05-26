@@ -88,6 +88,7 @@ export default {
 
   accepted: "Accepted",
   pending: "Pending",
+  follow_requests: "Demandes d'abonnements",
   nothing_to_display: "Nothing to display",
 
   welcome: "Welcome",

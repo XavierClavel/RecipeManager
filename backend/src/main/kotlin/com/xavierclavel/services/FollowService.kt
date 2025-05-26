@@ -43,7 +43,7 @@ class FollowService: KoinComponent {
             .user.id.eq(userId)
             .pending.eq(true)
             .findList()
-            .map { it.user!!.toOverview() }
+            .map { it.follower!!.toOverview() }
 
     fun acceptFollowRequest(userId: Long, followerId: Long) {
         getFollow(userId, followerId).acceptRequest().updateAndGet()

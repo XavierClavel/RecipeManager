@@ -53,10 +53,43 @@
         <v-app-bar-nav-icon @click="toggleDrawer" style="border: 3px solid #0d1821 !important;"></v-app-bar-nav-icon>
       </template>
       <template v-slot:append>
-        <div class="relative-btn" v-if="!xs">
-          <v-btn  :icon="ICON_NOTIFICATION" flat class="mr-4 text-black" color="#0476a3" style="border: 3px solid #0d1821 !important;"></v-btn>
-          <div v-if="pollingStore.data.followersPending?.length" class="notification-dot"></div>
-        </div>
+        <v-menu style="border: 0">
+          <template v-slot:activator="{ props }">
+            <div class="relative-btn" v-bind="props" v-if="!xs">
+              <v-btn
+                v-bind="props"
+                :icon="ICON_NOTIFICATION"
+                flat
+                class="mr-4 text-black"
+                color="#0476a3"
+                style="border: 3px solid #0d1821 !important;"
+              ></v-btn>
+
+              <div
+                v-if="pollingStore.data.followersPending?.length"
+                class="notification-dot"
+              ></div>
+            </div>
+          </template>
+
+          <v-list v-if="pollingStore.data.followersPending?.length" base-color="black" bg-color="menu" style="border: 3px solid #0d1821 !important;">
+            <v-list-subheader class="text-left ml-n14" inset>{{$t("follow_requests")}}</v-list-subheader>
+            <v-list-item
+              v-for="user in pollingStore.data.followersPending"
+              :key="user.username"
+              :title="user.username"
+            >
+              <template v-slot:prepend>
+                <v-avatar color="black" class="mr-2" style="border:2px solid #0d1821;">
+                  <v-img
+                    :src="getUserIconUrl(user.id)"
+                  ></v-img>
+                </v-avatar>
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
         <v-menu style="border: 0" >
           <template v-slot:activator="{ props }">
             <v-avatar size="50" variant="elevated" style="border:3px solid #0d1821 !important;">
@@ -133,7 +166,7 @@ import {
   toHome,
   toListIngredient,
   toListRecipe, toMyCookbooks, toMyProfile, toSettings,
-  toUsers,
+  toUsers, toViewUser,
 } from "@/scripts/common";
 import {useAuthStore} from "@/stores/auth";
 import { debounce } from 'lodash'
@@ -181,10 +214,7 @@ if (!version.value) {
 }
 
 const pollingStore = usePollingStore()
-const { data, isLoading, error } = usePollingStore()
-console.log("polling store")
 onMounted(() => {
-  console.log("mounting")
   pollingStore.startPolling()
 })
 
