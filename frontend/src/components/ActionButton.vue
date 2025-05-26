@@ -36,7 +36,7 @@ async function handleClick() {
     color="primary"
     flat
     rounded="lg"
-    class="text-h6 px-10 mx-3 text-wrap"
+    class="text-h6 px-10 mx-sm-3 text-wrap"
     min-height="70px"
     min-width="200px"
     :text="text"

@@ -1,10 +1,11 @@
 <template>
-
+  <v-container class="pa-0 ma-0" align="center">
   <error :error="errors"></error>
   <v-card
     v-if="!errors"
-    class="pa-5"
+    class="pa-5 mr-sm-n5"
   >
+
     <v-container class="d-flex
       flex-wrap justify-center
       flex-sm-nowrap">
@@ -19,7 +20,7 @@
         cover
         style="border: 3px solid #0d1821 !important;"
       ></v-img>
-        <v-container class="d-flex flex-column">
+      <v-container class="d-flex flex-column mt-3 mt-sm-0">
         <v-card-title
           class="text-black text-h2 font-weight-bold my-n8
           text-center text-sm-left"
@@ -27,26 +28,33 @@
         <v-card-text class="text-center text-sm-left">
           {{cookbook.description}}
         </v-card-text>
-      <v-row class="d-flex flex-row
+        <v-row class="d-flex flex-row
           justify-center justify-sm-start">
-        <v-col class="d-inline-flex" cols="auto">
-          <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="cookbook.recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>
-        </v-col>
-        <v-col class="d-inline-flex" cols="auto">
-          <picto-info :icon="`${ICON_COOKBOOK_USERS}`" :value="cookbook.usersCount" icon-size="text-h4" value-size="text-h5"></picto-info>
-        </v-col>
-      </v-row>
-        </v-container>
+          <v-col class="d-inline-flex" cols="auto">
+            <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="cookbook.recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>
+          </v-col>
+          <v-col class="d-inline-flex" cols="auto">
+            <picto-info :icon="`${ICON_COOKBOOK_USERS}`" :value="cookbook.usersCount" icon-size="text-h4" value-size="text-h5"></picto-info>
+          </v-col>
+        </v-row>
       </v-container>
-      <v-container class="d-flex flex-wrap ga-2">
+    </v-container>
 
-        <v-row class="px-3 my-1" v-if="isAdmin">
+
+
+    <v-container>
+      <v-row
+        class="d-flex justify-left mb-2 gx-16"
+        dense
+      >
+        <v-col cols="12" sm="auto" >
           <action-button
             icon="mdi-cog"
             :text="`${$t('edit')}`"
             :action="() => toEditCookbook(cookbookId)"
           ></action-button>
-
+        </v-col>
+        <v-col cols="12" sm="auto" >
           <v-dialog max-width="500">
             <template v-slot:activator="{ props: activatorProps }">
               <action-button
@@ -78,16 +86,27 @@
               </v-card>
             </template>
           </v-dialog>
-        </v-row>
-      </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
+
+
   </v-card>
+  </v-container>
   <recipes-list v-if="!errors"></recipes-list>
 </template>
 
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
 import {ref} from "vue";
-import {getCookbookIconUrl, getUserIconUrl, toEditCookbook, toListCookbooks} from "@/scripts/common";
+import {
+  getCookbookIconUrl,
+  getUserIconUrl,
+  toEditCookbook,
+  toEditUser,
+  toListCookbooks,
+  toSignup
+} from "@/scripts/common";
 import {getCookbook, isAdminOfCookbook, leaveCookbook} from "@/scripts/cookbooks";
 import {ICON_COOKBOOK_RECIPES, ICON_COOKBOOK_USERS} from "@/scripts/icons";
 import {useAuthStore} from "@/stores/auth";

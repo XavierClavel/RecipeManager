@@ -2,7 +2,7 @@
   <v-layout class="rounded rounded-md">
     <v-card class="pl-sm-2 pt-4 d-flex flex-column" color="transparent" style="border:0 solid" variant="flat">
       <v-card-title
-        class="text-h4 text-sm-h2 font-weight-bold text-left"
+        class="text-h4 text-sm-h2 font-weight-bold text-left mx-n4 mx-sm-0"
       >
         {{$t("welcome")}}, {{username}}! ✨
       </v-card-title>
