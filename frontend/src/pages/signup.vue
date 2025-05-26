@@ -33,7 +33,7 @@
           </v-col>
         </v-row>
       </v-container>
-      
+
       <v-text-field
         v-model="user.username"
         prepend-inner-icon="mdi-account"
@@ -76,15 +76,15 @@
         <v-row
           class="d-flex align-center justify-center mb-2 gx-16"
           dense
-          justify="center"
-          align="center"
         >
-          <v-col cols="12" sm="auto" justify-center>
+          <v-col cols="12" sm="auto">
             <action-button
               icon="mdi-close-circle-outline"
               :text="`${$t('log_in')}`"
               :action="toLogin"
             ></action-button>
+          </v-col>
+          <v-col cols="12" sm="auto">
             <action-button
               icon="mdi-send"
               :text="`${$t('sign_up')}`"
