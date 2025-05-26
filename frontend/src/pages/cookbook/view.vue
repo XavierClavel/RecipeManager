@@ -28,7 +28,7 @@
         <v-card-text class="text-center text-sm-left">
           {{cookbook.description}}
         </v-card-text>
-        <v-row class="d-flex flex-row
+        <v-row class="ml-sm-2 d-flex flex-row
           justify-center justify-sm-start">
           <v-col class="d-inline-flex" cols="auto">
             <picto-info :icon="`${ICON_COOKBOOK_RECIPES}`" :value="cookbook.recipesCount" icon-size="text-h4" value-size="text-h5"></picto-info>
