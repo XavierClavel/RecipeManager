@@ -17,7 +17,7 @@
         :src="getIngredientImageUrl(ingredient.type)"
       ></v-img>
       <v-container
-      class="px-3 mx-auto mb-n8"
+      class="px-3 mx-auto mb-n8 mt-3 mt-sm-0"
       >
         <v-card-title class="mx-auto px-3 mt-n8 text-black text-h2 text-center text-sm-left font-weight-bold"
         >{{ ingredient.name[getLocale().toUpperCase()] }}</v-card-title>
