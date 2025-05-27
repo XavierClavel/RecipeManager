@@ -7,7 +7,7 @@
         {{$t("welcome")}}, {{username}}! ✨
       </v-card-title>
 
-      <v-card-text class="text-sm-h4 text-md-h3 mb-8 mt-n4 mt-sm-n6 font-weight-thin">
+      <v-card-text class="text-sm-h4 text-md-h3 mb-8 mt-n4 mt-sm-n6 mx-n4 mx-sm-0 font-weight-thin">
         {{$t("welcome_subtext")}}
       </v-card-text>
 
