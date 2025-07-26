@@ -72,9 +72,14 @@ fun Application.module() {
             logger.error {cause.message ?: "Unknown error"}
             call.respond(HttpStatusCode.NotFound, cause.message ?: "Unknown error")
         }
-        exception<BadRequestException> {call, cause ->
+        exception<BadRequestException> { call, cause ->
             call.respond(HttpStatusCode.BadRequest, cause.message ?: "Unknown error")
         }
+        exception<Throwable> { call, cause ->
+            logger.error {cause.message ?: "Unknown error"}
+            call.respond(HttpStatusCode.InternalServerError, cause.message ?: "Unknown error")
+        }
+
     }
     logger.info { "Status pages configured" }
     configureAuthentication()
