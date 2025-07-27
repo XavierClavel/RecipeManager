@@ -93,11 +93,11 @@ object ImageController: Controller(IMAGE_URL) {
     private fun Route.uploadRecipeImage() = post("/recipes/{id}") {
         val id = getPathId()
         checkRecipeEditionRights(recipeService.getRecipeOwner(id).id)
-        val image = receiveImage()
+        val (image, metadata) = receiveImage()
         val recipe = recipeService.getEntityById(id)
 
-        imageService.saveImage(RECIPES_IMG_PATH, id, recipe.imageVersion + 1, SIZE_IMG_RECIPE, image)
-        imageService.saveImage(RECIPES_THUMBNAIL_PATH, id, recipe.imageVersion + 1, SIZE_THUMBNAIL_RECIPE, image)
+        imageService.saveImage(RECIPES_IMG_PATH, id, recipe.imageVersion + 1, SIZE_IMG_RECIPE, image, metadata)
+        imageService.saveImage(RECIPES_THUMBNAIL_PATH, id, recipe.imageVersion + 1, SIZE_THUMBNAIL_RECIPE, image, metadata)
 
         recipe.increaseVersion()
         imageService.deleteImage(RECIPES_IMG_PATH, id, recipe.imageVersion - 1)
@@ -106,9 +106,9 @@ object ImageController: Controller(IMAGE_URL) {
 
     private fun Route.uploadCookbookImage() = post("/cookbooks/{id}") {
         val id = getPathId()
-        val image = receiveImage()
+        val (image, metadata) = receiveImage()
         val cookbook = cookbookService.getEntityById(id)
-        imageService.saveImage(COOKBOOKS_IMG_PATH, id, cookbook.imageVersion + 1, SIZE_IMG_COOKBOOK, image)
+        imageService.saveImage(COOKBOOKS_IMG_PATH, id, cookbook.imageVersion + 1, SIZE_IMG_COOKBOOK, image, metadata)
         cookbook.increaseVersion()
         imageService.deleteImage(COOKBOOKS_IMG_PATH, id, cookbook.imageVersion - 1)
         call.respond(HttpStatusCode.OK)
@@ -117,9 +117,9 @@ object ImageController: Controller(IMAGE_URL) {
     private fun Route.uploadUserIcon() = post("/users/{id}") {
         val id = getPathId()
         checkUserEditionRights(id)
-        val image = receiveImage()
+        val (image, metadata) = receiveImage()
         val user = userService.getEntityById(id)
-        imageService.saveImage(USERS_IMG_PATH, id, user.imageVersion + 1, SIZE_IMG_USER, image)
+        imageService.saveImage(USERS_IMG_PATH, id, user.imageVersion + 1, SIZE_IMG_USER, image, metadata)
         user.increaseVersion()
         imageService.deleteImage(USERS_IMG_PATH, id, user.imageVersion - 1)
         call.respond(HttpStatusCode.OK)

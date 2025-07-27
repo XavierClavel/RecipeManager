@@ -1,5 +1,7 @@
 package com.xavierclavel.utils
 
+import com.drew.imaging.ImageMetadataReader
+import com.drew.metadata.Metadata
 import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.exceptions.BadRequestCause
 import com.xavierclavel.exceptions.BadRequestException
@@ -76,13 +78,16 @@ suspend fun RoutingContext.handleDeletion(deleted: Boolean?) {
     else call.respond(HttpStatusCode.OK)
 }
 
-suspend fun RoutingContext.receiveImage(): BufferedImage {
+suspend fun RoutingContext.receiveImage(): Pair<BufferedImage, Metadata> {
     val multipart = call.receiveMultipart()
     var image: BufferedImage? = null
+    var metadata: Metadata? = null
     multipart.forEachPart { part ->
         when (part) {
             is PartData.FileItem -> {
-                image = ImageIO.read(part.provider().toInputStream()) ?: throw BadRequestException(BadRequestCause.INVALID_IMAGE)
+                val inputStream = part.provider().toInputStream()
+                metadata = ImageMetadataReader.readMetadata(inputStream)
+                image = ImageIO.read(inputStream) ?: throw BadRequestException(BadRequestCause.INVALID_IMAGE)
             }
             else -> {
                 logger.error { "unexpected form data" }
@@ -91,7 +96,9 @@ suspend fun RoutingContext.receiveImage(): BufferedImage {
         }
         part.dispose()
     }
-    return image ?: throw BadRequestException(BadRequestCause.INVALID_IMAGE)
+    if (image == null) throw BadRequestException(BadRequestCause.INVALID_IMAGE)
+    if (metadata == null) throw BadRequestException(BadRequestCause.INVALID_IMAGE)
+    return Pair(image, metadata)
 }
 
 suspend fun RoutingCall.respondPDF(filename: String, content: ByteArray) {

@@ -89,6 +89,9 @@ dependencies {
     //Webp support
     implementation("org.sejda.imageio:webp-imageio:0.1.6")
 
+    //Images metadata parsing
+    implementation("com.drewnoakes:metadata-extractor:2.19.0")
+
     //
     implementation("net.coobird:thumbnailator:0.4.20")
 
