@@ -66,13 +66,13 @@ const hasAccepted = computed(() => usersAccepted?.value?.length)
 async function doDeclineFollowRequest(id) {
   await declineFollowRequest(id)
   await refreshData()
-  pollingStore.fetchData()
+  pollingStore.removePendingFollow(id)
 }
 
 async function doAcceptFollowRequest(id) {
   await acceptFollowRequest(id)
   await refreshData()
-  pollingStore.fetchData()
+  pollingStore.removePendingFollow(id)
 }
 
 async function cancelFollowRequest(id) {
@@ -109,7 +109,7 @@ const getTitle = () => {
     >
       <template v-slot:prepend>
         <v-avatar color="black" class="mr-2" style="border:2px solid #0d1821;">
-          <v-img :src="getUserIconUrl(user.user.id)" @click.stop="toViewUser(user.user.id)" class="clickable_image"></v-img>
+          <v-img :src="getUserIconUrl(user.user.id, user.user.version)" @click.stop="toViewUser(user.user.id)" class="clickable_image"></v-img>
         </v-avatar>
       </template>
 
