@@ -36,6 +36,7 @@ enum class NotFoundCause(val key: String) {
     INGREDIENT_NOT_FOUND("ingredient_not_found"),
     MAIL_NOT_FOUND("mail_not_found"),
     FOLLOW_NOT_FOUND("follow_not_found"),
+    NOTES_NOT_FOUND("notes_not_found"),
 }
 
 enum class BadRequestCause (val key: String) {

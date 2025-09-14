@@ -27,7 +27,7 @@ application {
 
 dependencies {
     val ktorVersion = "3.1.3"
-    val ebeanVersion = "15.8.0"
+    val ebeanVersion = "16.0.1"
     val koinVersion = "4.0.0"
     val itextVersion = "8.0.5"
     val testcontainersVersion = "1.20.4"
@@ -48,6 +48,7 @@ dependencies {
     implementation("io.ktor:ktor-server-sessions:$ktorVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
+    implementation("io.ktor:ktor-server-sse:$ktorVersion")
 
     //Ktor client
     implementation("io.ktor:ktor-client-core:$ktorVersion")

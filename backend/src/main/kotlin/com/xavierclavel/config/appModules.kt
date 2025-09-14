@@ -12,6 +12,7 @@ import com.xavierclavel.services.IngredientService
 import com.xavierclavel.services.LikeService
 import com.xavierclavel.services.MailService
 import com.xavierclavel.services.RecipeIngredientService
+import com.xavierclavel.services.RecipeNotesService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.loadConfig
@@ -30,6 +31,7 @@ val appModules = module {
     single { RecipeIngredientService() }
     single { CustomIngredientService() }
     single { FollowService() }
+    single { RecipeNotesService() }
     single { MailService() }
     single { RedisService(getProperty("redis.url", "redis://:${System.getenv("REDIS_PASSWORD")}@cooknco-redis:6379")) }
     single { config }

@@ -12,6 +12,7 @@ import com.xavierclavel.controllers.RecipeController
 import com.xavierclavel.controllers.ImageController
 import com.xavierclavel.controllers.LikeController
 import com.xavierclavel.controllers.NotificationController
+import com.xavierclavel.controllers.RecipeNotesController
 import com.xavierclavel.controllers.TestController
 import com.xavierclavel.controllers.UserController
 import com.xavierclavel.exceptions.BadRequestException
@@ -32,6 +33,7 @@ import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
 import io.ktor.server.routing.routing
+import io.ktor.server.sse.SSE
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.ktor.ext.inject
 import org.koin.ktor.plugin.Koin
@@ -53,6 +55,7 @@ fun main() {
 fun Application.module() {
     configureSerialization()
     configureRouting()
+    install(SSE)
     install(CORS) {
         anyHost()
         anyMethod()
@@ -98,6 +101,7 @@ fun Application.serveRoutes() = routing {
         serve(LikeController)
         serve(DashboardController)
         serve(FollowController)
+        serve(RecipeNotesController)
         serve(TestController)
     }
     serve(IngredientController)

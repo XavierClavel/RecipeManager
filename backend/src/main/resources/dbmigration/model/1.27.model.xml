@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <alterColumn columnName="name" tableName="ingredient_translation" type="varchar(255)" currentType="varchar" currentNotnull="true"/>
+        <alterColumn columnName="locale" tableName="ingredient_translation" type="integer(255)" currentType="integer" currentNotnull="true"/>
+        <createTable name="recipe_notes" identityType="identity" pkName="pk_recipe_notes">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="recipe_id" type="bigint" notnull="true" references="recipes.id" foreignKeyName="fk_recipe_notes_recipe_id" foreignKeyIndex="ix_recipe_notes_recipe_id"/>
+            <column name="user_id" type="bigint" notnull="true" references="users.id" foreignKeyName="fk_recipe_notes_user_id" foreignKeyIndex="ix_recipe_notes_user_id"/>
+            <column name="notes" type="varchar(2048)" notnull="true"/>
+        </createTable>
+        <alterColumn columnName="username" tableName="users" type="varchar(255)" currentType="varchar" currentNotnull="true"/>
+        <alterColumn columnName="mail_hash" tableName="users" type="varchar(255)" currentType="varchar" currentNotnull="true"/>
+        <alterColumn columnName="token" tableName="users" type="varchar(255)" currentType="varchar" currentNotnull="true"/>
+    </changeSet>
+</migration>
