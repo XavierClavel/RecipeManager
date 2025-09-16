@@ -301,6 +301,7 @@
     <v-card-actions v-if="editingNote">
       <v-spacer></v-spacer>
       <v-btn
+        v-if="remoteNotes"
         :text="`${$t('cancel')}`"
         @click="() => cancelNoteEdition()"
       ></v-btn>
