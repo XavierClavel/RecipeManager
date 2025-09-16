@@ -9,12 +9,10 @@ plugins {
     //kotlin("kapt") version "2.0.21" apply false
     kotlin("jvm")
 
-    id("io.ktor.plugin") version "3.0.0"
+    id("io.ktor.plugin") version "3.2.3"
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.ebean") version "15.8.0"
     id("org.jetbrains.kotlin.kapt")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    //id("com.google.devtools.ksp") version "1.5.30-1.0.0"
 
 }
 
@@ -26,7 +24,7 @@ application {
 }
 
 dependencies {
-    val ktorVersion = "3.1.3"
+    val ktorVersion = "3.2.3"
     val ebeanVersion = "16.0.1"
     val koinVersion = "4.0.0"
     val itextVersion = "8.0.5"
