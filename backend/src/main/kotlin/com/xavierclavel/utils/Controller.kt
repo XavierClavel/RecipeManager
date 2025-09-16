@@ -85,19 +85,25 @@ suspend fun RoutingContext.receiveImage(): Pair<BufferedImage, Metadata> {
     multipart.forEachPart { part ->
         when (part) {
             is PartData.FileItem -> {
-                val inputStream = part.provider().toInputStream()
-                metadata = ImageMetadataReader.readMetadata(inputStream)
-                image = ImageIO.read(inputStream) ?: throw BadRequestException(BadRequestCause.INVALID_IMAGE)
+                val bytes = part.provider().toInputStream().readBytes()
+                metadata = ImageMetadataReader.readMetadata(bytes.inputStream())
+                image = ImageIO.read(bytes.inputStream())
             }
             else -> {
-                logger.error { "unexpected form data" }
+                logger.error { "Unexpected form data for image" }
                 throw BadRequestException(BadRequestCause.INVALID_IMAGE)
             }
         }
         part.dispose()
     }
-    if (image == null) throw BadRequestException(BadRequestCause.INVALID_IMAGE)
-    if (metadata == null) throw BadRequestException(BadRequestCause.INVALID_IMAGE)
+    if (image == null) {
+        logger.error {"Unable to read image"}
+        throw BadRequestException(BadRequestCause.INVALID_IMAGE)
+    }
+    if (metadata == null) {
+        logger.error {"No metadata found"}
+        throw BadRequestException(BadRequestCause.INVALID_IMAGE)
+    }
     return Pair(image, metadata)
 }
 
