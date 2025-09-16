@@ -6,7 +6,7 @@ create table recipe_notes (
   notes                         varchar(2048) not null,
   constraint pk_recipe_notes primary key (id)
 );
--
+
 -- apply alter tables
 alter table ingredient_translation alter column name type varchar(255) using name::varchar(255);
 alter table users alter column username type varchar(255) using username::varchar(255);
