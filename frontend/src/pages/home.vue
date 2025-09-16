@@ -67,6 +67,7 @@ import {listRecipes} from "@/scripts/recipes";
 import {useAuthStore} from "@/stores/auth";
 import {useI18n} from "vue-i18n";
 import { useDisplay } from 'vuetify';
+import {getLocale} from "@/scripts/localization";
 
 const recipes = ref([])
 const timelineRecipes = ref()
@@ -106,7 +107,8 @@ const updateGrid = async() => {
     recipes.value.push(...response.data)
     currentPage.value++
     timelineRecipes.value = recipes.value.reduce((acc, recipe) => {
-      let groupKey = new Date(recipe.creationDate * 1000).toLocaleDateString()
+      const date = new Date(recipe.creationDate * 1000)
+      let groupKey = date.toLocaleDateString()
       switch (groupKey) {
         case new Date().toLocaleDateString():
           groupKey = "today"
@@ -135,6 +137,15 @@ const updateGrid = async() => {
         case new Date((new Date()).valueOf() - 6 * 1000*60*60*24).toLocaleDateString():
           groupKey = dayNames[new Date(recipe.creationDate * 1000).getDay()]
           break
+
+        default:
+          groupKey = new Intl.DateTimeFormat(getLocale(), {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          }).format(date);
+          break
+
       }
 
       if (!acc[groupKey]) {
