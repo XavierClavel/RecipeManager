@@ -7,8 +7,6 @@ export {
   createRecipe,
   updateRecipe,
   deleteRecipe,
-  uploadRecipeImage,
-  deleteRecipeImage,
   downloadRecipe,
 }
 

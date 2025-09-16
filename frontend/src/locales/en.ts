@@ -223,4 +223,6 @@ export default {
 
   unit_teaspoon: "teaspoons",
   unit_tablespoon: "tablespoons",
+
+  notes: "Write notes here !",
 };

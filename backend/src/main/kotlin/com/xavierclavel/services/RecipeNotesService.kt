@@ -23,6 +23,12 @@ class RecipeNotesService: KoinComponent {
             .findOne()
             ?: throw NotFoundException(NotFoundCause.NOTES_NOT_FOUND)
 
+    fun notesExists(recipeId: Long, userId: Long) =
+        QRecipeNotes()
+            .recipe.id.eq(recipeId)
+            .user.id.eq(userId)
+            .exists()
+
     fun createNotes(recipeId: Long, userId: Long, notes: String): String =
         RecipeNotes(
             recipe = recipeService.getEntityById(recipeId),

@@ -2,6 +2,8 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.AuthController.getOptionalSessionId
 import com.xavierclavel.controllers.AuthController.getSessionUserId
+import com.xavierclavel.exceptions.BadRequestCause
+import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.services.CustomIngredientService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.RecipeIngredientService
@@ -55,6 +57,7 @@ object RecipeNotesController: Controller(RECIPE_NOTES_URL) {
         val recipeId = getPathId()
         val userId = getSessionUserId()
         val notes = call.receive<String>()
+        if (recipeNotesService.notesExists(recipeId, userId)) throw BadRequestException(BadRequestCause.INVALID_REQUEST)
         val recipeNotes = recipeNotesService.createNotes(recipeId, userId, notes)
         call.respond(recipeNotes)
     }

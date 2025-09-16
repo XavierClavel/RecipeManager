@@ -276,6 +276,50 @@
 
   </v-card>
 
+  <v-card
+    class="mx-auto pa-2 px-5 ma-auto my-5"
+    max-width="1000px"
+    v-if="!displayError"
+  >
+    <v-card-text
+      class="mx-auto px-0 mb-2 text-h4 font-weight-bold"
+    > Notes </v-card-text>
+
+    <v-textarea
+      v-model="notes"
+      :label="`${$t('notes')}`"
+      :rules="[]"
+      v-if="editingNote"
+
+    ></v-textarea>
+
+    <v-card-text
+      class="mx-auto mt-n4 pl-1 px-0"
+      v-if="!editingNote"
+    > {{remoteNotes}} </v-card-text>
+
+    <v-card-actions v-if="editingNote">
+      <v-spacer></v-spacer>
+      <v-btn
+        :text="`${$t('cancel')}`"
+        @click="() => cancelNoteEdition()"
+      ></v-btn>
+      <v-btn
+        :text="`${$t('save')}`"
+        @click="() => saveNote()"
+      ></v-btn>
+    </v-card-actions>
+
+    <v-card-actions v-if="!editingNote">
+      <v-spacer></v-spacer>
+      <v-btn
+        :text="`${$t('edit')}`"
+        @click="() => startEditNote()"
+      ></v-btn>
+    </v-card-actions>
+
+  </v-card>
+
 </template>
 
 <script lang="ts" setup>
@@ -295,11 +339,16 @@ import {addLike, isLiked, removeLike} from "@/scripts/likes";
 import {addRecipeToCookbook, getStatusInCookbooks, listCookbooks, removeRecipeFromCookbook} from "@/scripts/cookbooks";
 import {getIngredientIcon} from "@/scripts/icons";
 import {useI18n} from "vue-i18n";
+import {max100, requiredRule} from "@/scripts/rules";
+import {createNotes, getNotes, updateNotes} from "@/scripts/notes";
 
 // Get the route object
 const route = useRoute();
 const recipeId = route.query.id
 let displayError = ref<boolean>(false)
+const editingNote = ref<boolean>(true)
+const notes = ref<string>("")
+const remoteNotes = ref<string>("Lorem ipsum sic dolor amet")
 const errorMessage = ref<string>("This recipe does not exist")
 const isOwner = ref<boolean>(false)
 const recipeLiked = ref<string>(null)
@@ -339,6 +388,17 @@ isLiked(recipeId).then (
   function (response) {
     recipeLiked.value = response
     console.log(response)
+  }
+)
+
+getNotes(recipeId).then (
+  function (response) {
+    remoteNotes.value = response.data
+    cancelNoteEdition()
+  }
+).catch(
+  function (error) {
+    remoteNotes.value = null
   }
 )
 
@@ -385,6 +445,39 @@ const onSelectCookbook = (cookbook) => {
         updateCookbook()
       })
   }
+}
+
+const cancelNoteEdition = () => {
+  notes.value = remoteNotes.value
+  stopEditNote()
+}
+
+const saveNote = () => {
+  if (remoteNotes.value == null) {
+    createNotes(recipeId, notes.value).then(
+      function (response) {
+        remoteNotes.value = response.data
+        cancelNoteEdition()
+      }
+    )
+  }
+    else {
+    updateNotes(recipeId, notes.value).then(
+      function (response) {
+        remoteNotes.value = response.data
+        cancelNoteEdition()
+      }
+    )
+    }
+
+}
+
+const startEditNote = () => {
+  editingNote.value = true
+}
+
+const stopEditNote = () => {
+  editingNote.value = false
 }
 
 </script>

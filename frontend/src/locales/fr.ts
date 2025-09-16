@@ -224,4 +224,6 @@ export default {
 
   unit_teaspoon: "cuillères à café",
   unit_tablespoon: "cuillères à soupe",
+
+  notes: "Ecris des notes ici !",
 };
