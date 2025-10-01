@@ -159,6 +159,11 @@ tasks.named("processResources") {
 tasks.shadowJar {
     archiveBaseName.set("cooknco")
     archiveClassifier.set("")
+    manifest {
+        attributes(
+            "Main-Class" to "com.xavierclavel.ApplicationKt"
+        )
+    }
 }
 
 tasks.test {
