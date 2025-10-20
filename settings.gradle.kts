@@ -26,4 +26,4 @@ plugins {
 
 rootProject.name = "RecipeManager"
 include("backend")
-include("common")
+include("shared")

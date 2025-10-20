@@ -32,7 +32,7 @@ dependencies {
     val junitVersion = "5.11.4"
     val hopliteVersion = "2.9.0"
 
-    implementation(project(":common"))
+    implementation(project(":shared"))
 
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
