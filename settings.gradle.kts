@@ -24,6 +24,7 @@ plugins {
 
 
 
-rootProject.name = "RecipeManager"
+rootProject.name = "Cook&co"
 include("backend")
 include("shared")
+include("mail-service")
