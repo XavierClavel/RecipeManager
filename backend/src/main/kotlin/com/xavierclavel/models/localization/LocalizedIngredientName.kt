@@ -1,7 +1,7 @@
 package com.xavierclavel.models.localization
 
 import com.xavierclavel.models.Ingredient
-import common.enums.Locale
+import shared.enums.Locale
 import io.ebean.Model
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

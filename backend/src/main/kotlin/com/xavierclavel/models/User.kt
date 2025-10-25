@@ -1,14 +1,13 @@
 package com.xavierclavel.models
 
-import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.models.jointables.CookbookUser
 import com.xavierclavel.models.jointables.Follow
 import com.xavierclavel.models.jointables.Like
-import common.dto.UserDTO
-import common.dto.UserSettingsDTO
-import common.infodto.UserInfo
-import common.enums.UserRole
-import common.overviewdto.UserOverview
+import shared.dto.UserDTO
+import shared.dto.UserSettingsDTO
+import shared.infodto.UserInfo
+import shared.enums.UserRole
+import shared.overviewdto.UserOverview
 import io.ebean.Model
 import io.ebean.annotation.DbDefault
 import jakarta.persistence.CascadeType

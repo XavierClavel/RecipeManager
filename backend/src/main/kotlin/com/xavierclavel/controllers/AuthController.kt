@@ -16,10 +16,10 @@ import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
 import com.xavierclavel.utils.getLocale
 import com.xavierclavel.utils.logger
-import common.dto.GoogleOauthDto
-import common.dto.UserDTO
-import common.infodto.UserInfo
-import common.utils.URL.AUTH_URL
+import shared.dto.GoogleOauthDto
+import shared.dto.UserDTO
+import shared.infodto.UserInfo
+import shared.utils.URL.AUTH_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

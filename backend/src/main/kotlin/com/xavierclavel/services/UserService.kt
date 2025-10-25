@@ -12,11 +12,11 @@ import com.xavierclavel.models.query.QUser
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
 import com.xavierclavel.utils.logger
-import common.dto.UserDTO
-import common.dto.UserSettingsDTO
-import common.infodto.UserInfo
-import common.enums.UserRole
-import common.overviewdto.UserOverview
+import shared.dto.UserDTO
+import shared.dto.UserSettingsDTO
+import shared.infodto.UserInfo
+import shared.enums.UserRole
+import shared.overviewdto.UserOverview
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

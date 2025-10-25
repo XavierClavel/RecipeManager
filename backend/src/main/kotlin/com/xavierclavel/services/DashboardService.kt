@@ -1,12 +1,10 @@
 package com.xavierclavel.services
 
-import common.dto.DataPoint
-import common.dto.WeeklyUserCountDto
-import common.infodto.DashboardReport
+import shared.dto.WeeklyUserCountDto
+import shared.infodto.DashboardReport
 import io.ebean.DB
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.time.LocalDate
 
 class DashboardService: KoinComponent {
     val recipeService: RecipeService by inject()

@@ -1,6 +1,5 @@
 package com.xavierclavel.controllers
 
-import com.xavierclavel.controllers.UserController.userService
 import com.xavierclavel.services.IngredientService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getLocale
@@ -8,12 +7,10 @@ import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getQuery
 import com.xavierclavel.utils.json
-import com.xavierclavel.utils.logger
-import common.dto.IngredientDTO
-import common.dto.SearchResult
-import common.infodto.IngredientInfo
-import common.infodto.UserInfo
-import common.utils.URL.INGREDIENT_URL
+import shared.dto.IngredientDTO
+import shared.dto.SearchResult
+import shared.infodto.IngredientInfo
+import shared.utils.URL.INGREDIENT_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
@@ -23,7 +20,6 @@ import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
-import kotlinx.serialization.json.Json
 import org.koin.java.KoinJavaComponent.inject
 
 object IngredientController: Controller(INGREDIENT_URL) {

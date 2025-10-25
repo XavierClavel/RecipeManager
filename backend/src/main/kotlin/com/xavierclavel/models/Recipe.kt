@@ -4,11 +4,11 @@ import com.xavierclavel.models.jointables.CookbookRecipe
 import com.xavierclavel.models.jointables.Like
 import com.xavierclavel.models.jointables.RecipeIngredient
 import com.xavierclavel.models.jointables.CustomIngredient
-import common.dto.RecipeDTO
-import common.enums.DishClass
-import common.enums.Locale
-import common.infodto.RecipeInfo
-import common.overviewdto.RecipeOverview
+import shared.dto.RecipeDTO
+import shared.enums.DishClass
+import shared.enums.Locale
+import shared.infodto.RecipeInfo
+import shared.overviewdto.RecipeOverview
 import jakarta.persistence.CascadeType
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
@@ -21,9 +21,7 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import io.ebean.Model
 import io.ebean.annotation.DbDefault
-import io.ebean.annotation.NotNull
 import jakarta.persistence.Column
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 

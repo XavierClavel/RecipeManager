@@ -1,10 +1,10 @@
 package main.com.xavierclavel.other
 
 import com.xavierclavel.ApplicationTest
-import common.dto.CookbookDTO
-import common.enums.Visibility
-import common.infodto.CookbookInfo
-import common.infodto.RecipeInfo
+import shared.dto.CookbookDTO
+import shared.enums.Visibility
+import shared.infodto.CookbookInfo
+import shared.infodto.RecipeInfo
 import io.ktor.http.HttpStatusCode
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser
@@ -20,7 +20,6 @@ import main.com.xavierclavel.utils.getCookbookRaw
 import main.com.xavierclavel.utils.listCookbooks
 import main.com.xavierclavel.utils.recipeDTO
 import org.junit.jupiter.api.Test
-import org.koin.core.component.get
 import kotlin.test.assertEquals
 
 class CookbookRightsTest: ApplicationTest() {

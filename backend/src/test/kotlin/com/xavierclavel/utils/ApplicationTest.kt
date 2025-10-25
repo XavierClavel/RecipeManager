@@ -2,7 +2,6 @@ package com.xavierclavel
 
 import com.xavierclavel.plugins.DatabaseManager
 import com.xavierclavel.plugins.RedisService
-import com.xavierclavel.plugins.configureAuthentication
 import com.xavierclavel.services.CookbookService
 import com.xavierclavel.services.CustomIngredientService
 import com.xavierclavel.services.DashboardService
@@ -17,14 +16,13 @@ import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.loadConfig
-import common.dto.UserDTO
-import common.dto.UserSettingsDTO
+import shared.dto.UserDTO
+import shared.dto.UserSettingsDTO
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.Plugin
-import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.testing.*
 import io.ktor.utils.io.KtorDsl
 import io.mockk.every

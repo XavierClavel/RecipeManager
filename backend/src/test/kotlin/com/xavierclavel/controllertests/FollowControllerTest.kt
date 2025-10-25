@@ -2,18 +2,15 @@ package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
-import common.dto.UserDTO
-import common.infodto.UserInfo
-import common.overviewdto.UserOverview
+import shared.infodto.UserInfo
+import shared.overviewdto.UserOverview
 import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.follow
 import main.com.xavierclavel.utils.getFollowers
 import main.com.xavierclavel.utils.getFollows
-import main.com.xavierclavel.utils.getMe
 import main.com.xavierclavel.utils.getUser
 import main.com.xavierclavel.utils.unfollow
 import org.junit.jupiter.api.Test
-import java.util.UUID
 import kotlin.test.assertEquals
 
 class FollowControllerTest : ApplicationTest() {

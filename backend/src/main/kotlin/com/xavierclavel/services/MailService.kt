@@ -2,7 +2,7 @@ package com.xavierclavel.services
 
 import com.xavierclavel.utils.Configuration
 import com.xavierclavel.utils.logger
-import common.enums.Locale
+import shared.enums.Locale
 import org.koin.core.component.KoinComponent
 import jakarta.mail.*
 import jakarta.mail.internet.InternetAddress

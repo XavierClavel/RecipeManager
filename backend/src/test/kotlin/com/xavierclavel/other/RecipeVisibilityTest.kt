@@ -5,14 +5,13 @@ import com.xavierclavel.controllers.CookbookController.cookbookService
 import com.xavierclavel.controllers.FollowController.followService
 import com.xavierclavel.controllers.LikeController.likeService
 import com.xavierclavel.utils.logger
-import common.dto.CookbookDTO
-import common.dto.UserSettingsDTO
+import shared.dto.CookbookDTO
+import shared.dto.UserSettingsDTO
 import io.ktor.http.HttpStatusCode
 import main.com.xavierclavel.utils.createRecipe
 import main.com.xavierclavel.utils.getRecipe
 import main.com.xavierclavel.utils.getRecipeRaw
 import main.com.xavierclavel.utils.listRecipes
-import main.com.xavierclavel.utils.listRecipesRaw
 import main.com.xavierclavel.utils.recipeDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

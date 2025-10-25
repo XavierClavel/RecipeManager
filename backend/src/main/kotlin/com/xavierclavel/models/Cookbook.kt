@@ -2,21 +2,19 @@ package com.xavierclavel.models
 
 import com.xavierclavel.models.jointables.CookbookRecipe
 import com.xavierclavel.models.jointables.CookbookUser
-import common.dto.CookbookDTO
-import common.enums.Visibility
-import common.infodto.CookbookInfo
-import common.overviewdto.CookbookOverview
-import common.overviewdto.CookbookRecipeOverview
+import shared.dto.CookbookDTO
+import shared.enums.Visibility
+import shared.infodto.CookbookInfo
+import shared.overviewdto.CookbookOverview
+import shared.overviewdto.CookbookRecipeOverview
 import io.ebean.Model
 import io.ebean.annotation.DbDefault
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
-import jakarta.persistence.ManyToMany
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import java.time.Instant
 import java.time.LocalDateTime
 
 @Entity

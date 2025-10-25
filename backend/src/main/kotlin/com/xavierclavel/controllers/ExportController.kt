@@ -7,7 +7,7 @@ import com.xavierclavel.utils.getLocale
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.logger
 import com.xavierclavel.utils.respondPDF
-import common.utils.URL.EXPORT_URL
+import shared.utils.URL.EXPORT_URL
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import org.koin.java.KoinJavaComponent.inject

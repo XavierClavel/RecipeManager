@@ -19,10 +19,10 @@ import com.xavierclavel.utils.getQuery
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.handleDeletion
 import com.xavierclavel.utils.logger
-import common.dto.CookbookDTO
-import common.dto.CookbookUserDTO
-import common.utils.Filepath.COOKBOOKS_IMG_PATH
-import common.utils.URL.COOKBOOK_URL
+import shared.dto.CookbookDTO
+import shared.dto.CookbookUserDTO
+import shared.utils.Filepath.COOKBOOKS_IMG_PATH
+import shared.utils.URL.COOKBOOK_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive

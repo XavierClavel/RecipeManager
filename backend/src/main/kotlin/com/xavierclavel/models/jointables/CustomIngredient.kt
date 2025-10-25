@@ -1,9 +1,9 @@
 package com.xavierclavel.models.jointables
 
 import com.xavierclavel.models.Recipe
-import common.dto.RecipeDTO
-import common.enums.AmountUnit
-import common.infodto.CustomIngredientInfo
+import shared.dto.RecipeDTO
+import shared.enums.AmountUnit
+import shared.infodto.CustomIngredientInfo
 import io.ebean.Model
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

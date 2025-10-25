@@ -7,8 +7,8 @@ import com.xavierclavel.exceptions.BadRequestCause
 import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.exceptions.ForbiddenCause
 import com.xavierclavel.exceptions.ForbiddenException
-import common.enums.Locale
-import common.enums.Sort
+import shared.enums.Locale
+import shared.enums.Sort
 import io.ebean.Paging
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode

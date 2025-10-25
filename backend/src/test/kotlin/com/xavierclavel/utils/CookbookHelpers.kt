@@ -1,12 +1,12 @@
 package main.com.xavierclavel.utils
 
 import com.xavierclavel.utils.logger
-import common.dto.CookbookDTO
-import common.infodto.CookbookInfo
-import common.infodto.CookbookRecipeInfo
-import common.infodto.CookbookUserInfo
-import common.overviewdto.CookbookRecipeOverview
-import common.utils.URL.COOKBOOK_URL
+import shared.dto.CookbookDTO
+import shared.infodto.CookbookInfo
+import shared.infodto.CookbookRecipeInfo
+import shared.infodto.CookbookUserInfo
+import shared.overviewdto.CookbookRecipeOverview
+import shared.utils.URL.COOKBOOK_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get

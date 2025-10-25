@@ -1,23 +1,12 @@
 package com.xavierclavel.services
 
-import com.drew.imaging.ImageMetadataReader
 import com.drew.metadata.Metadata
 import com.drew.metadata.exif.ExifIFD0Directory
-import com.itextpdf.layout.properties.Transform.getAffineTransform
-import com.xavierclavel.utils.logger
-import common.utils.Filepath.RECIPES_IMG_PATH
-import common.utils.Filepath.USERS_IMG_PATH
-import io.ktor.http.content.MultiPartData
-import io.ktor.http.content.PartData
-import io.ktor.http.content.forEachPart
-import io.ktor.http.content.streamProvider
-import io.ktor.server.plugins.BadRequestException
-import io.ktor.utils.io.jvm.javaio.toInputStream
+import shared.utils.Filepath.RECIPES_IMG_PATH
 import org.koin.core.component.KoinComponent
 import java.awt.Image
 import java.awt.RenderingHints
 import java.awt.geom.AffineTransform
-import java.awt.image.AffineTransformOp
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream

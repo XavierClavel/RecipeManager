@@ -3,7 +3,7 @@ package com.xavierclavel.services
 import com.xavierclavel.models.jointables.CustomIngredient
 import com.xavierclavel.models.jointables.query.QCustomIngredient
 import com.xavierclavel.utils.DbTransaction.insertAndGet
-import common.dto.RecipeDTO
+import shared.dto.RecipeDTO
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

@@ -1,10 +1,10 @@
 package main.com.xavierclavel.utils
 
-import common.dto.PasswordDTO
-import common.dto.UserDTO
-import common.infodto.UserInfo
-import common.utils.URL.AUTH_URL
-import common.utils.URL.USER_URL
+import shared.dto.PasswordDTO
+import shared.dto.UserDTO
+import shared.infodto.UserInfo
+import shared.utils.URL.AUTH_URL
+import shared.utils.URL.USER_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.delete

@@ -16,11 +16,11 @@ import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getSort
 import com.xavierclavel.utils.logger
-import common.RecipeFilter
-import common.dto.RecipeDTO
-import common.enums.DishClass
-import common.enums.Locale
-import common.utils.URL.RECIPE_URL
+import shared.RecipeFilter
+import shared.dto.RecipeDTO
+import shared.enums.DishClass
+import shared.enums.Locale
+import shared.utils.URL.RECIPE_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive

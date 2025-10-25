@@ -7,14 +7,14 @@ import com.xavierclavel.models.jointables.query.QRecipeIngredient
 import com.xavierclavel.models.localization.LocalizedIngredientName
 import com.xavierclavel.models.localization.query.QLocalizedIngredientName
 import com.xavierclavel.models.query.QIngredient
-import common.dto.IngredientDTO
+import shared.dto.IngredientDTO
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import com.xavierclavel.utils.DbTransaction.deleteAndGet
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
-import common.enums.Locale
-import common.infodto.IngredientInfo
+import shared.enums.Locale
+import shared.infodto.IngredientInfo
 
 class IngredientService: KoinComponent {
     fun countAll() =

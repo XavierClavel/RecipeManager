@@ -3,7 +3,7 @@ package com.xavierclavel.models.jointables
 import com.xavierclavel.models.Cookbook
 import com.xavierclavel.models.Recipe
 import com.xavierclavel.models.User
-import common.infodto.CookbookRecipeInfo
+import shared.infodto.CookbookRecipeInfo
 import io.ebean.Model
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -11,8 +11,6 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
-import jakarta.persistence.UniqueConstraint
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 

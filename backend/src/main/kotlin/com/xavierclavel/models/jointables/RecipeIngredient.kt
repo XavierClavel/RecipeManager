@@ -2,10 +2,9 @@ package com.xavierclavel.models.jointables
 
 import com.xavierclavel.models.Ingredient
 import com.xavierclavel.models.Recipe
-import com.xavierclavel.models.query.QIngredient.Alias.allowVolume
-import common.dto.RecipeDTO
-import common.enums.AmountUnit
-import common.infodto.RecipeIngredientInfo
+import shared.dto.RecipeDTO
+import shared.enums.AmountUnit
+import shared.infodto.RecipeIngredientInfo
 import io.ebean.Model
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -13,8 +12,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
-import jakarta.persistence.UniqueConstraint
-import common.enums.Locale
+import shared.enums.Locale
 
 @Entity
 @Table(name = "recipe_ingredients")

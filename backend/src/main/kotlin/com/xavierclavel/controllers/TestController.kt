@@ -2,7 +2,7 @@ package com.xavierclavel.controllers
 
 import com.xavierclavel.services.MailService
 import com.xavierclavel.utils.Controller
-import common.utils.URL.TEST_URL
+import shared.utils.URL.TEST_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route

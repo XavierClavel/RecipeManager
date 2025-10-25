@@ -2,14 +2,13 @@ package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.utils.logger
-import common.dto.RecipeDTO
-import common.dto.RecipeDTO.RecipeIngredientDTO
-import common.enums.AmountUnit
-import common.enums.IngredientType
-import common.enums.Sort
-import common.infodto.RecipeInfo
-import common.infodto.RecipeIngredientInfo
-import common.utils.URL.RECIPE_URL
+import shared.dto.RecipeDTO
+import shared.enums.AmountUnit
+import shared.enums.IngredientType
+import shared.enums.Sort
+import shared.infodto.RecipeInfo
+import shared.infodto.RecipeIngredientInfo
+import shared.utils.URL.RECIPE_URL
 import io.ktor.client.request.header
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType

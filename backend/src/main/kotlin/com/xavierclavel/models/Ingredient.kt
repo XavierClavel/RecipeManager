@@ -1,9 +1,9 @@
 package com.xavierclavel.models
 
 import com.xavierclavel.models.localization.LocalizedIngredientName
-import common.dto.IngredientDTO
-import common.enums.IngredientType
-import common.infodto.IngredientInfo
+import shared.dto.IngredientDTO
+import shared.enums.IngredientType
+import shared.infodto.IngredientInfo
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id

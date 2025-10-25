@@ -13,3 +13,11 @@ plugins {
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
 }
+
+task<Wrapper>("wrapper"){
+    gradleVersion = "7.2"
+}
+
+task("prepareKotlinBuildScriptModel") {
+
+}

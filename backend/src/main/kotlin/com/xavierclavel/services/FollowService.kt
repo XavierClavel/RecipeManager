@@ -8,8 +8,8 @@ import com.xavierclavel.models.jointables.Follow
 import com.xavierclavel.models.jointables.query.QFollow
 import com.xavierclavel.utils.DbTransaction.insertAndGet
 import com.xavierclavel.utils.DbTransaction.updateAndGet
-import common.infodto.FollowInfo
-import common.overviewdto.UserOverview
+import shared.infodto.FollowInfo
+import shared.overviewdto.UserOverview
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

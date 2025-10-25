@@ -1,16 +1,11 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.services.DashboardService
-import com.xavierclavel.services.LikeService
 import com.xavierclavel.utils.Controller
-import common.utils.URL.DASHBOARD_URL
-import common.utils.URL.LIKE_URL
-import io.ktor.http.HttpStatusCode
+import shared.utils.URL.DASHBOARD_URL
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
-import io.ktor.server.routing.post
 import org.koin.java.KoinJavaComponent.inject
 
 object DashboardController: Controller(DASHBOARD_URL) {

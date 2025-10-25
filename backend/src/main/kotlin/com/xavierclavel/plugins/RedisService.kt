@@ -1,8 +1,7 @@
 package com.xavierclavel.plugins
 
-import com.xavierclavel.controllers.AuthController.redisService
-import common.enums.UserRole
-import common.infodto.UserInfo
+import shared.enums.UserRole
+import shared.infodto.UserInfo
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.RedisClient
 import io.lettuce.core.api.coroutines

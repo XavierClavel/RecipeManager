@@ -9,7 +9,7 @@ import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.getIdPathVariable
 import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
-import common.utils.URL.FOLLOW_URL
+import shared.utils.URL.FOLLOW_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route

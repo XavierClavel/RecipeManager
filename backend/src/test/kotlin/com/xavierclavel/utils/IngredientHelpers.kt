@@ -1,11 +1,10 @@
 package main.com.xavierclavel.utils
 
-import common.dto.IngredientDTO
-import common.enums.IngredientType
-import common.infodto.IngredientInfo
-import common.utils.URL.INGREDIENT_URL
+import shared.dto.IngredientDTO
+import shared.enums.IngredientType
+import shared.infodto.IngredientInfo
+import shared.utils.URL.INGREDIENT_URL
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header

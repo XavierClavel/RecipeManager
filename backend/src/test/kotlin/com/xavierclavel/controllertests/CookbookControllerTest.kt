@@ -1,11 +1,7 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
-import com.xavierclavel.models.Cookbook
-import com.xavierclavel.models.Recipe
 import com.xavierclavel.utils.logger
-import common.infodto.CookbookInfo
-import common.infodto.RecipeInfo
 import io.ktor.http.HttpStatusCode
 import main.com.xavierclavel.utils.addCookbookRecipe
 import main.com.xavierclavel.utils.addCookbookUser

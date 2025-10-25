@@ -1,13 +1,12 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
-import common.dto.IngredientDTO
-import common.dto.RecipeDTO
-import common.dto.RecipeDTO.RecipeIngredientDTO
-import common.enums.DishClass
-import common.infodto.RecipeInfo
-import common.infodto.UserInfo
-import io.ktor.client.request.get
+import shared.dto.IngredientDTO
+import shared.dto.RecipeDTO
+import shared.dto.RecipeDTO.RecipeIngredientDTO
+import shared.enums.DishClass
+import shared.infodto.RecipeInfo
+import shared.infodto.UserInfo
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import main.com.xavierclavel.utils.addCookbookRecipe
@@ -16,7 +15,6 @@ import main.com.xavierclavel.utils.createCookbook
 import main.com.xavierclavel.utils.createIngredient
 import main.com.xavierclavel.utils.createLike
 import main.com.xavierclavel.utils.createRecipe
-import main.com.xavierclavel.utils.createUser
 import main.com.xavierclavel.utils.follow
 import main.com.xavierclavel.utils.getMe
 import main.com.xavierclavel.utils.getRecipe

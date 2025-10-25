@@ -12,14 +12,14 @@ import com.xavierclavel.utils.getPaging
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.getQuery
 import com.xavierclavel.utils.json
-import common.dto.PasswordDTO
-import common.dto.SearchResult
-import common.dto.UserDTO
-import common.dto.UserSettingsDTO
-import common.enums.UserRole
-import common.infodto.UserInfo
-import common.utils.Filepath.USERS_IMG_PATH
-import common.utils.URL.USER_URL
+import shared.dto.PasswordDTO
+import shared.dto.SearchResult
+import shared.dto.UserDTO
+import shared.dto.UserSettingsDTO
+import shared.enums.UserRole
+import shared.infodto.UserInfo
+import shared.utils.Filepath.USERS_IMG_PATH
+import shared.utils.URL.USER_URL
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
@@ -30,7 +30,6 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.put
 import io.ktor.server.sessions.clear
 import io.ktor.server.sessions.sessions
-import kotlinx.serialization.json.Json
 import org.koin.java.KoinJavaComponent.inject
 
 object UserController: Controller(USER_URL) {

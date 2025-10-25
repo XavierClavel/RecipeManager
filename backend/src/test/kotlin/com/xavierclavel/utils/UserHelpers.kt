@@ -1,12 +1,11 @@
 package main.com.xavierclavel.utils
 
 import com.xavierclavel.services.UserService
-import common.dto.SearchResult
-import common.dto.UserDTO
-import common.infodto.UserInfo
-import common.overviewdto.UserOverview
-import common.utils.URL.AUTH_URL
-import common.utils.URL.USER_URL
+import shared.dto.SearchResult
+import shared.dto.UserDTO
+import shared.infodto.UserInfo
+import shared.utils.URL.AUTH_URL
+import shared.utils.URL.USER_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -20,7 +19,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
 import org.koin.java.KoinJavaComponent.inject
-import org.koin.test.inject
 import java.util.UUID
 import kotlin.getValue
 import kotlin.test.assertEquals

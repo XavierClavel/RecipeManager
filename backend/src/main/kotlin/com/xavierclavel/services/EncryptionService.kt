@@ -2,21 +2,14 @@ package com.xavierclavel.services
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.xavierclavel.utils.Configuration
-import com.xavierclavel.utils.logger
-import common.enums.Locale
 import io.ktor.utils.io.core.toByteArray
 import org.koin.core.component.KoinComponent
-import jakarta.mail.*
-import jakarta.mail.internet.InternetAddress
-import jakarta.mail.internet.MimeMessage
-import java.util.Properties
 import org.koin.core.component.inject
 import java.security.MessageDigest
 import java.security.SecureRandom
 import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
 
 class EncryptionService: KoinComponent {
     val configuration: Configuration by inject<Configuration>()

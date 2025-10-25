@@ -10,7 +10,7 @@ import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Text
-import common.infodto.RecipeInfo
+import shared.infodto.RecipeInfo
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream

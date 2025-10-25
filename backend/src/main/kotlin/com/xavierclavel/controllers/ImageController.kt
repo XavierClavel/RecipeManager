@@ -1,7 +1,6 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.controllers.AuthController.getSessionUserId
-import com.xavierclavel.controllers.RecipeController.recipeService
 import com.xavierclavel.exceptions.ForbiddenCause
 import com.xavierclavel.exceptions.ForbiddenException
 import com.xavierclavel.services.CookbookService
@@ -13,11 +12,11 @@ import com.xavierclavel.utils.checkRecipeEditionRights
 import com.xavierclavel.utils.checkUserEditionRights
 import com.xavierclavel.utils.getPathId
 import com.xavierclavel.utils.receiveImage
-import common.utils.Filepath.COOKBOOKS_IMG_PATH
-import common.utils.Filepath.RECIPES_IMG_PATH
-import common.utils.Filepath.RECIPES_THUMBNAIL_PATH
-import common.utils.Filepath.USERS_IMG_PATH
-import common.utils.URL.IMAGE_URL
+import shared.utils.Filepath.COOKBOOKS_IMG_PATH
+import shared.utils.Filepath.RECIPES_IMG_PATH
+import shared.utils.Filepath.RECIPES_THUMBNAIL_PATH
+import shared.utils.Filepath.USERS_IMG_PATH
+import shared.utils.URL.IMAGE_URL
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate

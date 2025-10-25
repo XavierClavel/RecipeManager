@@ -3,8 +3,8 @@ package com.xavierclavel.controllers
 import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.services.FollowService
 import com.xavierclavel.utils.Controller
-import common.infodto.NotificationInfo
-import common.utils.URL.NOTIFICATION_URL
+import shared.infodto.NotificationInfo
+import shared.utils.URL.NOTIFICATION_URL
 import io.ktor.server.auth.authenticate
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route

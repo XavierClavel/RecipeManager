@@ -1,12 +1,12 @@
 package main.com.xavierclavel.utils
 
 import com.xavierclavel.utils.logger
-import common.dto.RecipeDTO
-import common.enums.DishClass
-import common.enums.Sort
-import common.infodto.RecipeInfo
-import common.overviewdto.RecipeOverview
-import common.utils.URL.RECIPE_URL
+import shared.dto.RecipeDTO
+import shared.enums.DishClass
+import shared.enums.Sort
+import shared.infodto.RecipeInfo
+import shared.overviewdto.RecipeOverview
+import shared.utils.URL.RECIPE_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get

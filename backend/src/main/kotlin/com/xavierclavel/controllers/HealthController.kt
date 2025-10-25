@@ -1,8 +1,8 @@
 package com.xavierclavel.controllers
 
 import com.xavierclavel.utils.Controller
-import common.dto.HealthDto
-import common.utils.URL.HEALTH_URL
+import shared.dto.HealthDto
+import shared.utils.URL.HEALTH_URL
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.util.Properties

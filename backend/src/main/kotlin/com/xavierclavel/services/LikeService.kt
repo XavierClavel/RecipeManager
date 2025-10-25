@@ -3,7 +3,7 @@ package com.xavierclavel.services
 import com.xavierclavel.models.jointables.Like
 import com.xavierclavel.models.jointables.query.QLike
 import com.xavierclavel.utils.DbTransaction.insertAndGet
-import common.infodto.LikeInfo
+import shared.infodto.LikeInfo
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.java.KoinJavaComponent.inject

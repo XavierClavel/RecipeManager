@@ -1,10 +1,10 @@
 package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
-import common.dto.IngredientDTO
-import common.enums.IngredientType
-import common.enums.Locale
-import common.utils.URL.INGREDIENT_URL
+import shared.dto.IngredientDTO
+import shared.enums.IngredientType
+import shared.enums.Locale
+import shared.utils.URL.INGREDIENT_URL
 import io.ktor.client.request.header
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
