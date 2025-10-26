@@ -57,6 +57,9 @@ dependencies {
     kapt("io.ebean:querybean-generator:$ebeanVersion")
     testImplementation("io.ebean:ebean:$ebeanVersion")
 
+    //Logging
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+
 }
 
 task("prepareKotlinBuildScriptModel") {

@@ -28,7 +28,7 @@ class Mail(
             }
         })
 
-        val content = this::class.java.classLoader.getResource(template)?.readText() ?: throw Exception("No template found for $template")
+        val content =  object {}.javaClass.getResource(template)?.readText() ?: throw Exception("No template found for $template")
 
         try {
             val message = MimeMessage(session).apply {

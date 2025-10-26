@@ -3,6 +3,7 @@ package shared.events
 import kotlinx.serialization.json.Json
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.consumer.ConsumerConfig
+import shared.utils.logger
 import java.time.Duration
 
 class KafkaEventConsumer(
@@ -28,10 +29,11 @@ class KafkaEventConsumer(
             val records = consumer.poll(Duration.ofSeconds(1))
             for (record in records) {
                 try {
+                    logger.info { "Received record: ${record.value()}" }
                     val event = json.decodeFromString<DomainEvent>(record.value())
                     handle(event)
                 } catch (e: Exception) {
-                    println("Failed to process event: ${e.message}")
+                    logger.error{"Failed to process event: ${e.message}"}
                 }
             }
             consumer.commitAsync()

@@ -1,9 +1,11 @@
 package shared.events
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
 @Serializable
+@SerialName("new_recipe")
 data class NewRecipeEvent(
     val authorId: String,
     val authorName: String,

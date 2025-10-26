@@ -13,6 +13,7 @@ import shared.events.NewRecipeEvent
 import shared.events.NotificationsToggledEvent
 import shared.events.TestEvent
 import shared.events.UnfollowedUserEvent
+import shared.utils.logger
 
 fun main(args: Array<String>) {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
@@ -21,7 +22,8 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
 
-    val kafkaConsumer = KafkaEventConsumer("mail-service", listOf()) { event ->
+    val kafkaConsumer = KafkaEventConsumer("mail-service", listOf("cooknco-users", "cooknco-recipes")) { event ->
+        logger.info { "Received event: $event" }
         when (event) {
             is FollowedUserEvent -> handleFollow(event)
             is UnfollowedUserEvent -> handleUnfollow(event)
@@ -78,6 +80,7 @@ private fun handleNewRecipe(e: NewRecipeEvent) {
 }
 
 private fun handleTest(e: TestEvent) {
+    logger.info {"Received test event"}
     val mail = Mail("xrclavel@gmail.com", "/emails/account_verification_en.html")
     mail.send()
 }

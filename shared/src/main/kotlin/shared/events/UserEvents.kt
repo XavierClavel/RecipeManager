@@ -1,5 +1,6 @@
 package shared.events
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
@@ -12,6 +13,7 @@ data class FollowedUserEvent(
 }
 
 @Serializable
+@SerialName("unfollowed_user")
 data class UnfollowedUserEvent(
     val followerId: Long,
     val followedId: Long
@@ -20,6 +22,7 @@ data class UnfollowedUserEvent(
 }
 
 @Serializable
+@SerialName("notifications_toggled")
 data class NotificationsToggledEvent(
     val userId: Long,
     val enabled: Boolean

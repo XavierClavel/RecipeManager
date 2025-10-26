@@ -9,4 +9,7 @@ dependencies {
 
     //Kafka
     implementation("org.apache.kafka:kafka-clients:4.1.0")
+
+    //Logging
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 }
