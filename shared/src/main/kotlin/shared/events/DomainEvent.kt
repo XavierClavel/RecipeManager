@@ -6,3 +6,8 @@ import kotlinx.serialization.Serializable
 sealed class DomainEvent {
     abstract val type: String
 }
+
+@Serializable
+sealed class TestEvent: DomainEvent() {
+    override val type = "test"
+}

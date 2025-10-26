@@ -5,23 +5,23 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FollowedUserEvent(
-    val followerId: String,
-    val followedId: String
+    val followerId: Long,
+    val followedId: Long
 ) : DomainEvent() {
     override val type = "followed_user"
 }
 
 @Serializable
 data class UnfollowedUserEvent(
-    val followerId: String,
-    val followedId: String
+    val followerId: Long,
+    val followedId: Long
 ) : DomainEvent() {
     override val type = "unfollowed_user"
 }
 
 @Serializable
 data class NotificationsToggledEvent(
-    val userId: String,
+    val userId: Long,
     val enabled: Boolean
 ) : DomainEvent() {
     override val type = "notifications_toggled"

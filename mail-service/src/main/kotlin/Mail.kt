@@ -10,8 +10,7 @@ import java.util.Properties
 
 class Mail(
     val recipient: String,
-    val subject: String,
-    val body: String
+    val template: String,
 ) {
     val props = Properties().apply {
         put("mail.smtp.auth", "true")
@@ -29,12 +28,14 @@ class Mail(
             }
         })
 
+        val content = this::class.java.classLoader.getResource(template)?.readText() ?: throw Exception("No template found for $template")
+
         try {
             val message = MimeMessage(session).apply {
                 setFrom(InternetAddress(smtpEmail))
                 setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient))
-                setSubject(subject)
-                setText(body)
+                setSubject("Test")
+                setText(content)
             }
             Transport.send(message)
         } catch (e: MessagingException) {

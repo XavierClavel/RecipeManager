@@ -11,7 +11,7 @@ group = "eu.cooknco"
 version = "1.0.0"
 
 application {
-    mainClass = "io.ktor.server.netty.EngineMain"
+    mainClass = "ApplicationKt"
 }
 
 dependencies {
@@ -44,9 +44,18 @@ dependencies {
     //Mail
     implementation("org.eclipse.angus:jakarta.mail:2.0.3")
 
-    //Kafka
-    implementation("org.apache.kafka:kafka-clients:4.1.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    //DB -> Ebean
+    implementation("org.hibernate:hibernate-core:6.6.1.Final")
+    implementation("org.postgresql:postgresql:42.7.4")
+    implementation("com.zaxxer:HikariCP:6.0.0")
+    implementation("org.flywaydb:flyway-core:10.20.0")
+    implementation("io.ebean:ebean:$ebeanVersion")
+    implementation("io.ebean:ebean-platform-postgres:$ebeanVersion")
+    implementation("io.ebean:ebean-ddl-generator:$ebeanVersion")
+    implementation("io.ebean:ebean-migration:14.2.0")
+    testImplementation("io.ebean:ebean-test:$ebeanVersion")
+    kapt("io.ebean:querybean-generator:$ebeanVersion")
+    testImplementation("io.ebean:ebean:$ebeanVersion")
 
 }
 
