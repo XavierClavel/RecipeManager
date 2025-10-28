@@ -57,12 +57,12 @@ class UserService: KoinComponent {
         QUser().findList().forEach {logger.info {"'${it.token}'"}}
     }
 
-    fun requestPasswordReset(mail: String): String {
+    fun requestPasswordReset(mail: String): Pair<Long, String> {
         val user = findByMail(mail)
         if (user.passwordHash == null) throw BadRequestException(BadRequestCause.OAUTH_ONLY)
         val token = generateToken()
         user.updateToken(token)
-        return token
+        return user.id to token
     }
 
     fun generateToken(): String {

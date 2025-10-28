@@ -17,6 +17,7 @@ import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.loadConfig
 import org.koin.dsl.module
+import shared.events.KafkaProducerService
 
 val config = loadConfig()
 val appModules = module {
@@ -36,4 +37,5 @@ val appModules = module {
     single { RedisService(getProperty("redis.url", "redis://:${System.getenv("REDIS_PASSWORD")}@cooknco-redis:6379")) }
     single { config }
     single { EncryptionService() }
+    single { KafkaProducerService() }
 }

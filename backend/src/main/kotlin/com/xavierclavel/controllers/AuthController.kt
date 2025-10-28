@@ -49,10 +49,14 @@ import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import org.koin.java.KoinJavaComponent.inject
+import shared.events.KafkaProducerService
+import shared.events.PasswordResetRequestedEvent
+import shared.events.UserCreatedEvent
 import java.util.UUID
 import kotlin.text.trim
 
 object AuthController: Controller(AUTH_URL) {
+    val eventProducerService: KafkaProducerService by inject(KafkaProducerService::class.java)
     val userService: UserService by inject(UserService::class.java)
     val redisService: RedisService by inject(RedisService::class.java)
     val encryptionService: EncryptionService by inject(EncryptionService::class.java)
@@ -180,23 +184,27 @@ object AuthController: Controller(AUTH_URL) {
         val userDTO = call.receive(UserDTO::class)
         userDTO.username = userDTO.username.trim()
         logger.info {userDTO}
-        if (UserController.userService.existsByUsername(userDTO.username)) throw BadRequestException(BadRequestCause.USERNAME_ALREADY_USED)
-        if (UserController.userService.existsByMail(userDTO.mail)) throw BadRequestException(BadRequestCause.MAIL_ALREADY_USED)
+        if (userService.existsByUsername(userDTO.username)) throw BadRequestException(BadRequestCause.USERNAME_ALREADY_USED)
+        if (userService.existsByMail(userDTO.mail)) throw BadRequestException(BadRequestCause.MAIL_ALREADY_USED)
 
         val token = UUID.randomUUID().toString()
-        val userCreated = UserController.userService.createUser(userDTO, token)
+        val userCreated = userService.createUser(userDTO, token)
         mailService.sendVerificationEmail(encryptionService.decrypt(userCreated.mailEncrypted), token, getLocale())
         logger.info {"Account created through basic auth by ${userCreated.username}"}
         call.respond(HttpStatusCode.Created, userCreated.toInfo())
+
+        eventProducerService.produceEvent { UserCreatedEvent(userCreated.id, userCreated.username, userDTO.mail) }
     }
 
     //TODO: send mail to user with verification code to send through another endpoint to chose a new password
     private fun Route.requestPasswordReset() = delete("/password/reset/{mail}") {
         val mail = call.parameters["mail"] ?: throw BadRequestException(BadRequestCause.MAIL_MISSING)
         try {
-            val token = userService.requestPasswordReset(mail)
+            val (id, token) = userService.requestPasswordReset(mail)
             mailService.sendPasswordResetEmail(mail, token, getLocale())
             call.respond(HttpStatusCode.OK)
+
+            eventProducerService.produceEvent { PasswordResetRequestedEvent(id, token) }
         } catch (e: NotFoundException) {
             call.respond(HttpStatusCode.OK)
         } catch (e: BadRequestException) {
