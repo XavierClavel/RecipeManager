@@ -1,14 +1,10 @@
 package shared.events
 
 import kotlinx.serialization.json.Json
-import org.apache.kafka.clients.consumer.KafkaConsumer
-import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.koin.core.component.KoinComponent
-import shared.utils.logger
-import java.time.Duration
 
 class KafkaEventProducer {
     private val json = Json { ignoreUnknownKeys = true }
@@ -21,9 +17,10 @@ class KafkaEventProducer {
         )
     )
 
-    fun produceEvent(topic: String, key: String? = null, event: () -> DomainEvent) {
-        val data = json.encodeToString(event())
-        val record = ProducerRecord("recipe-events", key, data)
+    fun produceEvent(event: () -> CookncoEvent) {
+        val message = event()
+        val data = json.encodeToString(message)
+        val record = ProducerRecord(message.getTopic(), message.getKey(), data)
         producer.send(record)
     }
 
@@ -32,6 +29,6 @@ class KafkaEventProducer {
 class KafkaProducerService: KoinComponent {
     val producer = KafkaEventProducer()
 
-    fun produceEvent(topic: String, key: String? = null, event: () -> DomainEvent) =
-        producer.produceEvent(topic, key, event)
+    fun produceEvent(event: () -> CookncoEvent) =
+        producer.produceEvent(event)
 }

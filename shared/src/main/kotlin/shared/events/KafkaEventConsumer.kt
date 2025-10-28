@@ -9,7 +9,7 @@ import java.time.Duration
 class KafkaEventConsumer(
     private val groupId: String,
     private val topics: List<String>,
-    private val handle: (DomainEvent) -> Unit,
+    private val handle: (CookncoEvent) -> Unit,
 ) {
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -30,7 +30,7 @@ class KafkaEventConsumer(
             for (record in records) {
                 try {
                     logger.info { "Received record: ${record.value()}" }
-                    val event = json.decodeFromString<DomainEvent>(record.value())
+                    val event = json.decodeFromString<CookncoEvent>(record.value())
                     handle(event)
                 } catch (e: Exception) {
                     logger.error{"Failed to process event: ${e.message}"}
