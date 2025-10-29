@@ -10,7 +10,7 @@ class User(
     @Id
     val id: Long = 0L,
     val username: String = "",
-    val email: String = "",
+    val encryptedMail: String = "",
     val locale: Locale = Locale.EN,
     @Column(name = "notifications_enabled")
     val notificationsEnabled: Boolean = false,

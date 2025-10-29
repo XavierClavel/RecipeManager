@@ -11,7 +11,7 @@ import java.util.Properties
 class Mail(
     val recipient: String,
     val templatePath: String,
-    val templateMap: () -> Map<String, String> = { HashMap() },
+    val templateMap: Map<String, String> = HashMap(),
 ) {
     val props = Properties().apply {
         put("mail.smtp.auth", "true")
@@ -20,9 +20,14 @@ class Mail(
         put("mail.smtp.port", "587")
     }
 
+    companion object {
+        val smtpEmail: String = System.getenv("COOKNCO_SMTP_ADDRESS")
+        val smtpPassword: String = System.getenv("COOKNCO_SMTP_PASSWORD")
+    }
+
+
+
     fun send() {
-        val smtpEmail = System.getenv("COOKNCO_SMTP_ADDRESS")
-        val smtpPassword = System.getenv("COOKNCO_SMTP_PASSWORD")
         val session = Session.getInstance(props, object : Authenticator() {
             override fun getPasswordAuthentication(): PasswordAuthentication {
                 return PasswordAuthentication(smtpEmail, smtpPassword)
@@ -35,7 +40,7 @@ class Mail(
         val mailBody = lines
             .subList(1, lines.size)
             .joinToString("\n")
-        templateMap().forEach { (key, value) ->
+        templateMap.forEach { (key, value) ->
             mailBody.replace("{{$key}}", value)
         }
 

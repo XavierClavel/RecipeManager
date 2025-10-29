@@ -8,8 +8,10 @@ import jakarta.persistence.*
 class Follower(
     @Id
     val id: Long = 0,
-    @Column(name = "follower_id")
-    val followerId: Long = 0,
-    @Column(name = "followed_id")
-    val followedId: Long = 0,
+
+    @ManyToOne
+    var follower: User? = null,
+
+    @ManyToOne
+    var followed: User? = null,
 ): Model()
