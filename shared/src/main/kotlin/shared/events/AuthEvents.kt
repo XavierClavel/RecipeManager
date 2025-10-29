@@ -17,3 +17,13 @@ data class PasswordResetRequestedEvent(
 ) : AuthEvent() {
     override val type = "password_reset_requested"
 }
+
+
+@Serializable
+@SerialName("account_verification_requested")
+data class AccountVerificationRequestedEvent(
+    val userId: Long,
+    val token: String,
+) : AuthEvent() {
+    override val type = "account_verification_requested"
+}

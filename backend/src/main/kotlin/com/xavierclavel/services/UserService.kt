@@ -20,12 +20,19 @@ import shared.overviewdto.UserOverview
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.java.KoinJavaComponent
+import shared.events.AccountVerificationRequestedEvent
+import shared.events.KafkaProducerService
+import shared.events.PasswordResetRequestedEvent
+import shared.events.UserCreatedEvent
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
 
 class UserService: KoinComponent {
     val encryptionService: EncryptionService by inject()
+    val eventProducerService: KafkaProducerService by inject()
+
 
     fun countAll() =
         QUser().findCount()
@@ -57,12 +64,13 @@ class UserService: KoinComponent {
         QUser().findList().forEach {logger.info {"'${it.token}'"}}
     }
 
-    fun requestPasswordReset(mail: String): Pair<Long, String> {
+    fun requestPasswordReset(mail: String): String {
         val user = findByMail(mail)
         if (user.passwordHash == null) throw BadRequestException(BadRequestCause.OAUTH_ONLY)
         val token = generateToken()
         user.updateToken(token)
-        return user.id to token
+        eventProducerService.produceEvent { PasswordResetRequestedEvent(user.id, token) }
+        return token
     }
 
     fun generateToken(): String {
@@ -84,14 +92,23 @@ class UserService: KoinComponent {
     fun existsByMail(mail: String) = QUser().mailHash.eq(encryptionService.hash(mail)).exists()
     fun existsByUsername(username: String) = QUser().username.eq(username).exists()
 
-    fun createUser(userDTO: UserDTO, token: String = ""): User =
+    fun createUser(userDTO: UserDTO, verified: Boolean): User =
         User.from(
             userDTO = userDTO,
-            token = token,
             passwordHash = encryptionService.encryptPassword(userDTO.password),
             mailEncrypted = encryptionService.encrypt(userDTO.mail),
-            mailHash = encryptionService.hash(userDTO.mail)
-            ).insertAndGet()
+            mailHash = encryptionService.hash(userDTO.mail),
+            token = UUID.randomUUID().toString(),
+        )
+        .insertAndGet()
+        .apply {
+            eventProducerService.produceEvent { UserCreatedEvent(this.id, this.username, this.mailEncrypted) }
+            if (verified) {
+                this.verify()
+            } else {
+                eventProducerService.produceEvent { AccountVerificationRequestedEvent(this.id, token) }
+            }
+        }
 
     fun editUser(id: Long, userDTO: UserDTO): UserInfo {
         val currentUser = getEntityById(id)
@@ -123,11 +140,14 @@ class UserService: KoinComponent {
     //TODO :parameterize password
     fun setupDefaultAdmin() {
         if (findByUsername("admin") != null) return
-        val user = createUser(UserDTO(
+        val user = createUser(
+            UserDTO(
             username = "admin",
             password = "Passw0rd",
-            mail = "admin@mail.com"
-        )).setRole(UserRole.ADMIN).updateAndGet()
+            mail = "admin@mail.com",
+        ), verified = true)
+            .setRole(UserRole.ADMIN)
+            .updateAndGet()
         validateUser(user.id)
     }
 
