@@ -44,7 +44,7 @@ fun Application.module() {
             is TestEvent -> handleTest(event)
             is UserCreatedEvent -> handleUserCreation(event)
             is PasswordResetRequestedEvent -> handlePasswordResetRequest(event)
-            is AccountVerificationRequestedEvent ->
+            is AccountVerificationRequestedEvent -> handleAccountVerificationRequested(event)
             else -> {}
         }
     }
@@ -67,15 +67,15 @@ private fun handleUserCreation(event: UserCreatedEvent) {
 }
 
 private fun handleFollow(e: FollowedUserEvent) {
-    val followerId = e.followerId
-    val followedId = e.followedId
-    Follower(followerId = followerId, followedId = followedId).save()
+    val follower = QUser().id.eq(e.followerId).findOne()!!
+    val followed = QUser().id.eq(e.followedId).findOne()!!
+    Follower(follower = follower, followed = followed).save()
 }
 
 private fun handleUnfollow(e: UnfollowedUserEvent) {
     QFollower()
-        .followerId.eq(e.followerId)
-        .followedId.eq(e.followedId)
+        .follower.id.eq(e.followerId)
+        .followed.id.eq(e.followedId)
         .delete()
 }
 
@@ -116,7 +116,7 @@ private fun getMailAndLocale(id: Long): Pair<String, Locale> {
 
 
 private fun getFollowersMail(id: Long): List<String> =
-    QFollower().followed.id.eq(id).findList().map { decrypt(it.) }
+    QFollower().followed.id.eq(id).findList().map { decrypt(it.follower!!.encryptedMail) }
 
 
 private fun handlePasswordResetRequest(e: PasswordResetRequestedEvent) {
