@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <createTable name="followers" pkName="pk_followers">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="follower_id" type="bigint" references="users.id" foreignKeyName="fk_followers_follower_id" foreignKeyIndex="ix_followers_follower_id"/>
+            <column name="followed_id" type="bigint" references="users.id" foreignKeyName="fk_followers_followed_id" foreignKeyIndex="ix_followers_followed_id"/>
+        </createTable>
+        <createTable name="users" pkName="pk_users">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="username" type="varchar" notnull="true"/>
+            <column name="encrypted_mail" type="varchar" notnull="true"/>
+            <column name="locale" type="integer" notnull="true" checkConstraint="check ( locale in (0,1))" checkConstraintName="ck_users_locale"/>
+            <column name="notifications_enabled" type="boolean" defaultValue="false" notnull="true"/>
+        </createTable>
+    </changeSet>
+</migration>

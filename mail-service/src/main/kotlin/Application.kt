@@ -34,6 +34,7 @@ private val aesKey = SecretKeySpec(System.getenv("AES_KEY").toByteArray(), "AES"
 private val frontendUrl = System.getenv("FRONTEND_URL")
 
 fun Application.module() {
+    DatabaseManager.init()
 
     val kafkaConsumer = KafkaEventConsumer("mail-service", listOf("cooknco-users", "cooknco-auth")) { event ->
         logger.info { "Received event: $event" }

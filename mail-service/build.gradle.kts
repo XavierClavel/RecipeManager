@@ -5,6 +5,7 @@ plugins {
     kotlin("jvm")
     kotlin("kapt")
     id("io.ktor.plugin") version "3.2.3"
+    id("io.ebean") version "15.8.0"
 }
 
 group = "eu.cooknco"
