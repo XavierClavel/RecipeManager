@@ -25,7 +25,8 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-fun main(args: Array<String>) {
+fun main() {
+    DatabaseManager.init()
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
@@ -34,7 +35,6 @@ private val aesKey = SecretKeySpec(System.getenv("AES_KEY").toByteArray(), "AES"
 private val frontendUrl = System.getenv("FRONTEND_URL")
 
 fun Application.module() {
-    DatabaseManager.init()
 
     val kafkaConsumer = KafkaEventConsumer("mail-service", listOf("cooknco-users", "cooknco-auth")) { event ->
         logger.info { "Received event: $event" }
