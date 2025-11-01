@@ -44,6 +44,9 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+
     - name: Gradle build
       run: ./gradlew clean build --no-daemon
 
