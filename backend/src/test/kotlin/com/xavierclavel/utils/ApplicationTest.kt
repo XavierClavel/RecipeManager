@@ -41,7 +41,7 @@ import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import shared.events.EventProducer
-import main.com.xavierclavel.utils.MockEventProducer
+import shared.test.MockEventProducer
 import java.util.UUID
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -49,6 +49,8 @@ import kotlin.coroutines.EmptyCoroutineContext
 abstract class ApplicationTest: KoinTest {
     val userService: UserService by inject()
     val encryptionService: EncryptionService by inject()
+    val eventProducer: EventProducer by inject()
+    val mockEventProducer by lazy{ eventProducer as MockEventProducer}
 
     companion object {
         const val USER1 = "user1"
@@ -157,7 +159,7 @@ abstract class ApplicationTest: KoinTest {
             application {
                 module()
             }
-
+            mockEventProducer.clear()
             val wrapper = TestBuilderWrapper(this)
             wrapper.block() // Use the wrapper in the block
         }

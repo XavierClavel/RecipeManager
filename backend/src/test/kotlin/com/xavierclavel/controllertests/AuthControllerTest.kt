@@ -2,10 +2,8 @@ package main.com.xavierclavel.controllertests
 
 import com.xavierclavel.ApplicationTest
 import com.xavierclavel.exceptions.UnauthorizedCause
-import com.xavierclavel.exceptions.UnauthorizedException
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
-import main.com.xavierclavel.utils.assertException
 import main.com.xavierclavel.utils.login
 import main.com.xavierclavel.utils.logout
 import main.com.xavierclavel.utils.requestPasswordReset
@@ -15,10 +13,14 @@ import main.com.xavierclavel.utils.updatePassword
 import main.com.xavierclavel.utils.verifyUser
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import shared.events.AccountVerificationRequestedEvent
+import shared.events.UserCreatedEvent
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class AuthControllerTest : ApplicationTest() {
+
     @Test
     fun `signup does not grant access before email verification`() = runTest {
         val password = UUID.randomUUID().toString()
@@ -116,6 +118,20 @@ class AuthControllerTest : ApplicationTest() {
             assertEquals(HttpStatusCode.Unauthorized, status)
             assertEquals(UnauthorizedCause.INVALID_MAIL_OR_PASSWORD.key, bodyAsText())
         }
+    }
+
+    @Test
+    fun `user created event is produced on user signup`() = runTest {
+        val password = UUID.randomUUID().toString()
+        val mail = UUID.randomUUID().toString()
+        val user = client.signup(mail = mail, password = password)
+        assertEquals(2, mockEventProducer.eventsProduced.size)
+        assertTrue { mockEventProducer.eventsProduced.first() is UserCreatedEvent }
+        assertTrue { mockEventProducer.eventsProduced[1] is AccountVerificationRequestedEvent }
+        val actualFirst = mockEventProducer.eventsProduced.first() as UserCreatedEvent
+        val actualSecond = mockEventProducer.eventsProduced[1] as AccountVerificationRequestedEvent
+        assertEquals(actualFirst.id, user.id)
+        assertEquals(actualSecond.userId, user.id)
     }
 
 
