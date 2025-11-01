@@ -24,3 +24,4 @@ rootProject.name = "Cook&co"
 include("backend")
 include("shared")
 include("mail-service")
+include("frontend")
