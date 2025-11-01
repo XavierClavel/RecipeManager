@@ -55,8 +55,8 @@ jobs:
         for project in $(find . -name Dockerfile -exec dirname {} \;); do
           project=$(basename $project)
           echo "Building Docker image for $project..."
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$project:${{ env.VERSION }} $project
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$project:${{ env.VERSION }}
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/$project:${{ env.VERSION }} ${{ secrets.DOCKERHUB_USERNAME }}/$project:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$project:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/cooknco-$project:${{ env.VERSION }} $project
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/cooknco-$project:${{ env.VERSION }}
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/cooknco-$project:${{ env.VERSION }} ${{ secrets.DOCKERHUB_USERNAME }}/cooknco-$project:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/cooknco-$project:latest
         done
