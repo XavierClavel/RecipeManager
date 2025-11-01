@@ -99,12 +99,15 @@ class UserService: KoinComponent {
             mailHash = encryptionService.hash(userDTO.mail),
             token = UUID.randomUUID().toString(),
         )
+        .apply {
+            if (verified) {
+                this.verify()
+            }
+        }
         .insertAndGet()
         .apply {
             eventProducerService.produceEvent { UserCreatedEvent(this.id, this.username, this.mailEncrypted) }
-            if (verified) {
-                this.verify()
-            } else {
+            if (!verified) {
                 eventProducerService.produceEvent { AccountVerificationRequestedEvent(this.id, token) }
             }
         }

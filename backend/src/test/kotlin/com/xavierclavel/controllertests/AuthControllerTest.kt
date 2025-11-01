@@ -55,7 +55,7 @@ class AuthControllerTest : ApplicationTest() {
         }
         client.login(mail, oldPassword).apply {
             assertEquals(HttpStatusCode.Unauthorized, status)
-            assertEquals(UnauthorizedCause.INVALID_PASSWORD.key, bodyAsText())
+            assertEquals(UnauthorizedCause.INVALID_MAIL_OR_PASSWORD.key, bodyAsText())
         }
     }
 
@@ -73,20 +73,20 @@ class AuthControllerTest : ApplicationTest() {
         client.login(mail, oldPassword)
 
         client.updatePassword(wrongPassword, newPassword).apply {
-            assertEquals(status, HttpStatusCode.Unauthorized)
-            assertEquals(bodyAsText(), UnauthorizedCause.INVALID_PASSWORD.key)
+            assertEquals(HttpStatusCode.Unauthorized, status)
+            assertEquals(UnauthorizedCause.INVALID_PASSWORD.key, bodyAsText())
         }
 
         client.login(mail, oldPassword).apply {
-            assertEquals(status, HttpStatusCode.OK)
+            assertEquals(HttpStatusCode.OK, status)
         }
         client.logout().apply {
-            assertEquals(status, HttpStatusCode.OK)
+            assertEquals(HttpStatusCode.OK, status)
         }
 
         client.login(mail, newPassword).apply {
-            assertEquals(status, HttpStatusCode.Unauthorized)
-            assertEquals(bodyAsText(), UnauthorizedCause.INVALID_PASSWORD.key)
+            assertEquals(HttpStatusCode.Unauthorized, status)
+            assertEquals(UnauthorizedCause.INVALID_MAIL_OR_PASSWORD.key, bodyAsText())
         }
     }
 
@@ -114,7 +114,7 @@ class AuthControllerTest : ApplicationTest() {
 
         client.login(mail, oldPassword).apply {
             assertEquals(HttpStatusCode.Unauthorized, status)
-            assertEquals(UnauthorizedCause.INVALID_PASSWORD.key, bodyAsText())
+            assertEquals(UnauthorizedCause.INVALID_MAIL_OR_PASSWORD.key, bodyAsText())
         }
     }
 

@@ -33,7 +33,7 @@ val recipeDTO = RecipeDTO(
 )
 
 suspend fun HttpClient.createRecipe(recipe: RecipeDTO = recipeDTO) : RecipeInfo {
-    logger.info { "create" }
+    logger.info { "Creating recipe ${recipe.title}" }
     this.post(RECIPE_URL){
         contentType(ContentType.Application.Json)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
