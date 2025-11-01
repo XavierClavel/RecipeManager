@@ -34,7 +34,7 @@ jobs:
     - name: Extract project version
       id: version
       run: |
-        VERSION=$(./gradlew printVersion)
+        VERSION=$(./gradlew -q printVersion)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Detected version: $VERSION"
 
