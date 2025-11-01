@@ -34,7 +34,7 @@ jobs:
     - name: Extract project version
       id: version
       run: |
-        VERSION=$(grep -E '^version\s*=' build.gradle.kts | sed 's/.*"\(.*\)".*/\1/')
+        VERSION=$(./gradlew printVersion)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Detected version: $VERSION"
 
