@@ -29,10 +29,10 @@ dependencies {
     val koinVersion = "4.0.0"
     val itextVersion = "8.0.5"
     val testcontainersVersion = "1.20.4"
-    val junitVersion = "5.11.4"
     val hopliteVersion = "2.9.0"
 
     implementation(project(":shared"))
+    testImplementation(project(":shared"))
 
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
@@ -116,7 +116,6 @@ dependencies {
 
     //Tests
     testImplementation("io.ktor:ktor-server-test-host-jvm")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
     //Test containers
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")

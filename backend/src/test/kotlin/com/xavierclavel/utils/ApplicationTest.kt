@@ -40,6 +40,8 @@ import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
+import shared.events.EventProducer
+import main.com.xavierclavel.utils.MockEventProducer
 import java.util.UUID
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -76,6 +78,7 @@ abstract class ApplicationTest: KoinTest {
                 single { RedisService(getProperty("redis.url", "redis://redis:6379")) }
                 single { loadConfig() }
                 single { EncryptionService() }
+                single<EventProducer> { MockEventProducer() }
             }
 
             startKoin {
@@ -103,10 +106,8 @@ abstract class ApplicationTest: KoinTest {
     }
 
     fun setupTestUser(mail: String, settings: UserSettingsDTO = UserSettingsDTO(true, true)): Long {
-        val token1 = UUID.randomUUID().toString()
         val userDTO1 = UserDTO(username = UUID.randomUUID().toString(), password = password, mail = mail)
-        val id1 = userService.createUser(userDTO1, token1).id
-        userService.verifyUser(token1)
+        val id1 = userService.createUser(userDTO1, true).id
         userService.updateSettings(id1, settings)
         return id1
     }

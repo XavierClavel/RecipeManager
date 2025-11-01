@@ -36,12 +36,11 @@ import io.ktor.server.routing.routing
 import io.ktor.server.sse.SSE
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.ktor.ext.inject
-import org.koin.ktor.plugin.Koin
 
 fun main() {
     startKoin {
         modules(
-            appModules
+            appModules,
     )}
 
     DatabaseManager.init()

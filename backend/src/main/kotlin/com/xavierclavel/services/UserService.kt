@@ -20,9 +20,8 @@ import shared.overviewdto.UserOverview
 import io.ebean.Paging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.java.KoinJavaComponent
 import shared.events.AccountVerificationRequestedEvent
-import shared.events.KafkaProducerService
+import shared.events.EventProducer
 import shared.events.PasswordResetRequestedEvent
 import shared.events.UserCreatedEvent
 import java.time.LocalDateTime
@@ -31,7 +30,7 @@ import java.util.UUID
 
 class UserService: KoinComponent {
     val encryptionService: EncryptionService by inject()
-    val eventProducerService: KafkaProducerService by inject()
+    val eventProducerService: EventProducer by inject()
 
 
     fun countAll() =
@@ -139,6 +138,7 @@ class UserService: KoinComponent {
 
     //TODO :parameterize password
     fun setupDefaultAdmin() {
+        shared.utils.logger.info {"setting up default admin"}
         if (findByUsername("admin") != null) return
         val user = createUser(
             UserDTO(
@@ -148,7 +148,7 @@ class UserService: KoinComponent {
         ), verified = true)
             .setRole(UserRole.ADMIN)
             .updateAndGet()
-        validateUser(user.id)
+        logger.info { "user ${user.id} created" }
     }
 
     fun verifyUser(token:String): UserInfo {

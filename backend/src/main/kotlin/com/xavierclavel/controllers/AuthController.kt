@@ -49,9 +49,6 @@ import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import org.koin.java.KoinJavaComponent.inject
-import shared.events.KafkaProducerService
-import shared.events.PasswordResetRequestedEvent
-import shared.events.UserCreatedEvent
 import java.util.UUID
 import kotlin.text.trim
 
