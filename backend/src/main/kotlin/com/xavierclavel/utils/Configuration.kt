@@ -49,6 +49,7 @@ fun loadConfig(): Configuration {
     return ConfigLoaderBuilder.default()
         .addFileSource("/app/config/application.yaml", true)
         .addResourceSource("/application.yaml", true)
+        .addResourceSource("/application-test.yaml", true)
         .build()
         .loadConfigOrThrow<Configuration>()
 }
