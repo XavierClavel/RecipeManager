@@ -1,6 +1,5 @@
 package com.xavierclavel.controllers
 
-import com.xavierclavel.controllers.UserController.mailService
 import com.xavierclavel.exceptions.BadRequestCause
 import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.exceptions.NotFoundCause
@@ -182,7 +181,6 @@ object AuthController: Controller(AUTH_URL) {
         if (userService.existsByMail(userDTO.mail)) throw BadRequestException(BadRequestCause.MAIL_ALREADY_USED)
 
         val userCreated = userService.createUser(userDTO, false)
-        mailService.sendVerificationEmail(encryptionService.decrypt(userCreated.mailEncrypted), userCreated.token, getLocale())
         logger.info {"Account created through basic auth by ${userCreated.username}"}
         call.respond(HttpStatusCode.Created, userCreated.toInfo())
     }
@@ -192,7 +190,6 @@ object AuthController: Controller(AUTH_URL) {
         val mail = call.parameters["mail"] ?: throw BadRequestException(BadRequestCause.MAIL_MISSING)
         try {
             val token = userService.requestPasswordReset(mail)
-            mailService.sendPasswordResetEmail(mail, token, getLocale())
             call.respond(HttpStatusCode.OK)
         } catch (e: NotFoundException) {
             call.respond(HttpStatusCode.OK)

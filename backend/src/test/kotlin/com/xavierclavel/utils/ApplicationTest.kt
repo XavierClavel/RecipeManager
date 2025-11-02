@@ -11,7 +11,6 @@ import com.xavierclavel.services.FollowService
 import com.xavierclavel.services.ImageService
 import com.xavierclavel.services.IngredientService
 import com.xavierclavel.services.LikeService
-import com.xavierclavel.services.MailService
 import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
@@ -60,10 +59,6 @@ abstract class ApplicationTest: KoinTest {
         @BeforeAll
         @JvmStatic
         fun startKoin() {
-            val mockMailService = mockk<MailService>()
-            every {mockMailService.sendVerificationEmail(any(),any(), any())} answers {}
-            every {mockMailService.sendPasswordResetEmail(any(),any(), any())} answers {}
-
             val testModules = module {
                 single { RecipeService() }
                 single { UserService() }
@@ -76,7 +71,6 @@ abstract class ApplicationTest: KoinTest {
                 single { RecipeIngredientService() }
                 single { CustomIngredientService() }
                 single { FollowService() }
-                single { mockMailService }
                 single { RedisService(getProperty("redis.url", "redis://redis:6379")) }
                 single { loadConfig() }
                 single { EncryptionService() }

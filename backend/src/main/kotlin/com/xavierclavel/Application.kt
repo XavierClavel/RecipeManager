@@ -13,7 +13,6 @@ import com.xavierclavel.controllers.ImageController
 import com.xavierclavel.controllers.LikeController
 import com.xavierclavel.controllers.NotificationController
 import com.xavierclavel.controllers.RecipeNotesController
-import com.xavierclavel.controllers.TestController
 import com.xavierclavel.controllers.UserController
 import com.xavierclavel.exceptions.BadRequestException
 import com.xavierclavel.exceptions.UnauthorizedException
@@ -101,7 +100,6 @@ fun Application.serveRoutes() = routing {
         serve(DashboardController)
         serve(FollowController)
         serve(RecipeNotesController)
-        serve(TestController)
     }
     serve(IngredientController)
     serve(UserController)

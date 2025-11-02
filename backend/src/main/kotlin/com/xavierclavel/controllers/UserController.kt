@@ -4,7 +4,6 @@ import com.xavierclavel.controllers.AuthController.getSessionUserId
 import com.xavierclavel.exceptions.UnauthorizedCause
 import com.xavierclavel.exceptions.UnauthorizedException
 import com.xavierclavel.services.ImageService
-import com.xavierclavel.services.MailService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.Controller
 import com.xavierclavel.utils.UserSession
@@ -35,7 +34,6 @@ import org.koin.java.KoinJavaComponent.inject
 object UserController: Controller(USER_URL) {
     val userService : UserService by inject(UserService::class.java)
     val imageService: ImageService by inject(ImageService::class.java)
-    val mailService: MailService by inject(MailService::class.java)
 
     override fun Route.routes() {
         getUser()
