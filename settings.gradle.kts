@@ -13,13 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.2.21" apply false
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.21" apply false
-}
-
-
-
 rootProject.name = "Cook&co"
 include("backend")
 include("shared")

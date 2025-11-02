@@ -1,17 +1,4 @@
-import org.gradle.kotlin.dsl.ebean
 import java.util.Properties
-
-val kotlin_version: String by project
-val logback_version: String by project
-val exposed_version: String by project
-
-plugins {
-    kotlin("jvm")
-    kotlin("kapt")
-
-    id("io.ktor.plugin") version "3.2.3"
-    id("io.ebean") version "15.8.0"
-}
 
 application {
     mainClass.set("com.xavierclavel.ApplicationKt")
@@ -22,27 +9,11 @@ application {
 
 dependencies {
     val ktorVersion = "3.2.3"
-    val ebeanVersion = "16.0.1"
-    val koinVersion = "4.0.0"
     val itextVersion = "8.0.5"
     val testcontainersVersion = "1.20.4"
     val hopliteVersion = "2.9.0"
 
     implementation(project(":shared"))
-
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
-
-    //Server -> Ktor
-    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-webjars-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-cors:$ktorVersion")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-sessions:$ktorVersion")
-    implementation("io.ktor:ktor-server-auth:$ktorVersion")
-    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
-    implementation("io.ktor:ktor-server-sse:$ktorVersion")
 
     //Ktor client
     implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -51,7 +22,6 @@ dependencies {
 
     implementation("org.webjars:jquery:3.2.1")
     implementation("io.github.smiley4:ktor-swagger-ui:4.0.0")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
 
     //Secrets
     implementation("io.github.cdimascio:dotenv-kotlin:6.5.0")
@@ -59,24 +29,6 @@ dependencies {
     //Configuration
     implementation("com.sksamuel.hoplite:hoplite-core:$hopliteVersion")
     implementation("com.sksamuel.hoplite:hoplite-yaml:$hopliteVersion")
-
-    //Dependency injection -> Koin
-    implementation("io.insert-koin:koin-ktor:$koinVersion")
-    implementation("io.insert-koin:koin-test-jvm:$koinVersion")
-
-
-    //DB -> Ebean
-    implementation("org.hibernate:hibernate-core:6.6.1.Final")
-    implementation("org.postgresql:postgresql:42.7.4")
-    implementation("com.zaxxer:HikariCP:6.0.0")
-    implementation("org.flywaydb:flyway-core:10.20.0")
-    implementation("io.ebean:ebean:$ebeanVersion")
-    implementation("io.ebean:ebean-platform-postgres:$ebeanVersion")
-    implementation("io.ebean:ebean-ddl-generator:$ebeanVersion")
-    implementation("io.ebean:ebean-migration:14.2.0")
-    testImplementation("io.ebean:ebean-test:$ebeanVersion")
-    kapt("io.ebean:querybean-generator:$ebeanVersion")
-    testImplementation("io.ebean:ebean:$ebeanVersion")
 
     //Encryption -> bcrypt
     implementation("at.favre.lib:bcrypt:0.10.2")
@@ -106,15 +58,6 @@ dependencies {
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.10.1")
-
-    //Tests
-    testImplementation("io.ktor:ktor-server-test-host-jvm")
-
-    //Test containers
-    testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
-    testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion") // For JUnit 5
-    testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
-
 }
 
 ktor {

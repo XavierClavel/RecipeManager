@@ -1,24 +1,21 @@
+package shared.utils
+
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ebean.Database
 import io.ebean.DatabaseFactory
+import io.ebean.Model
 import io.ebean.config.DatabaseConfig
 import io.ebean.migration.MigrationConfig
 import io.ebean.migration.MigrationRunner
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import models.query.QFollower
-import models.query.QUser
-import shared.utils.logger
 
-object DatabaseManager {
+class DatabaseManager(
+    val tables: List<Model>
+) {
     var mainDB : Database? = null
     private val dataSource: HikariDataSource by lazy { hikari() }
-
-    fun getTables() = listOf(
-        QUser(),
-        QFollower(),
-    )
 
     private fun hikari(): HikariDataSource {
         val config = HikariConfig()
@@ -29,7 +26,7 @@ object DatabaseManager {
     }
 
     fun init() {
-        logger.info("Initializing database...")
+        logger.info("Initializing database")
         while (mainDB == null) {
             try {
                 mainDB = DatabaseFactory.create(DatabaseConfig().apply {

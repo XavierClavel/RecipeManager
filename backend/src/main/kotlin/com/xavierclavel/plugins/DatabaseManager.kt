@@ -26,6 +26,7 @@ import kotlin.io.path.exists
 
 object DatabaseManager {
     var mainDB : Database? = null
+    private val dataSource: HikariDataSource by lazy { hikari() }
 
     fun getTables() = listOf(
         QRecipe(),
@@ -56,7 +57,7 @@ object DatabaseManager {
         while (mainDB == null) {
             try {
                 mainDB = DatabaseFactory.create(DatabaseConfig().apply {
-                    it.dataSource =  hikari()
+                    it.dataSource =  dataSource
                 })
             }catch (e:Exception) {
                 logger.error { e.message }
@@ -69,7 +70,7 @@ object DatabaseManager {
         // Trigger migration runner manually
         val config = MigrationConfig()
         val migrationRunner = MigrationRunner(config)
-        migrationRunner.run(hikari())
+        migrationRunner.run(dataSource)
         logger.info("Database migrations applied")
     }
 }
