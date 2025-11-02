@@ -10,7 +10,6 @@ application {
 dependencies {
     val ktorVersion = "3.2.3"
     val itextVersion = "8.0.5"
-    val testcontainersVersion = "1.20.4"
     val hopliteVersion = "2.9.0"
 
     implementation(project(":shared"))
@@ -99,12 +98,4 @@ tasks.shadowJar {
             "Main-Class" to "com.xavierclavel.ApplicationKt"
         )
     }
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-
-ebean {
-    debugLevel = 1
 }

@@ -31,7 +31,6 @@ subprojects {
     }
 
     dependencies {
-        implementation(project(":shared"))
 
         //Tests
         testImplementation(kotlin("test"))
@@ -72,6 +71,16 @@ subprojects {
         //Logging
         implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
         implementation("ch.qos.logback:logback-classic:${logback_version}")
+    }
+
+    tasks.test {
+        useJUnitPlatform()
+    }
+
+
+    ebean {
+        debugLevel = 1
+        queryBeans = true
     }
 }
 
