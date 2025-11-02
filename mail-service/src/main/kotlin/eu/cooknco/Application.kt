@@ -1,3 +1,5 @@
+package eu.cooknco
+
 import io.ktor.server.application.Application
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -5,10 +7,10 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import kotlinx.coroutines.launch
-import models.Follower
-import models.User
-import models.query.QFollower
-import models.query.QUser
+import eu.cooknco.models.Follower
+import eu.cooknco.models.User
+import eu.cooknco.models.query.QFollower
+import eu.cooknco.models.query.QUser
 import shared.enums.Locale
 import shared.events.AccountVerificationRequestedEvent
 import shared.events.FollowedUserEvent
@@ -100,7 +102,7 @@ private fun handleNewRecipe(e: NewRecipeEvent) {
     for (f in followers) {
         val user = DB.find(User::class.java, f.followerId) ?: continue
         if (user.notificationsEnabled) {
-            Mail(user.email, PASSWORD_RESET_TITLE[user.locale], PASSWORD_RESET).send()
+            eu.cooknco.Mail(user.email, PASSWORD_RESET_TITLE[user.locale], PASSWORD_RESET).send()
         }
     }
 

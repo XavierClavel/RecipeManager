@@ -1,4 +1,4 @@
-package models
+package eu.cooknco.models
 
 import io.ebean.Model
 import jakarta.persistence.*

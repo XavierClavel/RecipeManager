@@ -1,3 +1,5 @@
+package eu.cooknco
+
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ebean.Database
@@ -7,8 +9,8 @@ import io.ebean.migration.MigrationConfig
 import io.ebean.migration.MigrationRunner
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import models.query.QFollower
-import models.query.QUser
+import eu.cooknco.models.query.QFollower
+import eu.cooknco.models.query.QUser
 import shared.utils.logger
 
 object DatabaseManager {

@@ -1,6 +1,6 @@
 ktor:
     application:
         modules:
-            - eu.cooknco.ApplicationKt.module
+            - eu.cooknco.eu.cooknco.ApplicationKt.modulemodule
     deployment:
         port: 8080

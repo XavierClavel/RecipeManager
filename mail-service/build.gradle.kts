@@ -1,6 +1,6 @@
 
 application {
-    mainClass = "ApplicationKt"
+    mainClass = "eu.cooknco.ApplicationKt"
 }
 
 plugins {
