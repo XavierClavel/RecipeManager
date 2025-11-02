@@ -1,5 +1,9 @@
 import java.util.Properties
 
+plugins {
+    id("io.ktor.plugin") version "3.2.3"
+}
+
 application {
     mainClass.set("com.xavierclavel.ApplicationKt")
 

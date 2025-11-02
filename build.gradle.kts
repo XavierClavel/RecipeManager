@@ -8,7 +8,6 @@ plugins {
     kotlin("kapt") version "2.2.21"
     kotlin("plugin.serialization") version "2.2.21"
     id("io.ebean") version "16.0.1"
-    id("io.ktor.plugin") version "3.2.3"
 }
 
 val junitVersion = "5.10.2"
@@ -20,11 +19,20 @@ val kotlin_version: String by project
 val logback_version: String by project
 
 subprojects {
+    if (name == "frontend") return@subprojects
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
-    apply(plugin = "org.jetbrains.kotlin.kapt")
-    apply(plugin = "io.ebean")
-    apply(plugin = "io.ktor.plugin")
+
+    if (name != "shared") {
+        apply(plugin = "org.jetbrains.kotlin.kapt")
+        apply(plugin = "io.ebean")
+
+        ebean {
+            debugLevel = 1
+            queryBeans = true
+        }
+    }
+
 
     tasks.withType<Test> {
         useJUnitPlatform()
@@ -61,8 +69,11 @@ subprojects {
         implementation("io.ebean:ebean-ddl-generator:$ebeanVersion")
         implementation("io.ebean:ebean-migration:14.2.0")
         testImplementation("io.ebean:ebean-test:$ebeanVersion")
-        kapt("io.ebean:querybean-generator:$ebeanVersion")
         testImplementation("io.ebean:ebean:$ebeanVersion")
+
+        if (name != "shared") {
+            kapt("io.ebean:querybean-generator:$ebeanVersion")
+        }
 
         //Dependency injection -> Koin
         implementation("io.insert-koin:koin-ktor:${koinVersion}")
@@ -75,12 +86,6 @@ subprojects {
 
     tasks.test {
         useJUnitPlatform()
-    }
-
-
-    ebean {
-        debugLevel = 1
-        queryBeans = true
     }
 }
 
