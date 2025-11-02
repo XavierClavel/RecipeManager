@@ -10,6 +10,7 @@ sealed class FollowEvent(): CookncoEvent() {
 
 
 @Serializable
+@SerialName("followed_user")
 data class FollowedUserEvent(
     val followerId: Long,
     val followedId: Long
