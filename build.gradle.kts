@@ -14,7 +14,6 @@ val kotlin_version = "2.2.21"
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
-    apply(plugin = "org.jetbrains.kotlin.jvm")
 
     tasks.withType<Test> {
         useJUnitPlatform()

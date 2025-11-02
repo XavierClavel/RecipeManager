@@ -6,14 +6,11 @@ val logback_version: String by project
 val exposed_version: String by project
 
 plugins {
-    //kotlin("kapt") version "2.0.21" apply false
     kotlin("jvm")
+    kotlin("kapt")
 
     id("io.ktor.plugin") version "3.2.3"
-    id("org.jetbrains.kotlin.plugin.serialization")
     id("io.ebean") version "15.8.0"
-    id("org.jetbrains.kotlin.kapt")
-
 }
 
 application {
@@ -96,9 +93,6 @@ dependencies {
     //PDF write
     implementation("com.itextpdf:itext-core:$itextVersion")
     implementation("com.itextpdf:bouncy-castle-adapter:$itextVersion")
-
-    //Mail
-    implementation("org.eclipse.angus:jakarta.mail:2.0.3")
 
     //Mocking
     testImplementation("io.mockk:mockk:1.13.16")

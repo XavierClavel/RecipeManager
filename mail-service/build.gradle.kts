@@ -28,19 +28,6 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
-    //DB
-    implementation("org.hibernate:hibernate-core:6.6.1.Final")
-    implementation("org.postgresql:postgresql:42.7.4")
-    implementation("com.zaxxer:HikariCP:6.0.0")
-    implementation("org.flywaydb:flyway-core:10.20.0")
-    implementation("io.ebean:ebean:$ebeanVersion")
-    implementation("io.ebean:ebean-platform-postgres:$ebeanVersion")
-    implementation("io.ebean:ebean-ddl-generator:$ebeanVersion")
-    implementation("io.ebean:ebean-migration:14.2.0")
-    testImplementation("io.ebean:ebean-test:$ebeanVersion")
-    kapt("io.ebean:querybean-generator:$ebeanVersion")
-    testImplementation("io.ebean:ebean:$ebeanVersion")
-
     //Mail
     implementation("org.eclipse.angus:jakarta.mail:2.0.3")
 
@@ -64,4 +51,9 @@ dependencies {
 
 task("prepareKotlinBuildScriptModel") {
 
+}
+
+ebean {
+    debugLevel = 1
+    queryBeans = true
 }
