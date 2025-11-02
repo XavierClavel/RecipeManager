@@ -18,6 +18,5 @@ data class NewRecipeEvent(
     val title: String,
     val imageUrl: String
 ) : RecipeEvent() {
-    override val type = "new_recipe"
     override fun getKey() = id.toString()
 }

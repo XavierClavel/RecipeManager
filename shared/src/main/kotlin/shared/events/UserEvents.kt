@@ -10,11 +10,11 @@ sealed class UserEvent(): CookncoEvent() {
 
 
 @Serializable
+@SerialName("user_created")
 data class UserCreatedEvent(
     val id: Long,
     val username: String,
     val mail: String,
 ) : UserEvent() {
-    override val type = "user_created"
     override fun getKey() = id.toString()
 }

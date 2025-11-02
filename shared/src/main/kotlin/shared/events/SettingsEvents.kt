@@ -14,6 +14,5 @@ data class NotificationsToggledEvent(
     val userId: Long,
     val enabled: Boolean
 ) : SettingsEvent() {
-    override val type = "notifications_toggled"
     override fun getKey() = userId.toString()
 }

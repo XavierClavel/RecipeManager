@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class CookncoEvent {
-    abstract val type: String
     abstract fun getTopic(): String
     open fun getKey(): String? = null
 }
@@ -13,6 +12,5 @@ sealed class CookncoEvent {
 @Serializable
 @SerialName("test")
 data class TestEvent(val value: String): CookncoEvent() {
-    override val type = "test"
     override fun getTopic() = "test-topic"
 }

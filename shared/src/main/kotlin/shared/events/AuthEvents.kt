@@ -14,9 +14,7 @@ sealed class AuthEvent(): CookncoEvent() {
 data class PasswordResetRequestedEvent(
     val userId: Long,
     val token: String,
-) : AuthEvent() {
-    override val type = "password_reset_requested"
-}
+) : AuthEvent()
 
 
 @Serializable
@@ -24,6 +22,4 @@ data class PasswordResetRequestedEvent(
 data class AccountVerificationRequestedEvent(
     val userId: Long,
     val token: String,
-) : AuthEvent() {
-    override val type = "account_verification_requested"
-}
+) : AuthEvent()

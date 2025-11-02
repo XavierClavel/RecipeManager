@@ -15,7 +15,6 @@ data class RecipeLikedEvent(
     val recipeId: Long,
     val userId: Long
 ) : LikeEvent() {
-    override val type = "recipe_liked"
     override fun getKey() = recipeId.toString()
 }
 
@@ -25,6 +24,5 @@ data class RecipeUnlikedEvent(
     val recipeId: Long,
     val userId: Long
 ) : LikeEvent() {
-    override val type = "recipe_unliked"
     override fun getKey() = recipeId.toString()
 }

@@ -15,7 +15,6 @@ data class FollowedUserEvent(
     val followerId: Long,
     val followedId: Long
 ) : FollowEvent() {
-    override val type = "followed_user"
     override fun getKey() = followedId.toString()
 }
 
@@ -25,6 +24,5 @@ data class UnfollowedUserEvent(
     val followerId: Long,
     val followedId: Long
 ) : FollowEvent() {
-    override val type = "unfollowed_user"
     override fun getKey() = followedId.toString()
 }
