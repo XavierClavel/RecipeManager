@@ -32,7 +32,6 @@ dependencies {
     val hopliteVersion = "2.9.0"
 
     implementation(project(":shared"))
-    testImplementation(project(":shared"))
 
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 

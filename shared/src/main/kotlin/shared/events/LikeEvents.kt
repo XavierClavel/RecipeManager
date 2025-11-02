@@ -10,6 +10,7 @@ sealed class LikeEvent(): CookncoEvent() {
 
 
 @Serializable
+@SerialName("recipe_liked")
 data class RecipeLikedEvent(
     val recipeId: Long,
     val userId: Long
@@ -19,7 +20,7 @@ data class RecipeLikedEvent(
 }
 
 @Serializable
-@SerialName("unfollowed_user")
+@SerialName("recipe_unliked")
 data class RecipeUnlikedEvent(
     val recipeId: Long,
     val userId: Long
