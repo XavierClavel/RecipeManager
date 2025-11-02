@@ -27,8 +27,11 @@ import javax.crypto.spec.SecretKeySpec
 
 fun main() {
     DatabaseManager.init()
+
+    logger.info { "Server started." }
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
+    logger.info { "Server closed."}
 }
 
 private val aesKey = SecretKeySpec(System.getenv("AES_KEY").toByteArray(), "AES")
