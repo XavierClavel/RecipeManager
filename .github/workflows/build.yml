@@ -7,6 +7,9 @@ on:
     branches: [ "master" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,6 +17,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Set up JDK
       uses: actions/setup-java@v4
@@ -63,3 +68,43 @@ jobs:
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/cooknco-$project:${{ env.VERSION }} ${{ secrets.DOCKERHUB_USERNAME }}/cooknco-$project:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/cooknco-$project:latest
         done
+
+    - name: Create tag if it does not exist
+      run: |
+        if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+          echo "Tag v${{ env.VERSION }} already exists. Skipping."
+        else
+          git tag v${{ env.VERSION }}
+          git push origin v${{ env.VERSION }}
+        fi
+
+    - name: Create GitHub Release if it does not exist
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const tag = `v${process.env.VERSION}`;
+          try {
+            // Check if release already exists
+            await github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag
+            });
+            core.info(`Release ${tag} already exists. Skipping.`);
+          } catch (error) {
+            if (error.status === 404) {
+              core.info(`Creating new release for ${tag}`);
+              await github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: tag,
+                name: `Release ${process.env.VERSION}`,
+                body: "Release created automatically by GitHub Actions.",
+                draft: false,
+                prerelease: process.env.prerelease === 'true'
+              });
+            } else {
+              throw error;
+            }
+          }
