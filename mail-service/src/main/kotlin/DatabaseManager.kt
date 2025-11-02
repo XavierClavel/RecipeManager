@@ -40,7 +40,7 @@ object DatabaseManager {
                 runBlocking { (delay(5000)) }
             }
         }
-        logger.info { "Successfully connected to database" }
+        logger.info { "Successfully connected to database at ${hikari().jdbcUrl}" }
 
         // Trigger migration runner manually
         val config = MigrationConfig()
