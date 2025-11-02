@@ -11,7 +11,7 @@ class User(
     val id: Long = 0L,
     val username: String = "",
     val encryptedMail: String = "",
-    val locale: Locale = Locale.EN,
+    val locale: Locale = Locale.FR,
     @Column(name = "notifications_enabled")
     val notificationsEnabled: Boolean = false,
 ): Model()

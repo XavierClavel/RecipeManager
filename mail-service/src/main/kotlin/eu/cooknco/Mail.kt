@@ -39,11 +39,11 @@ class Mail(
         val mailTemplate =  object {}.javaClass.getResource(templatePath)?.readText() ?: throw Exception("No template found for $templatePath")
         val lines = mailTemplate.lines()
         val mailSubject = lines.first().substringAfter("<subject>").substringBefore("</subject>")
-        val mailBody = lines
+        var mailBody = lines
             .subList(1, lines.size)
             .joinToString("\n")
         templateMap.forEach { (key, value) ->
-            mailBody.replace("{{$key}}", value)
+            mailBody = mailBody.replace("{{$key}}", value)
         }
 
         try {
