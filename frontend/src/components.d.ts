@@ -12,6 +12,8 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     ChipRow: typeof import('./components/ChipRow.vue')['default']
     Cookbook: typeof import('./components/Cookbook.vue')['default']
+    CookbooksGrid: typeof import('./components/CookbooksGrid.vue')['default']
+    CookbooksList: typeof import('./components/CookbooksList.vue')['default']
     EditablePicture: typeof import('./components/EditablePicture.vue')['default']
     Error: typeof import('./components/Error.vue')['default']
     FollowerDisplay: typeof import('./components/FollowerDisplay.vue')['default']

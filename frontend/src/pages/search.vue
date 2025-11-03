@@ -152,4 +152,8 @@ function onChipSelected() {
     <recipes-list :query="`?user=${userId}&likedBy=${userId}&cookbookUser=${userId}&followedBy=${userId}&search=${searchQuery}`"></recipes-list>
   </div>
 
+  <div v-if="selection == 'cookbooks'">
+    <cookbooks-grid :query="`?user=${userId}`"></cookbooks-grid>
+  </div>
+
 </template>
