@@ -201,7 +201,7 @@ const showSidebar = computed(() =>
 
 const toSearch = debounce((query) => {
   if (!query) return; // Avoid empty redirects
-  router.push({ name: '/search', query: { search: query } })
+  router.push({ name: '/search', query: { search: query, filter: "everything" } })
 }, 500) // Buffer input for 500ms
 
 overrideLocaleFromCookie()

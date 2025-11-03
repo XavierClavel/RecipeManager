@@ -5,6 +5,7 @@ import {listRecipes} from "@/scripts/recipes";
 import {useAuthStore} from "@/stores/auth";
 import {searchIngredients} from "@/scripts/ingredients";
 import {searchCookbooks} from "@/scripts/cookbooks";
+import router from "@/router";
 
 const route = useRoute()
 const searchQuery = ref(route.query.search || '')
@@ -12,7 +13,7 @@ const users = ref([])
 const recipes = ref([])
 const ingredients = ref([])
 const cookbooks = ref([])
-const selection = ref("everything")
+const selection = ref(route.query.filter || "everything")
 
 const authStore = useAuthStore()
 const userId = computed(() => authStore.id)
@@ -57,6 +58,7 @@ updateSearch()
 
 function onChipSelected() {
   console.log(selection.value)
+  router.push({ name: '/search', query: { search: searchQuery.value, filter: selection.value } })
 }
 
 
@@ -67,21 +69,22 @@ function onChipSelected() {
     class="text-black text-h2 font-weight-bold my-8"
   >{{$t("no_result")}}</v-card-title>
   <div class="d-flex flex-wrap justify-center">
-  <v-chip-group
-    v-if="ingredients?.length || users?.length || recipes?.length || cookbooks?.length"
-    v-model="selection"
-    selected-class="v-chip--selected v-chip--variant-flat v-chip--color-black"
-    variant="outlined"
-    mandatory
-    @update:modelValue="onChipSelected"
-  >
-    <v-chip :text="$t('everything')" value="everything"></v-chip>
-    <v-chip :text="$t('recipes')" value="recipes"></v-chip>
-    <v-chip :text="$t('ingredients')" value="ingredients"></v-chip>
-    <v-chip :text="$t('users')" value="users"></v-chip>
-    <v-chip :text="$t('cookbooks')" value="users"></v-chip>
-  </v-chip-group>
+    <v-chip-group
+      v-if="ingredients?.length || users?.length || recipes?.length || cookbooks?.length"
+      v-model="selection"
+      selected-class="v-chip--selected v-chip--variant-flat v-chip--color-black"
+      variant="outlined"
+      mandatory
+      @update:modelValue="onChipSelected"
+    >
+      <v-chip :text="$t('everything')" value="everything"></v-chip>
+      <v-chip :text="$t('recipes')" value="recipes"></v-chip>
+      <v-chip :text="$t('ingredients')" value="ingredients"></v-chip>
+      <v-chip :text="$t('users')" value="users"></v-chip>
+      <v-chip :text="$t('cookbooks')" value="users"></v-chip>
+    </v-chip-group>
   </div>
+  <div v-if="selection == 'everything'">
   <v-card
     class="my-5"
     color="transparent"
@@ -143,5 +146,6 @@ function onChipSelected() {
   <v-row class="mx-5 mb-16">
     <cookbook v-for="cookbook in cookbooks" :cookbook="cookbook"></cookbook>
   </v-row>
+  </div>
 
 </template>
