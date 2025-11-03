@@ -226,4 +226,5 @@ export default {
   unit_tablespoon: "cuillères à soupe",
 
   notes: "Ecris des notes ici !",
+  everything: "Tout",
 };

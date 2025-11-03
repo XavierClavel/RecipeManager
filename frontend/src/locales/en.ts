@@ -225,4 +225,5 @@ export default {
   unit_tablespoon: "tablespoons",
 
   notes: "Write notes here !",
+  everything: "Everything",
 };

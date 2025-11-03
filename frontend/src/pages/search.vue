@@ -12,6 +12,7 @@ const users = ref([])
 const recipes = ref([])
 const ingredients = ref([])
 const cookbooks = ref([])
+const selection = ref("everything")
 
 const authStore = useAuthStore()
 const userId = computed(() => authStore.id)
@@ -54,6 +55,10 @@ watch(() => route.query.search, (newQuery) => {
 
 updateSearch()
 
+function onChipSelected() {
+  console.log(selection.value)
+}
+
 
 </script>
 <template>
@@ -61,6 +66,22 @@ updateSearch()
     v-if="!ingredients?.length && !users?.length && !recipes?.length && !cookbooks?.length"
     class="text-black text-h2 font-weight-bold my-8"
   >{{$t("no_result")}}</v-card-title>
+  <div class="d-flex flex-wrap justify-center">
+  <v-chip-group
+    v-if="ingredients?.length || users?.length || recipes?.length || cookbooks?.length"
+    v-model="selection"
+    selected-class="v-chip--selected v-chip--variant-flat v-chip--color-black"
+    variant="outlined"
+    mandatory
+    @update:modelValue="onChipSelected"
+  >
+    <v-chip :text="$t('everything')" value="everything"></v-chip>
+    <v-chip :text="$t('recipes')" value="recipes"></v-chip>
+    <v-chip :text="$t('ingredients')" value="ingredients"></v-chip>
+    <v-chip :text="$t('users')" value="users"></v-chip>
+    <v-chip :text="$t('cookbooks')" value="users"></v-chip>
+  </v-chip-group>
+  </div>
   <v-card
     class="my-5"
     color="transparent"
