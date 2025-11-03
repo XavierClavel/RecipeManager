@@ -81,7 +81,7 @@ function onChipSelected() {
       <v-chip :text="$t('recipes')" value="recipes"></v-chip>
       <v-chip :text="$t('ingredients')" value="ingredients"></v-chip>
       <v-chip :text="$t('users')" value="users"></v-chip>
-      <v-chip :text="$t('cookbooks')" value="users"></v-chip>
+      <v-chip :text="$t('cookbooks')" value="cookbooks"></v-chip>
     </v-chip-group>
   </div>
   <div v-if="selection == 'everything'">
@@ -146,6 +146,10 @@ function onChipSelected() {
   <v-row class="mx-5 mb-16">
     <cookbook v-for="cookbook in cookbooks" :cookbook="cookbook"></cookbook>
   </v-row>
+  </div>
+
+  <div v-if="selection == 'recipes'">
+    <recipes-list :query="`?user=${userId}&likedBy=${userId}&cookbookUser=${userId}&followedBy=${userId}&search=${searchQuery}`"></recipes-list>
   </div>
 
 </template>
