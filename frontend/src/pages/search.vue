@@ -76,6 +76,7 @@ function onChipSelected() {
       variant="outlined"
       mandatory
       @update:modelValue="onChipSelected"
+      color="primary"
     >
       <v-chip :text="$t('everything')" value="everything"></v-chip>
       <v-chip :text="$t('recipes')" value="recipes"></v-chip>
@@ -161,3 +162,9 @@ function onChipSelected() {
   </div>
 
 </template>
+<style>
+.v-chip.v-chip--selected {
+  background-color: black !important;
+  color: white !important;
+}
+</style>

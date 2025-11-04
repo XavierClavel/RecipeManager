@@ -109,6 +109,9 @@ export default {
   tips: "Conseils",
   leave: "Partir",
   no_recipe_to_display: "Aucune recette à afficher",
+  no_cookbook_to_display: "Aucun carnet de recette à afficher",
+  no_user_to_display: "Aucun utilisateur à afficher",
+  no_ingredient_to_display: "Aucun ingrédient à afficher",
   no_recipe_source: "Sélectionne au moins une source de recette ! (Mes recettes, likes etc)",
 
   //Password reset
