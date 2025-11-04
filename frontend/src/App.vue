@@ -137,7 +137,7 @@
             :label="`${$t('search_recipe')}`"
             bg-color="primary"
             @update:modelValue="toSearch"
-
+            v-model="search"
           ></v-text-field>
         </v-card>
       </div>
@@ -175,14 +175,16 @@ import {overrideLocaleFromCookie} from "@/scripts/localization";
 import {useDisplay} from "vuetify";
 import {usePollingStore} from "@/stores/pollingStore";
 
+const route = useRoute();
+const router = useRouter()
 const authStore = useAuthStore()
+
 const userId = computed(() => authStore.id)
 const userIconVersion = computed(() => authStore.iconVersion)
-const router = useRouter()
 const version = ref(null)
+const search = ref(route.query.search || '')
 const { xs, sm, md } = useDisplay();
 
-const route = useRoute();
 
 // Create a ref to control the visibility of the drawer
 const drawer = ref(!xs.value)
@@ -201,7 +203,7 @@ const showSidebar = computed(() =>
 
 const toSearch = debounce((query) => {
   if (!query) return; // Avoid empty redirects
-  router.push({ name: '/search', query: { search: query } })
+  router.push({ name: '/search', query: { search: query, filter: route.query.filter || "everything" } })
 }, 500) // Buffer input for 500ms
 
 overrideLocaleFromCookie()
@@ -217,6 +219,26 @@ const pollingStore = usePollingStore()
 onMounted(() => {
   pollingStore.startPolling()
 })
+
+const removeAfterEach = router.afterEach((to, from) => {
+  if (to.name != "/search") {
+    search.value = null
+    return
+  }
+
+})
+
+onUnmounted(() => {
+  removeAfterEach()
+})
+
+watch(
+  () => route.query.search,
+  (newVal) => {
+    search.value = newVal || ''
+  },
+  { immediate: true }
+)
 
 </script>
 

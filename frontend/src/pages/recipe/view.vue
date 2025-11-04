@@ -96,6 +96,18 @@
         @click="onShareButtonClick"
         elevation="2"
       ></v-btn>
+      <admin-only>
+        <v-btn
+          icon="mdi-tray-arrow-down"
+          color="background"
+          flat
+          class="mb-10 text-h6"
+          min-height="70px"
+          min-width="70px"
+          @click="downloadRecipe(recipeId)"
+          elevation="2"
+        ></v-btn>
+      </admin-only>
     </span>
 
     <span class="d-flex flex-wrap">
@@ -242,12 +254,6 @@
             :text="`${$t('edit')}`"
             :action="() => toEditRecipe(recipeId)"
             v-if="isOwner"
-          ></action-button>
-          <action-button
-            v-if="false"
-            icon="mdi-tray-arrow-down"
-            :text="`${$t('download')}`"
-            :action="() => downloadRecipe(recipeId)"
           ></action-button>
       </v-row>
     </v-container>

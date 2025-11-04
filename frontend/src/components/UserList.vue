@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getUsers} from "@/scripts/users";
+import {listUsers} from "@/scripts/users";
 import {getUserIconUrl, toViewUser} from "../scripts/common";
 import {ICON_ACCEPT, ICON_DENY, ICON_REMOVE} from "../scripts/icons";
 import {

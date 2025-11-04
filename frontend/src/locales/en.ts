@@ -109,6 +109,9 @@ export default {
   tips: "Tips",
   leave: "Leave",
   no_recipe_to_display: "No recipe to display",
+  no_cookbook_to_display: "No cookbook to display",
+  no_user_to_display: "No user to display",
+  no_ingredient_to_display: "No ingredient to display",
   no_recipe_source: "Please select at least one recipe source (My recipes, likes etc)",
 
   //Password reset
@@ -225,4 +228,5 @@ export default {
   unit_tablespoon: "tablespoons",
 
   notes: "Write notes here !",
+  everything: "Everything",
 };

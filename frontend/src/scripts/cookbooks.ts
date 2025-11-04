@@ -21,8 +21,11 @@ async function getCookbook(id) {
   return await apiClient.get(`/cookbook/${id}`)
 }
 
-async function listCookbooks(search) {
-  return await apiClient.get(`/cookbook${search}`)
+async function listCookbooks(search, page: number, size: number) {
+  const query = new URLSearchParams(search)
+  if (page != undefined) query.append('page', page)
+  if (size != undefined) query.append('size', size)
+  return await apiClient.get(`/cookbook?${query.toString()}`)
 }
 
 async function getStatusInCookbooks(recipe) {

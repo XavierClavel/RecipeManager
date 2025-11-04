@@ -26,7 +26,7 @@ async function listRecipes(search: string, page: number, size: number) {
     throw "no_recipe_source"
   }
   if (page != undefined) query.append('page', page)
-  if (size != undefined) query.append('limit', size)
+  if (size != undefined) query.append('size', size)
   return await apiClient.get(`/recipe?${query.toString()}`)
 }
 

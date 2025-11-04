@@ -12,6 +12,8 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     ChipRow: typeof import('./components/ChipRow.vue')['default']
     Cookbook: typeof import('./components/Cookbook.vue')['default']
+    CookbooksGrid: typeof import('./components/CookbooksGrid.vue')['default']
+    CookbooksList: typeof import('./components/CookbooksList.vue')['default']
     EditablePicture: typeof import('./components/EditablePicture.vue')['default']
     Error: typeof import('./components/Error.vue')['default']
     FollowerDisplay: typeof import('./components/FollowerDisplay.vue')['default']
@@ -19,6 +21,7 @@ declare module 'vue' {
     Ingredient: typeof import('./components/Ingredient.vue')['default']
     IngredientNutrionalData: typeof import('./components/IngredientNutrionalData.vue')['default']
     IngredientNutritionalData: typeof import('./components/IngredientNutritionalData.vue')['default']
+    IngredientsGrid: typeof import('./components/IngredientsGrid.vue')['default']
     InteractiblePictoInfo: typeof import('./components/InteractiblePictoInfo.vue')['default']
     PictoInfo: typeof import('./components/PictoInfo.vue')['default']
     Recipe: typeof import('./components/Recipe.vue')['default']
@@ -30,5 +33,6 @@ declare module 'vue' {
     User: typeof import('./components/User.vue')['default']
     UserInfo: typeof import('./components/UserInfo.vue')['default']
     UserList: typeof import('./components/UserList.vue')['default']
+    UsersGrid: typeof import('./components/UsersGrid.vue')['default']
   }
 }

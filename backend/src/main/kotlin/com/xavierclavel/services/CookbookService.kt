@@ -68,6 +68,7 @@ class CookbookService: KoinComponent {
             .filterByRecipe(recipe)
             .filterBySearch(search)
             .filterByVisibility(currentUser)
+            .setPaging(paging)
             .findList()
             .map { it.toInfo() }
 

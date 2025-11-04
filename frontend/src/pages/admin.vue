@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import {getUsers, deleteUser} from "@/scripts/users";
+import {listUsers, deleteUser} from "@/scripts/users";
 import {toCreateRecipe, toHome, toListIngredient, toListRecipe, toMyCookbooks, toUsers} from "@/scripts/common";
 let users = ref<string[]>([])
 
@@ -50,7 +50,7 @@ const performDelete = (username) => {
 
 };
 
-getUsers().then (
+listUsers().then (
   function (response) {
     console.log(response)
     users.value = response.data
