@@ -24,7 +24,7 @@ async function getCookbook(id) {
 async function listCookbooks(search, page: number, size: number) {
   const query = new URLSearchParams(search)
   if (page != undefined) query.append('page', page)
-  if (size != undefined) query.append('limit', size)
+  if (size != undefined) query.append('size', size)
   return await apiClient.get(`/cookbook?${query.toString()}`)
 }
 

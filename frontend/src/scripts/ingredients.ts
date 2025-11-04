@@ -15,8 +15,12 @@ async function getIngredient(id) {
   return await apiClient.get(`/ingredient/${id}`)
 }
 
-async function searchIngredients(query, page, size) {
-  return await apiClient.get(`/ingredient?query=${query}&page=${page}&size=${size}&locale=${getLocale()}`)
+async function searchIngredients(search, page, size) {
+  const query = new URLSearchParams(search)
+  if (page != undefined) query.append('page', page)
+  if (size != undefined) query.append('size', size)
+  query.append('locale', getLocale())
+  return await apiClient.get(`/ingredient?${query.toString()}`)
 }
 
 async function getCount() {

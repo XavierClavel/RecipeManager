@@ -29,7 +29,7 @@ async function updateUser(user) {
 async function listUsers(search, page, size) {
   const query = new URLSearchParams(search)
   if (page != undefined) query.append('page', page)
-  if (size != undefined) query.append('limit', size)
+  if (size != undefined) query.append('size', size)
   return await apiClient.get(`/user?${query.toString()}`)
 }
 
