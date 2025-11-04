@@ -3,7 +3,7 @@ import apiClient from '@/plugins/axios.js';
 export{
   getUser,
   updateUser,
-  getUsers,
+  listUsers,
   getUsersCount,
   deleteUser,
   searchUsers,
@@ -26,8 +26,11 @@ async function updateUser(user) {
   return await apiClient.put(`/user`, user)
 }
 
-async function getUsers(query, page, size) {
-  return await apiClient.get(`/user?query=${query}&page=${page}&size=${size}`)
+async function listUsers(search, page, size) {
+  const query = new URLSearchParams(search)
+  if (page != undefined) query.append('page', page)
+  if (size != undefined) query.append('limit', size)
+  return await apiClient.get(`/user?${query.toString()}`)
 }
 
 async function getUsersCount() {

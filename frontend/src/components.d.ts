@@ -32,5 +32,6 @@ declare module 'vue' {
     User: typeof import('./components/User.vue')['default']
     UserInfo: typeof import('./components/UserInfo.vue')['default']
     UserList: typeof import('./components/UserList.vue')['default']
+    UsersGrid: typeof import('./components/UsersGrid.vue')['default']
   }
 }
