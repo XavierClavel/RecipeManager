@@ -174,16 +174,16 @@ import {ICON_ADMIN, ICON_COOKBOOK, ICON_HOME, ICON_INGREDIENT, ICON_NOTIFICATION
 import {overrideLocaleFromCookie} from "@/scripts/localization";
 import {useDisplay} from "vuetify";
 import {usePollingStore} from "@/stores/pollingStore";
+const route = useRoute();
 
 const authStore = useAuthStore()
 const userId = computed(() => authStore.id)
 const userIconVersion = computed(() => authStore.iconVersion)
 const router = useRouter()
 const version = ref(null)
-const search = ref(null)
+const search = ref(route.query.search)
 const { xs, sm, md } = useDisplay();
 
-const route = useRoute();
 
 // Create a ref to control the visibility of the drawer
 const drawer = ref(!xs.value)

@@ -38,7 +38,7 @@ const updateGrid = async() => {
   try {
     const query = props.query || window.location.search
     const response = await listUsers(query, currentPage.value, 20)
-    if (response.data.length === 0) {
+    if (response.data.items.length === 0) {
       allDataLoaded.value = true
       if (users.value.length == 0) {
         throw "no_user_to_display"
