@@ -137,7 +137,7 @@
             :label="`${$t('search_recipe')}`"
             bg-color="primary"
             @update:modelValue="toSearch"
-
+            v-model="search"
           ></v-text-field>
         </v-card>
       </div>
@@ -180,6 +180,7 @@ const userId = computed(() => authStore.id)
 const userIconVersion = computed(() => authStore.iconVersion)
 const router = useRouter()
 const version = ref(null)
+const search = ref(null)
 const { xs, sm, md } = useDisplay();
 
 const route = useRoute();
@@ -216,6 +217,18 @@ if (!version.value) {
 const pollingStore = usePollingStore()
 onMounted(() => {
   pollingStore.startPolling()
+})
+
+const removeAfterEach = router.afterEach((to, from) => {
+  if (to.name != "/search") {
+    search.value = null
+    return
+  }
+
+})
+
+onUnmounted(() => {
+  removeAfterEach()
 })
 
 </script>
