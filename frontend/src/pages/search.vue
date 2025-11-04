@@ -76,7 +76,6 @@ function onChipSelected() {
       variant="outlined"
       mandatory
       @update:modelValue="onChipSelected"
-      color="primary"
     >
       <v-chip :text="$t('everything')" value="everything"></v-chip>
       <v-chip :text="$t('recipes')" value="recipes"></v-chip>
@@ -94,7 +93,8 @@ function onChipSelected() {
     v-if="users?.length"
   >
     <v-card-title
-      class="text-black text-h2 font-weight-bold"
+      class="text-black text-h2 font-weight-bold clickable-title"
+      @click="selection = 'users'"
     >{{$t("users")}}</v-card-title>
   </v-card>
 
@@ -109,7 +109,8 @@ function onChipSelected() {
     v-if="recipes?.length"
   >
     <v-card-title
-      class="text-black text-h2 font-weight-bold"
+      class="text-black text-h2 font-weight-bold clickable-title"
+      @click="selection = 'recipes'"
     >{{$t("recipes")}}</v-card-title>
   </v-card>
     <v-row class="mx-5 ga-4">
@@ -123,7 +124,8 @@ function onChipSelected() {
     v-if="ingredients?.length"
   >
     <v-card-title
-      class="text-black text-h2 font-weight-bold"
+      class="text-black text-h2 font-weight-bold clickable-title"
+      @click="selection = 'ingredients'"
     >{{$t("ingredients")}}</v-card-title>
   </v-card>
 
@@ -139,7 +141,8 @@ function onChipSelected() {
     v-if="cookbooks?.length"
   >
     <v-card-title
-      class="text-black text-h2 font-weight-bold"
+      class="text-black text-h2 font-weight-bold clickable-title"
+      @click="selection = 'cookbooks'"
     >{{$t("cookbooks")}}
     </v-card-title>
   </v-card>
@@ -170,5 +173,14 @@ function onChipSelected() {
 .v-chip.v-chip--selected {
   background-color: black !important;
   color: white !important;
+}
+
+.clickable-title {
+  cursor: pointer;
+  transition: text-decoration 0.2s ease;
+}
+
+.clickable-title:hover {
+  text-decoration: underline;
 }
 </style>
