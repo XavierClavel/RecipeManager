@@ -140,9 +140,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import {getUserIconUrl, toSignup, toViewCookbook} from "@/scripts/common";
+import {getUserIconUrl, toViewCookbook} from "@/scripts/common";
 import EditablePicture from "@/components/EditablePicture.vue";
-import {searchUsers} from "@/scripts/users";
+import {listUsers} from "@/scripts/users";
 import {
   addRecipeToCookbook,
   createCookbook,
@@ -170,7 +170,7 @@ const ready = ref(false)
 const autocompleteList = ref([])
 
 const onAutocompleteChange = async (query, index) => {
-  const response = await searchUsers(query, 0, 20);
+  const response = await listUsers(query, 0, 20);
   autocompleteList.value[index] = response.data.items;
 }
 

@@ -6,7 +6,6 @@ export{
   listUsers,
   getUsersCount,
   deleteUser,
-  searchUsers,
   updatePassword,
   setRole,
 }
@@ -43,10 +42,6 @@ async function setRole(id, role) {
 
 async function deleteUser(id) {
   return await apiClient.delete(`/user/${id}`)
-}
-
-async function searchUsers(query, page, size) {
-  return await apiClient.get(`/user?query=${query}&page=${page}&size=${size}`)
 }
 
 async function updatePassword(oldPassword, newPassword) {

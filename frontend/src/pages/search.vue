@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 
-import {searchUsers, updateUser} from "@/scripts/users";
+import {listUsers} from "@/scripts/users";
 import {listRecipes} from "@/scripts/recipes";
 import {useAuthStore} from "@/stores/auth";
 import {searchIngredients} from "@/scripts/ingredients";
-import {listCookbooks, searchCookbooks} from "@/scripts/cookbooks";
+import {listCookbooks} from "@/scripts/cookbooks";
 import router from "@/router";
 
 const route = useRoute()
@@ -27,24 +27,24 @@ async function updateSearch() {
 }
 
 async function updateCookbooks() {
-  const response = await listCookbooks(searchQuery.value, 0, 4);
+  const response = await listCookbooks(`query=${searchQuery.value}`, 0, 4);
   cookbooks.value = response.data
 }
 
 async function updateUsers() {
-  const response = await searchUsers(searchQuery.value, 0, 6);
+  const response = await listUsers(`query=${searchQuery.value}`, 0, 6);
   users.value = response.data.items;
   console.log(users.value)
 }
 
 async function updateRecipes() {
-  const response = await listRecipes(`?user=${userId.value}&likedBy=${userId.value}&cookbookUser=${userId.value}&followedBy=${userId.value}&search=${searchQuery.value}`, 0, 4)
+  const response = await listRecipes(`user=${userId.value}&likedBy=${userId.value}&cookbookUser=${userId.value}&followedBy=${userId.value}&search=${searchQuery.value}`, 0, 4)
   recipes.value = response.data
   console.log(recipes.value)
 }
 
 async function updateIngredients() {
-  const response = await searchIngredients(searchQuery.value, 0, 6)
+  const response = await searchIngredients(`query=${searchQuery.value}`, 0, 6)
   ingredients.value = response.data.items
   console.log(ingredients.value)
 }
@@ -153,19 +153,19 @@ function onChipSelected() {
   </div>
 
   <div v-if="selection == 'recipes'">
-    <recipes-list :query="`?user=${userId}&likedBy=${userId}&cookbookUser=${userId}&followedBy=${userId}&query=${searchQuery}`"></recipes-list>
+    <recipes-list :query="`user=${userId}&likedBy=${userId}&cookbookUser=${userId}&followedBy=${userId}&search=${searchQuery}`"></recipes-list>
   </div>
 
   <div v-if="selection == 'cookbooks'">
-    <cookbooks-grid :query="`?user=${userId}&query=${searchQuery}`"></cookbooks-grid>
+    <cookbooks-grid :query="`user=${userId}&query=${searchQuery}`"></cookbooks-grid>
   </div>
 
   <div v-if="selection == 'users'">
-    <users-grid :query="`?query=${searchQuery}`"></users-grid>
+    <users-grid :query="`query=${searchQuery}`"></users-grid>
   </div>
 
   <div v-if="selection == 'ingredients'">
-    <ingredients-grid :query="`?query=${searchQuery}`"></ingredients-grid>
+    <ingredients-grid :query="`query=${searchQuery}`"></ingredients-grid>
   </div>
 
 </template>
