@@ -397,7 +397,7 @@ const performDelete = (id) => {
 
 
 const updateDisplay = debounce(() => {
-  searchIngredients(query.value || "",page.value - 1, 20).then (
+  searchIngredients(`query=${query.value || ""}`,page.value - 1, 20).then (
     function (response) {
       ingredients.value = response.data.items
       pagesCount.value = Math.ceil(response.data.count / 20)

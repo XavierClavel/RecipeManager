@@ -397,7 +397,7 @@ const onIngredientAutocompleteChange = async (query, index) => {
   console.log(recipe.value.ingredients[index])
   console.log(!query)
   if (!query) return
-  const response = await searchIngredients(query, 0, 20);
+  const response = await searchIngredients(`query=${query}`, 0, 20);
   autocompleteList.value[index] = response.data.items.map(item => ({
     id: item.id,
     name: item.name?.[getLocale().toUpperCase()] || '',
