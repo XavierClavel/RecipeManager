@@ -15,6 +15,7 @@ import com.xavierclavel.services.RecipeIngredientService
 import com.xavierclavel.services.RecipeService
 import com.xavierclavel.services.UserService
 import com.xavierclavel.utils.loadConfig
+import io.ebean.DB
 import shared.dto.UserDTO
 import shared.dto.UserSettingsDTO
 import io.ktor.client.HttpClient
@@ -97,6 +98,8 @@ abstract class ApplicationTest: KoinTest {
         DatabaseManager.getTables().forEach {
             it.findList().forEach { it.delete() }
         }
+        DB.sqlUpdate("CREATE EXTENSION IF NOT EXISTS unaccent").execute()
+        DB.sqlUpdate("CREATE EXTENSION IF NOT EXISTS pg_trgm").execute()
         setupTestUser(USER1)
         setupTestUser(USER2)
     }

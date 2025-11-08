@@ -208,17 +208,16 @@ class RecipeFiltersTest : ApplicationTest() {
     @Test
     fun `filter recipes by title`() = runTestAsAdmin {
         val adminUser = client.getMe()
-        val recipeDTO1 = RecipeDTO(title = "Tarte aux champignons")
-        val recipeDTO2 = RecipeDTO(title = "Tarte aux pommes")
+        val recipeDTO1 = RecipeDTO(title = "Tarte aux pommes")
+        val recipeDTO2 = RecipeDTO(title = "Crumble aux pommes")
+        val recipeDTO3 = RecipeDTO(title = "Raclette")
 
         val recipe1 = client.createRecipe(recipeDTO1)
         val recipe2 = client.createRecipe(recipeDTO2)
+        val recipe3 = client.createRecipe(recipeDTO3)
 
-        val response1 = client.listRecipes(user = adminUser.id, search = "champignons")
-        assertEquals(setOf(recipe1.toOverview()), response1.toSet())
-
-        val response2 = client.listRecipes(user = adminUser.id, search = "tarte")
-        assertEquals(setOf(recipe1.toOverview(), recipe2.toOverview()), response2.toSet())
+        val response1 = client.listRecipes(user = adminUser.id, search = "torte aux pommes")
+        assertEquals(setOf(recipe1.toOverview(), recipe2.toOverview()), response1.toSet())
     }
 
     @Test
