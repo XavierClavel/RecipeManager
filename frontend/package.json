@@ -8,6 +8,8 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
     "@mdi/font": "7.4.47",
     "@vueuse/core": "^13.0.0",
     "axios": "^1.7.7",
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.24.7",
+    "@capacitor/cli": "^7.4.4",
     "@types/node": "^20.14.10",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-typescript": "^13.0.0",
