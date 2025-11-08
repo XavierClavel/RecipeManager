@@ -50,7 +50,7 @@ class RecipeService: KoinComponent {
             .filterByVisibility(requestorId)
             .having().raw("count(likes.id) >= 0") // Ensure recipes with no likes are included
             .setPaging(paging)
-            .sort(sort)
+            .sort(sort, recipeFilter)
             .findList()
             .map { it.toOverview() }
     }
@@ -260,12 +260,10 @@ class RecipeService: KoinComponent {
     private fun QRecipe.filterBySearch(search: String?) =
         if (search.isNullOrEmpty()) this
         else this.apply {
-            for (query in search.split(" ").filter { it.isNotEmpty() }) {
-                this.title.ilike("%$query%")
-            }
+            this.raw("similarity(unaccent(title), unaccent(?)) > 0.3", search)
         }
 
-    private fun QRecipe.sort(sort: Sort) =
+    private fun QRecipe.sort(sort: Sort, recipeFilter: RecipeFilter) =
         when (sort) {
             Sort.NONE -> this
             Sort.NAME_ASCENDING -> this.orderBy().title.desc()
@@ -275,6 +273,7 @@ class RecipeService: KoinComponent {
             Sort.DATE_ASCENDING -> this.orderBy().creationDate.asc()
             Sort.DATE_DESCENDING -> this.orderBy().creationDate.desc()
             Sort.RANDOM -> this.orderBy("random()")
+            Sort.BEST_MATCH -> this.orderBy("similarity(unaccent(title), unaccent('" + recipeFilter.search!!.replace("'", "''") + "')) desc")
         }
 
 }

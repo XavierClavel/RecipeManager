@@ -38,7 +38,7 @@ async function updateUsers() {
 }
 
 async function updateRecipes() {
-  const response = await listRecipes(`user=${userId.value}&likedBy=${userId.value}&cookbookUser=${userId.value}&followedBy=${userId.value}&search=${searchQuery.value}`, 0, 4)
+  const response = await listRecipes(`user=${userId.value}&likedBy=${userId.value}&cookbookUser=${userId.value}&followedBy=${userId.value}&search=${searchQuery.value}&sort=BEST_MATCH`, 0, 4)
   recipes.value = response.data
   console.log(recipes.value)
 }
@@ -153,7 +153,7 @@ function onChipSelected() {
   </div>
 
   <div v-if="selection == 'recipes'">
-    <recipes-list :query="`user=${userId}&likedBy=${userId}&cookbookUser=${userId}&followedBy=${userId}&search=${searchQuery}`"></recipes-list>
+    <recipes-list :query="`user=${userId}&likedBy=${userId}&cookbookUser=${userId}&followedBy=${userId}&search=${searchQuery}&sort=BEST_MATCH`"></recipes-list>
   </div>
 
   <div v-if="selection == 'cookbooks'">

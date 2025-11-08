@@ -9,4 +9,5 @@ enum class Sort {
     DATE_ASCENDING,
     DATE_DESCENDING,
     RANDOM,
+    BEST_MATCH,
 }

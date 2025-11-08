@@ -17,6 +17,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
+import shared.enums.Locale
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -78,6 +79,9 @@ class User (
 
     @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     var dietaryRestrictions: DietaryRestrictions = DietaryRestrictions(),
+
+    @DbDefault("0")
+    var locale: Locale = Locale.FR,
 
 
     ): Model() {
