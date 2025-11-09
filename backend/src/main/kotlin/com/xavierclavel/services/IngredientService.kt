@@ -74,10 +74,13 @@ class IngredientService: KoinComponent {
                 if (searchString.isBlank()) return@apply
                 this.and()
                     .translations.locale.eq(locale)
-                    .translations.name.ilike("%$searchString%")
+                    .raw("similarity(unaccent(translations.name), unaccent(?)) > 0.3", searchString)
                     .endAnd()
             }
+            .query()
 
+        query.orderBy("similarity(unaccent(translations.name), unaccent(:term)) desc")
+        query.setParameter("term", searchString)
 
         return Pair(query.findCount(), query.setPaging(paging).findList().map{it.toInfo()})
     }

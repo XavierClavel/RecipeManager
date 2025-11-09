@@ -1,0 +1,1 @@
+CREATE INDEX idx_ingredient_name_trgm ON ingredient_translation USING GIST (name gist_trgm_ops);
